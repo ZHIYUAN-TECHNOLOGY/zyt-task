@@ -1,0 +1,706 @@
+<title>NCT Delivery Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --ground:#f7f7f4;--surface:#fffffe;--sunk:#eceeea;--ink:#17242a;--ink-soft:#42565d;--ink-faint:#6d8188;
+  --rule:#d9ddd8;--rule-strong:#b9c0ba;--teal:#2e6b6e;--teal-soft:#dde9e7;--amber:#b5780f;--amber-soft:#f2e6cd;
+  --oxide:#9e3b2a;--oxide-soft:#f6e4e0;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0e1719;--surface:#142024;--sunk:#101a1d;--ink:#e6ebe7;--ink-soft:#a9b8b8;--ink-faint:#7f9191;
+  --rule:#24353a;--rule-strong:#35494e;--teal:#6fb3ae;--teal-soft:#17302f;--amber:#e0a53f;--amber-soft:#3a2f16;
+  --oxide:#e08874;--oxide-soft:#33201c;}}
+:root[data-theme="dark"]{
+  --ground:#0e1719;--surface:#142024;--sunk:#101a1d;--ink:#e6ebe7;--ink-soft:#a9b8b8;--ink-faint:#7f9191;
+  --rule:#24353a;--rule-strong:#35494e;--teal:#6fb3ae;--teal-soft:#17302f;--amber:#e0a53f;--amber-soft:#3a2f16;
+  --oxide:#e08874;--oxide-soft:#33201c;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:1.25rem;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-0.015em;text-wrap:balance}
+p{margin:0;max-width:68ch}
+.wrap{max-width:72rem;margin:0 auto;padding-block:2.2rem 5rem}
+
+/* view switch */
+.bar{position:sticky;top:0;z-index:5;background:var(--ground);border-bottom:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;padding:.6rem 0;margin-bottom:1.6rem}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden}
+.seg button{font:600 .78rem var(--display);background:var(--surface);color:var(--ink-soft);border:0;
+  padding:.35rem .8rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.bar .what{font:.76rem var(--mono);color:var(--ink-faint)}
+body.as-client .team-word{display:none}
+body:not(.as-client) .client-word{display:none}
+body.as-client .team-only{display:none!important}
+
+.head{display:grid;gap:.5rem}
+.eyebrow{font:500 .68rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+h1{font-size:1.9rem;font-weight:700}
+.stats{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.9rem}
+.stat{border:1px solid var(--rule);background:var(--surface);border-radius:2px;padding:.32rem .6rem;
+  font:500 .7rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.stat b{font-family:var(--display);font-size:.98rem;color:var(--ink);margin-right:.35rem}
+.stat.money b{color:var(--oxide)}.stat.data b{color:var(--amber)}
+.mock{display:flex;gap:.5rem;flex-wrap:wrap;background:var(--amber-soft);border-left:3px solid var(--amber);
+  padding:.5rem .8rem;border-radius:0 3px 3px 0;font-size:.85rem;margin-top:1.1rem}
+.mock b{font-family:var(--display);color:var(--amber)}
+
+.report{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:1rem 1.1rem;
+  margin-top:1.4rem;display:grid;gap:.6rem}
+.report h2{font-size:1.05rem}
+.report .next{border-top:1px solid var(--rule);padding-top:.6rem;color:var(--ink-soft);font-size:.95rem}
+.draft{border-left:3px solid var(--teal);background:var(--surface);border:1px solid var(--rule);
+  border-radius:0 3px 3px 0;padding:.8rem 1rem;margin-top:1rem;display:grid;gap:.4rem}
+.draft .hint{font:.74rem var(--mono);color:var(--ink-faint)}
+
+.cols{display:grid;grid-template-columns:minmax(0,14.5rem) minmax(0,1fr);gap:2rem;margin-top:1.8rem;align-items:start}
+@media (max-width:62rem){.cols{grid-template-columns:minmax(0,1fr)}}
+.rail{border:1px solid var(--rule);border-radius:3px;background:var(--surface);overflow:hidden}
+.rail h2{font:500 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);
+  padding:.55rem .7rem;border-bottom:1px solid var(--rule)}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{display:grid;grid-template-columns:1.8rem minmax(0,1fr) auto;gap:.4rem;align-items:baseline;
+  padding:.3rem .7rem;font-size:.83rem;border-bottom:1px solid var(--rule)}
+.rail li:last-child{border-bottom:0}
+.rail .n{font:500 .68rem var(--mono);color:var(--ink-faint)}
+.rail .c{font:500 .66rem var(--mono);color:var(--oxide)}.rail .c.zero{color:var(--ink-faint)}
+.rail .ph{background:var(--sunk);font:500 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);display:block;padding:.3rem .7rem}
+
+.ws{background:var(--surface);border:1px solid var(--rule);border-radius:3px;margin-bottom:1rem;overflow:hidden}
+.ws.blocked{border-left:3px solid var(--oxide)}.ws.done{border-left:3px solid var(--teal)}
+.ws.in_progress{border-left:3px solid var(--amber)}
+.ws-head{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:baseline;padding:.8rem 1rem}
+.ws-head h3{font-size:1.05rem;font-weight:600;flex:1 1 20rem}
+.chip{font:500 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:.14rem .45rem;border-radius:2px}
+.s-done{background:var(--teal-soft);color:var(--teal)}.s-in_progress{background:var(--amber-soft);color:var(--amber)}
+.s-blocked{background:var(--oxide-soft);color:var(--oxide)}.s-planned{background:var(--sunk);color:var(--ink-faint)}
+.sv-money{background:var(--oxide-soft);color:var(--oxide)}.sv-data{background:var(--amber-soft);color:var(--amber)}
+.sv-blocked{background:var(--teal-soft);color:var(--teal)}.sv-friction,.sv-ranked{background:var(--sunk);color:var(--ink-faint)}
+.meta{font:.7rem var(--mono);color:var(--ink-faint)}
+.ws-body{padding:0 1rem 1rem;display:grid;gap:.8rem}
+.blurb{color:var(--ink-soft);font-size:.95rem}
+.differs{background:var(--sunk);border-radius:2px;padding:.4rem .6rem;font-size:.85rem;color:var(--ink-soft)}
+details{border-top:1px dashed var(--rule);padding-top:.6rem}
+summary{cursor:pointer;font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.trail{list-style:none;margin:.6rem 0 0;padding:0;display:grid;gap:.5rem}
+.trail li{display:grid;grid-template-columns:4.2rem minmax(0,1fr);gap:.7rem;font-size:.9rem}
+.trail .when{font:.7rem var(--mono);color:var(--ink-faint);padding-top:.15rem}
+.trail .who{font:.7rem var(--mono);color:var(--ink-faint)}
+.trail li.internal{background:var(--sunk);border-radius:2px;padding:.3rem .4rem;margin-left:-.4rem}
+.trail .lock{font:.62rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--oxide)}
+.prompt{background:var(--sunk);border-radius:3px;padding:.6rem .75rem;display:grid;gap:.35rem}
+.prompt .lock{font:500 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--oxide)}
+.prompt code{font:.76rem var(--mono);color:var(--ink-soft);display:block;overflow-x:auto;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{text-align:left;vertical-align:top;padding:.4rem .5rem;border-bottom:1px solid var(--rule)}
+tr:last-child td{border-bottom:0}
+th{font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+td .rep{display:block;color:var(--ink-soft);margin-top:.15rem}
+td .src{display:block;font:.68rem var(--mono);color:var(--ink-faint);margin-top:.15rem}
+.foot{margin-top:2.6rem;border-top:1px solid var(--rule);padding-top:1rem;font:.74rem/1.7 var(--mono);color:var(--ink-faint)}
+</style>
+<div class="wrap">
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Who is viewing">
+      <button type="button" id="v-team" aria-pressed="true">Team</button>
+      <button type="button" id="v-client" aria-pressed="false">Client</button>
+    </div>
+    <span class="what team-word">Everything: repairs, evidence, internal notes, handover prompts.</span>
+    <span class="what client-word">What NCT sees: prompts, internal notes and owner names are hidden.</span>
+  </div>
+
+  <header class="head">
+    <div class="eyebrow">ZYT Agency · NCT Freight Forwarding · enquiry to invoice</div>
+    <h1>Delivery board</h1>
+    <p style="color:var(--ink-soft)">Ten workstreams across a 27-step flow. The weekly report is the
+      approved summary; every workstream below shows where it stands right now.</p>
+    <div class="stats">
+      <span class="stat"><b>1</b> shipped</span>
+      <span class="stat"><b>3</b> in progress</span>
+      <span class="stat"><b>1</b> blocked</span>
+      <span class="stat"><b>5</b> planned</span>
+      <span class="stat team-only"><b>48</b> findings</span>
+      <span class="stat money team-only"><b>9</b> money</span>
+      <span class="stat data team-only"><b>15</b> data</span>
+    </div>
+  </header>
+
+  <div class="mock"><b>Mock</b><span>The flow and the 48 findings are real; states, owners,
+    dates and notes are sample data.</span></div>
+
+  <section class="report">
+    <h2>Week of 14 September 2026</h2>
+    <p><strong>Customer records are cleaned up and shipped.</strong> Duplicate customers can no longer be
+      created by spelling, and credit limits are checked when an invoice is raised.</p>
+    <p>Quoting and enquiry recording are underway. One piece is waiting on you: we need a decision on who
+      may approve their own work before approvals can be locked down.</p>
+    <p class="next"><strong>Next week:</strong> finish the enquiry channel record, start carrying customer
+      details through to the invoice.</p>
+  </section>
+
+  <section class="draft team-only">
+    <h2 style="font-size:1rem">Friday draft — not yet sent</h2>
+    <p>Assembled from this week's state changes. Edit the wording, then publish to NCT.</p>
+    <p class="hint">1 shipped · 3 in progress · 1 blocked on a client decision</p>
+  </section>
+
+  <div class="cols">
+    <aside class="rail">
+      <h2>The flow<span class="team-only"> · findings per step</span></h2>
+      <ul><li class="ph">A · Get them on file</li><li>
+          <span class="n">01</span><span>Read the enquiry Email only</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">02</span><span>Create the customer</span>
+          <span class="c team-only">2</span></li><li>
+          <span class="n">03</span><span>Record the person who called</span>
+          <span class="c team-only">1</span></li><li class="ph">B · Quote them</li><li>
+          <span class="n">04</span><span>Publish the rate card</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">05</span><span>Raise the quotation</span>
+          <span class="c team-only">2</span></li><li>
+          <span class="n">06</span><span>Price it</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">07</span><span>Save against the tariff floor</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">08</span><span>Get it approved</span>
+          <span class="c team-only">5</span></li><li>
+          <span class="n">09</span><span>Send it to the customer</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">10</span><span>Record their answer</span>
+          <span class="c team-only">1</span></li><li class="ph">C · Open the job</li><li>
+          <span class="n">11</span><span>Convert the won quote into a job</span>
+          <span class="c team-only">2</span></li><li>
+          <span class="n">12</span><span>Stamp the job number by hand</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">13</span><span>Receive it into operations</span>
+          <span class="c team-only">2</span></li><li>
+          <span class="n">14</span><span>Fill in the operational detail</span>
+          <span class="c team-only">2</span></li><li>
+          <span class="n">15</span><span>Get the order approved</span>
+          <span class="c team-only">3</span></li><li class="ph">D · Run it</li><li>
+          <span class="n">16</span><span>Raise the bill of lading</span>
+          <span class="c team-only">4</span></li><li>
+          <span class="n">17</span><span>Move the B/L through its states</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">18</span><span>Approve the carrier's MBL/HBL</span>
+          <span class="c team-only">3</span></li><li>
+          <span class="n">19</span><span>Watch the demurrage clock</span>
+          <span class="c team-only">2</span></li><li class="ph">E · Bill it</li><li>
+          <span class="n">20</span><span>Enter what the job cost and what it bills</span>
+          <span class="c team-only">3</span></li><li>
+          <span class="n">21</span><span>Get the fees reviewed</span>
+          <span class="c team-only">4</span></li><li>
+          <span class="n">22</span><span>Group the fees into a bill</span>
+          <span class="c team-only">3</span></li><li>
+          <span class="n">23</span><span>Get the bill approved</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">24</span><span>Issue the invoice</span>
+          <span class="c team-only">1</span></li><li>
+          <span class="n">25</span><span>Produce and hand over the document</span>
+          <span class="c team-only">4</span></li><li>
+          <span class="n">26</span><span>Record the money and settle it</span>
+          <span class="c team-only">3</span></li><li>
+          <span class="n">27</span><span>Close the month</span>
+          <span class="c team-only">5</span></li>
+      </ul>
+    </aside>
+
+    <main>
+      <section class="ws done">
+        <div class="ws-head">
+          <h3>Customer records duplicate, and credit limits are not checked</h3>
+          <span class="chip s-done">Shipped</span>
+          <span class="meta">since 12 Sep</span>
+          <span class="meta team-only">owner Aina</span>
+          <span class="meta team-only">3 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">The same customer can exist twice under different spellings, splitting their history. Credit limits are recorded but never consulted when invoicing, and a customer with contacts on file can still have nobody to chase.</p>
+          <details>
+  <summary>Status history</summary>
+  <ul class="trail">
+    <li class="">
+      <span class="when">8 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        Plan approved, worktree open
+        <span class="who team-only"> — Aina</span></span></li><li class="internal team-only">
+      <span class="when">10 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        <span class="lock">internal</span> Case-insensitive index needs a production count first — asked Wilfred
+        <span class="who team-only"> — Aina</span></span></li><li class="">
+      <span class="when">12 Sep</span>
+      <span><span class="chip s-done">Shipped</span>
+        Duplicate names refused; credit checked at invoicing
+        <span class="who team-only"> — Aina</span></span></li>
+  </ul>
+  
+</details>
+          <div class="prompt team-only"><span class="lock">Team only · handover prompt</span>
+            <code>Fix the defects recorded against step 02 of NCT's enquiry-to-invoice chain…</code></div>
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 16</span></td>
+      <td><strong>Credit is captured and never enforced</strong>
+        
+        </td>
+      <td><span class="src">24, 02</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Duplicate companies enter through case</strong>
+        <span class="rep team-only">Make the unique index case-insensitive (lower(name)) and offer a typeahead of near matches in the Add dialog before the save is attempted.</span>
+        <span class="src team-only">packages/db/src/schema/company.ts:138</span></td>
+      <td><span class="src">02</span></td></tr><tr>
+      <td><span class="chip sv-friction">friction</span></td>
+      <td><strong>A contact nobody ticked as Primary never reaches the collections call list</strong>
+        <span class="rep team-only">Either auto-promote in companyContacts.create (before the insert, if the company has no existing is_primary row, force isPrimary = true), or make report.ts fall back to the oldest contact when none is primary (DISTINCT ON / lateral ordered by is_primary desc, created_at asc instead of the flat eq(isPrimary, true) predicate).</span>
+        <span class="src team-only">packages/api/src/routers/report.ts:922; packages/api/src/routers/company-contact.ts:175</span></td>
+      <td><span class="src">03</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws blocked">
+        <div class="ws-head">
+          <h3>Approvals do not hold</h3>
+          <span class="chip s-blocked">Blocked</span>
+          <span class="meta">since 13 Sep</span>
+          <span class="meta team-only">owner Ruben</span>
+          <span class="meta team-only">13 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">A quotation, order or fee can be changed after it is submitted or approved, so what a manager signed off is not always what ships. One person can also approve their own work.</p>
+          <details open>
+  <summary>Status history</summary>
+  <ul class="trail">
+    <li class="">
+      <span class="when">10 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        Reviewed all four approval queues
+        <span class="who team-only"> — Ruben</span></span></li><li class="internal team-only">
+      <span class="when">12 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        <span class="lock">internal</span> Worse than filed: submit-then-retract unlocks an approved record
+        <span class="who team-only"> — Ruben</span></span></li><li class="">
+      <span class="when">13 Sep</span>
+      <span><span class="chip s-blocked">Blocked</span>
+        Need NCT to confirm who may approve their own work
+        <span class="who team-only"> — Ruben</span></span></li>
+  </ul>
+  <p class="differs">Reported on 14 Sep as <strong>In progress</strong> ·
+    now Blocked.</p>
+</details>
+          <div class="prompt team-only"><span class="lock">Team only · handover prompt</span>
+            <code>Fix the defects recorded against step 08 of NCT's enquiry-to-invoice chain…</code></div>
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 06</span></td>
+      <td><strong>An approved bill's total can still be rewritten new</strong>
+        
+        </td>
+      <td><span class="src">23, 26</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>A quotation stays fully editable while it is sitting in the reviewer's queue</strong>
+        <span class="rep team-only">Call assertNotUnderReview(tx, organizationId, &quot;quotation&quot;, id) in quotations.update immediately after the scoped load, beside the existing assertPostApprovalEditable at :3196, and in applyTemplate beside the one at :3575. Correct the stale claim in modules/audit/gates.ts:123.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:3196</span></td>
+      <td><span class="src">08</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>The seeded quotation flow lets the branch manager approve their own quotation</strong>
+        <span class="rep team-only">Refuse self-decision in decide(): after loading the submission, throw FORBIDDEN when submission.submittedBy === org.membership.id, the same shape as withdraw.ts:48. Or point the seeded quotation stage at `director`, as the customer/supplier/agent/lading flows do.</span>
+        <span class="src team-only">packages/api/src/modules/audit/seed.ts:69</span></td>
+      <td><span class="src">08</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>The legacy quotations.review verb stamps 'approved' with no submission behind it</strong>
+        <span class="rep team-only">Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:3845</span></td>
+      <td><span class="src">08</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Submit-then-retract permanently unlocks an approved, frozen record with no reviewer involved</strong>
+        <span class="rep team-only">Either refuse submitForReview when the latest submission is `passed` and the flow's postApprovalEditable is false (force an explicit unlock), or key assertPostApprovalEditable on 'this resource has a passed submission not superseded by a later passed one' rather than on the latest attempt's status alone.</span>
+        <span class="src team-only">packages/api/src/modules/audit/post-approval.ts:43</span></td>
+      <td><span class="src">08</span></td></tr><tr>
+      <td><span class="chip sv-blocked">blocked</span></td>
+      <td><strong>The 'Export quotation' gate is wired to reading a quotation, not to exporting or emailing one</strong>
+        <span class="rep team-only">Move the assertGateCleared(..., &quot;export&quot;) call out of quotations.retrieve and into quotations.exportSheet and quotations.send, after each handler's scoped load.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:2355</span></td>
+      <td><span class="src">08</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>A collective order stays fully editable while it is awaiting the reviewer's decision</strong>
+        <span class="rep team-only">Call assertNotUnderReview(tx, organizationId, &quot;collective_order&quot;, orderId) in collectiveOrder.update, saveChildren and assignJobNumber, right beside each existing assertPostApprovalEditable call.</span>
+        <span class="src team-only">packages/api/src/routers/collective-order.ts:2892</span></td>
+      <td><span class="src">15</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Order approval freezes nothing downstream, so approving or rejecting an order changes nothing operational</strong>
+        <span class="rep team-only">Tick the gate keys the flow is meant to enforce in SEEDED_FLOWS' collective_order entry (at minimum expense_entry and end_order), and declare plus wire a `create_lading` gate: defineGates it in modules/collective-order/gates.ts and call assertGateCleared(db, organizationId, &quot;collective_order&quot;, orderId, &quot;create_lading&quot;) in lading.create once resolveLadingOrder has produced an order id.</span>
+        <span class="src team-only">packages/api/src/modules/audit/seed.ts:150</span></td>
+      <td><span class="src">15</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>The legacy collectiveOrder.review verb lets ops stamp their own order approved outside the queue</strong>
+        <span class="rep team-only">Delete collectiveOrder.review (apps/web/src/architecture.test.ts already forbids a UI caller), or reduce it to a wrapper over submitForReview/decide so audit_submission remains the only writer of order_audit_status.</span>
+        <span class="src team-only">packages/api/src/routers/collective-order.ts:3380</span></td>
+      <td><span class="src">15</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>The 'fees must pass review before billing' gate is silently skipped whenever the operator bills without ticking rows</strong>
+        <span class="rep team-only">Pass the resolved selection: assertGatesCleared(context.db, organizationId, &quot;cost_line&quot;, costLineIds, &quot;create_bill&quot;).</span>
+        <span class="src team-only">packages/api/src/routers/expense/cost-lines.ts:2506</span></td>
+      <td><span class="src">21</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>An approved fee's exchange rate can still be rewritten in bulk, past the post-approval freeze</strong>
+        <span class="rep team-only">Run the post-approval gate over the selection in exchangeRateBatch (assertPostApprovalEditable per row, or route the write through costLineWriter's `update` verb), and put approved-frozen rows into the existing `skipped` report so the operator sees which lines were left behind and why.</span>
+        <span class="src team-only">packages/api/src/routers/expense/cost-lines.ts:2115</span></td>
+      <td><span class="src">21</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>An approved fee can be deleted outright - approval binds its content but not its existence</strong>
+        <span class="rep team-only">Add postApprovalGate to the writer's `delete` verb and an equivalent assertPostApprovalEditable sweep to the batch delete branch, so an approved fee must be taken back out of approval before it can be removed - the contract update already enforces.</span>
+        <span class="src team-only">packages/api/src/routers/expense/cost-lines.ts:429</span></td>
+      <td><span class="src">21</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>A fee sitting in the review queue is fully editable, so the approval lands on an amount the reviewer never saw</strong>
+        <span class="rep team-only">Add an assertNotUnderReview gate to the costLineWriter `update` verb (and to exchangeRateBatch and delete once those are gated per the findings above), so a fee under review refuses edits with the existing 'retract the submission first' message.</span>
+        <span class="src team-only">packages/api/src/routers/expense/cost-lines.ts:333</span></td>
+      <td><span class="src">21</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws in_progress">
+        <div class="ws-head">
+          <h3>Enquiries that do not arrive by email leave no record</h3>
+          <span class="chip s-in_progress">In progress</span>
+          <span class="meta">since 9 Sep</span>
+          <span class="meta team-only">owner Ruben</span>
+          <span class="meta team-only">5 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">WhatsApp, phone, walk-in and agent enquiries are not recorded, so win rate cannot be measured. A quotation's date and salesperson are stamped automatically and cannot be corrected, and a wrongly recorded win or loss is permanent.</p>
+          <details>
+  <summary>Status history</summary>
+  <ul class="trail">
+    <li class="">
+      <span class="when">9 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        Channel field and inbox link started
+        <span class="who team-only"> — Ruben</span></span></li>
+  </ul>
+  
+</details>
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 13</span></td>
+      <td><strong>Only email leaves an enquiry record</strong>
+        
+        </td>
+      <td><span class="src">01, after 01</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Quotation date is the row's save timestamp and no screen can set or correct it</strong>
+        <span class="rep team-only">Add a Quotation Date input to the brief disclosure in $quotationId.tsx (beside Validity Start/End at :1891), seed it from loaded?.quotationDate in defaultValues (:993), and include it in the submit payload (:1076) so both create and the existing update patch path receive it.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:1531,3067,3290; apps/web/src/routes/_next/quotations/$quotationId.tsx:993</span></td>
+      <td><span class="src">05</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Quotation staff is auto-stamped, copied by duplicate, and editable nowhere — so the printed 业务员 can be the wrong person permanently</strong>
+        <span class="rep team-only">Add a Quotation Staff field (member picker, defaulted to the session user) to the brief in $quotationId.tsx and send it in the payload; and in quotations.duplicate set quotationStaff to the duplicating member alongside createdBy at quotation.ts:3453 rather than letting it ride in on the spread.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:3069,3451; packages/api/src/modules/quotation/sheet.ts:356</span></td>
+      <td><span class="src">05</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>There is no outbox, so a failed stamp costs a second email</strong>
+        <span class="rep team-only">Record the send intent before dispatch and reconcile after, so a retry resumes the stamp instead of re-sending the document.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:2633</span></td>
+      <td><span class="src">09</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>A mis-keyed decision cannot be corrected</strong>
+        <span class="rep team-only">Add a reviewed correction path that supersedes the decision and keeps both stamps, rather than making the first answer final.</span>
+        <span class="src team-only">packages/api/src/routers/quotation.ts:2855</span></td>
+      <td><span class="src">10</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws in_progress">
+        <div class="ws-head">
+          <h3>Invoices go out incomplete</h3>
+          <span class="chip s-in_progress">In progress</span>
+          <span class="meta">since 13 Sep</span>
+          <span class="meta team-only">owner Aina</span>
+          <span class="meta team-only">6 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">The invoice a customer receives can be missing their address, tax ID and payment terms, and quantities can print blank. Bills raised this way never show as overdue, so nothing chases them.</p>
+          <details>
+  <summary>Status history</summary>
+  <ul class="trail">
+    <li class="">
+      <span class="when">13 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        Carrying the customer through to the invoice
+        <span class="who team-only"> — Aina</span></span></li>
+  </ul>
+  <p class="differs">Reported on 14 Sep as <strong>Planned</strong> ·
+    now In progress.</p>
+</details>
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 01</span></td>
+      <td><strong>The customer's identity does not survive the journey</strong>
+        
+        </td>
+      <td><span class="src">after 20, 25</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 03</span></td>
+      <td><strong>Bills from the happy path can never become overdue new</strong>
+        
+        </td>
+      <td><span class="src">22, 27</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 04</span></td>
+      <td><strong>Conversion turns every fee into a lump sum new</strong>
+        
+        </td>
+      <td><span class="src">11, 25</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 17</span></td>
+      <td><strong>The invoice is not a Malaysian tax invoice</strong>
+        
+        </td>
+      <td><span class="src">25</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Unnamed fee rows are dropped without a word</strong>
+        <span class="rep team-only">Refuse the save and name the offending row, the way the quotation grid names a line below tariff.</span>
+        <span class="src team-only">apps/web/src/routes/_next/order.$orderId.expenses.tsx:629</span></td>
+      <td><span class="src">20</span></td></tr><tr>
+      <td><span class="chip sv-friction">friction</span></td>
+      <td><strong>Bills cannot be split per order, though the server can</strong>
+        <span class="rep team-only">Wire the existing groupByOrder flag into the Create Bill dialog as a second tick beside the tax-rate split.</span>
+        <span class="src team-only">packages/api/src/routers/expense/cost-lines.ts:2434</span></td>
+      <td><span class="src">22</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws in_progress">
+        <div class="ws-head">
+          <h3>Quotes can go out under-priced</h3>
+          <span class="chip s-in_progress">In progress</span>
+          <span class="meta">since 11 Sep</span>
+          <span class="meta team-only">owner Aina</span>
+          <span class="meta team-only">3 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">The agreed rate card is not always enforced when a quotation is priced, so a job can be sold below the rate the customer was promised.</p>
+          <details>
+  <summary>Status history</summary>
+  <ul class="trail">
+    <li class="">
+      <span class="when">11 Sep</span>
+      <span><span class="chip s-in_progress">In progress</span>
+        Rate-card gate first, container mix next
+        <span class="who team-only"> — Aina</span></span></li>
+  </ul>
+  
+</details>
+          <div class="prompt team-only"><span class="lock">Team only · handover prompt</span>
+            <code>Fix the defects recorded against steps 04, 06 and 07…</code></div>
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>The tariff gate is declared but never enforced</strong>
+        <span class="rep team-only">Seed the gate row on the fee_template flow, or enforce approved-only inside applyTemplate rather than leaving it to the picker's filter.</span>
+        <span class="src team-only">packages/api/src/modules/audit/seed.ts:135</span></td>
+      <td><span class="src">04</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>Applied tariff lines ignore the container mix</strong>
+        <span class="rep team-only">Seed the applied line's quantity from the quotation's container rows for the matching billing unit, instead of defaulting to 1.</span>
+        <span class="src team-only">apps/web/src/components/reference-template-dialog.tsx:190</span></td>
+      <td><span class="src">06</span></td></tr><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>An ambiguous tariff silently drops the floor</strong>
+        <span class="rep team-only">Treat an ambiguous resolution as a refusal (or an explicit override with a reason) rather than as an absent floor.</span>
+        <span class="src team-only">packages/api/src/quotation/tariff-check.ts:457</span></td>
+      <td><span class="src">07</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws planned">
+        <div class="ws-head">
+          <h3>Jobs lose their number, and paperwork cannot be filed against them</h3>
+          <span class="chip s-planned">Planned</span>
+          
+          <span class="meta team-only">unassigned</span>
+          <span class="meta team-only">5 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">A job created from a won quotation starts without a job number, documents cannot be attached to the job they belong to, nothing enforces what a job must contain, and the intake queue is a dead end.</p>
+          
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 08</span></td>
+      <td><strong>Conversion still produces an unnumbered job</strong>
+        
+        </td>
+      <td><span class="src">after 11, 12</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 10</span></td>
+      <td><strong>Paperwork cannot be filed against the job</strong>
+        
+        </td>
+      <td><span class="src">after 18, 18</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 15</span></td>
+      <td><strong>Nothing enforces the shape of a job</strong>
+        
+        </td>
+      <td><span class="src">14</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 12</span></td>
+      <td><strong>To Receive is a dead end; Shipment review is an inbox nothing can post to</strong>
+        
+        </td>
+      <td><span class="src">after 13, 17</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>Intake decisions are asymmetrical</strong>
+        <span class="rep team-only">Make the two verbs symmetrical: either let a received order be rejected with a reason, or refuse receiving a rejected one without an explicit re-open.</span>
+        <span class="src team-only">packages/api/src/routers/collective-order.ts:3335</span></td>
+      <td><span class="src">13</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws planned">
+        <div class="ws-head">
+          <h3>Month-end figures cannot be trusted at a glance</h3>
+          <span class="chip s-planned">Planned</span>
+          
+          <span class="meta team-only">unassigned</span>
+          <span class="meta team-only">2 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">One shipment can report two different profit figures, and the month-end documents are hidden inside an export dialog rather than being where month-end work happens.</p>
+          
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 05</span></td>
+      <td><strong>One shipment, two profits new</strong>
+        
+        </td>
+      <td><span class="src">20, 27</span></td></tr><tr>
+      <td><span class="chip sv-friction">friction</span></td>
+      <td><strong>The month-end documents have no menu entry</strong>
+        <span class="rep team-only">Give the three documents a Reports entry that opens the same export with the period pre-filled.</span>
+        <span class="src team-only">apps/web/src/routes/_next/expenses/cost-lines.tsx:1944</span></td>
+      <td><span class="src">27</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws planned">
+        <div class="ws-head">
+          <h3>Payments are recorded by hand, and foreign currency is guessed</h3>
+          <span class="chip s-planned">Planned</span>
+          
+          <span class="meta team-only">unassigned</span>
+          <span class="meta team-only">3 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">Settling an invoice means retyping figures outside the system, and a payment in another currency posts a gain or loss that never happened.</p>
+          
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 14</span></td>
+      <td><strong>Money leaves by hand at both ends</strong>
+        
+        </td>
+      <td><span class="src">25, 26</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 02</span></td>
+      <td><strong>Every cross-currency settlement books a fabricated exchange gain or loss new</strong>
+        
+        </td>
+      <td><span class="src">26</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 07</span></td>
+      <td><strong>There is no organisation base currency new</strong>
+        
+        </td>
+      <td><span class="src">22, 27</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws planned">
+        <div class="ws-head">
+          <h3>Shipping documents can be released without the right checks</h3>
+          <span class="chip s-planned">Planned</span>
+          
+          <span class="meta team-only">unassigned</span>
+          <span class="meta team-only">4 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">A bill of lading can be marked released or held without going through release control, can be rewritten while under review, and scanned values are accepted without flagging what failed validation.</p>
+          
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-money">money</span></td>
+      <td><strong>A bill of lading can be set to Released or On-hold from a dropdown, skipping the release / detention gates</strong>
+        <span class="rep team-only">Make status non-free-set for the workflow-owned states: narrow the create/update zod field to z.enum([&quot;draft&quot;,&quot;confirmed&quot;,&quot;cancelled&quot;]) and refuse released/on-hold/amended with a message naming the workflow verb, and drop those three from STATUS_OPTIONS in both forms, so the only way into them is checkOut / hold / amend, which carry the gates and the stamps.</span>
+        <span class="src team-only">apps/web/src/routes/_next/lading/$id/edit.tsx:165</span></td>
+      <td><span class="src">16</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>A bill of lading under review stays fully editable, so the reviewer approves content that changed after they read it</strong>
+        <span class="rep team-only">Add `await assertNotUnderReview(context.db, organizationId, &quot;lading&quot;, ladingId);` beside the assertPostApprovalEditable call in lading.update, matching delete/bulkDelete.</span>
+        <span class="src team-only">packages/api/src/routers/lading.ts:1554</span></td>
+      <td><span class="src">16</span></td></tr><tr>
+      <td><span class="chip sv-data">data</span></td>
+      <td><strong>OCR validation issues are computed, returned, and thrown away by the create form</strong>
+        <span class="rep team-only">Add `issues: ValidationIssue[]` to the ocrResult state type, render them against their fields in the extracted-fields grid (error / warning styling), and disable Apply to Form - or require an explicit 'apply anyway' acknowledgement - while any issue has severity 'error'.</span>
+        <span class="src team-only">apps/web/src/routes/_next/lading/create.tsx:293</span></td>
+      <td><span class="src">16</span></td></tr><tr>
+      <td><span class="chip sv-friction">friction</span></td>
+      <td><strong>Linking the approved order carries only its job number; every shipment detail the order already holds is retyped onto the B/L</strong>
+        <span class="rep team-only">On order select, fetch collectiveOrder.get for the picked id and prefill the still-empty B/L fields from it (vessel/voyage/pol/pod/etd/eta/mblNo/hblNo/bookingNo/entrustUnit/tradeTerm/shippingCompany), leaving anything already typed alone, and mark which values came from the order so they can be overridden knowingly.</span>
+        <span class="src team-only">apps/web/src/routes/_next/lading/create.tsx:1243</span></td>
+      <td><span class="src">16</span></td></tr></tbody></table></div>
+        </div>
+      </section><section class="ws planned">
+        <div class="ws-head">
+          <h3>Tracking and haulage sit apart from the job</h3>
+          <span class="chip s-planned">Planned</span>
+          
+          <span class="meta team-only">unassigned</span>
+          <span class="meta team-only">4 findings</span>
+        </div>
+        <div class="ws-body">
+          <p class="blurb">Customs and port tracking cannot be seen from the shipment it belongs to, the customs declaration itself lives outside the system, trucks are not linked to jobs, and a shipment can never be closed.</p>
+          
+          
+          <div class="tablewrap"><table>
+  <thead><tr><th>Severity</th><th>Finding<span class="team-only"> and repair</span></th><th>Step</th></tr></thead>
+  <tbody><tr>
+      <td><span class="chip sv-ranked">rank 11</span></td>
+      <td><strong>The operational automation is an island</strong>
+        
+        </td>
+      <td><span class="src">19, 18</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 18</span></td>
+      <td><strong>Haulage is a separate island</strong>
+        
+        </td>
+      <td><span class="src">14, 19</span></td></tr><tr>
+      <td><span class="chip sv-ranked">rank 09</span></td>
+      <td><strong>A shipment can never be closed</strong>
+        
+        </td>
+      <td><span class="src">after 27, 27</span></td></tr><tr>
+      <td><span class="chip sv-blocked">blocked</span></td>
+      <td><strong>There is no customs declaration type</strong>
+        <span class="rep team-only">Add K1/K2 to the document type vocabulary and its extraction rules so the declaration files against the same B/L as the rest.</span>
+        <span class="src team-only">packages/api/src/modules/document/register-hooks.ts:1</span></td>
+      <td><span class="src">18</span></td></tr></tbody></table></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <p class="foot">Generated from tracker/seed/*.json · one board, two audiences ·
+    the client view hides prompts, internal notes and owner names, nothing else.</p>
+</div>
+<script>
+(function(){
+  var team=document.getElementById("v-team"),client=document.getElementById("v-client"),KEY="zyt.board.view";
+  function set(view,save){
+    document.body.classList.toggle("as-client",view==="client");
+    team.setAttribute("aria-pressed",String(view!=="client"));
+    client.setAttribute("aria-pressed",String(view==="client"));
+    if(save){try{localStorage.setItem(KEY,view)}catch(e){}}
+  }
+  team.addEventListener("click",function(){set("team",true)});
+  client.addEventListener("click",function(){set("client",true)});
+  var saved="team";try{saved=localStorage.getItem(KEY)||"team"}catch(e){}
+  set(saved,false);
+})();
+</script>

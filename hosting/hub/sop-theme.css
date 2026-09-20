@@ -1,0 +1,88 @@
+/* SOP pages recoloured to the ZYT palette (hosting/hub/brand/BRAND.md).
+   deploy-site.ps1 appends this after the page's own <style>, so these token blocks win over
+   the page's amber/teal/oxide defaults with the same selectors. Fonts are left as the page's.
+   Light = zhiyuantech.ai homepage palette; dark = the darker ZYT product variant, same as the
+   dashboard. Role mapping: accent (amber) → indigo, teal ("the system carries it") → green,
+   oxide (chain breaks) → red. */
+
+:root {
+  --ground:       #fbfcff;
+  --surface:      #ffffff;
+  --surface-sunk: #f1f4fb;
+  --ink:          #101a4f;
+  --ink-soft:     #3d4668;
+  --ink-faint:    #6b7280;
+  --rule:         #e2e8f5;
+  --rule-strong:  #c9d2ea;
+  --accent:       #4159c9;
+  --accent-soft:  #eaeefb;
+  --teal:         #1f7a57;
+  --teal-soft:    #e3f3eb;
+  --oxide:        #c2362b;
+  --oxide-soft:   #fdeceb;
+  --oxide-edge:   #f0b4ae;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground:       #04061a;
+    --surface:      #080c24;
+    --surface-sunk: #0d1333;
+    --ink:          #ffffff;
+    --ink-soft:     #c3cae3;
+    --ink-faint:    #7f89ad;
+    --rule:         rgba(139, 154, 232, .13);
+    --rule-strong:  rgba(139, 154, 232, .28);
+    --accent:       #8b9ae8;
+    --accent-soft:  rgba(139, 154, 232, .14);
+    --teal:         #3ccf8e;
+    --teal-soft:    rgba(60, 207, 142, .12);
+    --oxide:        #fca5a5;
+    --oxide-soft:   rgba(239, 68, 68, .12);
+    --oxide-edge:   rgba(239, 68, 68, .4);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground:       #04061a;
+  --surface:      #080c24;
+  --surface-sunk: #0d1333;
+  --ink:          #ffffff;
+  --ink-soft:     #c3cae3;
+  --ink-faint:    #7f89ad;
+  --rule:         rgba(139, 154, 232, .13);
+  --rule-strong:  rgba(139, 154, 232, .28);
+  --accent:       #8b9ae8;
+  --accent-soft:  rgba(139, 154, 232, .14);
+  --teal:         #3ccf8e;
+  --teal-soft:    rgba(60, 207, 142, .12);
+  --oxide:        #fca5a5;
+  --oxide-soft:   rgba(239, 68, 68, .12);
+  --oxide-edge:   rgba(239, 68, 68, .4);
+}
+
+:root[data-theme="light"] { color-scheme: light; }
+html { background: var(--ground); }
+
+/* Fix: the "What to fix first" ledger breaks out to the full window with width: 100vw, but 100vw
+   includes the vertical scrollbar, so it overhung the page by half a scrollbar (8px) and the
+   page scrolled sideways at every width. deploy-site.ps1 measures the scrollbar into
+   --zyt-sbw; without the script this falls back to the original 100vw. */
+.ledger {
+  width: calc(100vw - var(--zyt-sbw, 0px));
+  margin-left: calc(50% - (100vw - var(--zyt-sbw, 0px)) / 2);
+}
+
+/* Fix: the App URL "Apply" button was drawn in inverted ink (background: var(--ink)), which is
+   white in dark mode. It is the page's one primary action, so it takes the ZYT primary button. */
+.baseurl button { color: #ffffff; background: #101a4f; transition: background-color .2s; }
+.baseurl button:hover { background: #22306f; }
+.baseurl button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .baseurl button { background: #4159c9; }
+  :root:not([data-theme="light"]) .baseurl button:hover { background: #5570dc; }
+}
+:root[data-theme="dark"] .baseurl button { background: #4159c9; }
+:root[data-theme="dark"] .baseurl button:hover { background: #5570dc; }

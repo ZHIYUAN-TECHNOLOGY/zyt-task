@@ -1,0 +1,8 @@
+{
+  "name": "zyt-admin-hosting",
+  "private": true,
+  "description": "Build-time tools for admin.zhiyuantech.ai (used by deploy-site.ps1)",
+  "dependencies": {
+    "marked": "18.0.13"
+  }
+}

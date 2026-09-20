@@ -1,0 +1,6 @@
+{
+  "project": "wilfred-foo/zyt-admin",
+  "dashboard": "https://dashboard.convex.dev/t/wilfred-foo/zyt-admin",
+  "prodUrl": "https://impartial-sockeye-436.eu-west-1.convex.cloud",
+  "devUrl": "https://small-snail-912.eu-west-1.convex.cloud"
+}

@@ -1,0 +1,347 @@
+{
+  "id": "flow-nct-enquiry-to-invoice",
+  "name": "Enquiry to invoice",
+  "client": "NCT Freight Forwarding",
+  "phases": [
+    {
+      "key": "A",
+      "label": "Get them on file"
+    },
+    {
+      "key": "B",
+      "label": "Quote them"
+    },
+    {
+      "key": "C",
+      "label": "Open the job"
+    },
+    {
+      "key": "D",
+      "label": "Run it"
+    },
+    {
+      "key": "E",
+      "label": "Bill it"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "key": "step-01",
+      "title": "Read the enquiry Email only",
+      "phase": "A",
+      "role": "Sales · needs thread:read",
+      "routes": [
+        "/inbox",
+        "/inbox/$threadId"
+      ],
+      "summary": "Nothing in the inbox creates a customer. Copy the sender's company name, email and signature details, then go to step 2 (Sales → Companies)."
+    },
+    {
+      "n": 2,
+      "key": "step-02",
+      "title": "Create the customer",
+      "phase": "A",
+      "role": "Sales · needs customer:read to see the directory, and create rights to add",
+      "routes": [
+        "/companies",
+        "/companies/$companyId/edit",
+        "/companies/$companyId"
+      ],
+      "summary": "You are on the company record page. Scroll to the Contacts card for step 3, or go straight to Sales → Quotations for step 5."
+    },
+    {
+      "n": 3,
+      "key": "step-03",
+      "title": "Record the person who called",
+      "phase": "A",
+      "role": "Sales",
+      "routes": [
+        "/companies/$companyId"
+      ],
+      "summary": "The contact is on file. Next is step 5 (raise the quotation). If this customer needs its own rate card, do step 4 first."
+    },
+    {
+      "n": 4,
+      "key": "step-04",
+      "title": "Publish the rate card",
+      "phase": "B",
+      "role": "Sales admin builds the card; a reviewer approves it · needs quotation.feeTemplate.create / .update to build, .review to decide",
+      "routes": [
+        "/fee-templates",
+        "/fee-templates/$templateId",
+        "/approve/template"
+      ],
+      "summary": "Once approved, the card shows in the quotation's Reference Template picker (step 6) and sets the price floor enforced at step 7."
+    },
+    {
+      "n": 5,
+      "key": "step-05",
+      "title": "Raise the quotation",
+      "phase": "B",
+      "role": "Sales · needs quotation:read + create",
+      "routes": [
+        "/quotations",
+        "/quotations/$quotationId"
+      ],
+      "summary": "The quotation is saved with a number but no prices. Go straight on to step 6 in the Fee Details card on the same page."
+    },
+    {
+      "n": 6,
+      "key": "step-06",
+      "title": "Price it",
+      "phase": "B",
+      "role": "Sales",
+      "routes": [
+        "/quotations/$quotationId"
+      ],
+      "summary": "The applied lines are already stored on a saved quotation; anything you typed by hand is not. Press Save Quote — that is step 7."
+    },
+    {
+      "n": 7,
+      "key": "step-07",
+      "title": "Save against the tariff floor",
+      "phase": "B",
+      "role": "Sales",
+      "routes": [
+        "/quotations/$quotationId"
+      ],
+      "summary": "The quotation is saved and within tariff. Next is step 8: submit it for review."
+    },
+    {
+      "n": 8,
+      "key": "step-08",
+      "title": "Get it approved",
+      "phase": "B",
+      "role": "Sales submits; a reviewer holding audit:read decides, routed by the open audit stage (the nav entry itself needs quotation:read)",
+      "routes": [
+        "/quotations/$quotationId",
+        "/approve/quotation"
+      ],
+      "summary": "Approved: the Convert to order button unlocks (step 11), and you can send it (step 9). Rejected: fix it and Resubmit."
+    },
+    {
+      "n": 9,
+      "key": "step-09",
+      "title": "Send it to the customer",
+      "phase": "B",
+      "role": "Sales",
+      "routes": [
+        "/quotations/$quotationId"
+      ],
+      "summary": "The reply lands in the linked thread (see the Threads card on the quotation, or Inbox). When the customer answers, do step 10."
+    },
+    {
+      "n": 10,
+      "key": "step-10",
+      "title": "Record their answer",
+      "phase": "B",
+      "role": "Sales",
+      "routes": [
+        "/quotations/$quotationId"
+      ],
+      "summary": "Won → step 11 (Convert to order). Lost → the chain ends here."
+    },
+    {
+      "n": 11,
+      "key": "step-11",
+      "title": "Convert the won quote into a job",
+      "phase": "C",
+      "role": "Sales · needs quotation convert rights",
+      "routes": [
+        "/quotations/$quotationId",
+        "/order/$orderId/edit"
+      ],
+      "summary": "You are on /order//edit. Go straight to step 12 and press Assign number."
+    },
+    {
+      "n": 12,
+      "key": "step-12",
+      "title": "Stamp the job number by hand",
+      "phase": "C",
+      "role": "Sales, immediately after converting · needs collectiveOrder write",
+      "routes": [
+        "/order/$orderId/edit",
+        "/order/sea-export"
+      ],
+      "summary": "The order has its identity. Continue with step 14 on the same form, or let operations pick it up at step 13."
+    },
+    {
+      "n": 13,
+      "key": "step-13",
+      "title": "Receive it into operations",
+      "phase": "C",
+      "role": "Operations · needs collectiveOrder:read to see the queue, plus collectiveOrder.receive / collectiveOrder.reject to decide",
+      "routes": [
+        "/order/to-receive"
+      ],
+      "summary": "A received order is operations' to run. Open it from its trade ledger for step 14."
+    },
+    {
+      "n": 14,
+      "key": "step-14",
+      "title": "Fill in the operational detail",
+      "phase": "C",
+      "role": "Operations · needs collectiveOrder write",
+      "routes": [
+        "/order/$orderId/edit",
+        "/order/sea-export",
+        "/order/new"
+      ],
+      "summary": "You land on the trade ledger. Submit the order for review — step 15."
+    },
+    {
+      "n": 15,
+      "key": "step-15",
+      "title": "Get the order approved",
+      "phase": "C",
+      "role": "Operations submits; a reviewer holding audit:read decides (the /approve/order nav entry carries no permission of its own)",
+      "routes": [
+        "/order/sea-export",
+        "/approve/order"
+      ],
+      "summary": "An approved order is ready to run. Phase D starts with the bill of lading — step 16."
+    },
+    {
+      "n": 16,
+      "key": "step-16",
+      "title": "Raise the bill of lading",
+      "phase": "D",
+      "role": "Documentation · needs lading:read plus create rights",
+      "routes": [
+        "/lading/create",
+        "/lading"
+      ],
+      "summary": "The B/L exists. Move it through its states — step 17."
+    },
+    {
+      "n": 17,
+      "key": "step-17",
+      "title": "Move the B/L through its states",
+      "phase": "D",
+      "role": "Documentation · needs lading:read plus the gate for each verb",
+      "routes": [
+        "/lading",
+        "/lading/$id"
+      ],
+      "summary": "The bill is moving. In parallel, the carrier's MBL/HBL goes through step 18."
+    },
+    {
+      "n": 18,
+      "key": "step-18",
+      "title": "Approve the carrier's MBL/HBL",
+      "phase": "D",
+      "role": "Documentation · needs document:read plus review rights to approve",
+      "routes": [
+        "/documents",
+        "/documents/$documentId"
+      ],
+      "summary": "Approval starts the tracking clock. Watch it at step 19."
+    },
+    {
+      "n": 19,
+      "key": "step-19",
+      "title": "Watch the demurrage clock",
+      "phase": "D",
+      "role": "Operations · needs bl-job:read to watch the board, and bl-job:void to void a job",
+      "routes": [
+        "/customs-tracking",
+        "/overview",
+        "/tracking"
+      ],
+      "summary": "Demurrage is under watch. The money side starts at step 20."
+    },
+    {
+      "n": 20,
+      "key": "step-20",
+      "title": "Enter what the job cost and what it bills",
+      "phase": "E",
+      "role": "Operator with collectiveOrder:read to open the order and collectiveOrder.update to save (saveChildren requires COLLECTIVE_ORDER.update).",
+      "routes": [
+        "/order/$orderId/expenses"
+      ],
+      "summary": "Stay on Expense Entry with saved rows. Next: step 21, submit the fees for Cost review from Money > Cost lines."
+    },
+    {
+      "n": 21,
+      "key": "step-21",
+      "title": "Get the fees reviewed",
+      "phase": "E",
+      "role": "Submitter: expense:read to see the ledger, plus audit.read and expense.costLine.update to submit. Reviewer: audit.read and expense.costLine.review, and must be a routed reviewer on the open stage (seeded Cost review flow routes to the accounting role, any-pass).",
+      "routes": [
+        "/expenses/cost-lines",
+        "/approve/cost"
+      ],
+      "summary": "Approved lines drop out of the reviewer's queue. Next: step 22, bill them from Money > Cost lines > Create Bill."
+    },
+    {
+      "n": 22,
+      "key": "step-22",
+      "title": "Group the fees into a bill",
+      "phase": "E",
+      "role": "expense:read to open; expense.bill.create to create bills.",
+      "routes": [
+        "/expenses/cost-lines"
+      ],
+      "summary": "Bills appear under Money > Bills (Bill Management). Next: step 23, submit each bill for Bill review."
+    },
+    {
+      "n": 23,
+      "key": "step-23",
+      "title": "Get the bill approved",
+      "phase": "E",
+      "role": "Submitter: audit.read and expense.bill.update. Reviewer: audit.read and expense.bill.review and a routed reviewer. Seeded Bill review flow: stage 1 accounting (all must pass, any reject), stage 2 director (any one).",
+      "routes": [
+        "/expenses/bills",
+        "/approve/bill"
+      ],
+      "summary": "Once the latest review passes, invoicing and write-off are unfrozen. Next: step 24, Invoicing from Money > Bills."
+    },
+    {
+      "n": 24,
+      "key": "step-24",
+      "title": "Issue the invoice",
+      "phase": "E",
+      "role": "expense:read to open; expense.invoice.create to issue.",
+      "routes": [
+        "/expenses/bills"
+      ],
+      "summary": "Invoice appears under Money > Invoices (Invoice Record). Next: step 25, preview and download it."
+    },
+    {
+      "n": 25,
+      "key": "step-25",
+      "title": "Produce and hand over the document",
+      "phase": "E",
+      "role": "Accounting · the sidebar item needs expense:read, but the list itself gates on expense.invoice.read; expense.invoice.update for the Downloaded/Printed marks, expense.invoice.cancel to cancel.",
+      "routes": [
+        "/expenses/invoices"
+      ],
+      "summary": "Customer has the invoice document. Next: step 26, record the receipt under Money > Payments."
+    },
+    {
+      "n": 26,
+      "key": "step-26",
+      "title": "Record the money and settle it",
+      "phase": "E",
+      "role": "Cashier / Accounting · the sidebar item needs expense:read, but the lists gate on expense.payment.read and expense.writeOff.read; expense.payment.create to record, expense.writeOff.verify to verify, expense.writeOff.reverse to void, expense.payment.delete to delete an unsettled payment.",
+      "routes": [
+        "/expenses/payments",
+        "/expenses/write-offs"
+      ],
+      "summary": "The bill is settled — done on the normal path, since step 24 invoiced it. Next: step 27, the month-end exports."
+    },
+    {
+      "n": 27,
+      "key": "step-27",
+      "title": "Close the month",
+      "phase": "E",
+      "role": "Export documents: expense.costLine.read. Financial Stat: report:read to view, report:export for Month-end pack and Excel/PDF.",
+      "routes": [
+        "/expenses/cost-lines",
+        "/report/financial"
+      ],
+      "summary": "Statement / debit note / profit sheets and the month-end workbook are downloaded for the customer and bookkeeper. End of the intake SOP."
+    }
+  ]
+}

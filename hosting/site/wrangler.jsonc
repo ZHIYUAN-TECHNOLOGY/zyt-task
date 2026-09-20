@@ -1,0 +1,24 @@
+{
+  // ZYT client-projects site: hub at /, client pages below it.
+  // Ngchwanlii@zhiyuantech.ai's Account owns the zhiyuantech.ai zone, so the
+  // Worker must live there for the custom domain to attach.
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "zyt-admin",
+  "account_id": "a9c786e2839df3157985b75b9195a5dd",
+  "compatibility_date": "2026-04-01",
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "admin.zhiyuantech.ai", "custom_domain": true }
+  ],
+  // The whole site is public (2026-09-18 decision). worker.js can gate /nct/downloads/ behind
+  // a passphrase again: set "main": "./worker.js" and keep the two asset keys below.
+  "assets": {
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+    // Re-enable the gate by uncommenting "main" above and these two keys
+    // (an assets-only Worker may not declare a binding):
+    // "binding": "ASSETS",
+    // "run_worker_first": ["/nct/downloads/*"]
+  }
+}

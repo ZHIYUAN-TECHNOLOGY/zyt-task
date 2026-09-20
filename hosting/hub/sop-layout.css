@@ -1,0 +1,157 @@
+/* NCT SOP page — hosted layout (with sop-layout.js). Uses the page's own tokens, which
+   sop-theme.css has already mapped to the ZYT palette. Appended after both, so it wins. */
+
+:root { --zyt-top: 3.75rem; }
+html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
+
+/* ── ZYT top bar: same shape as the dashboard's ── */
+.zyt-top {
+  position: sticky; top: 0; z-index: 40; height: var(--zyt-top);
+  display: flex; align-items: center; gap: 1rem; padding-inline: 1rem;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid var(--rule);
+  font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.zyt-brand { display: flex; flex: none; }
+.zyt-brand img { height: 1.9rem; width: auto; display: block; }
+.zyt-brand .zyt-logo-dark { display: none; }
+:root[data-theme="dark"] .zyt-brand .zyt-logo-light { display: none; }
+:root[data-theme="dark"] .zyt-brand .zyt-logo-dark { display: block; }
+.zyt-divider { width: 1px; height: 1.5rem; background: var(--rule); flex: none; }
+.zyt-crumbs {
+  display: flex; align-items: center; gap: .55rem; min-width: 0;
+  font: 500 .72rem "Geist", system-ui, sans-serif; letter-spacing: .17em; text-transform: uppercase; white-space: nowrap;
+}
+.zyt-crumbs a { color: var(--ink); text-decoration: none; }
+.zyt-crumbs a:hover { color: var(--accent); }
+.zyt-crumbs span { color: var(--ink-faint); }
+.zyt-crumbs [aria-current] { color: var(--accent); }
+.zyt-theme {
+  margin-left: auto; flex: none; width: 2.1rem; height: 2.1rem;
+  border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); color: var(--ink-soft);
+  display: grid; place-items: center; cursor: pointer;
+}
+.zyt-theme:hover { color: var(--ink); }
+.zyt-theme .sun { display: none; }
+:root[data-theme="dark"] .zyt-theme .sun { display: block; }
+:root[data-theme="dark"] .zyt-theme .moon { display: none; }
+.zyt-theme:focus-visible, .zyt-chain-tab:focus-visible, .zyt-chain-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 40rem) {
+  .zyt-divider { display: none; }
+  .zyt-brand img { height: 1.5rem; }
+}
+
+.wrap { padding-top: 2rem; }
+
+/* ── title block, phase index and How they arrive inside Step 01's pane ── */
+.chain-pane .zyt-intro { padding-bottom: 1.3rem; margin-bottom: 1.3rem; border-bottom: 1px solid var(--rule); }
+.chain-pane .zyt-intro .masthead { gap: .9rem; }
+.chain-pane .zyt-intro h1 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+.chain-pane .zyt-intro .index { margin-top: 1.4rem; }
+.chain-pane .zyt-intro .arrivals { margin-top: 1.6rem; }
+
+/* ── the whole chain: tab on the right edge opens a full-screen view ── */
+.zyt-chain-tab {
+  position: fixed; right: 0; top: 50%; z-index: 45;
+  transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl;
+  padding: 1rem .55rem; border: 1px solid var(--rule-strong); border-left: 0; border-radius: 0 10px 10px 0;
+  background: var(--surface); color: var(--ink);
+  font: 500 .68rem var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  cursor: pointer; box-shadow: 8px 0 24px rgba(0, 0, 0, .18);
+}
+.zyt-chain-tab:hover, .zyt-chain-tab[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 40rem) { .zyt-chain-tab { padding: .75rem .4rem; font-size: .6rem; } }
+
+html.zyt-chain-open, html.zyt-chain-open body { overflow: hidden !important; }
+
+/* below the step guide (.sm-backdrop, z-index 50) so a step opened from the chart sits on top */
+.zyt-chain {
+  position: fixed; inset: 0; z-index: 46;
+  display: flex; flex-direction: column;
+  background: var(--ground); color: var(--ink);
+  animation: zyt-chain-in .25s cubic-bezier(.16, 1, .3, 1);
+}
+@keyframes zyt-chain-in { from { opacity: 0; transform: translateX(2rem); } }
+.zyt-chain-body { flex: 1; min-height: 0; }
+
+/* one window: the chart scales to fit its cell (the SVG's viewBox keeps its proportions), the
+   right column holds App URL + close above the step pane, and only the pane scrolls */
+.zyt-chain .chain {
+  width: auto; max-width: none; margin: 0; transform: none; height: 100%;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 28rem); gap: 0; align-items: stretch;
+}
+.zyt-chain .chain-canvas {
+  height: 100%; min-height: 0; overflow: hidden; border: 0; padding: .75rem 1rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.zyt-chain .chain-canvas svg { width: 100%; height: 100%; min-width: 0; }
+.zyt-side {
+  display: flex; flex-direction: column; min-height: 0; height: 100%;
+  border-left: 1px solid var(--rule); background: var(--surface);
+}
+.zyt-side-tools {
+  flex: none; display: flex; align-items: center; gap: .5rem;
+  padding: .55rem .75rem; border-bottom: 1px solid var(--rule);
+}
+.zyt-side-tools .baseurl { flex: 1; min-width: 0; margin: 0; padding: .3rem .45rem; gap: .35rem .5rem; flex-wrap: nowrap; }
+.zyt-side-tools .baseurl label { flex: none; }
+.zyt-side-tools .baseurl input { flex: 1 1 6rem; font-size: .82rem; padding: .3rem .45rem; }
+.zyt-side-tools .baseurl button { flex: none; padding: .35rem .7rem; }
+.zyt-side-tools .baseurl-hint:not(.bad) { display: none; }
+.zyt-chain-close {
+  flex: none; width: 2.1rem; height: 2.1rem; border: 1px solid var(--rule); border-radius: 10px;
+  background: var(--surface); color: var(--ink-soft); font-size: 1.25rem; line-height: 1; cursor: pointer;
+}
+.zyt-chain-close:hover { color: var(--ink); border-color: var(--rule-strong); }
+.zyt-chain .chain-pane {
+  position: static; top: auto; max-height: none; min-height: 0; flex: 1; height: auto;
+  overflow-y: auto; overscroll-behavior: contain; border: 0; border-left: 3px solid var(--accent);
+}
+
+/* role view (SOP data with roles[]): the page puts a "Show my flow" rail first in .chain and
+   a .role-select before it. Here: slim rail | chart | App URL + pane, still one window.
+   Selectors carry .zyt-chain to outrank the page's own .chain.has-roles placement rules. */
+.zyt-chain .chain.has-roles { grid-template-columns: 12rem minmax(0, 1fr) minmax(22rem, 28rem); gap: 0; }
+.zyt-chain .chain.has-roles > .role-rail {
+  grid-column: 1; grid-row: 1; position: static; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  margin: .75rem 0 .75rem .75rem; border-top: 2px solid var(--ink);
+}
+.zyt-chain .chain.has-roles > .chain-canvas { grid-column: 2; grid-row: 1; }
+.zyt-chain .chain.has-roles > .zyt-side { grid-column: 3; grid-row: 1; }
+.zyt-chain-body > .role-select { display: none; }
+
+/* tablet / phone: a chart shrunk to fit would be unreadable, so the view scrolls instead;
+   the chart keeps its own width and scrolls sideways, and × stays pinned top-right */
+@media (max-width: 64rem) {
+  .zyt-chain-body { overflow-y: auto; overscroll-behavior: contain; }
+  .zyt-chain .chain { display: block; height: auto; }
+  .zyt-chain .chain-canvas { display: block; height: auto; overflow: auto; padding: .5rem .25rem; border-bottom: 1px solid var(--rule); }
+  .zyt-chain .chain-canvas svg { width: 100%; height: auto; min-width: 62rem; }
+  .zyt-side { height: auto; border-left: 0; }
+  .zyt-side-tools { padding-right: 3.4rem; }
+  .zyt-side-tools .baseurl { flex-wrap: wrap; }
+  .zyt-chain .chain-pane { height: auto; overflow: visible; }
+  .zyt-chain-close { position: fixed; top: .6rem; right: .6rem; z-index: 2; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); }
+  /* role view: the select above the chart replaces the rail */
+  .zyt-chain .chain.has-roles > .role-rail { display: none; }
+  .zyt-chain-body > .role-select { display: flex; margin: 0; padding: .6rem 3.4rem .6rem .75rem; border-bottom: 1px solid var(--rule); }
+}
+
+/* ── What to fix first: the step list and the defects are one window tall, each scrolls ── */
+#fixes .fixbrowser {
+  height: calc(100vh - var(--zyt-top));
+  grid-template-rows: minmax(0, 1fr); align-items: stretch;
+}
+#fixes .fx-steps, #fixes .fx-detail { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+@media (max-width: 52rem) {
+  /* one scroll area on narrow screens instead of two stacked ones */
+  #fixes .fixbrowser { display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; }
+  #fixes .fx-steps, #fixes .fx-detail { overflow: visible; flex: none; }
+}
+
+@media (prefers-reduced-motion: reduce) { .zyt-chain { animation: none; } }
+@media print {
+  .zyt-top, .zyt-chain-tab, .zyt-chain { display: none !important; }
+  #fixes .fixbrowser { height: auto; }
+}

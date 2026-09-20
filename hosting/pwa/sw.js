@@ -1,0 +1,76 @@
+// Service worker for the ZYT client-projects site (hub + client pages).
+//
+// Pages are fetched network-first, so an online user always gets the latest
+// deploy; the last copy of each page is served when offline. Screenshots,
+// icons and Google Fonts are served from cache and refreshed in the background.
+//
+// deploy-site.ps1 replaces __BUILD__ on every deploy, which retires old caches,
+// and fills __SHOTS__ with every screenshot so pages work offline from the
+// first visit.
+const CACHE = 'zyt-admin-__BUILD__';
+const PAGES = ['/', '/nct/customer-intake-sop/', '/nct/steps-1-3-runbook/', '/nct/steps-4-10-runbook/', '/nct/steps-11-15-runbook/', '/nct/step-11-plan/', '/nct/step-12-plan/', '/nct/step-13-plan/', '/nct/step-14-plan/', '/nct/step-15-plan/', '/nct/steps-12-15-crosscheck/','/jwa/full-chain-sop/', '/zyt/commands/'];
+const PRECACHE = [...PAGES, '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/brand/logo-light-72.png', '/brand/logo-dark-72.png','/favicon.svg', /*__SHOTS__*/];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith('zyt-admin-') && k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+// One cache entry per page, keyed by path, so /?tab=clients and / share a copy.
+function pageKey(url) {
+  const u = new URL(url);
+  return u.origin + (u.pathname.endsWith('/') ? u.pathname : u.pathname + '/');
+}
+
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE);
+  const key = pageKey(request.url);
+  try {
+    const fresh = await fetch(request);
+    if (fresh.ok && !fresh.redirected) cache.put(key, fresh.clone());
+    return fresh;
+  } catch {
+    return (await cache.match(key)) || (await cache.match(new URL('/', self.location.origin).href)) || Response.error();
+  }
+}
+
+async function staleWhileRevalidate(event) {
+  const cache = await caches.open(CACHE);
+  const cached = await cache.match(event.request);
+  const refresh = fetch(event.request)
+    .then((res) => {
+      if (res.ok || res.type === 'opaque') cache.put(event.request, res.clone());
+      return res;
+    })
+    .catch(() => cached);
+  if (cached) {
+    event.waitUntil(refresh);
+    return cached;
+  }
+  return refresh;
+}
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+
+  if (request.mode === 'navigate' && url.origin === self.location.origin) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+  // Google Fonts and the pinned Convex browser bundle, so the dashboard opens offline
+  // (read-only) with its fonts and scripts.
+  const isFont = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
+  const isConvexBundle = url.hostname === 'cdn.jsdelivr.net' && url.pathname.startsWith('/npm/convex@');
+  if (url.origin === self.location.origin || isFont || isConvexBundle) {
+    event.respondWith(staleWhileRevalidate(event));
+  }
+});

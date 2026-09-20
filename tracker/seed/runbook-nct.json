@@ -1,0 +1,456 @@
+{
+  "stages": [
+    {
+      "id": "rb-nct-a-before-deploy",
+      "title": "Before anyone deploys the site again",
+      "blurb": "Two sessions publish this site from the files on disk. Make sure the next deploy keeps the newest pages, and check the pages nobody has opened since they went live.",
+      "steps": [
+        {
+          "id": "rb-nct-a1-sync-zyt-skill-session",
+          "owner": "wilfred",
+          "title": "Sync the \"ZYT Skill\" session before its next deploy",
+          "detail": "Its message address stopped working, so it does not know that deploy e8d30d52 added /nct/step-11-plan/ (and that the dashboard now shows this runbook and the Steps 1–3 page). It must deploy from the files on disk that include these changes. A deploy from an older copy removes them.",
+          "src": [
+            "hosting/deploy-site.ps1",
+            "hosting/hub/build-runbook.mjs",
+            "hosting/hub/projects.json",
+            "hosting/hub/index.html",
+            "hosting/pwa/sw.js",
+            "hosting/SITE.md",
+            "tracker/seed/runbook-nct.json"
+          ]
+        },
+        {
+          "id": "rb-nct-a2-check-nct-sop-page",
+          "owner": "wilfred",
+          "title": "Click through the NCT SOP page",
+          "detail": "Went live with deploy 1e0c0d7c, now built from customer-intake-sop/sop.json. Check \"Show my flow\", the ?role=<id> links, the full-screen chain view with the role rail, and the fix list.",
+          "link": "/nct/customer-intake-sop/"
+        },
+        {
+          "id": "rb-nct-a3-check-jwa-sop-page",
+          "owner": "wilfred",
+          "title": "Click through the JWA SRF full-chain SOP page",
+          "detail": "Went live with deploy 1e0c0d7c. Check the \"verified against code\" line and the role view.",
+          "link": "/jwa/full-chain-sop/"
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-b-steps-1-3",
+      "title": "Steps 1–3 · enquiry record, credit and duplicates, contact nomination",
+      "blurb": "Three worktrees in three waves. Planned 2026-09-14; no code yet.",
+      "steps": [
+        {
+          "id": "rb-nct-b1-setup-worktrees",
+          "owner": "session",
+          "title": "Create wt-step1, wt-step2, wt-step3 and install",
+          "detail": "Update feat/new-layout, add the three worktrees from origin/feat/new-layout, run bun install in each, and start claude in each. The plans are not in git: copy C:\\Project\\ZYT-Task\\plans\\ to C:/nct-plans/.",
+          "link": "/nct/steps-1-3-runbook/#3-one-time-setup"
+        },
+        {
+          "id": "rb-nct-b2-wave-1",
+          "owner": "session",
+          "title": "Wave 1: step 03 all phases · step 02 Phase 1 · step 01 all phases",
+          "detail": "Run in parallel, one session per worktree. Only step 01 migrates (0066, a nullable column) — db:migrate in wt-step1 only. Browser checks one worktree at a time: every app wants :3101 and :3000.",
+          "waitsFor": [
+            "rb-nct-b1-setup-worktrees"
+          ],
+          "link": "/nct/steps-1-3-runbook/#4-wave-1-start-three-sessions"
+        },
+        {
+          "id": "rb-nct-b3-merge-wave-1",
+          "owner": "wilfred",
+          "title": "Merge step 03 → step 02 Phase 1 → step 01",
+          "detail": "In that order, each rebased on what merged ahead of it and through the pre-PR checklist (read check-types output, not its exit code). Migration 0066 lands with step 01.",
+          "waitsFor": [
+            "rb-nct-b2-wave-1"
+          ],
+          "link": "/nct/steps-1-3-runbook/#6-merge-in-this-order",
+          "run": "nct-intake-steps-1-3"
+        },
+        {
+          "id": "rb-nct-b4-wave-2",
+          "owner": "session",
+          "title": "Wave 2: step 02 Phase 2 (duplicate refusal), then merge",
+          "detail": "Rebase wt-step2 first so step 01's Add company dialog change sits underneath. Duplicate-company refusal, near-match list and Name collisions filter.",
+          "waitsFor": [
+            "rb-nct-b3-merge-wave-1"
+          ],
+          "link": "/nct/steps-1-3-runbook/#7-wave-2-step-02-phase-2"
+        },
+        {
+          "id": "rb-nct-b5-prod-collision-count",
+          "owner": "wilfred",
+          "title": "Gate: run the production duplicate-company count",
+          "detail": "Migration 0067_company_name_ci_unique fails partway through the deploy unless company.nameCollisionCount = 0. Dev read 0 on 2026-09-14; production has not been checked. Read-only probe nct-layout/e2e/out/_walk/probe-step2.ts with I_KNOW_THIS_IS_PRODUCTION=1 (the owner override in apps/server/dev-db-guard.ts). If the count is not 0, clear the duplicates first (Task 3.0, reviewed before it runs).",
+          "link": "/nct/steps-1-3-runbook/#8-stop-gate-production-collision-count-owner-only",
+          "src": [
+            "nct-layout/e2e/out/_walk/probe-step2.ts",
+            "nct-layout/apps/server/dev-db-guard.ts"
+          ]
+        },
+        {
+          "id": "rb-nct-b6-wave-3",
+          "owner": "session",
+          "title": "Wave 3: step 02 Phase 3 (case-insensitive index 0067), then merge",
+          "detail": "Only when the production count is 0. 0067 must follow 0066 in the journal with no gap, or take the next free number at merge.",
+          "waitsFor": [
+            "rb-nct-b4-wave-2",
+            "rb-nct-b5-prod-collision-count"
+          ],
+          "link": "/nct/steps-1-3-runbook/#9-wave-3-step-02-phase-3"
+        },
+        {
+          "id": "rb-nct-b7-close-and-clean",
+          "owner": "session",
+          "title": "Tick the fixed findings and remove the worktrees",
+          "detail": "Tick nct-channels, nct-credit, the step 02 duplicates finding and the step 03 primary-contact finding in Findings. Remove each worktree only once merged and git status is clean.",
+          "waitsFor": [
+            "rb-nct-b6-wave-3"
+          ],
+          "link": "/nct/steps-1-3-runbook/#10-close-the-loop-and-clean-up"
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-c-steps-4-10",
+      "title": "Steps 4–10 · quote → approval → send → decision",
+      "blurb": "Seven plans in four waves; can run alongside Steps 1–3 (shared migration journal only). All 33 decisions settled 2026-09-15.",
+      "steps": [
+        {
+          "id": "rb-nct-c1-setup",
+          "owner": "session",
+          "title": "One-time setup; create Wave 1 worktrees",
+          "detail": "Create worktrees for a wave when that wave starts, so each branches from the latest base. Wave 1: wt-step04, wt-step08, wt-step05. Keep wt-step04 after it merges — Wave 3 reuses it for Task F.1.",
+          "link": "/nct/steps-4-10-runbook/#3-one-time-setup"
+        },
+        {
+          "id": "rb-nct-c2-wave-1",
+          "owner": "session",
+          "title": "Wave 1: step 04 all · step 08 Phases 1+4 · step 05 all",
+          "detail": "Merge order 04 → 08 P1+P4 → 05. Only 04 migrates.",
+          "waitsFor": [
+            "rb-nct-c1-setup"
+          ],
+          "link": "/nct/steps-4-10-runbook/#wave-1"
+        },
+        {
+          "id": "rb-nct-c3-gates-04-05",
+          "owner": "wilfred",
+          "title": "Gates before merging 04 and 05: production counts",
+          "detail": "Step 04: fee_template audit_status counts and the 30-day in-use count (step 04 §7) — cards in use get submitted for approval the day before the migration applies. Step 05 Phase 2: any role policy denying quotationDate / quotationStaff (step 05 §7).",
+          "waitsFor": [
+            "rb-nct-c2-wave-1"
+          ],
+          "link": "/nct/steps-4-10-runbook/#7-stop-gates-owner-only",
+          "run": "nct-quote-build-steps-4-7"
+        },
+        {
+          "id": "rb-nct-c4-wave-2",
+          "owner": "session",
+          "title": "Wave 2: step 08 Phases 2+3 · step 06 all",
+          "detail": "Starts when all of Wave 1 is merged. Merge order 08 P2+P3 → 06. No migrations.",
+          "waitsFor": [
+            "rb-nct-c3-gates-04-05"
+          ],
+          "link": "/nct/steps-4-10-runbook/#wave-2-after-all-of-wave-1-is-merged"
+        },
+        {
+          "id": "rb-nct-c5-drift-count-08",
+          "owner": "wilfred",
+          "title": "After step 08 Phase 3 merges: run the drift count",
+          "detail": "Task 3.5's script: quotations stamped approved without a review, or unlocked. Decide row by row (D5-A). Code does not wait for it.",
+          "waitsFor": [
+            "rb-nct-c4-wave-2"
+          ],
+          "link": "/nct/steps-4-10-runbook/#7-stop-gates-owner-only",
+          "run": "nct-quote-decide-steps-8-10"
+        },
+        {
+          "id": "rb-nct-c6-wave-3",
+          "owner": "session",
+          "title": "Wave 3: step 04 Task F.1 · step 07 all · step 09 all",
+          "detail": "Starts when all of Wave 2 is merged. Merge order F.1 → 07 → 09. Only 09 migrates.",
+          "waitsFor": [
+            "rb-nct-c4-wave-2"
+          ],
+          "link": "/nct/steps-4-10-runbook/#wave-3-after-all-of-wave-2-is-merged"
+        },
+        {
+          "id": "rb-nct-c7-gate-07-probe",
+          "owner": "wilfred",
+          "title": "Before releasing step 07: rate-card clash probe",
+          "detail": "The §8 probe for same-date rate-card clashes and unit-spelling variants. Hand the list to Pricing to supersede or clean. No data change (D4-A).",
+          "waitsFor": [
+            "rb-nct-c6-wave-3"
+          ],
+          "link": "/nct/steps-4-10-runbook/#7-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-c8-step-10-prompt-hint",
+          "owner": "wilfred",
+          "title": "Add the \"use Correct decision\" hint to step 10's Wave 4 prompt",
+          "detail": "When rebasing, step 10 adds the \"use Correct decision\" hint to the X5 refusal message (correctionPath: true). This goes in the prompt you write, not in step 10's plan file.",
+          "link": "/nct/steps-4-10-runbook/#wave-4-after-all-of-wave-3-is-merged"
+        },
+        {
+          "id": "rb-nct-c9-wave-4",
+          "owner": "session",
+          "title": "Wave 4: step 10 all phases",
+          "detail": "Starts when all of Wave 3 is merged. Step 10 migrates.",
+          "waitsFor": [
+            "rb-nct-c6-wave-3",
+            "rb-nct-c8-step-10-prompt-hint"
+          ],
+          "link": "/nct/steps-4-10-runbook/#wave-4-after-all-of-wave-3-is-merged"
+        },
+        {
+          "id": "rb-nct-c10-gate-10-reseed",
+          "owner": "wilfred",
+          "title": "Before merging step 10: deploy-time re-seed for existing orgs",
+          "detail": "D6-A. Must run before any browser check against an existing org.",
+          "waitsFor": [
+            "rb-nct-c9-wave-4"
+          ],
+          "link": "/nct/steps-4-10-runbook/#7-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-c11-clean-up",
+          "owner": "session",
+          "title": "Remove merged worktrees",
+          "detail": "Only once a branch is merged and git status is clean. Remove wt-step04 only after Task F.1 has merged too.",
+          "waitsFor": [
+            "rb-nct-c10-gate-10-reseed"
+          ],
+          "link": "/nct/steps-4-10-runbook/#10-clean-up"
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-d-step-11",
+      "title": "Step 11 · Convert won quote",
+      "blurb": "All decisions taken: D1 option B, option A for D2–D9. Phase 1 closes X5 (a Lost quotation can become a job).",
+      "steps": [
+        {
+          "id": "rb-nct-d1-prod-probes",
+          "owner": "wilfred",
+          "title": "Run the read-only production probes P1–P5",
+          "detail": "They measure the existing damage; none blocks Phase 1 code. P1: orders made from Lost quotations — hand the list to sales/operations under D9 (report only, each order checked by hand). P2: conversions made before any decision was recorded. P3: quotations with more than one order. P4: orders whose lines carry two different numbers. P5: fee lines with a minimum charge.",
+          "link": "/nct/step-11-plan/#7-impact-breakage-analysis"
+        },
+        {
+          "id": "rb-nct-d2-tell-planners-allocator",
+          "owner": "wilfred",
+          "title": "Tell the step 12 and step 14 planners where the job-number allocator moves",
+          "detail": "D5: it moves to packages/api/src/modules/collective-order/insert-order.ts.",
+          "link": "/nct/step-11-plan/#9-decision-register-open-questions-risks"
+        },
+        {
+          "id": "rb-nct-d3-phase-1",
+          "owner": "session",
+          "title": "Phase 1 (X5) in wt-step11 — needs Wilfred's go-ahead",
+          "detail": "Wave 1, merged after step 05. A Lost quotation cannot become a job, and a job is minted once. Touches convertToOrder's first 70 lines, one JSX condition and one test file.",
+          "waitsFor": [
+            "rb-nct-c2-wave-1"
+          ],
+          "link": "/nct/step-11-plan/#phase-1-a-lost-quotation-cannot-become-a-job-and-a-job-is-minted-once-x5"
+        },
+        {
+          "id": "rb-nct-d4-prove-lock-dev-db",
+          "owner": "session",
+          "title": "Prove the conversion lock on the dev database",
+          "detail": "Two simultaneous Convert presses must create one order. The PGlite unit tests cannot prove this.",
+          "waitsFor": [
+            "rb-nct-d3-phase-1"
+          ],
+          "link": "/nct/step-11-plan/#10-verification-proof"
+        },
+        {
+          "id": "rb-nct-d5-phase-2",
+          "owner": "session",
+          "title": "Phase 2: a converted job arrives numbered",
+          "detail": "After Phase 1 and step 10 are merged (step 10's Task 2.1 edits the same handler region).",
+          "waitsFor": [
+            "rb-nct-d4-prove-lock-dev-db",
+            "rb-nct-c9-wave-4"
+          ],
+          "link": "/nct/step-11-plan/#phase-2-a-converted-job-arrives-numbered-and-its-lines-carry-the-number-nct-unnumbered"
+        },
+        {
+          "id": "rb-nct-d6-phase-3",
+          "owner": "session",
+          "title": "Phase 3: receivable lines keep quantity and unit price",
+          "detail": "After Phase 2, and after steps 06 and 07 (they change quantities and floors). Re-run probe P5 at merge.",
+          "waitsFor": [
+            "rb-nct-d5-phase-2",
+            "rb-nct-c6-wave-3"
+          ],
+          "link": "/nct/step-11-plan/#phase-3-receivable-lines-keep-their-quantity-and-unit-price-nct-lump-sums"
+        },
+        {
+          "id": "rb-nct-d7-fix-flow-seed",
+          "owner": "session",
+          "title": "Fix the flow seed for step 11",
+          "detail": "tracker/seed/flow-nct.json:155 reads /order//edit (missing order id). The step 10 card's \"Lost → the chain ends here\" (:143) only becomes true once Phase 1 merges.",
+          "src": [
+            "tracker/seed/flow-nct.json:155",
+            "tracker/seed/flow-nct.json:143"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-e-anytime",
+      "title": "Anytime",
+      "blurb": "No deadline, nothing waits on these.",
+      "steps": [
+        {
+          "id": "rb-nct-e1-authorise-mcp",
+          "owner": "wilfred",
+          "title": "Authorise the Cloudflare and Neon MCP servers",
+          "detail": "In claude.ai connector settings, or with /mcp in an interactive claude session. They are unavailable to Claude until then."
+        },
+        {
+          "id": "rb-nct-e2-nct-app-url",
+          "owner": "wilfred",
+          "title": "Set NCT's real App URL",
+          "detail": "The SOP page's App URL box defaults to http://localhost:3101/, so its screen links point at the visitor's own machine. Set the real address once there is one."
+        },
+        {
+          "id": "rb-nct-e3-jwa-tasks",
+          "owner": "wilfred",
+          "title": "Give JWA its tasks",
+          "detail": "JWA has no to-do tasks in tracker/seed and no Convex seed mutation, so its dashboard is empty.",
+          "src": [
+            "tracker/seed/tasks-jwa.json",
+            "hosting/convex-app/convex/seed.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-f-steps-12-15",
+      "title": "Steps 12–15 · job number, intake, job shape, order approval",
+      "blurb": "Waves 6–11 of the steps 11–15 runbook. All 53 decisions settled 2026-09-17; sessions implement the chosen option. Wave 5 (step 11 Phases 2–3) is stage D.",
+      "steps": [
+        {
+          "id": "rb-nct-f1-commit-e2e",
+          "owner": "wilfred",
+          "title": "Commit or set aside the uncommitted e2e changes",
+          "detail": "The main nct-layout checkout has uncommitted edits under e2e/ (seed-cli.ts among them). Every browser walk uses that seeder and worktrees will not see the edits. Commit them or put them somewhere safe before Wave 6 — no session stashes or resets (crosscheck X16).",
+          "link": "/nct/steps-11-15-runbook/#10-traps-in-this-repo"
+        },
+        {
+          "id": "rb-nct-f2-wave-6",
+          "owner": "session",
+          "title": "Wave 6: step 12 Phase 1 (+ optional Phase 3), then step 13 Phase 2",
+          "detail": "wt-step12 runs the Assign number row lock and re-stamp; wt-step13-p2 runs the reopen verb and intake rules. Merge 12 P1 → 13 P2, rebasing and re-locating symbols at HEAD. Needs Wave 5 (stage D) merged.",
+          "waitsFor": [
+            "rb-nct-d5-phase-2",
+            "rb-nct-f1-commit-e2e"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f3-gate-13-p8",
+          "owner": "wilfred",
+          "title": "Gate: run 13-P8 and insert the reopen permission row",
+          "detail": "Before step 13 Phase 2 deploys: run probe 13-P8, then the reviewed permission_node INSERT for collectiveOrder.reopen (dev before the proof, production after deploy and before any grant). Step 13 D12-A.",
+          "waitsFor": [
+            "rb-nct-f2-wave-6"
+          ],
+          "link": "/nct/steps-11-15-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-f4-step-12-sop-text",
+          "owner": "wilfred",
+          "title": "Step 12 Phase 2: rewrite the SOP text and republish",
+          "detail": "Only after Wave 5 is deployed. SOP step 12 becomes \"Check the job number\" (step 12 D6-A), with matching fixes in customer-intake-sop/sop.json and tracker/seed/flow-nct.json, then a site redeploy.",
+          "waitsFor": [
+            "rb-nct-f2-wave-6"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f5-gate-15-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 15-P13, 15-P6 and 15-P10 before step 15 Task 1.2",
+          "detail": "They size the post-approval freeze on containers, cargo and appendages (D3-A), the fee-grid carve-out (D2-B) and assignNumber after approval (D16-B). If a result contradicts the settled choice, stop and re-plan.",
+          "waitsFor": [
+            "rb-nct-f2-wave-6"
+          ],
+          "link": "/nct/steps-11-15-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-f6-wave-7",
+          "owner": "session",
+          "title": "Wave 7: step 15 Phase 1 — an order under review cannot be edited",
+          "detail": "wt-step15: the under-review freeze on all seven order writers plus the FOR UPDATE lock in collective_order.exists (crosscheck X6), with collective-order.under-review.test.ts and the real-Postgres concurrency test. API before web.",
+          "waitsFor": [
+            "rb-nct-f5-gate-15-probes",
+            "rb-nct-f3-gate-13-p8"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f7-wave-8",
+          "owner": "session",
+          "title": "Wave 8: step 15 Phase 2 — delete the legacy review verbs",
+          "detail": "collectiveOrder.review and reviewBatch go, separation of duties goes on, and the permission node stays registered without isEndpoint. Gates 15-P4 before Task 2.1 and 15-P1/P12 before Task 2.2 (Wilfred).",
+          "waitsFor": [
+            "rb-nct-f6-wave-7"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f8-gate-14-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 14-P3, 14-P4 and 14-P5 before step 14 Task 1.1",
+          "detail": "They show how many existing orders would fail the readiness rule and whether the required-field set is right (step 14 D2-A, D8-A). Operations also confirms the field list.",
+          "waitsFor": [
+            "rb-nct-f7-wave-8"
+          ],
+          "link": "/nct/steps-11-15-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-f9-wave-9",
+          "owner": "session",
+          "title": "Wave 9: step 14 Phase 1 — an incomplete order cannot be submitted",
+          "detail": "wt-step14: readiness enforced at submit through step 07's assertPublishable hook (crosscheck X9). Merges after step 15 Phase 1, and before step 15 Phase 3 because both edit seed/operations.ts (X12).",
+          "waitsFor": [
+            "rb-nct-f8-gate-14-probes"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f10-wave-10",
+          "owner": "session",
+          "title": "Wave 10: step 15 Phase 3 and step 14 Phase 2, in parallel",
+          "detail": "Step 15 Phase 3 adds the approval gates (create_lading on B/L create and re-link, expense_entry on cost lines); step 14 Phase 2 shows what is missing on the edit form. Gate 15-P1 before Task 3.4, and 15-P2/P5/P11 before the release note.",
+          "waitsFor": [
+            "rb-nct-f9-wave-9"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f11-wave-11",
+          "owner": "session",
+          "title": "Wave 11: step 14 Phase 3 — order status becomes a list",
+          "detail": "A milestone list per trade, with old values left as they are. Gate 14-P1 first, and operations confirms the non-sea chains. Server and web ship in one release.",
+          "waitsFor": [
+            "rb-nct-f10-wave-10"
+          ],
+          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+        },
+        {
+          "id": "rb-nct-f12-unowned-gaps",
+          "owner": "wilfred",
+          "title": "Name an owner for the accepted gaps (X13), or accept them",
+          "detail": "Nobody refuses submitting an archived, unreceived or rejected order; nobody keeps rejected orders out of the trade ledgers; the SOP text for steps 14–15 has no owner. Accepted on 2026-09-17 as known gaps.",
+          "link": "/nct/steps-11-15-runbook/#12-where-the-plans-and-the-crosscheck-disagree"
+        }
+      ]
+    }
+  ]
+}

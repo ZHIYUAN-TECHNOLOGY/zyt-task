@@ -1,0 +1,60 @@
+/* Golden path panel — shared by the dashboard and the SOP pages.
+ *
+ * The two pages name their colours differently (the dashboard has --canvas /
+ * --heading / --muted / --border, the SOP pages --surface / --ink / --ink-soft
+ * / --rule), so every colour here resolves through a var() fallback chain and
+ * the panel takes whichever palette it lands in — including each page's dark
+ * mode, which only redefines those same variables. */
+.gp {
+  --gp-heading: var(--heading, var(--ink, #101a4f));
+  --gp-text: var(--text, var(--ink, #23305e));
+  --gp-muted: var(--muted, var(--ink-soft, #6b7280));
+  --gp-faint: var(--faint, var(--ink-faint, #94a3b8));
+  --gp-border: var(--border, var(--rule, #e2e8f5));
+  --gp-surface: var(--surface-sunk, var(--surface, #f6f8fd));
+  --gp-accent: var(--accent, #4159c9);
+  --gp-ok: var(--ok, var(--teal, #1f9d62));
+  --gp-bad: #dc2626;
+  --gp-mono: var(--mono, "JetBrains Mono", ui-monospace, Consolas, monospace);
+  color: var(--gp-text);
+}
+.gp h3 { font-weight: 600; font-size: .85rem; color: var(--gp-heading); margin: 0 0 .45rem; }
+.gp-title { margin: .35rem 0 0 !important; font-weight: 600; font-size: .84rem; color: var(--gp-heading); }
+.gp-blurb { margin: .5rem 0 0; color: var(--gp-muted); font-size: .82rem; line-height: 1.55; }
+.gp-note { margin-top: .6rem !important; }
+
+.gp-actions { display: flex; align-items: center; gap: .75rem; margin-top: .75rem; }
+.gp-run { font: 500 .88rem inherit; color: #fff; background: var(--gp-accent); border: 0; border-radius: 10px; padding: .55rem 1.1rem; cursor: pointer; }
+.gp-run[disabled] { opacity: .6; cursor: default; }
+.gp-stop, .gp-retry { font: 500 .82rem inherit; color: var(--gp-accent); background: none; border: 0; padding: .4rem .2rem; cursor: pointer; }
+.gp-retry[disabled] { opacity: .6; cursor: default; }
+
+.gp-off { margin-top: .6rem; display: flex; flex-direction: column; align-items: flex-start; gap: .45rem; }
+.gp-off p { margin: 0; font-size: .84rem; }
+.gp-cmd { display: block; font: .8rem var(--gp-mono); background: var(--gp-surface); border-radius: 6px; padding: .45rem .6rem; overflow-wrap: anywhere; }
+
+.gp-steps { list-style: none; margin: .8rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+.gp-steps li { display: grid; grid-template-columns: 1.1rem 1fr auto; gap: .5rem; align-items: start; font-size: .82rem; padding: .4rem .55rem; border: 1px solid var(--gp-border); border-radius: 9px; }
+.gp-steps li::before { content: none; }
+.gp-steps time { font: .72rem var(--gp-mono); color: var(--gp-faint); }
+.gp-mark { font-weight: 600; color: var(--gp-faint); }
+.gp-ok .gp-mark { color: var(--gp-ok); }
+.gp-running .gp-mark { color: var(--gp-accent); }
+.gp-fail { border-color: rgba(220, 38, 38, .45); }
+.gp-fail .gp-mark, .gp-err, .gp-result.gp-failed { color: var(--gp-bad); }
+.gp-err { display: block; font-size: .76rem; margin: .15rem 0 0; overflow-wrap: anywhere; }
+
+.gp-result { margin: .8rem 0 0; font-weight: 600; font-size: .86rem; }
+.gp-result.gp-passed { color: var(--gp-ok); }
+.gp-out { margin: .5rem 0 0; max-height: 14rem; overflow: auto; font: .7rem/1.45 var(--gp-mono); background: var(--gp-surface); border-radius: 8px; padding: .5rem .6rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gp-video { display: block; width: 100%; margin-top: .6rem; border-radius: 10px; border: 1px solid var(--gp-border); background: #000; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gp { --gp-bad: #f87171; }
+}
+[data-theme="dark"] .gp { --gp-bad: #f87171; }
+
+/* On an SOP step panel the heading is the page's own, and the panel sits under
+   it as a bordered card rather than as a section of the task drawer. */
+.gp-inline { margin: 0 0 1rem; padding: .85rem 1rem 1rem; border: 1px solid var(--gp-border); border-radius: 12px; background: var(--gp-surface); }
+.gp-inline .gp-blurb { font-size: .78rem; }

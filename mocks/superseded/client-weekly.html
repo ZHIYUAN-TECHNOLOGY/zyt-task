@@ -1,0 +1,232 @@
+<title>NCT Delivery Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root {
+  --ground:#f7f7f4; --surface:#fffffe; --sunk:#eceeea; --ink:#17242a; --ink-soft:#42565d;
+  --ink-faint:#6d8188; --rule:#d9ddd8; --rule-strong:#b9c0ba;
+  --teal:#2e6b6e; --teal-soft:#dde9e7; --amber:#b5780f; --amber-soft:#f2e6cd;
+  --oxide:#9e3b2a; --oxide-soft:#f6e4e0;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#0e1719; --surface:#142024; --sunk:#101a1d; --ink:#e6ebe7; --ink-soft:#a9b8b8;
+  --ink-faint:#7f9191; --rule:#24353a; --rule-strong:#35494e;
+  --teal:#6fb3ae; --teal-soft:#17302f; --amber:#e0a53f; --amber-soft:#3a2f16;
+  --oxide:#e08874; --oxide-soft:#33201c;
+}}
+:root[data-theme="dark"]{
+  --ground:#0e1719; --surface:#142024; --sunk:#101a1d; --ink:#e6ebe7; --ink-soft:#a9b8b8;
+  --ink-faint:#7f9191; --rule:#24353a; --rule-strong:#35494e;
+  --teal:#6fb3ae; --teal-soft:#17302f; --amber:#e0a53f; --amber-soft:#3a2f16;
+  --oxide:#e08874; --oxide-soft:#33201c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.6 var(--body);
+  -webkit-font-smoothing:antialiased;padding-inline:1.25rem}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-0.015em}
+p{margin:0;max-width:65ch}
+.mock{display:flex;gap:.5rem;align-items:baseline;flex-wrap:wrap;background:var(--amber-soft);
+  border-left:3px solid var(--amber);padding:.55rem .8rem;border-radius:0 3px 3px 0;font-size:.86rem}
+.mock b{font-family:var(--display);color:var(--amber)}
+.chip{font:500 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:.14rem .45rem;border-radius:2px;white-space:nowrap}
+.s-done{background:var(--teal-soft);color:var(--teal)}
+.s-in_progress{background:var(--amber-soft);color:var(--amber)}
+.s-blocked{background:var(--oxide-soft);color:var(--oxide)}
+.s-planned{background:var(--sunk);color:var(--ink-faint)}
+
+.wrap{max-width:44rem;margin:0 auto;padding-block:3.5rem 6rem}
+.eyebrow{font:500 .7rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;gap:.3rem 1rem;flex-wrap:wrap}
+h1{font-size:clamp(2rem,5vw,2.7rem);line-height:1.06;font-weight:700;margin:.7rem 0 .5rem}
+.summary{margin-top:1.6rem;background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+  padding:1.1rem 1.2rem;display:grid;gap:.7rem}
+.summary .next{color:var(--ink-soft);border-top:1px solid var(--rule);padding-top:.7rem;font-size:.95rem}
+.tally{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.tally span{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--rule);border-radius:2px;padding:.3rem .55rem;background:var(--surface)}
+.tally b{font-family:var(--display);font-size:.95rem;margin-right:.35rem}
+h2.group{font-size:.78rem;font-family:var(--mono);font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint);margin:2.6rem 0 .9rem;
+  border-bottom:1px solid var(--rule);padding-bottom:.4rem}
+.item{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:1rem 1.1rem;
+  margin-bottom:.8rem}
+.item.blocked{border-left:3px solid var(--oxide)}
+.item.done{border-left:3px solid var(--teal)}
+.item.in_progress{border-left:3px solid var(--amber)}
+.item h3{font-size:1.08rem;font-weight:600;margin-bottom:.35rem}
+.item .row{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:baseline;margin-bottom:.45rem}
+.item .since{font:.72rem var(--mono);color:var(--ink-faint)}
+.item p{color:var(--ink-soft);font-size:.95rem}
+details{margin-top:.7rem;border-top:1px dashed var(--rule);padding-top:.6rem}
+summary{cursor:pointer;font:500 .74rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+summary::marker{color:var(--rule-strong)}
+.trail{list-style:none;margin:.7rem 0 0;padding:0;display:grid;gap:.55rem}
+.trail li{display:grid;grid-template-columns:4.4rem minmax(0,1fr);gap:.7rem;font-size:.9rem}
+.trail .when{font:.72rem var(--mono);color:var(--ink-faint);padding-top:.15rem}
+.trail .note{color:var(--ink-soft)}
+.trail .who{font:.72rem var(--mono);color:var(--ink-faint)}
+.differs{margin-top:.6rem;background:var(--sunk);border-radius:2px;padding:.45rem .6rem;
+  font-size:.85rem;color:var(--ink-soft)}
+.foot{margin-top:3.2rem;border-top:1px solid var(--rule);padding-top:1rem;
+  font:.74rem/1.7 var(--mono);color:var(--ink-faint)}
+@media (max-width:34rem){.trail li{grid-template-columns:minmax(0,1fr);gap:.15rem}}
+</style>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span>Prepared by ZYT Agency</span><span>NCT Freight Forwarding</span><span>Enquiry to invoice</span></div>
+    <h1>Week of 14 September 2026</h1>
+    <p style="color:var(--ink-soft)">Where your project stands, reported weekly. Open any item to see how it has moved.</p>
+  </header>
+
+  <div class="mock" style="margin-top:1.4rem"><b>Mock</b>
+    <span>Real flow and real findings; the states, names and dates below are made up to show the view.</span></div>
+
+  <section class="summary">
+    <p><strong>Customer records are cleaned up and shipped.</strong> Duplicate customers can no
+    longer be created by spelling, and credit limits are now checked when an invoice is raised.</p>
+    <p>Quoting and enquiry recording are underway. One piece is waiting on you: we need a decision
+    on who may approve their own work before we can lock approvals down.</p>
+    <p class="next"><strong>Next week:</strong> finish the enquiry channel record, start carrying
+    customer details through to the invoice.</p>
+  </section>
+
+  <div class="tally">
+    <span><b>1</b> shipped</span>
+    <span><b>3</b> in progress</span>
+    <span><b>1</b> blocked</span>
+    <span><b>5</b> planned</span>
+  </div>
+
+  <h2 class="group">Shipped this week · 1</h2>
+    
+    <article class="item done">
+      <div class="row"><h3>Customer records duplicate, and credit limits are not checked</h3><span class="chip s-done">Shipped</span>
+        <span class="since">since 12 Sep</span></div>
+      <p>The same customer can exist twice under different spellings, splitting their history. Credit limits are recorded but never consulted when invoicing, and a customer with contacts on file can still have nobody to chase.</p>
+      <details>
+        <summary>Status history</summary>
+        <ul class="trail">
+          <li>
+            <span class="when">8 Sep</span>
+            <span><span class="chip s-in_progress">In progress</span>
+              <span class="note"> Plan approved, worktree open</span>
+              <span class="who"> — Aina</span></span>
+          </li><li>
+            <span class="when">12 Sep</span>
+            <span><span class="chip s-done">Shipped</span>
+              <span class="note"> Duplicate names now refused; credit checked at invoicing</span>
+              <span class="who"> — Aina</span></span>
+          </li>
+        </ul>
+        
+      </details>
+    </article>
+  <h2 class="group">Waiting on you · 1</h2>
+    <p style="color:var(--ink-soft);margin-bottom:.9rem">We cannot move these without a decision or access from your side.</p>
+    <article class="item blocked">
+      <div class="row"><h3>Approvals do not hold</h3><span class="chip s-blocked">Blocked</span>
+        <span class="since">since 13 Sep</span></div>
+      <p>A quotation, order or fee can be changed after it is submitted or approved, so what a manager signed off is not always what ships. One person can also approve their own work.</p>
+      <details>
+        <summary>Status history</summary>
+        <ul class="trail">
+          <li>
+            <span class="when">10 Sep</span>
+            <span><span class="chip s-in_progress">In progress</span>
+              <span class="note"> Reviewed all four approval queues</span>
+              <span class="who"> — Ruben</span></span>
+          </li><li>
+            <span class="when">13 Sep</span>
+            <span><span class="chip s-blocked">Blocked</span>
+              <span class="note"> Need NCT to confirm who may approve their own work</span>
+              <span class="who"> — Ruben</span></span>
+          </li>
+        </ul>
+        <p class="differs">Reported on 14 September as
+          <strong>In progress</strong> · now Blocked.</p>
+      </details>
+    </article>
+  <h2 class="group">In progress · 3</h2>
+    
+    <article class="item in_progress">
+      <div class="row"><h3>Enquiries that do not arrive by email leave no record</h3><span class="chip s-in_progress">In progress</span>
+        <span class="since">since 9 Sep</span></div>
+      <p>WhatsApp, phone, walk-in and agent enquiries are not recorded, so win rate cannot be measured. A quotation's date and salesperson are stamped automatically and cannot be corrected, and a wrongly recorded win or loss is permanent.</p>
+      <details>
+        <summary>Status history</summary>
+        <ul class="trail">
+          <li>
+            <span class="when">9 Sep</span>
+            <span><span class="chip s-in_progress">In progress</span>
+              <span class="note"> Channel field and inbox link started</span>
+              <span class="who"> — Ruben</span></span>
+          </li>
+        </ul>
+        
+      </details>
+    </article><article class="item in_progress">
+      <div class="row"><h3>Invoices go out incomplete</h3><span class="chip s-in_progress">In progress</span>
+        <span class="since">since 13 Sep</span></div>
+      <p>The invoice a customer receives can be missing their address, tax ID and payment terms, and quantities can print blank. Bills raised this way never show as overdue, so nothing chases them.</p>
+      <details>
+        <summary>Status history</summary>
+        <ul class="trail">
+          <li>
+            <span class="when">13 Sep</span>
+            <span><span class="chip s-in_progress">In progress</span>
+              <span class="note"> Carrying the customer through to the invoice</span>
+              <span class="who"> — Aina</span></span>
+          </li>
+        </ul>
+        <p class="differs">Reported on 14 September as
+          <strong>Planned</strong> · now In progress.</p>
+      </details>
+    </article><article class="item in_progress">
+      <div class="row"><h3>Quotes can go out under-priced</h3><span class="chip s-in_progress">In progress</span>
+        <span class="since">since 11 Sep</span></div>
+      <p>The agreed rate card is not always enforced when a quotation is priced, so a job can be sold below the rate the customer was promised.</p>
+      <details>
+        <summary>Status history</summary>
+        <ul class="trail">
+          <li>
+            <span class="when">11 Sep</span>
+            <span><span class="chip s-in_progress">In progress</span>
+              <span class="note"> Rate-card gate first; container mix next</span>
+              <span class="who"> — Aina</span></span>
+          </li>
+        </ul>
+        
+      </details>
+    </article>
+  <h2 class="group">Planned · 5</h2>
+    <p style="color:var(--ink-soft);margin-bottom:.9rem">Agreed, not started yet. We will tell you the week each one begins.</p>
+    <article class="item planned">
+      <div class="row"><h3>Jobs lose their number, and paperwork cannot be filed against them</h3><span class="chip s-planned">Planned</span>
+        </div>
+      <p>A job created from a won quotation starts without a job number, documents cannot be attached to the job they belong to, nothing enforces what a job must contain, and the intake queue is a dead end.</p>
+    </article><article class="item planned">
+      <div class="row"><h3>Month-end figures cannot be trusted at a glance</h3><span class="chip s-planned">Planned</span>
+        </div>
+      <p>One shipment can report two different profit figures, and the month-end documents are hidden inside an export dialog rather than being where month-end work happens.</p>
+    </article><article class="item planned">
+      <div class="row"><h3>Payments are recorded by hand, and foreign currency is guessed</h3><span class="chip s-planned">Planned</span>
+        </div>
+      <p>Settling an invoice means retyping figures outside the system, and a payment in another currency posts a gain or loss that never happened.</p>
+    </article><article class="item planned">
+      <div class="row"><h3>Shipping documents can be released without the right checks</h3><span class="chip s-planned">Planned</span>
+        </div>
+      <p>A bill of lading can be marked released or held without going through release control, can be rewritten while under review, and scanned values are accepted without flagging what failed validation.</p>
+    </article><article class="item planned">
+      <div class="row"><h3>Tracking and haulage sit apart from the job</h3><span class="chip s-planned">Planned</span>
+        </div>
+      <p>Customs and port tracking cannot be seen from the shipment it belongs to, the customs declaration itself lives outside the system, trucks are not linked to jobs, and a shipment can never be closed.</p>
+    </article>
+
+  <p class="foot">Status as reported on 14 September 2026. Individual items show their current state, which can
+  have moved since the report. Questions go to your ZYT contact — this page does not take replies.</p>
+</div>

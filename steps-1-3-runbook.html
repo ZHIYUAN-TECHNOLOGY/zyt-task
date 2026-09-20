@@ -1,0 +1,438 @@
+<title>Steps 1–3 Rollout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root {
+  --ground: #f5f6f3;
+  --surface: #fffffe;
+  --sunk: #eceeea;
+  --ink: #15252b;
+  --ink-soft: #40565c;
+  --ink-faint: #6c7f84;
+  --rule: #d4d9d3;
+  --rule-strong: #b6bdb6;
+  --amber: #b5780f;
+  --amber-soft: #f0e3c9;
+  --teal: #2e6b6e;
+  --teal-soft: #dde9e7;
+  --oxide: #9e3b2a;
+  --oxide-soft: #f6e4e0;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0e1719; --surface: #142024; --sunk: #101a1d;
+    --ink: #e6ebe7; --ink-soft: #a9b8b8; --ink-faint: #7f9191;
+    --rule: #24353a; --rule-strong: #35494e;
+    --amber: #e0a53f; --amber-soft: #3a2f16;
+    --teal: #6fb3ae; --teal-soft: #17302f;
+    --oxide: #e08874; --oxide-soft: #33201c;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0e1719; --surface: #142024; --sunk: #101a1d;
+  --ink: #e6ebe7; --ink-soft: #a9b8b8; --ink-faint: #7f9191;
+  --rule: #24353a; --rule-strong: #35494e;
+  --amber: #e0a53f; --amber-soft: #3a2f16;
+  --teal: #6fb3ae; --teal-soft: #17302f;
+  --oxide: #e08874; --oxide-soft: #33201c;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font: 400 1rem/1.62 var(--body); -webkit-font-smoothing: antialiased;
+  padding-inline: 1.25rem;
+}
+.wrap { max-width: 46rem; margin: 0 auto; padding-block: 3.5rem 6rem; }
+
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.015em; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.05; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+h3 { font-size: 1rem; font-weight: 600; }
+p { margin: 0; max-width: 65ch; }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+p code, li code, td code { background: var(--sunk); padding: 0.05em 0.3em; border-radius: 2px; }
+a { color: var(--teal); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+.eyebrow {
+  font: 500 0.7rem var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); display: flex; flex-wrap: wrap; gap: 0.3rem 1rem;
+}
+.eyebrow b { color: var(--amber); font-weight: 500; }
+.head { display: grid; gap: 0.9rem; }
+.lede { font-size: 1.08rem; color: var(--ink-soft); }
+
+/* ── the wave diagram ── */
+.waves {
+  margin-top: 2.2rem; background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 3px; padding: 1.1rem 1.1rem 1rem; overflow-x: auto;
+}
+.waves-grid {
+  display: grid; grid-template-columns: 7.2rem repeat(3, minmax(8.5rem, 1fr));
+  gap: 0.45rem 0.6rem; min-width: 36rem; align-items: stretch;
+}
+.waves .col-h { font: 600 0.72rem var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); padding-bottom: 0.2rem; }
+.waves .lane { font: 500 0.78rem var(--mono); color: var(--ink-soft); align-self: center; line-height: 1.3; }
+.cell {
+  border-radius: 2px; padding: 0.45rem 0.55rem; font-size: 0.84rem; line-height: 1.3;
+  border: 1px solid var(--rule); background: var(--ground);
+}
+.cell b { font-family: var(--display); font-weight: 600; display: block; font-size: 0.86rem; }
+.cell.go { background: var(--teal-soft); border-color: transparent; }
+.cell.wait { background: var(--amber-soft); border-color: transparent; }
+.cell.gate { background: var(--oxide-soft); border-color: transparent; }
+.cell.empty { background: transparent; border-style: dashed; color: var(--ink-faint); }
+.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-top: 0.8rem; font: 0.72rem var(--mono); color: var(--ink-faint); }
+.legend i { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 2px; vertical-align: -0.1rem; margin-right: 0.35rem; }
+
+/* ── steps ── */
+.steps { list-style: none; margin: 3rem 0 0; padding: 0; display: grid; gap: 2.6rem; counter-reset: step; }
+.step { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 0 1rem; counter-increment: step; }
+.step::before {
+  content: counter(step); font: 700 1.05rem/2.2rem var(--display); text-align: center;
+  width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--ink); color: var(--ground);
+}
+.step.gate::before { background: var(--oxide); }
+.step-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.85rem; min-width: 0; }
+.step-body > h2 { padding-top: 0.25rem; }
+.tag {
+  justify-self: start; font: 500 0.66rem var(--mono); letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.12rem 0.45rem; border-radius: 2px;
+}
+.tag.teal { background: var(--teal-soft); color: var(--teal); }
+.tag.amber { background: var(--amber-soft); color: var(--amber); }
+.tag.oxide { background: var(--oxide-soft); color: var(--oxide); }
+
+.gatebox {
+  border-left: 3px solid var(--oxide); background: var(--oxide-soft);
+  padding: 0.75rem 0.9rem; border-radius: 0 3px 3px 0; display: grid; gap: 0.35rem;
+}
+.gatebox strong { color: var(--oxide); font-family: var(--display); }
+
+.cmd { position: relative; }
+.cmd pre {
+  margin: 0; background: var(--sunk); border: 1px solid var(--rule); border-radius: 3px;
+  padding: 0.75rem 0.9rem; padding-right: 5.2rem; overflow-x: auto;
+  font: 0.8rem/1.6 var(--mono); color: var(--ink); white-space: pre;
+}
+.cmd .label { font: 500 0.66rem var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.3rem; display: block; }
+.copy {
+  position: absolute; right: 0.45rem; bottom: 0.45rem;
+  font: 600 0.72rem var(--display); color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule-strong); border-radius: 2px; padding: 0.25rem 0.55rem; cursor: pointer;
+}
+.copy:hover { border-color: var(--ink-faint); }
+
+.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.check li { display: grid; grid-template-columns: 1.3rem minmax(0, 1fr); gap: 0.55rem; align-items: start; }
+.check input { width: 1rem; height: 1rem; margin: 0.28rem 0 0; accent-color: var(--teal); }
+.check label { cursor: pointer; }
+.check input:checked + label { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--rule-strong); }
+
+.bullets { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; }
+.bullets li { max-width: 65ch; }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--rule); }
+th { font: 500 0.66rem var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+
+.trouble { margin-top: 3.4rem; display: grid; gap: 0.9rem; border-top: 2px solid var(--ink); padding-top: 1.4rem; }
+.foot { margin-top: 3rem; font: 0.74rem/1.7 var(--mono); color: var(--ink-faint); border-top: 1px solid var(--rule); padding-top: 1rem; }
+
+@media (max-width: 34rem) {
+  .step { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <div class="eyebrow"><span>NCT · nct-layout</span><span>Base <b>feat/new-layout</b> @ 6c31a20e</span><span>For the implementer</span></div>
+    <h1>Steps 1–3 Rollout</h1>
+    <p class="lede">
+      How to take the three /planpro plans from the SOP page to merged code without two
+      Claude sessions fighting over the same files. Three worktrees, three waves, two places
+      where you stop and ask the plan owner.
+    </p>
+  </header>
+
+  <!-- ── at a glance ── -->
+  <section class="waves" aria-label="Which plan runs where, and when">
+    <div class="waves-grid">
+      <div class="col-h">Worktree</div>
+      <div class="col-h">Wave 1 · parallel</div>
+      <div class="col-h">Wave 2 · after step 1 merges</div>
+      <div class="col-h">Wave 3 · after the gate</div>
+
+      <div class="lane">wt-step3</div>
+      <div class="cell go"><b>Step 3</b>all phases · no migration</div>
+      <div class="cell empty">done</div>
+      <div class="cell empty">—</div>
+
+      <div class="lane">wt-step2</div>
+      <div class="cell go"><b>Step 2 · Phase 1</b>credit check · no migration</div>
+      <div class="cell wait"><b>Step 2 · Phase 2</b>duplicate refusal</div>
+      <div class="cell gate"><b>Step 2 · Phase 3</b>index <span class="mono">0067</span></div>
+
+      <div class="lane">wt-step1</div>
+      <div class="cell go"><b>Step 1</b>all phases · migration <span class="mono">0066</span></div>
+      <div class="cell empty">done</div>
+      <div class="cell empty">—</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--teal-soft)"></i>runs now, in its own Claude session</span>
+      <span><i style="background:var(--amber-soft)"></i>waits for a merge</span>
+      <span><i style="background:var(--oxide-soft)"></i>waits for the plan owner</span>
+    </div>
+  </section>
+
+  <p style="margin-top:1.1rem;color:var(--ink-soft)">
+    <strong>Why this shape:</strong> steps 1 and 3 share no files, and step 2's first phase only overlaps step 3 in
+    <code>report.ts</code>, in regions Git merges cleanly. The one real conflict is step 1 vs step 2 — both change the
+    <em>Add company</em> dialog in <code>companies.tsx</code>, and step 2's migration <code>0067</code> needs step 1's
+    <code>0066</code> first — so step 2's later phases wait.
+  </p>
+
+  <ol class="steps">
+
+    <!-- 1 -->
+    <li class="step">
+      <div class="step-body">
+        <h2>Get ready (once)</h2>
+        <ul class="check" data-key="ready">
+          <li><input type="checkbox" id="r1"><label for="r1">You have the repo cloned, and <code>bun</code> and Claude Code installed.</label></li>
+          <li><input type="checkbox" id="r2"><label for="r2">You can open the SOP page: <b>When a Customer Comes In</b> (artifact link held outside the repo). Ask the plan owner to share it if it says you have no access.</label></li>
+          <li><input type="checkbox" id="r3"><label for="r3">On the SOP page, open steps <strong>01</strong>, <strong>02</strong> and <strong>03</strong> in the chart, and in each modal's <strong>Prompt</strong> box press <strong>Download .md</strong>. Save all three into one folder, e.g. <code>C:/nct-plans/</code>. Each file is the full plan, with every decision already settled.</label></li>
+          <li><input type="checkbox" id="r4"><label for="r4">Your main checkout is up to date on the base branch.</label></li>
+        </ul>
+        <div class="cmd"><span class="label">In your main nct-layout checkout</span><pre>git fetch origin
+git switch feat/new-layout
+git pull --ff-only</pre><button class="copy" type="button">Copy</button></div>
+      </div>
+    </li>
+
+    <!-- 2 -->
+    <li class="step">
+      <div class="step-body">
+        <h2>Create three worktrees</h2>
+        <p>A worktree is a second (and third, and fourth) folder on its own branch, sharing one Git history. Each Claude session gets its own folder, so no session can overwrite another's edits.</p>
+        <div class="cmd"><span class="label">From the nct-layout folder</span><pre>git worktree add ../wt-step1 -b feat/step1-enquiry-channel feat/new-layout
+git worktree add ../wt-step2 -b feat/step2-credit           feat/new-layout
+git worktree add ../wt-step3 -b feat/step3-contact-nomination feat/new-layout</pre><button class="copy" type="button">Copy</button></div>
+        <div class="cmd"><span class="label">Then, inside each of the three folders</span><pre>bun install</pre><button class="copy" type="button">Copy</button></div>
+      </div>
+    </li>
+
+    <!-- 3 -->
+    <li class="step">
+      <div class="step-body">
+        <span class="tag teal">Wave 1 · run these at the same time</span>
+        <h2>Start three Claude sessions</h2>
+        <p>Open three terminals. In each, <code>cd</code> into its worktree, start <code>claude</code>, and give it the matching instruction. Change <code>C:/nct-plans/</code> if you saved the plans elsewhere.</p>
+        <div class="cmd"><span class="label">Terminal 1 — in wt-step3</span><pre>Read C:/nct-plans/step-03-plan.md and implement it end to end, all phases.
+Follow its section 10 to prove it works before telling me it is done.</pre><button class="copy" type="button">Copy</button></div>
+        <div class="cmd"><span class="label">Terminal 2 — in wt-step2</span><pre>Read C:/nct-plans/step-02-plan.md and implement PHASE 1 ONLY (the credit check).
+Stop after Phase 1's acceptance criteria. Do not start Phase 2 or Phase 3.</pre><button class="copy" type="button">Copy</button></div>
+        <div class="cmd"><span class="label">Terminal 3 — in wt-step1</span><pre>Read C:/nct-plans/step-01-plan.md and implement it end to end, all phases,
+including the migration 0066 and the seed-inbox fixture in Task 2.5.
+Follow its section 10 to prove it works before telling me it is done.</pre><button class="copy" type="button">Copy</button></div>
+        <p style="color:var(--ink-soft)">If you have the <code>/execute</code> skill, <code>/execute C:/nct-plans/step-03-plan.md</code> works too. The plain instruction above works in any Claude Code.</p>
+      </div>
+    </li>
+
+    <!-- 4 -->
+    <li class="step">
+      <div class="step-body">
+        <h2>While they run</h2>
+        <ul class="bullets">
+          <li><strong>Browser checks one worktree at a time.</strong> Every worktree's app wants <code>:3101</code> (web) and <code>:3000</code> (API), and the seeds assume <code>3101</code>. Stop one worktree's dev servers before another session starts its browser check, or it silently tests the wrong app.</li>
+          <li><strong>All three share the dev database</strong> named in <code>apps/server/.env</code>. That is safe in Wave 1: only step 1 migrates, and <code>0066</code> just adds a nullable column. Run <code>bun run db:migrate</code> in <strong>wt-step1 only</strong>.</li>
+          <li><strong>Restart the API after editing <code>packages/api</code>.</strong> A hot reload keeps serving the old code and still answers 200.</li>
+          <li><strong>Never use <code>git stash</code> or <code>git reset</code></strong>, in any session, for any reason. If something is tangled, stop and ask.</li>
+        </ul>
+      </div>
+    </li>
+
+    <!-- 5 -->
+    <li class="step">
+      <div class="step-body">
+        <h2>Check each branch before its pull request</h2>
+        <p>Do this in the worktree, once its session says it is done. Tick per branch — the boxes remember your ticks in this browser.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Check</th><th>Step 3</th><th>Step 2 · P1</th><th>Step 1</th></tr></thead>
+            <tbody class="grid-checks">
+              <tr><td><code>bun run check-types</code> — <strong>read the output</strong>; it can exit 0 while printing "1 failed"</td><td><input type="checkbox" id="c-s3-1" aria-label="Step 3 type-check"></td><td><input type="checkbox" id="c-s2-1" aria-label="Step 2 Phase 1 type-check"></td><td><input type="checkbox" id="c-s1-1" aria-label="Step 1 type-check"></td></tr>
+              <tr><td><code>bun run test</code> passes</td><td><input type="checkbox" id="c-s3-2" aria-label="Step 3 tests"></td><td><input type="checkbox" id="c-s2-2" aria-label="Step 2 Phase 1 tests"></td><td><input type="checkbox" id="c-s1-2" aria-label="Step 1 tests"></td></tr>
+              <tr><td>The plan's section 10 golden path walked in the browser, at <code>localhost:3101</code></td><td><input type="checkbox" id="c-s3-3" aria-label="Step 3 browser proof"></td><td><input type="checkbox" id="c-s2-3" aria-label="Step 2 Phase 1 browser proof"></td><td><input type="checkbox" id="c-s1-3" aria-label="Step 1 browser proof"></td></tr>
+              <tr><td>Migration <code>0066</code> is in <code>meta/_journal.json</code>, its tag matches the file, and it is applied</td><td>—</td><td>—</td><td><input type="checkbox" id="c-s1-4" aria-label="Step 1 migration journal"></td></tr>
+              <tr><td>Every changed hunk read in <code>git diff feat/new-layout</code> — not just the file list</td><td><input type="checkbox" id="c-s3-5" aria-label="Step 3 diff read"></td><td><input type="checkbox" id="c-s2-5" aria-label="Step 2 Phase 1 diff read"></td><td><input type="checkbox" id="c-s1-5" aria-label="Step 1 diff read"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cmd"><span class="label">Then push and open the pull request (example: step 3)</span><pre>git add -A
+git commit -m "fix(contacts): show when nobody is nominated primary (SOP step 3)"
+git push -u origin feat/step3-contact-nomination
+gh pr create --base feat/new-layout --fill</pre><button class="copy" type="button">Copy</button></div>
+      </div>
+    </li>
+
+    <!-- 6 -->
+    <li class="step">
+      <div class="step-body">
+        <span class="tag amber">Merge order matters</span>
+        <h2>Merge in this order</h2>
+        <p>Ask the plan owner to merge each pull request into <code>feat/new-layout</code> in this sequence. Before a branch is merged, bring it up to date with what merged ahead of it.</p>
+        <ul class="check" data-key="merge">
+          <li><input type="checkbox" id="m1"><label for="m1"><strong>Step 3</strong> first.</label></li>
+          <li><input type="checkbox" id="m2"><label for="m2"><strong>Step 2 · Phase 1</strong> second — rebase first (below). <code>report.ts</code> merges cleanly.</label></li>
+          <li><input type="checkbox" id="m3"><label for="m3"><strong>Step 1</strong> third — rebase first. Migration <code>0066</code> lands.</label></li>
+        </ul>
+        <div class="cmd"><span class="label">Bring a branch up to date — run inside its worktree</span><pre>git fetch origin
+git rebase origin/feat/new-layout
+bun run check-types
+git push --force-with-lease</pre><button class="copy" type="button">Copy</button></div>
+        <div class="gatebox">
+          <strong>If the rebase stops on a conflict</strong>
+          <p>Resolve it by hand, <code>git add</code> the file, then <code>git rebase --continue</code>. If you are unsure which side is right, run <code>git rebase --abort</code> — that puts the branch back exactly as it was — and ask. Never reach for <code>stash</code> or <code>reset</code>.</p>
+        </div>
+      </div>
+    </li>
+
+    <!-- 7 -->
+    <li class="step">
+      <div class="step-body">
+        <span class="tag amber">Wave 2 · only after step 1 is merged</span>
+        <h2>Run step 2, Phase 2</h2>
+        <p>This is the phase that touches the same <em>Add company</em> dialog as step 1. Rebasing first puts step 1's change underneath, so there is nothing to conflict on.</p>
+        <div class="cmd"><span class="label">In wt-step2</span><pre>git fetch origin
+git rebase origin/feat/new-layout
+bun install</pre><button class="copy" type="button">Copy</button></div>
+        <div class="cmd"><span class="label">New Claude session in wt-step2</span><pre>Read C:/nct-plans/step-02-plan.md. Phase 1 is already merged.
+Implement PHASE 2 ONLY (the duplicate-company refusal, the near-match list
+and the Name collisions filter). Stop after Phase 2's acceptance criteria.</pre><button class="copy" type="button">Copy</button></div>
+        <p>Run step 5's checks again, open the pull request, and have it merged.</p>
+      </div>
+    </li>
+
+    <!-- 8 -->
+    <li class="step gate">
+      <div class="step-body">
+        <span class="tag oxide">Stop · owner only</span>
+        <h2>Ask for the production collision count</h2>
+        <div class="gatebox">
+          <strong>Do not run anything against production yourself.</strong>
+          <p>Phase 3 adds a unique index on company names. It fails on deploy if production already holds two companies whose names differ only by case or spacing. The repo blocks production connections on purpose; the plan owner takes this reading.</p>
+        </div>
+        <p>Send the plan owner this message:</p>
+        <div class="cmd"><span class="label">Message to the plan owner</span><pre>Step 2 Phases 1–2 are merged. Before Phase 3, can you run the
+read-only production collision probe from the step 2 plan and tell me
+the "collision groups" and "collided companies referenced" counts?</pre><button class="copy" type="button">Copy</button></div>
+      </div>
+    </li>
+
+    <!-- 9 -->
+    <li class="step">
+      <div class="step-body">
+        <span class="tag oxide">Wave 3 · after the count</span>
+        <h2>Run step 2, Phase 3</h2>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>The owner reports</th><th>What you do</th></tr></thead>
+            <tbody>
+              <tr><td><strong>0 collision groups</strong></td><td>Rebase <code>wt-step2</code>, then give the session the instruction below. Task 3.0 (the merge script) has nothing to do.</td></tr>
+              <tr><td><strong>More than 0</strong></td><td>Stop. The duplicates must be resolved first — renamed or deleted in the app, or merged by Task 3.0's script, which <strong>the plan owner reviews before it runs</strong>. Come back when the count is 0.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cmd"><span class="label">New Claude session in wt-step2 — only when the count is 0</span><pre>Read C:/nct-plans/step-02-plan.md. Phases 1 and 2 are merged, and the
+production collision count is confirmed 0, so Task 3.0 is a no-op.
+Implement PHASE 3 ONLY: migration 0067 and the case-insensitive index.</pre><button class="copy" type="button">Copy</button></div>
+        <p>Check that <code>0067</code> sits after <code>0066</code> in the journal with no gap, run step 5's checks, and open the last pull request.</p>
+      </div>
+    </li>
+
+    <!-- 10 -->
+    <li class="step">
+      <div class="step-body">
+        <h2>Close the loop on the SOP page</h2>
+        <p>After each merge, open the step on the SOP page. In <strong>What to fix first</strong>, tick every defect the pull request fixed as <strong>Done</strong>, and paste the pull request link as a comment on it. The next person then sees what is closed, and the Prompt box drops ticked defects from its brief.</p>
+      </div>
+    </li>
+
+    <!-- 11 -->
+    <li class="step">
+      <div class="step-body">
+        <h2>Clean up</h2>
+        <p>Only once a branch is merged and <code>git status</code> in its worktree shows nothing left.</p>
+        <div class="cmd"><span class="label">From the nct-layout folder</span><pre>git worktree remove ../wt-step3
+git worktree remove ../wt-step1
+git worktree remove ../wt-step2</pre><button class="copy" type="button">Copy</button></div>
+      </div>
+    </li>
+  </ol>
+
+  <section class="trouble" aria-labelledby="t-h">
+    <h2 id="t-h">When something looks wrong</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>What you see</th><th>Why</th><th>Do this</th></tr></thead>
+        <tbody>
+          <tr><td>The browser shows another step's changes</td><td>Two worktrees' dev servers on the same port</td><td>Stop every dev server, start only the worktree you are checking</td></tr>
+          <tr><td>An API change "doesn't work" but the request returns 200</td><td>Hot reload kept the old <code>packages/api</code> code</td><td>Restart the API server</td></tr>
+          <tr><td>500 or 401 errors right after pulling</td><td>A migration is written but not applied</td><td>Check <code>meta/_journal.json</code>, run <code>bun run db:migrate</code> — confirm in the journal, not by exit code</td></tr>
+          <tr><td>The session can't find <code>_plan/…</code></td><td>Plan folders aren't in Git</td><td>Point it at the file you downloaded from the SOP page</td></tr>
+          <tr><td>Step 1's inbox proof has no thread to open</td><td>The <code>seed-inbox</code> fixture (Task 2.5) wasn't built</td><td>Ask the step 1 session to finish Task 2.5 before section 10</td></tr>
+          <tr><td>Type-check "passed" but the log says failed</td><td>The command's exit code lies</td><td>Search the output for "failed"; fix, re-run</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="foot">
+    Plans: SOP steps 01, 02, 03 — /planpro, audited at commit 6c31a20e, all decisions settled 2026-09-14.
+    Source of this page: nct-layout/_plan/09-14_steps-1-3-runbook.html.
+  </p>
+</div>
+
+<script>
+(function () {
+  // copy buttons
+  document.querySelectorAll(".cmd").forEach(function (box) {
+    var btn = box.querySelector(".copy"), pre = box.querySelector("pre");
+    if (!btn || !pre) { return; }
+    btn.addEventListener("click", function () {
+      var text = pre.textContent;
+      function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = "Copy"; }, 2000); }
+      function select() {
+        try {
+          var r = document.createRange(); r.selectNodeContents(pre);
+          var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        } catch (e) { /* the text is on screen */ }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done("Copied"); },
+          function () { select(); done("⌘/Ctrl+C"); });
+      } else { select(); done("⌘/Ctrl+C"); }
+    });
+  });
+
+  // ticks are a per-reader convenience, remembered in this browser only
+  var KEY = "rollout-steps-1-3.ticks";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+  document.querySelectorAll('input[type="checkbox"][id]').forEach(function (box) {
+    if (saved[box.id]) { box.checked = true; }
+    box.addEventListener("change", function () {
+      if (box.checked) { saved[box.id] = 1; } else { delete saved[box.id]; }
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) { /* blocked: ticks last this visit */ }
+    });
+  });
+})();
+</script>

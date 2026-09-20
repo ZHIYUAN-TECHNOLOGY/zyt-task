@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZYT Projects — Option B · Client cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root {
+  --bg: #fafaf8; --surface: #f2f2ef; --card: #ffffff; --text: #0c0e12; --muted: #565b66; --faint: #9aa0ab;
+  --border: #dcdfe5; --accent: #2b66fb; --accent-soft: #e8efff; --ok: #1f9d62;
+  --grotesk: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --sans: "Geist", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 68rem; margin: 0 auto; padding-inline: 1.25rem; padding-block: 2rem 5rem; }
+
+.top { display: flex; align-items: center; gap: .6rem; font: 600 1rem var(--grotesk); }
+.mark { width: 1.9rem; height: 1.9rem; border-radius: 8px; background: var(--accent); color: #fff; display: grid; place-items: center; font: 700 .72rem var(--grotesk); }
+
+.hero { margin-top: 3.5rem; display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.5rem 3rem; align-items: end; }
+.eyebrow { font: 500 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 600 clamp(2.2rem, 6vw, 3.6rem)/1.02 var(--grotesk); letter-spacing: -.035em; margin: .5rem 0 0; }
+.hero p { color: var(--muted); margin: 0; font-size: 1.02rem; }
+
+.grid { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr)); gap: 1.25rem; }
+
+.client { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; }
+.client-top { display: flex; align-items: center; gap: .9rem; }
+.logo { width: 2.8rem; height: 2.8rem; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; font: 700 .85rem var(--grotesk); }
+.client h2 { font: 600 1.2rem var(--grotesk); margin: 0; letter-spacing: -.015em; }
+.client .where { color: var(--muted); font-size: .86rem; }
+.client .sector { margin-left: auto; font: 500 .66rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: .2rem .6rem; white-space: nowrap; }
+
+.page {
+  margin-top: 1.25rem; display: block; text-decoration: none; color: inherit;
+  background: var(--surface); border-radius: 12px; padding: 1.1rem 1.2rem;
+  border: 1px solid transparent; transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.page:hover { border-color: var(--accent); background: var(--accent-soft); }
+.page:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.page-row { display: flex; align-items: center; gap: .6rem; }
+.kind { font: 500 .66rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 6px; padding: .1rem .45rem; }
+.live { font: 500 .7rem var(--mono); color: var(--ok); display: inline-flex; align-items: center; gap: .35rem; }
+.live::before { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: var(--ok); }
+.page h3 { font: 600 1.05rem var(--grotesk); margin: .55rem 0 .2rem; letter-spacing: -.01em; }
+.page p { margin: 0; color: var(--muted); font-size: .9rem; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: 1rem; }
+.stat { background: var(--card); border-radius: 8px; padding: .55rem .7rem; }
+.stat b { display: block; font: 500 1.1rem var(--mono); font-variant-numeric: tabular-nums; }
+.stat span { font-size: .74rem; color: var(--muted); }
+.open { margin-top: .9rem; font: 500 .85rem var(--sans); color: var(--accent); }
+.open span { display: inline-block; transition: transform .3s var(--ease); }
+.page:hover .open span { transform: translateX(3px); }
+
+.foot { margin-top: 4rem; color: var(--faint); font-size: .82rem; }
+
+@media (max-width: 48rem) { .hero { grid-template-columns: 1fr; } }
+@media (max-width: 26rem) { .client .sector { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><span class="mark">ZYT</span> Zhiyuan Tech</header>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Client projects</div>
+      <h1>The systems we run with our clients</h1>
+    </div>
+    <p>Each client's operating guides in one place — the exact screens, roles and steps their staff follow, and what we're fixing next.</p>
+  </section>
+
+  <div class="grid">
+    <article class="client" aria-labelledby="c-nct">
+      <div class="client-top">
+        <div class="logo" aria-hidden="true">NCT</div>
+        <div>
+          <h2 id="c-nct">NCT Freight Forwarding</h2>
+          <div class="where">Sepangar Port · Kota Kinabalu</div>
+        </div>
+        <span class="sector">Logistics</span>
+      </div>
+
+      <a class="page" href="/nct/customer-intake-sop/">
+        <div class="page-row"><span class="kind">SOP</span><span class="live">Live · 15 Sep 2026</span></div>
+        <h3>When a Customer Comes In</h3>
+        <p>From the first enquiry to money in the bank — every screen, role and chain break.</p>
+        <div class="stats">
+          <div class="stat"><b>27</b><span>steps</span></div>
+          <div class="stat"><b>6</b><span>arrival channels</span></div>
+          <div class="stat"><b>48</b><span>findings</span></div>
+        </div>
+        <div class="open">Open the SOP <span aria-hidden="true">→</span></div>
+      </a>
+    </article>
+  </div>
+
+  <footer class="foot">Internal reference for ZYT and client staff. Open in any browser, or install it as an app from the address bar.</footer>
+</div>
+</body>
+</html>

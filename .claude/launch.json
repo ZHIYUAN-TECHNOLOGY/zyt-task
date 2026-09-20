@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jwa-sop-review",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "C:/Project/JWASystemv2/jwa-system/hosting/jwa-full-chain-sop/public"],
+      "port": 8765
+    },
+    {
+      "name": "hub-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8791", "--directory", "C:/Project/ZYT-Task/hosting/site/public"],
+      "port": 8791
+    },
+    {
+      "name": "golden-path-runner",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Project/ZYT-Task/hosting/runner/server.mjs"],
+      "env": { "RUNNER_EXTRA_ORIGINS": "http://localhost:8791" },
+      "port": 4317
+    }
+  ]
+}

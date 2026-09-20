@@ -1,0 +1,17 @@
+{
+  "name": "zyt-admin-convex",
+  "private": true,
+  "description": "Shared task state for admin.zhiyuantech.ai (ticks and their history)",
+  "scripts": {
+    "dev": "convex dev",
+    "deploy": "convex deploy",
+    "seed:prod": "convex run --prod seed:nct",
+    "typecheck": "tsc --noEmit -p convex"
+  },
+  "dependencies": {
+    "convex": "1.45.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

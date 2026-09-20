@@ -1,0 +1,85 @@
+# ── Dependencies ────────────────────────────────────────────────────────────
+# Restored by `npm install` in hosting/ and hosting/convex-app/. The two
+# package-lock.json files ARE tracked, so the restore is reproducible.
+node_modules/
+
+# ── Secrets and credentials ─────────────────────────────────────────────────
+# Nothing that authenticates to Cloudflare, Convex or a database belongs in a
+# repo for a PUBLIC site. hosting/convex-app/.env.local holds the dev Convex
+# deployment handle; hosting/convex-app/deployment.json (project + public
+# URLs, no key) is tracked instead. Cloudflare and Convex deploy tokens live
+# in `wrangler login` state and `npx convex` state, never in a file here.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+id_rsa
+id_rsa.*
+credentials.json
+service-account*.json
+.dev.vars
+.dev.vars.*
+
+# ── Cloudflare / Wrangler local state ───────────────────────────────────────
+# `wrangler dev --local` writes a miniflare sqlite sandbox and a cached copy of
+# the request metadata Cloudflare hands back (which includes the developer's
+# own city/ASN). Machine state, not source.
+.wrangler/
+
+# ── Generated site output — deploy-site.ps1 assembles all of this ───────────
+# hosting/site/public/ is wiped and rebuilt on every run ("never edit it", see
+# hosting/SITE.md). The *.body.html / *.built.html files beside it are the
+# intermediate renders of the markdown, and seed.json is built from
+# tracker/seed/*. Reviewing any of them in a diff tells you nothing the source
+# did not already say. The Worker's own config and code (worker.js,
+# wrangler.jsonc) are NOT generated and stay tracked.
+hosting/site/public/
+hosting/site/*.body.html
+hosting/site/*.built.html
+hosting/site/jwa-full-chain-sop.html
+hosting/site/seed.json
+hosting/site/.deploy.lock
+
+# ── Download bundles ────────────────────────────────────────────────────────
+# The /nct/downloads/*.zip plan bundles are zipped by deploy-site.ps1 from the
+# markdown in plans/ and the runbooks, which are tracked. A stale zip in a diff
+# is noise; the build regenerates them and fails if a listed file is missing.
+*.zip
+
+# ── zyt SOP pipeline (customer-intake-sop/) ─────────────────────────────────
+# Tracked: sop.json and shots/ are the SOURCE the published page is generated
+# from, plus .zyt/ state the zyt tooling needs to know what it last verified.
+# Only the throwaway per-run outputs below are ignored — the built HTML must
+# never be hand-edited, so it has no business being reviewed in a diff.
+*/review/
+*/assets.json
+*/check.txt
+*/publish-dryrun.txt
+*/.zyt/pending-*.json
+
+# ── Backups and salvage copies ──────────────────────────────────────────────
+# Rescued or superseded copies kept on disk for safety, not for history.
+*.bak
+*.bak-*
+*.BACKUP-*
+*.CORRUPT-*
+
+# ── Logs, caches, editor and OS cruft ───────────────────────────────────────
+*.log
+npm-debug.log*
+.cache/
+tmp/
+temp/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json

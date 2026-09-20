@@ -1,0 +1,10 @@
+{
+  // Same Worker name and account as the old SOP site, so deploying this replaces
+  // it in place at nct-customer-intake-sop.wilfred-c3a.workers.dev.
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "nct-customer-intake-sop",
+  "account_id": "c3ace1c04e63408f928551b0a8aefae2",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-01",
+  "workers_dev": true
+}

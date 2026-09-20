@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZYT Projects — Option A · Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root {
+  --bg: #fafaf8; --surface: #f2f2ef; --text: #0c0e12; --muted: #565b66; --faint: #9aa0ab;
+  --border: #dcdfe5; --accent: #2b66fb; --ok: #1f9d62;
+  --grotesk: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --sans: "Geist", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 56rem; margin: 0 auto; padding-inline: 1.25rem; padding-block: 3.5rem 5rem; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+.brand { display: flex; align-items: center; gap: .6rem; font: 600 1rem var(--grotesk); letter-spacing: -.01em; }
+.mark { width: 1.9rem; height: 1.9rem; border-radius: 8px; background: var(--text); color: var(--bg); display: grid; place-items: center; font: 700 .72rem var(--grotesk); letter-spacing: .02em; }
+.top .meta { font: 400 .72rem var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+
+h1 { font: 600 clamp(2rem, 5vw, 2.8rem)/1.08 var(--grotesk); letter-spacing: -.03em; margin: 2.75rem 0 .6rem; }
+.lede { color: var(--muted); max-width: 38rem; margin: 0; font-size: 1.02rem; }
+
+.client { margin-top: 3rem; }
+.client-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1rem; padding-bottom: .7rem; }
+.client-head h2 { font: 600 1.15rem var(--grotesk); margin: 0; letter-spacing: -.01em; }
+.client-head .where { color: var(--muted); font-size: .88rem; }
+.client-head .count { margin-left: auto; font: 400 .72rem var(--mono); color: var(--faint); }
+
+.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.rows a {
+  display: grid; grid-template-columns: 7rem 1fr auto; gap: .25rem 1.25rem; align-items: center;
+  padding: 1rem .25rem; border-bottom: 1px solid var(--border); color: inherit; text-decoration: none;
+  transition: background .3s var(--ease);
+}
+.rows a:hover { background: var(--surface); }
+.rows a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+.kind { font: 500 .68rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.title { font: 600 1rem var(--grotesk); letter-spacing: -.01em; }
+.desc { grid-column: 2; color: var(--muted); font-size: .9rem; }
+.facts { grid-column: 2; display: flex; flex-wrap: wrap; gap: .2rem 1rem; font: 400 .72rem var(--mono); color: var(--faint); font-variant-numeric: tabular-nums; }
+.go { grid-row: 1 / span 3; grid-column: 3; color: var(--muted); font-size: 1.1rem; transition: transform .3s var(--ease), color .3s var(--ease); }
+.rows a:hover .go { transform: translateX(3px); color: var(--accent); }
+.live { display: inline-flex; align-items: center; gap: .35rem; color: var(--ok); }
+.live::before { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: var(--ok); }
+
+.foot { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--border); color: var(--faint); font-size: .82rem; }
+
+@media (max-width: 40rem) {
+  .rows a { grid-template-columns: 1fr auto; }
+  .kind, .title, .desc, .facts { grid-column: 1; }
+  .go { grid-column: 2; }
+  .top .meta { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="mark">ZYT</span> Zhiyuan Tech</div>
+    <span class="meta">Client projects</span>
+  </header>
+
+  <h1>Client projects</h1>
+  <p class="lede">Operating guides for the systems we build — how staff use them, step by step, and what still needs fixing.</p>
+
+  <section class="client" aria-labelledby="c-nct">
+    <div class="client-head">
+      <h2 id="c-nct">NCT Freight Forwarding</h2>
+      <span class="where">Sepangar Port · Kota Kinabalu</span>
+      <span class="count">1 page</span>
+    </div>
+    <ul class="rows">
+      <li>
+        <a href="/nct/customer-intake-sop/">
+          <span class="kind">SOP</span>
+          <span class="title">When a Customer Comes In</span>
+          <span class="desc">From the first enquiry to money in the bank — every screen, role and chain break.</span>
+          <span class="facts"><span class="live">Live</span><span>27 steps · 5 phases</span><span>48 findings</span><span>Updated 15 Sep 2026</span></span>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <footer class="foot">Internal reference for ZYT and client staff. Open in any browser, or install it as an app from the address bar.</footer>
+</div>
+</body>
+</html>

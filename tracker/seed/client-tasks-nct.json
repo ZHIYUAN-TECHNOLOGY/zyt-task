@@ -1,0 +1,133 @@
+[
+  {
+    "id": "nct-c01-invoice-completeness",
+    "title": "Invoices go out incomplete",
+    "blurb": "The invoice a customer receives can be missing their address, tax ID and payment terms, and quantities can print blank. Bills raised this way never show as overdue, so nothing chases them.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-identity",
+      "nct-never-overdue",
+      "nct-lump-sums",
+      "nct-tax-invoice",
+      "nct-s20-unnamed-fee-rows-are-dropped-without-a-word",
+      "nct-s22-bills-cannot-be-split-per-order-though-the-serve"
+    ]
+  },
+  {
+    "id": "nct-c02-settlement-by-hand",
+    "title": "Payments are recorded by hand, and foreign currency is guessed",
+    "blurb": "Settling an invoice means retyping figures outside the system, and a payment in another currency posts a gain or loss that never happened.",
+    "state": "planned",
+    "visible": false,
+    "covers": ["nct-money-by-hand", "nct-fx-gain-loss", "nct-base-currency"]
+  },
+  {
+    "id": "nct-c03-quote-pricing",
+    "title": "Quotes can go out under-priced",
+    "blurb": "The agreed rate card is not always enforced when a quotation is priced, so a job can be sold below the rate the customer was promised.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-s04-the-tariff-gate-is-declared-but-never-enforced",
+      "nct-s06-applied-tariff-lines-ignore-the-container-mix",
+      "nct-s07-an-ambiguous-tariff-silently-drops-the-floor"
+    ]
+  },
+  {
+    "id": "nct-c04-approvals-hold",
+    "title": "Approvals do not hold",
+    "blurb": "A quotation, order or fee can be changed after it is submitted or approved, so what a manager signed off is not always what ships. One person can also approve their own work.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-bill-rewrite",
+      "nct-s08-a-quotation-stays-fully-editable-while-it-is-sit",
+      "nct-s08-the-seeded-quotation-flow-lets-the-branch-manage",
+      "nct-s08-the-legacy-quotations-review-verb-stamps-approve",
+      "nct-s08-submit-then-retract-permanently-unlocks-an-appro",
+      "nct-s08-the-export-quotation-gate-is-wired-to-reading-a-",
+      "nct-s15-a-collective-order-stays-fully-editable-while-it",
+      "nct-s15-order-approval-freezes-nothing-downstream-so-app",
+      "nct-s15-the-legacy-collectiveorder-review-verb-lets-ops-",
+      "nct-s21-the-fees-must-pass-review-before-billing-gate-is",
+      "nct-s21-an-approved-fee-s-exchange-rate-can-still-be-rew",
+      "nct-s21-an-approved-fee-can-be-deleted-outright-approval",
+      "nct-s21-a-fee-sitting-in-the-review-queue-is-fully-edita"
+    ]
+  },
+  {
+    "id": "nct-c05-bill-of-lading-control",
+    "title": "Shipping documents can be released without the right checks",
+    "blurb": "A bill of lading can be marked released or held without going through release control, can be rewritten while under review, and scanned values are accepted without flagging what failed validation.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-s16-a-bill-of-lading-can-be-set-to-released-or-on-ho",
+      "nct-s16-a-bill-of-lading-under-review-stays-fully-editab",
+      "nct-s16-ocr-validation-issues-are-computed-returned-and-",
+      "nct-s16-linking-the-approved-order-carries-only-its-job-"
+    ]
+  },
+  {
+    "id": "nct-c06-enquiry-record",
+    "title": "Enquiries that do not arrive by email leave no record",
+    "blurb": "WhatsApp, phone, walk-in and agent enquiries are not recorded, so win rate cannot be measured. A quotation's date and salesperson are stamped automatically and cannot be corrected, and a wrongly recorded win or loss is permanent.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-channels",
+      "nct-s05-quotation-date-is-the-row-s-save-timestamp-and-n",
+      "nct-s05-quotation-staff-is-auto-stamped-copied-by-duplic",
+      "nct-s09-there-is-no-outbox-so-a-failed-stamp-costs-a-sec",
+      "nct-s10-a-mis-keyed-decision-cannot-be-corrected"
+    ]
+  },
+  {
+    "id": "nct-c07-customer-records",
+    "title": "Customer records duplicate, and credit limits are not checked",
+    "blurb": "The same customer can exist twice under different spellings, splitting their history. Credit limits are recorded but never consulted when invoicing, and a customer with contacts on file can still have nobody to chase.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-credit",
+      "nct-s02-duplicate-companies-enter-through-case",
+      "nct-s03-a-contact-nobody-ticked-as-primary-never-reaches"
+    ]
+  },
+  {
+    "id": "nct-c08-job-admin",
+    "title": "Jobs lose their number, and paperwork cannot be filed against them",
+    "blurb": "A job created from a won quotation starts without a job number, documents cannot be attached to the job they belong to, nothing enforces what a job must contain, and the intake queue is a dead end.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-unnumbered",
+      "nct-paperwork",
+      "nct-job-shape",
+      "nct-dead-queues",
+      "nct-s13-intake-decisions-are-asymmetrical"
+    ]
+  },
+  {
+    "id": "nct-c09-tracking-island",
+    "title": "Tracking and haulage sit apart from the job",
+    "blurb": "Customs and port tracking cannot be seen from the shipment it belongs to, the customs declaration itself lives outside the system, trucks are not linked to jobs, and a shipment can never be closed.",
+    "state": "planned",
+    "visible": false,
+    "covers": [
+      "nct-island",
+      "nct-haulage",
+      "nct-never-closed",
+      "nct-s18-there-is-no-customs-declaration-type"
+    ]
+  },
+  {
+    "id": "nct-c10-month-end",
+    "title": "Month-end figures cannot be trusted at a glance",
+    "blurb": "One shipment can report two different profit figures, and the month-end documents are hidden inside an export dialog rather than being where month-end work happens.",
+    "state": "planned",
+    "visible": false,
+    "covers": ["nct-two-profits", "nct-s27-the-month-end-documents-have-no-menu-entry"]
+  }
+]
