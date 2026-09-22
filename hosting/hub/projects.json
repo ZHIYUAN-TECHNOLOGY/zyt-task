@@ -41,6 +41,36 @@
         "title": "Steps 12–15",
         "href": "/nct/steps-12-15-crosscheck/",
         "source": "plans/steps-12-15-crosscheck.md"
+      },
+      {
+        "type": "Runbook",
+        "title": "Steps 16–19",
+        "href": "/nct/steps-16-19-runbook/",
+        "source": "steps-16-19-runbook.md"
+      },
+      {
+        "type": "Crosscheck",
+        "title": "Steps 16–19",
+        "href": "/nct/steps-16-19-crosscheck/",
+        "source": "plans/steps-16-19-crosscheck.md"
+      },
+      {
+        "type": "Runbook",
+        "title": "Steps 20–26",
+        "href": "/nct/steps-20-26-runbook/",
+        "source": "steps-20-26-runbook.md"
+      },
+      {
+        "type": "Crosscheck",
+        "title": "Steps 20–26",
+        "href": "/nct/steps-20-26-crosscheck/",
+        "source": "plans/steps-20-26-crosscheck.md"
+      },
+      {
+        "type": "Runbook",
+        "title": "Step 27",
+        "href": "/nct/step-27-runbook/",
+        "source": "step-27-runbook.md"
       }
     ],
     "unlisted": [
@@ -48,7 +78,19 @@
       "/nct/step-12-plan/",
       "/nct/step-13-plan/",
       "/nct/step-14-plan/",
-      "/nct/step-15-plan/"
+      "/nct/step-15-plan/",
+      "/nct/step-16-plan/",
+      "/nct/step-17-plan/",
+      "/nct/step-18-plan/",
+      "/nct/step-19-plan/",
+      "/nct/step-20-plan/",
+      "/nct/step-21-plan/",
+      "/nct/step-22-plan/",
+      "/nct/step-23-plan/",
+      "/nct/step-24-plan/",
+      "/nct/step-25-plan/",
+      "/nct/step-26-plan/",
+      "/nct/step-27-plan/"
     ]
   },
   {
@@ -68,6 +110,32 @@
         "title": "SRF full chain",
         "href": "/jwa/full-chain-sop/",
         "source": "../JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json"
+      }
+    ]
+  },
+  {
+    "key": "harper",
+    "name": "Harper Suite",
+    "initials": "HS",
+    "place": "Bangkok",
+    "sector": "Hospitality",
+    "seed": {
+      "tasks": "tracker/seed/tasks-harper.json",
+      "workstreams": "tracker/seed/client-tasks-harper.json",
+      "flow": "tracker/seed/flow-harper.json"
+    },
+    "pages": [
+      {
+        "type": "SOP",
+        "title": "When a Guest Messages Us",
+        "href": "/harper/guest-concierge-sop/",
+        "source": "../OpenWA/sop/guest-concierge/sop.json"
+      },
+      {
+        "type": "Reference",
+        "title": "What the bot answers",
+        "href": "/harper/bot-answers/",
+        "source": "../OpenWA/kapso/prompt/kb.md"
       }
     ]
   },

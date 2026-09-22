@@ -537,6 +537,6 @@ These are the places where `steps-12-15-crosscheck.md` and a plan do not say the
 - **Steps 01–10.** `steps-1-3-runbook.md` and `steps-4-10-runbook.md`. Step 11 Phase 1 and step 13 Phase 1 live in the latter's Wave 1 (§1 above).
 - **Step 12 Phase 2's deployment.** The SOP site is public; Wilfred rebuilds and deploys it from `hosting/`. A session hands him the step and does not run it.
 - **The three accepted unowned gaps (X13)**, listed at the end of §10: submit-time order state, rejection staying advisory in the ledgers, and SOP text for steps 14 and 15. None is assigned to a wave here.
-- **Steps 16–17** (bill of lading) have no plans yet. Step 15 Phase 3 adds gate calls in `routers/lading.ts` that those plans must keep.
-- **Step 19** (fleet) is where step 14's haulage probes 14-P9 and 14-P10 land under D6-A. Nothing in Waves 5–11 uses them.
+- **Steps 16–19** (bill of lading through the demurrage clock) are [`steps-16-19-runbook.md`](/nct/steps-16-19-runbook/), Waves 12–16, planned 2026-09-21. Step 15 Phase 3 adds gate calls in `routers/lading.ts` that those plans keep. Step 14's haulage probes 14-P9 and 14-P10 land in step 19; nothing in Waves 5–11 uses them.
+- **Steps 20–27** (fees through month close) are [`steps-20-26-runbook.md`](/nct/steps-20-26-runbook/) (Waves 17–21) and [`step-27-runbook.md`](/nct/step-27-runbook/) (Waves 22–23).
 - **Production access of any kind.** Every probe, every grant and every deploy is Wilfred's. Sessions work against the dev Neon branch, and never against `br-round-sun`.

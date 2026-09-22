@@ -3,6 +3,7 @@
 #   /                            dashboard: projects · to-do · task panel   hosting/hub/index.html
 #   /nct/customer-intake-sop/    NCT SOP + 32 screenshots                   customer-intake-sop.html
 #   /jwa/full-chain-sop/         JWA SOP + its screenshots                  JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json
+#   /harper/guest-concierge-sop/ Harper Suite WhatsApp concierge SOP        OpenWA/sop/guest-concierge/sop.json
 #
 # Live at https://admin.zhiyuantech.ai — Worker "zyt-admin" in Ngchwanlii@zhiyuantech.ai's
 # Account (it owns the zhiyuantech.ai zone). PUBLIC: anyone with the link can read it and tick.
@@ -231,6 +232,35 @@ node (Join-Path $PSScriptRoot 'hub/build-runbook.mjs') $xcSrc $xcBody 'Crosschec
 if ($LASTEXITCODE -ne 0) { throw 'build-runbook.mjs failed for the steps 12-15 crosscheck' }
 Write-Utf8 (Join-Path $public 'nct/steps-12-15-crosscheck/index.html') (Get-SopHtml ([IO.File]::ReadAllText($xcBody)) 'nct' 'NCT')
 
+# -- NCT: steps 16-19, 20-26 and 27 — runbooks, plans and crosschecks (same Markdown renderer) ---
+# Each row: source (repo-relative), output page folder under nct/, kicker, download bundle.
+$nctPages1627 = @(
+  @{ src = 'steps-16-19-runbook.md';                     page = 'steps-16-19-runbook';     kind = 'Runbook';    zip = 'steps-16-19-plans.zip' },
+  @{ src = 'plans/step-16-lading-create.md';             page = 'step-16-plan';            kind = 'Plan';       zip = 'steps-16-19-plans.zip' },
+  @{ src = 'plans/step-17-lading-states-and-review.md';  page = 'step-17-plan';            kind = 'Plan';       zip = 'steps-16-19-plans.zip' },
+  @{ src = 'plans/step-18-bl-document-approval.md';      page = 'step-18-plan';            kind = 'Plan';       zip = 'steps-16-19-plans.zip' },
+  @{ src = 'plans/step-19-demurrage-clock-reach.md';     page = 'step-19-plan';            kind = 'Plan';       zip = 'steps-16-19-plans.zip' },
+  @{ src = 'plans/steps-16-19-crosscheck.md';            page = 'steps-16-19-crosscheck';  kind = 'Crosscheck'; zip = 'steps-16-19-plans.zip' },
+  @{ src = 'steps-20-26-runbook.md';                     page = 'steps-20-26-runbook';     kind = 'Runbook';    zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-20-fee-entry-integrity.md';       page = 'step-20-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-21-fee-review-integrity.md';      page = 'step-21-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-22-bill-grouping-integrity.md';   page = 'step-22-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-23-bill-approval-integrity.md';   page = 'step-23-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-24-invoice-issue-integrity.md';   page = 'step-24-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-25-invoice-document-truth.md';    page = 'step-25-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/step-26-settlement-integrity.md';      page = 'step-26-plan';            kind = 'Plan';       zip = 'steps-20-26-plans.zip' },
+  @{ src = 'plans/steps-20-26-crosscheck.md';            page = 'steps-20-26-crosscheck';  kind = 'Crosscheck'; zip = 'steps-20-26-plans.zip' },
+  @{ src = 'step-27-runbook.md';                         page = 'step-27-runbook';         kind = 'Runbook';    zip = 'step-27-plans.zip' },
+  @{ src = 'plans/step-27-month-close-truth.md';         page = 'step-27-plan';            kind = 'Plan';       zip = 'step-27-plans.zip' }
+)
+foreach ($p in $nctPages1627) {
+  $pSrc = Join-Path $root $p.src
+  $pBody = Join-Path $site "$($p.page).body.html"
+  node (Join-Path $PSScriptRoot 'hub/build-runbook.mjs') $pSrc $pBody $p.kind 'NCT Freight Forwarding' 'NCT' "--download=/nct/downloads/$($p.zip)"
+  if ($LASTEXITCODE -ne 0) { throw "build-runbook.mjs failed for $($p.src)" }
+  Write-Utf8 (Join-Path $public "nct/$($p.page)/index.html") (Get-SopHtml ([IO.File]::ReadAllText($pBody)) 'nct' 'NCT')
+}
+
 # -- ZYT: commands reference for the zyt skills and this site (same Markdown renderer) -----------
 $zcSrc = Join-Path $root 'docs\zyt-commands.md'
 $zcBody = Join-Path $site 'zyt-commands.body.html'
@@ -271,6 +301,26 @@ Write-Utf8 (Join-Path $jwaDir 'index.html') (Get-SopHtml $jwaSrc.Replace('jwa-fu
 New-Item -ItemType Directory -Force (Join-Path $jwaDir 'shots') | Out-Null
 $jwaRefs | ForEach-Object { Copy-Item (Join-Path $jwaShotsSrc $_) (Join-Path $jwaDir 'shots') }
 
+# -- Harper Suite: WhatsApp guest concierge (Kapso repo, built from sop.json, fix list public) --
+# No screenshots: the guest steps happen in WhatsApp and the staff steps in the Kapso dashboard.
+$hsData = Join-Path $root '..\OpenWA\sop\guest-concierge\sop.json'
+$hsBuilt = Join-Path $site 'harper-guest-concierge-sop.html'
+$eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+$hsOut = & node (Join-Path $env:USERPROFILE '.claude\skills\zyt-setup\scripts\build-page.mjs') --data $hsData --out $hsBuilt 2>&1
+$hsExit = $LASTEXITCODE; $ErrorActionPreference = $eap
+if ($hsExit -ne 0) { throw "build-page.mjs failed for Harper Suite:`n$($hsOut -join "`n")" }
+$hsOut | Where-Object { $_ -isnot [Management.Automation.ErrorRecord] } | ForEach-Object { Write-Output "$_" }
+Write-Utf8 (Join-Path $public 'harper\guest-concierge-sop\index.html') (Get-SopHtml ([IO.File]::ReadAllText($hsBuilt)) 'harper' 'Harper Suite')
+
+# -- Harper Suite: every question the bot answers, generated from the bot's own knowledge base --
+$baMd = Join-Path $site 'harper-bot-answers.md'
+$baBody = Join-Path $site 'harper-bot-answers.body.html'
+node (Join-Path $PSScriptRoot 'hub\build-bot-answers.mjs') (Join-Path $root '..\OpenWA\kapso\prompt\kb.md') (Join-Path $root '..\OpenWA\sop\guest-concierge\other-flows.md') $baMd
+if ($LASTEXITCODE -ne 0) { throw 'build-bot-answers.mjs failed for Harper Suite' }
+node (Join-Path $PSScriptRoot 'hub\build-runbook.mjs') $baMd $baBody 'Reference' 'Harper Suite' 'Harper'
+if ($LASTEXITCODE -ne 0) { throw 'build-runbook.mjs failed for the Harper bot answers page' }
+Write-Utf8 (Join-Path $public 'harper\bot-answers\index.html') (Get-SopHtml ([IO.File]::ReadAllText($baBody)) 'harper' 'Harper Suite')
+
 # ── downloadable plan bundles ────────────────────────────────────────────────
 # One zip per runbook: the runbook's own markdown plus the plans its prompts name, so a
 # colleague can unzip to C:/nct-plans/ and follow it. The plans are not in git; this is the
@@ -280,12 +330,15 @@ New-Item -ItemType Directory -Force $downloads | Out-Null
 $bundles = @(
   @{ zip = 'steps-1-3-plans.zip';   files = @('steps-1-3-runbook.md', 'plans\step-01-enquiry-channel.md', 'plans\step-02-credit-and-duplicates.md', 'plans\step-03-contact-nomination.md') },
   @{ zip = 'steps-4-10-plans.zip';  files = @('steps-4-10-runbook.md', 'plans\step-04-rate-card-gate.md', 'plans\step-05-quotation-date-and-staff.md', 'plans\step-06-tariff-quantity-from-containers.md', 'plans\step-07-ambiguous-tariff-floor.md', 'plans\step-08-quotation-approval-integrity.md', 'plans\step-09-send-outbox.md', 'plans\step-10-decision-correction.md', 'plans\steps-4-10-crosscheck.md') },
-  @{ zip = 'steps-11-15-plans.zip'; files = @('steps-11-15-runbook.md', 'plans\step-11-convert-won-quote.md', 'plans\step-12-job-number.md', 'plans\step-13-intake-decisions.md', 'plans\step-14-job-shape.md', 'plans\step-15-order-approval-integrity.md', 'plans\steps-12-15-crosscheck.md') }
+  @{ zip = 'steps-11-15-plans.zip'; files = @('steps-11-15-runbook.md', 'plans\step-11-convert-won-quote.md', 'plans\step-12-job-number.md', 'plans\step-13-intake-decisions.md', 'plans\step-14-job-shape.md', 'plans\step-15-order-approval-integrity.md', 'plans\steps-12-15-crosscheck.md') },
+  @{ zip = 'steps-16-19-plans.zip'; files = @('steps-16-19-runbook.md', 'plans\step-16-lading-create.md', 'plans\step-17-lading-states-and-review.md', 'plans\step-18-bl-document-approval.md', 'plans\step-19-demurrage-clock-reach.md', 'plans\steps-16-19-crosscheck.md') },
+  @{ zip = 'steps-20-26-plans.zip'; files = @('steps-20-26-runbook.md', 'plans\step-20-fee-entry-integrity.md', 'plans\step-21-fee-review-integrity.md', 'plans\step-22-bill-grouping-integrity.md', 'plans\step-23-bill-approval-integrity.md', 'plans\step-24-invoice-issue-integrity.md', 'plans\step-25-invoice-document-truth.md', 'plans\step-26-settlement-integrity.md', 'plans\steps-20-26-crosscheck.md') },
+  @{ zip = 'step-27-plans.zip';     files = @('step-27-runbook.md', 'plans\step-27-month-close-truth.md') }
 )
-# The everything bundle: every plan and crosscheck in plans/, plus the three runbooks.
+# The everything bundle: every plan and crosscheck in plans/, plus every runbook.
 $allPlans = @(Get-ChildItem (Join-Path $root 'plans') -Filter *.md | ForEach-Object { "plans\$($_.Name)" })
 if ($allPlans.Count -lt 5) { throw "all-plans.zip: only $($allPlans.Count) files found in plans/" }
-$bundles += @{ zip = 'all-plans.zip'; files = @('steps-1-3-runbook.md', 'steps-4-10-runbook.md', 'steps-11-15-runbook.md') + $allPlans }
+$bundles += @{ zip = 'all-plans.zip'; files = @('steps-1-3-runbook.md', 'steps-4-10-runbook.md', 'steps-11-15-runbook.md', 'steps-16-19-runbook.md', 'steps-20-26-runbook.md', 'step-27-runbook.md') + $allPlans }
 
 foreach ($b in $bundles) {
   $paths = @()
