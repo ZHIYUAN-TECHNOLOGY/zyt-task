@@ -275,7 +275,10 @@
             "rb-nct-d4-prove-lock-dev-db",
             "rb-nct-c9-wave-4"
           ],
-          "link": "/nct/step-11-plan/#phase-2-a-converted-job-arrives-numbered-and-its-lines-carry-the-number-nct-unnumbered"
+          "link": "/nct/step-11-plan/#phase-2-a-converted-job-arrives-numbered-and-its-lines-carry-the-number-nct-unnumbered",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-5-wt-step11"
+          ]
         },
         {
           "id": "rb-nct-d6-phase-3",
@@ -286,7 +289,10 @@
             "rb-nct-d5-phase-2",
             "rb-nct-c6-wave-3"
           ],
-          "link": "/nct/step-11-plan/#phase-3-receivable-lines-keep-their-quantity-and-unit-price-nct-lump-sums"
+          "link": "/nct/step-11-plan/#phase-3-receivable-lines-keep-their-quantity-and-unit-price-nct-lump-sums",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-5-wt-step11"
+          ]
         },
         {
           "id": "rb-nct-d7-fix-flow-seed",
@@ -350,7 +356,11 @@
             "rb-nct-d5-phase-2",
             "rb-nct-f1-commit-e2e"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-6-wt-step12",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-6-wt-step12",
+            "/nct/steps-11-15-runbook/#wave-6-wt-step13-p2"
+          ]
         },
         {
           "id": "rb-nct-f3-gate-13-p8",
@@ -370,7 +380,10 @@
           "waitsFor": [
             "rb-nct-f2-wave-6"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-6-sop-text-session-in-cprojectzyt-task-not-the-code-repo",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-6-sop-text-session-in-cprojectzyt-task-not-the-code-repo"
+          ]
         },
         {
           "id": "rb-nct-f5-gate-15-probes",
@@ -391,7 +404,10 @@
             "rb-nct-f5-gate-15-probes",
             "rb-nct-f3-gate-13-p8"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-7-wt-step15",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-7-wt-step15"
+          ]
         },
         {
           "id": "rb-nct-f7-wave-8",
@@ -401,7 +417,10 @@
           "waitsFor": [
             "rb-nct-f6-wave-7"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-8-wt-step15-rebase-first-see-6",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-8-wt-step15-rebase-first-see-6"
+          ]
         },
         {
           "id": "rb-nct-f8-gate-14-probes",
@@ -421,7 +440,10 @@
           "waitsFor": [
             "rb-nct-f8-gate-14-probes"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-9-wt-step14",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-9-wt-step14"
+          ]
         },
         {
           "id": "rb-nct-f10-wave-10",
@@ -431,7 +453,11 @@
           "waitsFor": [
             "rb-nct-f9-wave-9"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-10-wt-step15-rebase-first-merges-before-14-p2",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-10-wt-step15-rebase-first-merges-before-14-p2",
+            "/nct/steps-11-15-runbook/#wave-10-wt-step14-rebase-first-merges-after-15-p3"
+          ]
         },
         {
           "id": "rb-nct-f11-wave-11",
@@ -441,7 +467,10 @@
           "waitsFor": [
             "rb-nct-f10-wave-10"
           ],
-          "link": "/nct/steps-11-15-runbook/#5-the-prompt-for-each-session"
+          "link": "/nct/steps-11-15-runbook/#wave-11-wt-step14-rebase-first",
+          "prompts": [
+            "/nct/steps-11-15-runbook/#wave-11-wt-step14-rebase-first"
+          ]
         },
         {
           "id": "rb-nct-f12-unowned-gaps",

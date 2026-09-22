@@ -232,6 +232,23 @@ dialog input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0
 .dialog-actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1.1rem; }
 .dialog-actions .ghostbtn { margin-left: 0; }
 .primary { font-weight: 500; font-size: .88rem; color: #fff; background: var(--heading); border: 0; border-radius: 10px; padding: .55rem 1.1rem; cursor: pointer; }
+.snip-open { display: inline-flex; align-items: center; gap: .45rem; font: 600 .85rem var(--grotesk); color: #fff; background: #4159c9; border: 0; border-radius: 10px; padding: .55rem .9rem; cursor: pointer; }
+.snip-open:hover { filter: brightness(1.1); }
+.snip-open small { font: 500 .72rem var(--mono); opacity: .8; }
+dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padding: 0; max-height: calc(100vh - 3rem); }
+.snip-dialog[open] { display: flex; flex-direction: column; }
+.snip-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding: 1.1rem 1.25rem .8rem; border-bottom: 1px solid var(--border); }
+.snip-head h2 { margin: 0; }
+.snip-head p { margin: .2rem 0 0; }
+.snip-list { list-style: none; margin: 0; padding: 1rem 1.25rem 1.25rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+.snip-item header { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: .35rem; }
+.snip-item b { font: 600 .88rem var(--grotesk); color: var(--heading); }
+.snip-item .lang { font: 500 .66rem var(--mono); color: var(--faint); text-transform: uppercase; letter-spacing: .08em; margin-left: .4rem; }
+.snip-item pre { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .75rem .9rem; overflow-x: auto; font: .78rem/1.55 var(--mono); color: var(--text); white-space: pre; }
+.snip-item pre.wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
+.snip-copy { flex: none; font: 600 .78rem var(--sans); color: var(--accent); background: var(--canvas); border: 1px solid var(--border); border-radius: 8px; padding: .3rem .7rem; cursor: pointer; }
+.snip-copy:hover { border-color: var(--accent); }
+.snip-copy.copied { color: var(--ok); border-color: var(--ok); }
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); background: var(--heading); color: #fff; padding: .6rem 1rem; border-radius: 12px; font-size: .85rem; box-shadow: var(--shadow-card); z-index: 60; max-width: calc(100% - 2rem); }
 
 /* medium: the task panel slides over from the right */
@@ -416,6 +433,14 @@ dialog input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0
   </aside>
   <div class="scrim" id="scrim" hidden></div>
 </div>
+
+<dialog id="snip-dialog" class="snip-dialog" aria-labelledby="snip-title">
+  <div class="snip-head">
+    <div><h2 id="snip-title">Prompts and commands</h2><p class="muted" id="snip-sub"></p></div>
+    <button type="button" class="icon-btn" id="snip-close" aria-label="Close">×</button>
+  </div>
+  <ol class="snip-list" id="snip-list"></ol>
+</dialog>
 
 <dialog id="name-dialog" aria-labelledby="name-title">
   <form id="name-form">
@@ -829,6 +854,8 @@ dialog input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0
         fact('Status', done ? 'Done' : waiting.length ? 'Waiting on ' + waiting.map(function (w) { return w.no; }).join(', ') : 'Ready now'),
         fact('Key', h('code', { text: t.id }))),
       section('Detail', h('p', { text: t.detail })),
+      t.snippets && t.snippets.length ? section('Prompts and commands', h('button', { type: 'button', class: 'snip-open', fk: 'snip-open', onclick: function () { openSnippets(t); } },
+        '⧉ Show and copy', h('small', { text: t.snippets.length + (t.snippets.length === 1 ? ' block' : ' blocks') }))) : null,
       t.run ? gpSection(t.run) : null,
       t.waitsFor.length ? section('Waits for', h('ul', { class: 'steps' }, t.waitsFor.map(function (k) {
         var w = c.byKey[k], wDone = isDone(w);
@@ -862,6 +889,41 @@ dialog input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0
     return GP_PANELS[job].node;
   }
 
+
+  // ── prompts and commands: the code blocks of the runbook section a step points at ──
+  // Built into the seed by build-seed.mjs from the runbook markdown, so they match the page.
+  function copyText(text, btn, pre) {
+    function done(ok) {
+      btn.textContent = ok ? 'Copied' : 'Press Ctrl+C';
+      btn.classList.toggle('copied', ok);
+      setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2200);
+    }
+    // No clipboard permission (plain http, an embedded frame, an older browser): select the block so
+    // Ctrl+C / Cmd+C copies exactly it, and try the old copy command on that selection.
+    function fallback() {
+      var range = document.createRange(); range.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      done(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    else fallback();
+  }
+  function openSnippets(t) {
+    var list = $('snip-list'); list.textContent = '';
+    $('snip-sub').textContent = t.no + ' · ' + t.title;
+    t.snippets.forEach(function (sn) {
+      var btn = h('button', { type: 'button', class: 'snip-copy' }, 'Copy');
+      var pre = h('pre', { class: sn.lang === 'text' ? 'wrap' : null }, h('code', { text: sn.text }));
+      btn.addEventListener('click', function () { copyText(sn.text, btn, pre); });
+      list.appendChild(h('li', { class: 'snip-item' },
+        h('header', null, h('span', null, h('b', { text: sn.label }), h('span', { class: 'lang', text: sn.lang })), btn), pre));
+    });
+    var d = $('snip-dialog');
+    if (typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', '');
+    $('snip-close').focus({ preventScroll: true });
+  }
 
   function renderAll() {
     var active = document.activeElement;
@@ -966,6 +1028,8 @@ dialog input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0
     if (cb) cb(name || null);
   }
   $('name-form').addEventListener('submit', function (e) { e.preventDefault(); var v = $('name-input').value; $('name-dialog').close(); finishName(v); });
+  $('snip-close').addEventListener('click', function () { $('snip-dialog').close(); });
+  $('snip-dialog').addEventListener('click', function (e) { if (e.target === $('snip-dialog')) $('snip-dialog').close(); });
   $('name-cancel').addEventListener('click', function () { $('name-dialog').close(); finishName(null); });
   $('name-dialog').addEventListener('cancel', function () { finishName(null); });
 
@@ -1007,6 +1071,7 @@ dialog input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0
   $('who').addEventListener('click', function () { askName(null); });
   $('scrim').addEventListener('click', function () { selectTask(null); });
   document.addEventListener('keydown', function (e) {
+    if ($('snip-dialog').open) { if (e.key === 'Escape') { e.preventDefault(); $('snip-dialog').close(); } return; }
     if ($('name-dialog').open) return;
     var tag = (document.activeElement && document.activeElement.tagName) || '';
     if (e.key === '/' && !/INPUT|SELECT|TEXTAREA/.test(tag)) { e.preventDefault(); $('q').focus(); }

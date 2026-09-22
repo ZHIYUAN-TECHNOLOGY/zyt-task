@@ -105,6 +105,14 @@ in git: add it to `$bundles` in `deploy-site.ps1` (the runbook markdown plus eve
 name) and link it from the runbook's "Get the files" section as `/nct/downloads/<name>.zip`. The
 build fails if a listed file is missing, so a renamed plan is caught at deploy time.
 
+**Prompts and commands on dashboard steps.** A runbook step's panel offers a "Show and copy"
+dialog with the code blocks (session prompts, bash, SQL) of the section its `link` points at.
+`build-seed.mjs` reads them from the page's markdown source at build time, so they always match the
+page — never paste prompt text into the seed. When one step needs other or several sections, give
+it `prompts`: a list of full links (`/nct/<page>/#<heading-id>`); the build fails if an id does not
+exist, so a renamed heading is caught. Heading ids follow `build-runbook.mjs`'s slug rules, and a
+block's label is the short line or `###` heading just above it.
+
 If the work also becomes dashboard steps, add them to `tracker/seed/runbook-<key>.json` as a stage
 (`waitsFor` holds step ids, `link` points at `<page>#<heading-slug>`, `owner` is `wilfred` or
 `session`), then **seed Convex before the site deploys**:
