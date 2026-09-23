@@ -17,7 +17,7 @@ files are the spec for those. If something below stops being true, fix this file
 | `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits |
 | `/nct/step-11-plan/` … `/nct/step-15-plan/` | `C:/Project/ZYT-Task/plans/step-1N-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9, all settled 2026-09-17. **Built and live, but deliberately not in `projects.json`** (2026-09-18): the page list would be 12 entries long, so the plans are reached from the steps 11–15 runbook's §0 table instead. A page can be published without being listed; only the listing is dropped |
 | `/nct/steps-12-15-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-12-15-crosscheck.md`, same renderer (kind "Crosscheck") | Hand edits |
-| `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1` |
+| `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1`. Dashboard stages G, H, I since 2026-09-23 (56 steps, one per wave heading plus setup, gates and clean-up) |
 | `/nct/step-16-plan/` … `/nct/step-27-plan/` | `C:/Project/ZYT-Task/plans/step-{16..27}-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9 settled 2026-09-21. Published but unlisted, like steps 11–15 |
 | `/nct/steps-16-19-crosscheck/`, `/nct/steps-20-26-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-16-19-crosscheck.md`, `steps-20-26-crosscheck.md` (kind "Crosscheck"). X17–X40 settled 2026-09-21 | Hand edits. Step 27's collision check is inside its runbook §2 |
 | `/jwa/full-chain-sop/` | `C:/Project/JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json` + `shots/` beside it | zyt pipeline. Registry id `jwa-system/jwa-full-chain` (draft); built with zyt-setup's `build-page.mjs` without `--no-ledger` since 2026-09-16, so its fix list is public like NCT's |
@@ -57,7 +57,8 @@ belong in layers 1–3, not in the source**.
 | Dashboard UI | `hosting/hub/index.html` | Redeploy |
 | Which pages the left column lists, and in what order | `hosting/hub/projects.json` — pages are grouped under their client, the selected client first. `"nav": "header"` on a page moves it to the top bar instead (pages about this site, not about a client's work) | Redeploy |
 | Task titles, detail, repair, source locations, workstreams | `tracker/seed/*-<key>.json` | Redeploy; new task ids also need Convex rows (below) |
-| Runbook stages and steps (what's next, owner, waits-for, link to a runbook section) | `tracker/seed/runbook-<key>.json` | Redeploy; new step ids need Convex rows — run `seed:nct` (dev and `--prod`) **before** the site deploy, or ticking them fails with "That task does not exist." |
+| Runbook stages and steps (what's next, owner, waits-for, link to a runbook section) | `tracker/seed/runbook-<key>.json` | Redeploy; new step ids need Convex rows — run `seed:nct` (dev and `--prod`) **before** the site deploy, or ticking them fails with "That task does not exist." A real deploy now refuses to ship while any key has no row (the seed-row preflight in `deploy-site.ps1`); a DryRun only warns |
+| A wave heading in a runbook (`### Wave 12 — …`, `4. Wave 1: …`) | `tracker/seed/runbook-<key>.json` gets a step whose `link` or `prompts` points at it | The build fails with `<source> wave heading #<id> has no step` until one does — a runbook cannot gain a wave without a checklist step |
 | Add a company or a page | `projects.json` + seed files + a build block in `deploy-site.ps1` + the path in `PAGES` in `hosting/pwa/sw.js` + a seed mutation in `convex-app/convex/seed.ts` | Redeploy; run its seed |
 | Brand (logo, palette, fonts) | `hosting/hub/brand/BRAND.md`, files beside it, `hosting/pwa/make-icons.ps1` | Redeploy |
 | A runbook step's **Run golden path** button | `"run": "<job id>"` on the step in `tracker/seed/runbook-<key>.json`; job ids and what they run live in `JOBS` in `hosting/runner/server.mjs` | Redeploy (the job itself needs no deploy — restart the runner) |
@@ -111,7 +112,12 @@ dialog with the code blocks (session prompts, bash, SQL) of the section its `lin
 page — never paste prompt text into the seed. When one step needs other or several sections, give
 it `prompts`: a list of full links (`/nct/<page>/#<heading-id>`); the build fails if an id does not
 exist, so a renamed heading is caught. Heading ids follow `build-runbook.mjs`'s slug rules, and a
-block's label is the short line or `###` heading just above it.
+block's label is the short line or `###` heading just above it. A step that points into a markdown
+page must yield at least one block; if its section has none by design (a decisions or
+disagreements section), give it `"snippets": false`, or the build fails with
+`takes no snippets from … (set "snippets": false if that is by design)`.
+`node hosting/hub/build-seed.mjs --report-snippets` lists the steps that would fail, and
+`--runbook <path>` builds from a scratch copy of the seed, so negative tests never edit tracked files.
 
 If the work also becomes dashboard steps, add them to `tracker/seed/runbook-<key>.json` as a stage
 (`waitsFor` holds step ids, `link` points at `<page>#<heading-slug>`, `owner` is `wilfred` or

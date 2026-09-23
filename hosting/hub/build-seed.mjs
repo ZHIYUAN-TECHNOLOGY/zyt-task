@@ -1,18 +1,26 @@
 // Builds the JSON the dashboard embeds: every project in hosting/hub/projects.json with
 // its tasks, workstreams and flow from tracker/seed. Live tick state comes from Convex;
 // this is the content and the offline fallback.
-//   node hosting/hub/build-seed.mjs <out.json>
+//   node hosting/hub/build-seed.mjs <out.json> [--runbook <path>] [--report-snippets]
+// --runbook <path>    use this runbook seed instead of projects.json's seed.runbook (the one project
+//                     that has one). For negative tests on a scratch copy; tracked files stay untouched.
+// --report-snippets   print the runbook steps that would fail the "no silent empty snippets" rule,
+//                     then exit 0 without writing anything.
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Marked } from 'marked';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..', '..');
-const out = process.argv[2];
-if (!out) throw new Error('usage: node build-seed.mjs <out.json>');
+const argv = process.argv.slice(2);
+const flag = (name) => { const i = argv.indexOf(name); return i === -1 ? null : (argv.splice(i, 2)[1] ?? ''); };
+const runbookOverride = flag('--runbook');
+const reportSnippets = argv.includes('--report-snippets');
+const out = argv.filter((a) => !a.startsWith('--'))[0];
+if (!out && !reportSnippets) throw new Error('usage: node build-seed.mjs <out.json> [--runbook <path>] [--report-snippets]');
 
-const read = (rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
+const read = (rel) => JSON.parse(readFileSync(isAbsolute(rel) ? rel : join(root, rel), 'utf8'));
 const registry = read('hosting/hub/projects.json');
 // Pages a runbook step may link to: every listed page, plus each company's `unlisted` paths —
 // pages deploy-site.ps1 builds but that are reached from a runbook rather than the page list.
@@ -39,8 +47,14 @@ function sectionsOf(sourceRel) {
   const tokens = marked.lexer(readFileSync(join(root, sourceRel), 'utf8'));
   const slug = slugger();
   const map = new Map();
-  tokens.forEach((t, i) => { if (t.type === 'heading') map.set(slug(marked.parseInline(t.text)), { i, depth: t.depth }); });
-  const result = { tokens, map };
+  const headings = [];
+  tokens.forEach((t, i) => {
+    if (t.type !== 'heading') return;
+    const id = slug(marked.parseInline(t.text));
+    map.set(id, { i, depth: t.depth });
+    headings.push({ id, text: t.text });
+  });
+  const result = { tokens, map, headings };
   sectionsCache.set(sourceRel, result);
   return result;
 }
@@ -68,6 +82,10 @@ function snippetsFor(link, sourceByHref) {
   return out;
 }
 
+// A heading that names a wave (plan D28): "Wave 12 — `wt-step16`", "4. Wave 1: start three sessions".
+const WAVE_HEADING = /^(\d+\.\s*)?Wave\s+\d+/i;
+const emptySnippetSteps = [];
+
 const projects = registry.map((p) => {
   const tasks = read(p.seed.tasks);
   const workstreams = read(p.seed.workstreams).map(({ visible, ...w }) => w);
@@ -82,12 +100,14 @@ const projects = registry.map((p) => {
   }
 
   // Runbook steps tick through the same Convex table as tasks, so their ids share one key space.
-  const runbook = p.seed.runbook ? read(p.seed.runbook) : null;
+  const runbookPath = p.seed.runbook ? (runbookOverride || p.seed.runbook) : null;
+  const runbook = runbookPath ? read(runbookPath) : null;
   // every page's markdown source, across companies, so a step can link another company's page
   const sourceByHref = new Map(registry.flatMap((q) => q.pages.filter((pg) => pg.source).map((pg) => [pg.href, pg.source])));
   if (runbook) {
     const seen = new Set(known);
     const stepIds = new Set(runbook.stages.flatMap((st) => st.steps.map((s) => s.id)));
+    const anchored = new Set(); // "<href>#<id>" of every step link and prompt, for the wave rule
     for (const st of runbook.stages) {
       if (!st.steps.length) throw new Error(`${p.key}: runbook stage ${st.id} has no steps`);
       for (const s of st.steps) {
@@ -103,9 +123,33 @@ const projects = registry.map((p) => {
         for (const l of s.prompts || []) {
           if (!allHrefs.has(l.split('#')[0])) throw new Error(`${p.key}: runbook step ${s.id} prompts ${l}, which is not a page in projects.json`);
         }
-        const snippets = (s.prompts || [s.link]).flatMap((l) => snippetsFor(l, sourceByHref));
+        const sources = s.prompts || [s.link];
+        for (const l of sources) if (l && l.includes('#')) anchored.add(l);
+        const snippets = sources.flatMap((l) => snippetsFor(l, sourceByHref));
+        // No silent empty snippets (plan §4.3 #6): a step pointing into a markdown page must yield at
+        // least one block, unless it says "snippets": false because its section has none by design.
+        const optOut = s.snippets === false;
+        const intoMarkdown = sources.some((l) => l && (sourceByHref.get(l.split('#')[0]) || '').endsWith('.md'));
+        if (!snippets.length && intoMarkdown && !optOut) {
+          if (reportSnippets) emptySnippetSteps.push(`${s.id}  <- ${sources.join(', ')}`);
+          else throw new Error(`${p.key}: runbook step ${s.id} takes no snippets from ${sources.join(', ')} (set "snippets": false if that is by design)`);
+        }
         delete s.prompts;
+        delete s.snippets;
         if (snippets.length) s.snippets = snippets;
+      }
+    }
+
+    // Wave coverage (plan §4.3 #5, D2): every wave heading of every runbook page must be the anchor
+    // of some step's link or prompts, in any stage. Coverage is by anchor, so a new wave in a runbook
+    // cannot ship without a checklist step for it.
+    if (!reportSnippets) {
+      for (const pg of p.pages) {
+        if (pg.type !== 'Runbook' || !(pg.source || '').endsWith('.md')) continue;
+        for (const hd of sectionsOf(pg.source).headings) {
+          if (!WAVE_HEADING.test(hd.text.replace(/`/g, '').trim())) continue;
+          if (!anchored.has(`${pg.href}#${hd.id}`)) throw new Error(`${p.key}: ${pg.source} wave heading #${hd.id} has no step`);
+        }
       }
     }
   }
@@ -117,6 +161,13 @@ const projects = registry.map((p) => {
   const { seed, unlisted, ...meta } = p;
   return { ...meta, pages, tasks, workstreams, runbook, flow: { phases: flow.phases, steps: flow.steps } };
 });
+
+if (reportSnippets) {
+  console.log(emptySnippetSteps.length
+    ? `steps that take no snippets and do not say "snippets": false (${emptySnippetSteps.length}):\n  ${emptySnippetSteps.join('\n  ')}`
+    : 'every step that points into a markdown page takes at least one snippet, or opts out');
+  process.exit(0);
+}
 
 // "<" escaped so the JSON can sit inside a <script> tag safely
 const json = JSON.stringify({ projects }).replace(/</g, '\\u003c');

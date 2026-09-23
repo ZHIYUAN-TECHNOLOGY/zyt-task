@@ -345,7 +345,8 @@
           "owner": "wilfred",
           "title": "Commit or set aside the uncommitted e2e changes",
           "detail": "The main nct-layout checkout has uncommitted edits under e2e/ (seed-cli.ts among them). Every browser walk uses that seeder and worktrees will not see the edits. Commit them or put them somewhere safe before Wave 6 — no session stashes or resets (crosscheck X16).",
-          "link": "/nct/steps-11-15-runbook/#10-traps-in-this-repo"
+          "link": "/nct/steps-11-15-runbook/#10-traps-in-this-repo",
+          "snippets": false
         },
         {
           "id": "rb-nct-f2-wave-6",
@@ -478,7 +479,743 @@
           "owner": "wilfred",
           "title": "Name an owner for the accepted gaps (X13), or accept them",
           "detail": "Nobody refuses submitting an archived, unreceived or rejected order; nobody keeps rejected orders out of the trade ledgers; the SOP text for steps 14–15 has no owner. Accepted on 2026-09-17 as known gaps.",
-          "link": "/nct/steps-11-15-runbook/#12-where-the-plans-and-the-crosscheck-disagree"
+          "link": "/nct/steps-11-15-runbook/#12-where-the-plans-and-the-crosscheck-disagree",
+          "snippets": false
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-steps-16-19",
+      "title": "Steps 16–19 · bill of lading → release → B/L document → demurrage clock",
+      "blurb": "Waves 12–16 of the steps 16–19 runbook, in four worktrees. Every decision settled 2026-09-21; Wave 12 starts when all of Wave 11 is merged.",
+      "steps": [
+        {
+          "id": "rb-nct-1619-setup",
+          "owner": "session",
+          "title": "One-time setup; create each wave's worktrees",
+          "detail": "Update feat/new-layout, then create a wave's worktrees when that wave starts: wt-step16, wt-step18, wt-step19 at Wave 12 (kept through Wave 14), wt-step17 at Wave 15 (kept through Wave 16). Run bun install in each and start claude there.",
+          "link": "/nct/steps-16-19-runbook/#4-one-time-setup"
+        },
+        {
+          "id": "rb-nct-1619-decisions",
+          "owner": "wilfred",
+          "title": "Confirm the settled decisions (16–19, X17–X27)",
+          "detail": "Settled 2026-09-21: the recommended option of every decision in the four plans and every cross-plan item X17–X27, with no exception; step 17 D2 is B (per X17) and 17 D8 is superseded by 16 D1 (per X18). Tick to confirm; sessions implement the Chosen option and do not re-open it.",
+          "link": "/nct/steps-16-19-runbook/#1-before-any-wave-starts-settle-these-decisions",
+          "snippets": false
+        },
+        {
+          "id": "rb-nct-1619-w12-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 16-P1, P2, P3 before step 16 Task 1.1; 16-P4, P6 before Task 1.2",
+          "detail": "Read-only production probes, run with the owner's override before the code is written. 16-P1, 16-P2 and 16-P3 gate 16 Task 1.1 (D1, D2, D3); 16-P4 and 16-P6 gate 16 Task 1.2 (D4, D5, D7). A result that contradicts a settled decision stops that task for a re-plan.",
+          "link": "/nct/steps-16-19-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-1619-w12-step16",
+          "owner": "session",
+          "title": "Wave 12: step 16 Phase 1 in wt-step16",
+          "detail": "Tasks 1.1–1.5: under X17 this phase owns the lading.update under-review freeze, the FOR UPDATE load and the lading.exists lock. Starts when all of Wave 11 is merged; ticked when its PR is merged. Gated by 16-P1, P2, P3, P4 and P6.",
+          "waitsFor": [
+            "rb-nct-1619-setup",
+            "rb-nct-1619-w12-probes",
+            "rb-nct-f11-wave-11"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-12-wt-step16",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-12-wt-step16"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w12-step18",
+          "owner": "session",
+          "title": "Wave 12: step 18 Phase 1 in wt-step18",
+          "detail": "Tasks 1.1, 1.3 and 1.5 only (D3-A / X23): the order and B/L picker and document.unlink; do not edit the order documents payload. Starts when all of Wave 11 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-1619-setup",
+            "rb-nct-f11-wave-11"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-12-wt-step18",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-12-wt-step18"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w12-step19",
+          "owner": "session",
+          "title": "Wave 12: step 19 Phase 1 in wt-step19",
+          "detail": "Tasks 1.1–1.4: blJob.sourceStatus and one missing-login notice on the board, record page and gate-out card (D7-B). Starts when all of Wave 11 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-1619-setup",
+            "rb-nct-f11-wave-11"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-12-wt-step19",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-12-wt-step19"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w13-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 16-P5, 16-P7, 19-P2, P3, P6 before Wave 13's tasks",
+          "detail": "16-P5 gates 16 Task 2.1 (D6); 16-P7 gates 16 Task 2.4 (D9); 19-P2, 19-P3 and 19-P6 gate 19 Task 2.1 (D2, D4, D3; drop Task 2.1 if 19-P3 shows no difference). A contradiction stops that task for a re-plan.",
+          "link": "/nct/steps-16-19-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-1619-w13-step16",
+          "owner": "session",
+          "title": "Wave 13: step 16 Phase 2 in wt-step16 (rebase first)",
+          "detail": "Tasks 2.1–2.4: the write-side order resolver, and Bills of lading (n) / Raise bill of lading on the order record page. Server before web. Starts when Wave 12 is merged; ticked when its PR is merged. Gated by 16-P5 and 16-P7.",
+          "waitsFor": [
+            "rb-nct-1619-w12-step16",
+            "rb-nct-1619-w12-step18",
+            "rb-nct-1619-w12-step19",
+            "rb-nct-1619-w13-probes"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-13-wt-step16-rebase-first-see-6",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-13-wt-step16-rebase-first-see-6"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w13-step18",
+          "owner": "session",
+          "title": "Wave 13: step 18 Phase 2 in wt-step18 (rebase first)",
+          "detail": "Tasks 2.1–2.3: re-type a needs_review document at review and show validation errors under their fields (D5-A, D6-A). Web only for deploy purposes. Starts when Wave 12 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-1619-w12-step16",
+            "rb-nct-1619-w12-step18",
+            "rb-nct-1619-w12-step19"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-13-wt-step18-rebase-first",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-13-wt-step18-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w13-step19",
+          "owner": "session",
+          "title": "Wave 13: step 19 Phase 2 in wt-step19 (rebase first)",
+          "detail": "Tasks 2.1–2.4: step 19 owns the order documents payload reshape (X23). Its server deploys only after step 18 Phase 1 is deployed. Starts when Wave 12 is merged; ticked when its PR is merged. Gated by 19-P2, P3 and P6.",
+          "waitsFor": [
+            "rb-nct-1619-w12-step16",
+            "rb-nct-1619-w12-step18",
+            "rb-nct-1619-w12-step19",
+            "rb-nct-1619-w13-probes"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-13-wt-step19-rebase-first",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-13-wt-step19-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w14-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 18-P1 and 18-P2 before step 18 Task 3.1",
+          "detail": "18-P1 (open duplicate bl_jobs per org and BL number) and 18-P2 (approved mbl_hbl documents with no job) gate 18 Task 3.1 (D7, D8); 18-P1's count goes in the release note. A contradiction stops the task for a re-plan.",
+          "link": "/nct/steps-16-19-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-1619-w14-step16",
+          "owner": "session",
+          "title": "Wave 14: step 16 Phase 3 in wt-step16 (rebase first)",
+          "detail": "Tasks 3.1–3.2: OCR errors shown per field, with an Apply anyway tick (D11-A, D12-A). Starts when Wave 13 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-1619-w13-step16",
+            "rb-nct-1619-w13-step18",
+            "rb-nct-1619-w13-step19"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-14-wt-step16-rebase-first",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-14-wt-step16-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w14-step18",
+          "owner": "session",
+          "title": "Wave 14: step 18 Phase 3 in wt-step18 (rebase first)",
+          "detail": "Tasks 3.1–3.3: the transaction and per-org advisory lock in blIntakeHook, and the approval_hook_failed notice (D7-A, D8-A); no migration. API only. Starts when Wave 13 is merged; ticked when its PR is merged. Gated by 18-P1 and 18-P2.",
+          "waitsFor": [
+            "rb-nct-1619-w13-step16",
+            "rb-nct-1619-w13-step18",
+            "rb-nct-1619-w13-step19",
+            "rb-nct-1619-w14-probes"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-14-wt-step18-rebase-first",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-14-wt-step18-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w14-step19",
+          "owner": "session",
+          "title": "Wave 14: step 19 Phase 3 in wt-step19 (rebase first)",
+          "detail": "Tasks 3.1–3.3: blJob.get returns the order-scoped matching orders by BL number (D6-A). Server first. Starts when Wave 13 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-1619-w13-step16",
+            "rb-nct-1619-w13-step18",
+            "rb-nct-1619-w13-step19"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-14-wt-step19-rebase-first",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-14-wt-step19-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w15-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 17-P1 and 17-P2 before step 17 Task 1.3",
+          "detail": "17-P1 (the lading flow per org) and 17-P2 (bills by latest submission, a re-run of 16-P4's first query) gate 17 Task 1.3 and the Phase 1 deploy notice. A contradiction stops the task for a re-plan.",
+          "link": "/nct/steps-16-19-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-1619-w15-step17",
+          "owner": "session",
+          "title": "Wave 15: step 17 Phase 1 in wt-step17",
+          "detail": "The Review menu on the bill page, lading.get.underReview with the notice and Save disabled, and the deleteAttachment freeze; no second guard or lock (X17). API before web. Starts when Wave 14 is merged (all of step 16 is in); ticked when its PR is merged. Gated by 17-P1 and 17-P2.",
+          "waitsFor": [
+            "rb-nct-1619-w14-step16",
+            "rb-nct-1619-w14-step18",
+            "rb-nct-1619-w14-step19",
+            "rb-nct-1619-w15-probes"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-15-wt-step17",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-15-wt-step17"
+          ]
+        },
+        {
+          "id": "rb-nct-1619-w16-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 17-P4 before step 17 Task 2.1; 17-P6 before Task 2.3",
+          "detail": "17-P4 gates 17 Task 2.1 (D6): if the desk routinely checks out held bills, stop and re-plan. 17-P6 gates 17 Task 2.3 (D8, now 16 D1 under X18).",
+          "link": "/nct/steps-16-19-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-1619-w16-step17",
+          "owner": "session",
+          "title": "Wave 16: step 17 Phase 2 in wt-step17 (rebase first)",
+          "detail": "One locked transaction per state move, the attachment list lock, the Hold reason, the D6 precondition and the drift report. API first is cleanest. Starts when Wave 15 is merged; ticked when its PR is merged. Gated by 17-P4 and 17-P6.",
+          "waitsFor": [
+            "rb-nct-1619-w15-step17",
+            "rb-nct-1619-w16-probes"
+          ],
+          "link": "/nct/steps-16-19-runbook/#wave-16-wt-step17-rebase-first",
+          "prompts": [
+            "/nct/steps-16-19-runbook/#wave-16-wt-step17-rebase-first"
+          ],
+          "run": "nct-bl-run-steps-16-19"
+        },
+        {
+          "id": "rb-nct-1619-clean-up",
+          "owner": "session",
+          "title": "Remove merged worktrees",
+          "detail": "Only once a branch is merged and git status in its worktree is clean. Keep wt-step16, wt-step18 and wt-step19 through Wave 14, and wt-step17 through Wave 16.",
+          "waitsFor": [
+            "rb-nct-1619-w16-step17"
+          ],
+          "link": "/nct/steps-16-19-runbook/#11-clean-up"
+        },
+        {
+          "id": "rb-nct-1619-disagreements",
+          "owner": "wilfred",
+          "title": "Where the plans and the crosscheck disagree",
+          "detail": "Most rows are resolved by the 2026-09-21 settlements and kept for the record; the last column says which reading this runbook uses where a small gap remains. None re-opens a settled decision.",
+          "link": "/nct/steps-16-19-runbook/#12-where-the-plans-and-the-crosscheck-disagree",
+          "snippets": false
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-steps-20-26",
+      "title": "Steps 20–26 · fees → bills → invoice → settlement",
+      "blurb": "Waves 17–21 of the steps 20–26 runbook, in seven worktrees; Wave 21 is optional. Every decision settled 2026-09-21; Wave 17 starts when all of Wave 16 is merged.",
+      "steps": [
+        {
+          "id": "rb-nct-2026-setup",
+          "owner": "session",
+          "title": "One-time setup; create each wave's worktrees",
+          "detail": "Update feat/new-layout, then create a wave's worktrees when that wave starts: wt-step20, wt-step22, wt-step23, wt-step25 and wt-step26 at Wave 17; wt-step21 and wt-step24 at Wave 18. Run bun install in each and start claude there.",
+          "link": "/nct/steps-20-26-runbook/#4-one-time-setup"
+        },
+        {
+          "id": "rb-nct-2026-decisions",
+          "owner": "wilfred",
+          "title": "Confirm the settled decisions (20–26, X28–X40)",
+          "detail": "Settled 2026-09-21: the recommended option of every per-plan decision and the recommended reading of every cross-plan item X28–X40, with no exception. Where an X-item overrides a plan's own recommendation, the X-item wins. Tick to confirm; sessions implement the Chosen option and do not re-open it.",
+          "link": "/nct/steps-20-26-runbook/#1-before-any-wave-starts-the-settled-decisions",
+          "snippets": false
+        },
+        {
+          "id": "rb-nct-2026-w17-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 22-P1, 22-P4, 22-P5, 26-P3 and 25-P1, P3, P4, P6, P7 before Wave 17's tasks",
+          "detail": "22-P1 gates 22 Task 1.1; 22-P4 and 22-P5 gate 22 Task 1.2 (D3); 26-P3 gates 26 Task 1.2 (D3; re-plan to B on reconciliation use); 25-P1, P3, P4, P6 and P7 gate 25 Phase 1. A contradiction stops that task for a re-plan.",
+          "link": "/nct/steps-20-26-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-2026-w17-step20",
+          "owner": "session",
+          "title": "Wave 17: step 20 Phase 1 in wt-step20",
+          "detail": "Tasks 1.1–1.6: keep the delete set named removable (loaded and not kept), which step 21 Phase 2 builds on (X29). Server first. Starts when all of Wave 16 is merged; ticked when its PR is merged. Ask for 20-P3 before the release note.",
+          "waitsFor": [
+            "rb-nct-2026-setup",
+            "rb-nct-1619-w16-step17"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-17-wt-step20",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-17-wt-step20"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w17-step22",
+          "owner": "session",
+          "title": "Wave 17: step 22 Phase 1 in wt-step22",
+          "detail": "Tasks 1.1–1.4: under X28 this phase owns the whole createBill body, with the locked read ordered by (created_at, id) (X30). API only. Starts when all of Wave 16 is merged; ticked when its PR is merged. Gated by 22-P1, 22-P4 and 22-P5.",
+          "waitsFor": [
+            "rb-nct-2026-setup",
+            "rb-nct-1619-w16-step17",
+            "rb-nct-2026-w17-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-17-wt-step22",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-17-wt-step22"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w17-step23",
+          "owner": "session",
+          "title": "Wave 17: step 23 Phase 1 in wt-step23",
+          "detail": "Tasks 1.1–1.5: export the shared underReviewGate(resourceType) (X34). API only; announce \"request withdrawal before changing a bill\". Starts when all of Wave 16 is merged; ticked when its PR is merged. Ask for 23-P2 and 23-P4 before the release note.",
+          "waitsFor": [
+            "rb-nct-2026-setup",
+            "rb-nct-1619-w16-step17"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-17-wt-step23",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-17-wt-step23"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w17-step25",
+          "owner": "session",
+          "title": "Wave 17: step 25 Phase 1 in wt-step25",
+          "detail": "Tasks 1.1–1.5; do not touch invoices.cancel (Phase 2, Wave 20). API before web. Starts when all of Wave 16 is merged; ticked when its PR is merged. Gated by 25-P1, P3, P4, P6 and P7.",
+          "waitsFor": [
+            "rb-nct-2026-setup",
+            "rb-nct-1619-w16-step17",
+            "rb-nct-2026-w17-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-17-wt-step25",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-17-wt-step25"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w17-step26",
+          "owner": "session",
+          "title": "Wave 17: step 26 Phase 1 in wt-step26",
+          "detail": "Tasks 1.1–1.4 (D1-A, D3-A, D9-A); add no locks in this phase. API first. Starts when all of Wave 16 is merged; ticked when its PR is merged. Gated by 26-P3 before Task 1.2.",
+          "waitsFor": [
+            "rb-nct-2026-setup",
+            "rb-nct-1619-w16-step17",
+            "rb-nct-2026-w17-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-17-wt-step26",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-17-wt-step26"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w18-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 23-P8 before step 23 Phase 2; 24-P2 before step 24 Task 1.2 ships",
+          "detail": "23-P8 (approved bills missing courier/voucher numbers) gates 23 Phase 2 (D4). 24-P2 (generated-shape invoice numbers at or ahead of the counter) gates 24 Task 1.2 shipping; any rows go to accounting.",
+          "link": "/nct/steps-20-26-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-2026-w18-step20",
+          "owner": "session",
+          "title": "Wave 18: step 20 Phases 2 and 3 in wt-step20 (rebase first)",
+          "detail": "Phase 2 (Tasks 2.1–2.4, locks only under X29), then Phase 3 (Tasks 3.1–3.2, the no-vendor warning under X32) as a second PR. Starts when Wave 17 is merged; ticked when both PRs are merged.",
+          "waitsFor": [
+            "rb-nct-2026-w17-step20",
+            "rb-nct-2026-w17-step22",
+            "rb-nct-2026-w17-step23",
+            "rb-nct-2026-w17-step25",
+            "rb-nct-2026-w17-step26"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-18-wt-step20-rebase-first-see-6",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-18-wt-step20-rebase-first-see-6"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w18-step21",
+          "owner": "session",
+          "title": "Wave 18: step 21 Phase 1 in wt-step21",
+          "detail": "Task 1.1 is only withdraw_pending in the J4 set: step 22 Phase 1 already owns createBill (X28). API only. Starts when Wave 17 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-2026-w17-step20",
+            "rb-nct-2026-w17-step22",
+            "rb-nct-2026-w17-step23",
+            "rb-nct-2026-w17-step25",
+            "rb-nct-2026-w17-step26"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-18-wt-step21",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-18-wt-step21"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w18-step23",
+          "owner": "session",
+          "title": "Wave 18: step 23 Phase 2 in wt-step23 (rebase first)",
+          "detail": "Tasks 2.1–2.3: touch only BillEditDialog and the update verb's gate list; merges before step 24 Phase 1. API and web together. Starts when Wave 17 is merged; ticked when its PR is merged. Gated by 23-P8.",
+          "waitsFor": [
+            "rb-nct-2026-w17-step20",
+            "rb-nct-2026-w17-step22",
+            "rb-nct-2026-w17-step23",
+            "rb-nct-2026-w17-step25",
+            "rb-nct-2026-w17-step26",
+            "rb-nct-2026-w18-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-18-wt-step23-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-18-wt-step23-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w18-step24",
+          "owner": "session",
+          "title": "Wave 18: step 24 Phase 1 in wt-step24",
+          "detail": "Tasks 1.1–1.4: touch only InvoicingDialog; add no locks in this phase. Server first or together. Starts when Wave 17 is merged; ticked when its PR is merged. Gated by 24-P2 before Task 1.2 ships.",
+          "waitsFor": [
+            "rb-nct-2026-w17-step20",
+            "rb-nct-2026-w17-step22",
+            "rb-nct-2026-w17-step23",
+            "rb-nct-2026-w17-step25",
+            "rb-nct-2026-w17-step26",
+            "rb-nct-2026-w18-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-18-wt-step24",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-18-wt-step24"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w18-step26",
+          "owner": "session",
+          "title": "Wave 18: step 26 Phase 2 in wt-step26 (rebase first)",
+          "detail": "Tasks 2.1–2.4: payment, then cost lines by (created_at, id), then the bill, in verify and reverse (X30). Server only. Starts when Wave 17 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-2026-w17-step20",
+            "rb-nct-2026-w17-step22",
+            "rb-nct-2026-w17-step23",
+            "rb-nct-2026-w17-step25",
+            "rb-nct-2026-w17-step26"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-18-wt-step26-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-18-wt-step26-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w19-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 21-P5, P6, P7, 22-P6 and 23-P6, P7 before Wave 19's tasks",
+          "detail": "21-P5, 21-P6 and 21-P7 gate 21 Task 2.3 (routine use stops the task for a re-plan of D4/D6); 22-P6 gates 22 Task 2.2 (D5); 23-P6 and 23-P7 gate 23 Phase 3 (D5).",
+          "link": "/nct/steps-20-26-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-2026-w19-step21",
+          "owner": "session",
+          "title": "Wave 19: step 21 Phase 2 in wt-step21 (rebase first)",
+          "detail": "Tasks 2.1–2.5: the approved and under-review freeze on saveChildren, computed from step 20's removable (X29). API before web; announce \"withdraw before editing a fee\". Starts when Wave 18 is merged; ticked when its PR is merged. Gated by 21-P5, P6 and P7.",
+          "waitsFor": [
+            "rb-nct-2026-w18-step20",
+            "rb-nct-2026-w18-step21",
+            "rb-nct-2026-w18-step23",
+            "rb-nct-2026-w18-step24",
+            "rb-nct-2026-w18-step26",
+            "rb-nct-2026-w19-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-19-wt-step21-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-19-wt-step21-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w19-step22",
+          "owner": "session",
+          "title": "Wave 19: step 22 Phase 2 in wt-step22 (rebase first)",
+          "detail": "Tasks 2.1–2.3: step 20 has finished with the order fees page; change only the Cost Detail link (X36). Web only. Starts when Wave 18 is merged; ticked when its PR is merged. Gated by 22-P6.",
+          "waitsFor": [
+            "rb-nct-2026-w18-step20",
+            "rb-nct-2026-w18-step21",
+            "rb-nct-2026-w18-step23",
+            "rb-nct-2026-w18-step24",
+            "rb-nct-2026-w18-step26",
+            "rb-nct-2026-w19-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-19-wt-step22-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-19-wt-step22-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w19-step23",
+          "owner": "session",
+          "title": "Wave 19: step 23 Phase 3 in wt-step23 (rebase first)",
+          "detail": "Tasks 3.1–3.3 (Task 3.4 is not done under D7-C); lower the indirect-write floor in the same commit (X33). API only. Starts when Wave 18 is merged; ticked when its PR is merged. Gated by 23-P6 and 23-P7.",
+          "waitsFor": [
+            "rb-nct-2026-w18-step20",
+            "rb-nct-2026-w18-step21",
+            "rb-nct-2026-w18-step23",
+            "rb-nct-2026-w18-step24",
+            "rb-nct-2026-w18-step26",
+            "rb-nct-2026-w19-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-19-wt-step23-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-19-wt-step23-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w19-step24",
+          "owner": "session",
+          "title": "Wave 19: step 24 Phase 2 in wt-step24 (rebase first)",
+          "detail": "Tasks 2.1–2.3: lock cost lines by (created_at, id), then bills, inside the transaction (X30), with X35's issue-vs-unbill fixture. Server only. Starts when Wave 18 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-2026-w18-step20",
+            "rb-nct-2026-w18-step21",
+            "rb-nct-2026-w18-step23",
+            "rb-nct-2026-w18-step24",
+            "rb-nct-2026-w18-step26"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-19-wt-step24-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-19-wt-step24-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w19-step26",
+          "owner": "session",
+          "title": "Wave 19: step 26 Phase 3 in wt-step26 (rebase first)",
+          "detail": "Tasks 3.1–3.6; hand Wilfred the exact expense.payment.update catalog INSERT to run on dev before the Phase 3 proof (X37). Web and API together. Starts when Wave 18 is merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-2026-w18-step20",
+            "rb-nct-2026-w18-step21",
+            "rb-nct-2026-w18-step23",
+            "rb-nct-2026-w18-step24",
+            "rb-nct-2026-w18-step26"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-19-wt-step26-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-19-wt-step26-rebase-first"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w20-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 21-P3, 21-P8, P9, 25-P8, P9 and 24-P6 before Wave 20's tasks",
+          "detail": "21-P3 gates 21 Task 3.1 (D7); 21-P8 and 21-P9 gate 21 Task 3.2 (D8); 25-P8 and 25-P9 gate 25 Task 2.1 (D6 under X31, D7); 24-P6 comes before the 24 P3 deploy, and accounting is told first.",
+          "link": "/nct/steps-20-26-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-2026-w20-step21",
+          "owner": "session",
+          "title": "Wave 20: step 21 Phase 3 in wt-step21 (rebase first)",
+          "detail": "Tasks 3.1–3.5: remove the last ALLOWED_INDIRECT_WRITES entry and replace the floor with an empty-list assertion (X33). API only. Starts when Wave 19 is merged; ticked when its PR is merged. Gated by 21-P3, 21-P8 and 21-P9.",
+          "waitsFor": [
+            "rb-nct-2026-w19-step21",
+            "rb-nct-2026-w19-step22",
+            "rb-nct-2026-w19-step23",
+            "rb-nct-2026-w19-step24",
+            "rb-nct-2026-w19-step26",
+            "rb-nct-2026-w20-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-20-wt-step21-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-20-wt-step21-rebase-first"
+          ],
+          "run": "nct-bill-build-steps-20-23"
+        },
+        {
+          "id": "rb-nct-2026-w20-step24",
+          "owner": "session",
+          "title": "Wave 20: step 24 Phase 3 in wt-step24 (merges before 25 P2)",
+          "detail": "Tasks 3.1–3.4 (D4-A, D5-A). Server before web, and before 25 P2. Starts when Wave 19 is merged; ticked when its PR is merged. Ask for 24-P6 before the PR; accounting sees that list before this phase deploys.",
+          "waitsFor": [
+            "rb-nct-2026-w19-step21",
+            "rb-nct-2026-w19-step22",
+            "rb-nct-2026-w19-step23",
+            "rb-nct-2026-w19-step24",
+            "rb-nct-2026-w19-step26",
+            "rb-nct-2026-w20-probes"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-20-wt-step24-rebase-first-merges-before-25-p2",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-20-wt-step24-rebase-first-merges-before-25-p2"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w20-step25",
+          "owner": "session",
+          "title": "Wave 20: step 25 Phase 2 in wt-step25 (merges after 24 P3)",
+          "detail": "Tasks 2.1–2.4: no settled-bill refusal (X31), and cancel locks lines then bills (X30). Deploy only after 24 P3 is deployed. Starts when Wave 19 is merged and step 24 Phase 3 is merged; ticked when its PR is merged. Gated by 25-P8 and 25-P9.",
+          "waitsFor": [
+            "rb-nct-2026-w19-step21",
+            "rb-nct-2026-w19-step22",
+            "rb-nct-2026-w19-step23",
+            "rb-nct-2026-w19-step24",
+            "rb-nct-2026-w19-step26",
+            "rb-nct-2026-w20-probes",
+            "rb-nct-2026-w20-step24"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-20-wt-step25-rebase-first-merges-after-24-p3",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-20-wt-step25-rebase-first-merges-after-24-p3"
+          ]
+        },
+        {
+          "id": "rb-nct-2026-w21-step26",
+          "owner": "session",
+          "title": "Wave 21 (optional): step 26 Phase 4 in wt-step26",
+          "detail": "Tasks 4.1–4.2: a derived settled figure per invoice (D8-A); this phase stays optional and runs only when Wilfred starts Wave 21. Tick when its PR is merged, or when you decide to skip it.",
+          "waitsFor": [
+            "rb-nct-2026-w20-step21",
+            "rb-nct-2026-w20-step24",
+            "rb-nct-2026-w20-step25"
+          ],
+          "link": "/nct/steps-20-26-runbook/#wave-21-wt-step26-optional-rebase-first",
+          "prompts": [
+            "/nct/steps-20-26-runbook/#wave-21-wt-step26-optional-rebase-first"
+          ],
+          "run": "nct-invoice-close-steps-24-27"
+        },
+        {
+          "id": "rb-nct-2026-clean-up",
+          "owner": "session",
+          "title": "Remove merged worktrees",
+          "detail": "Only once a branch is merged and git status in its worktree is clean. Keep each worktree until its last phase has merged: wt-step21 and wt-step24 through Wave 20, wt-step26 through Wave 21 (or Wave 19 if the optional Phase 4 is not run).",
+          "waitsFor": [
+            "rb-nct-2026-w21-step26"
+          ],
+          "link": "/nct/steps-20-26-runbook/#11-clean-up"
+        },
+        {
+          "id": "rb-nct-2026-disagreements",
+          "owner": "wilfred",
+          "title": "Where the plans and the crosscheck disagree",
+          "detail": "Every crosscheck item was settled on 2026-09-21 and most rows are now resolved; rows marked stale (X40) were left in the plans on purpose, and sessions follow the crosscheck there.",
+          "link": "/nct/steps-20-26-runbook/#12-where-the-plans-and-the-crosscheck-disagree",
+          "snippets": false
+        }
+      ]
+    },
+    {
+      "id": "rb-nct-step-27",
+      "title": "Step 27 · month close",
+      "blurb": "Waves 22–23 of the step 27 runbook, in two worktrees. D1–D11 all settled A on 2026-09-21; Wave 22 starts when all of Wave 20 and steps 1–3 Wave 1 are merged.",
+      "steps": [
+        {
+          "id": "rb-nct-27-setup",
+          "owner": "session",
+          "title": "One-time setup; create wt-step27 and wt-step27-close",
+          "detail": "Update feat/new-layout, then create both worktrees when Wave 22 starts (D11 was settled A, so Phase 3 runs). Wave 23 adds no worktree: wt-step27 rebases onto the base that contains 27 P1.",
+          "link": "/nct/step-27-runbook/#4-one-time-setup"
+        },
+        {
+          "id": "rb-nct-27-decisions",
+          "owner": "wilfred",
+          "title": "Confirm the settled decisions (27 D1–D11)",
+          "detail": "Settled 2026-09-21: D1–D11 are all A. D11-A partly reverses the 1 September 2026 product decision (d4c7df34), chosen knowingly. Tick to confirm; sessions implement the Chosen option and do not re-open it.",
+          "link": "/nct/step-27-runbook/#1-before-any-wave-starts-settle-these-decisions",
+          "snippets": false
+        },
+        {
+          "id": "rb-nct-27-w22-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 27-P9, P12 and P13 before step 27 Task 3.1",
+          "detail": "27-P9 (process / locked / archived distribution), 27-P12 (lifecycle gates ticked on Order review flows) and 27-P13 (roles holding the lifecycle nodes) gate 27 Task 3.1 (D11). A contradiction with D11 stops the task.",
+          "link": "/nct/step-27-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-27-w22-step27-p1",
+          "owner": "session",
+          "title": "Wave 22: step 27 Phase 1 in wt-step27",
+          "detail": "Tasks 1.1–1.5: every month-end total names its currency, and a statement or DEBIT NOTE goes to one counterparty. API and web ship together. Starts when all of Wave 20 and steps-1-3 Wave 1 are merged; ticked when its PR is merged.",
+          "waitsFor": [
+            "rb-nct-27-setup",
+            "rb-nct-2026-w20-step21",
+            "rb-nct-2026-w20-step24",
+            "rb-nct-2026-w20-step25",
+            "rb-nct-b3-merge-wave-1"
+          ],
+          "link": "/nct/step-27-runbook/#wave-22-wt-step27-phase-1",
+          "prompts": [
+            "/nct/step-27-runbook/#wave-22-wt-step27-phase-1"
+          ]
+        },
+        {
+          "id": "rb-nct-27-w22-step27-close-p3",
+          "owner": "session",
+          "title": "Wave 22: step 27 Phase 3 in wt-step27-close",
+          "detail": "Tasks 3.1–3.3: per-row End job / Cancel end / Lock job / Unlock job over the existing transition verb; no bulk verbs. Web only. Starts with Phase 1; ticked when its PR is merged. Gated by 27-P9, P12 and P13.",
+          "waitsFor": [
+            "rb-nct-27-setup",
+            "rb-nct-2026-w20-step21",
+            "rb-nct-2026-w20-step24",
+            "rb-nct-2026-w20-step25",
+            "rb-nct-b3-merge-wave-1",
+            "rb-nct-27-w22-probes"
+          ],
+          "link": "/nct/step-27-runbook/#wave-22-wt-step27-close-phase-3",
+          "prompts": [
+            "/nct/step-27-runbook/#wave-22-wt-step27-close-phase-3"
+          ]
+        },
+        {
+          "id": "rb-nct-27-w23-probes",
+          "owner": "wilfred",
+          "title": "Gate: run 27-P5 and 27-P6 before step 27 Task 2.1",
+          "detail": "27-P5 (payments) and 27-P6 (bills) whose UTC month differs from their branch-zone month gate 27 Task 2.1 (D2 re-check and release note). If boundary rows are material in closed months already handed to a bookkeeper, stop and decide the release note together.",
+          "link": "/nct/step-27-runbook/#8-stop-gates-owner-only"
+        },
+        {
+          "id": "rb-nct-27-w23-step27-p2",
+          "owner": "session",
+          "title": "Wave 23: step 27 Phase 2 in wt-step27 (rebase first)",
+          "detail": "Tasks 2.1–2.5: a month means the branch's days on every Financial Stat tab and in the pack (D2-A, no migration). API first is safe. Starts when 27 P1 is merged (27 P3 need not be); ticked when its PR is merged. Gated by 27-P5 and 27-P6.",
+          "waitsFor": [
+            "rb-nct-27-w22-step27-p1",
+            "rb-nct-27-w23-probes"
+          ],
+          "link": "/nct/step-27-runbook/#wave-23-wt-step27-phase-2-rebase-first",
+          "prompts": [
+            "/nct/step-27-runbook/#wave-23-wt-step27-phase-2-rebase-first"
+          ],
+          "run": "nct-invoice-close-steps-24-27"
+        },
+        {
+          "id": "rb-nct-27-clean-up",
+          "owner": "session",
+          "title": "Remove merged worktrees",
+          "detail": "Only once a branch is merged and git status in its worktree is clean. Keep wt-step27 through Wave 23 (Phase 2) and wt-step27-close through Wave 22 (Phase 3).",
+          "waitsFor": [
+            "rb-nct-27-w22-step27-close-p3",
+            "rb-nct-27-w23-step27-p2"
+          ],
+          "link": "/nct/step-27-runbook/#11-clean-up"
+        },
+        {
+          "id": "rb-nct-27-disagreements",
+          "owner": "wilfred",
+          "title": "Where the plan disagrees with the code and other plans",
+          "detail": "Step 27 has no crosscheck file; this table records where the plan disagrees with the code at 6bb3a1bf, another plan or §2 of the runbook, and which reading the runbook uses. None of these rows changes a settled decision.",
+          "link": "/nct/step-27-runbook/#12-where-the-plans-and-the-crosscheck-disagree",
+          "snippets": false
         }
       ]
     }

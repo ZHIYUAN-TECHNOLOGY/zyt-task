@@ -358,6 +358,41 @@ $seedFile = Join-Path $site 'seed.json'
 node (Join-Path $PSScriptRoot 'hub\build-seed.mjs') $seedFile
 if ($LASTEXITCODE -ne 0) { throw 'build-seed.mjs failed' }
 $seedJson = [IO.File]::ReadAllText($seedFile)
+
+# -- seed-row preflight: every tickable key must already have a Convex row -----------------
+# A finding or runbook step without a row cannot be ticked ("That task does not exist."), so a real
+# deploy refuses to ship one; seed:<project> must run on that deployment first (prod: Wilfred).
+# A DryRun only warns. Plain ASCII here: Windows PowerShell reads this file as ANSI.
+$seedData = $seedJson | ConvertFrom-Json
+foreach ($proj in $seedData.projects) {
+  $keys = @($proj.tasks | ForEach-Object { $_.id })
+  if ($proj.runbook) { $keys += @($proj.runbook.stages | ForEach-Object { $_.steps } | ForEach-Object { $_.id }) }
+  if (-not $keys.Count) { continue }
+  $base = $ConvexUrl.TrimEnd('/')
+  $body = @{ path = 'findings:board'; args = @{ projectKey = $proj.key }; format = 'json' } | ConvertTo-Json -Compress
+  try {
+    $res = Invoke-RestMethod -Method Post -Uri "$base/api/query" -ContentType 'application/json' -Body $body -TimeoutSec 30
+  } catch {
+    $msg = "Could not ask Convex $base for $($proj.key)'s rows: $($_.Exception.Message)"
+    if ($DryRun) { Write-Warning $msg; continue } else { throw $msg }
+  }
+  if ($res.status -ne 'success') {
+    $msg = "Convex $base answered '$($res.status)' for $($proj.key): $($res.errorMessage)"
+    if ($DryRun) { Write-Warning $msg; continue } else { throw $msg }
+  }
+  $have = @{}
+  foreach ($f in $res.value.findings) { $have[$f.key] = $true }
+  $missing = @($keys | Where-Object { -not $have.ContainsKey($_) })
+  if ($missing.Count) {
+    $shown = ($missing | Select-Object -First 20) -join ', '
+    if ($missing.Count -gt 20) { $shown += ", ... ($($missing.Count) in all)" }
+    $msg = "Convex $base has no row for [$shown]. Run seed:$($proj.key) on that deployment first (prod: Wilfred)."
+    if ($DryRun) { Write-Warning $msg } else { throw $msg }
+  } else {
+    Write-Output "seed rows: $($proj.key) all $($keys.Count) keys present on $base"
+  }
+}
+
 $hub = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\index.html'))
 $hub = $hub.Replace('<!--PWA_HEAD-->', $pwaHead).Replace('<!--PWA_SCRIPT-->', $pwaScript).
             Replace('{{CONVEX_URL}}', $ConvexUrl.TrimEnd('/')).Replace('/*SEED_JSON*/', $seedJson)
