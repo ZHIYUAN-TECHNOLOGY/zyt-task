@@ -2,7 +2,7 @@
 #
 #   /                            dashboard: projects · to-do · task panel   hosting/hub/index.html
 #   /nct/customer-intake-sop/    NCT SOP + 32 screenshots (no fix list)     customer-intake-sop/sop.json
-#   /jwa/full-chain-sop/         JWA SOP + its screenshots                  JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json
+#   /jwa/full-chain-sop/         JWA SOP + its screenshots                  JWASystemv2/jwa-sop/sop/jwa-full-chain/sop.json (main)
 #   /harper/guest-concierge-sop/ Harper Suite WhatsApp concierge SOP        OpenWA/sop/guest-concierge/sop.json
 #
 # Live at https://admin.zhiyuantech.ai — Worker "zyt-admin" in Ngchwanlii@zhiyuantech.ai's
@@ -292,7 +292,23 @@ if ($LASTEXITCODE -ne 0) { throw 'build-runbook.mjs failed for the ZYT commands 
 Write-Utf8 (Join-Path $public 'zyt\commands\index.html') (Get-SopHtml ([IO.File]::ReadAllText($zcBody)) 'zyt' 'ZYT')
 
 # ── JWA: SRF full chain (built from sop.json, public build: no fix list) ──────
-$jwaSopRoot = Join-Path $root '..\JWASystemv2\jwa-system\sop'
+# Source is JWASystemv2\jwa-sop: a worktree of jwa-system on MAIN, used only for this.
+# Until 2026-09-23 it was the jwa-system dev checkout, whose branch trailed main, so
+# main's copy of the ledger kept falling behind the published page. Ledger changes now
+# land on main through PRs, and this fast-forwards the worktree before every build so
+# the page is always built from what main says. A worktree that cannot fast-forward
+# (local commits, a branch switch, conflicts) stops the build instead of publishing it.
+$jwaRepo = Join-Path $root '..\JWASystemv2\jwa-sop'
+$jwaBranch = (git -C $jwaRepo rev-parse --abbrev-ref HEAD).Trim()
+if ($LASTEXITCODE -ne 0 -or $jwaBranch -ne 'main') {
+  throw "JWA SOP source $jwaRepo must be a worktree on 'main' (found '$jwaBranch')."
+}
+git -C $jwaRepo fetch --quiet origin main
+if ($LASTEXITCODE -ne 0) { throw "git fetch failed in $jwaRepo" }
+git -C $jwaRepo merge --quiet --ff-only origin/main
+if ($LASTEXITCODE -ne 0) { throw "JWA SOP source $jwaRepo cannot fast-forward to origin/main; fix it by hand." }
+Write-Host ("JWA SOP source: main @ " + (git -C $jwaRepo rev-parse --short HEAD).Trim())
+$jwaSopRoot = Join-Path $jwaRepo 'sop'
 $jwaData = Join-Path $jwaSopRoot 'jwa-full-chain\sop.json'
 $jwaShotsSrc = Join-Path $jwaSopRoot 'jwa-full-chain\shots'
 $jwaDir = Join-Path $public 'jwa\full-chain-sop'
