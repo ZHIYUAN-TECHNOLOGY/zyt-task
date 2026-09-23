@@ -221,6 +221,7 @@ cases 1, 2 and 3 in the browser at localhost:3101. Restart :3000 after the last 
 and type-check output for "failed"; exit codes lie.
 API and web ship together in one PR (plan §7.5). Never run git stash, git reset or git checkout. Never point
 anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 22 — `wt-step27-close` (Phase 3)
@@ -244,6 +245,7 @@ Prove it with the plan's §10: the Phase 3 test command, Journey 4 and edge case
 localhost:3101, and regression check 5 (/approve/order shows no Lifecycle menu). Run the new spec with node
 from e2e/out/_walk/ if it hangs under bun. Read output for "failed"; exit codes lie.
 Web only. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 23 — `wt-step27` (Phase 2; rebase first)
@@ -273,6 +275,7 @@ Shared copy: grep apps/web/src and packages/api/src for every caption you add or
 Prove it with the plan's §10: the Phase 2 test command, Journey 3 steps 3-6, and edge case 4 in the browser at
 localhost:3101. Restart :3000 after the last packages/api edit. Read output for "failed"; exit codes lie.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 > If the session has the `/execute` skill, `/execute C:/nct-plans/step-27-month-close-truth.md` works too. Tell it the phase in the same words, and repeat the "decisions are settled", "re-locate by symbol" and "never stash, reset or checkout" lines.

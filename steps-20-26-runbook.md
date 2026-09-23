@@ -290,6 +290,7 @@ needsSeed, copyAcross, loadedChildrenForRef and the allow-list block BY SYMBOL a
 Prove it with the plan's §10: the Phase 1 test list, then the golden path steps 1-5 and edge cases 1, 2 (two
 tabs), 3 and 5 in the browser at localhost:3101. Read test and type-check output for "failed"; exit codes lie.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 17 — `wt-step22`
@@ -312,6 +313,7 @@ CI has no DATABASE_URL_TEST: run the two new expense.concurrency.test.ts cases a
 paste the failing run on the unfixed handler and the passing run into the PR. "Skipped" is not a pass.
 Prove it with the plan's §10: the Phase 1 test list, then Journeys 1 and 2 and edge cases 2 and 4 in the
 browser at localhost:3101. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 17 — `wt-step23`
@@ -335,6 +337,7 @@ CI has no DATABASE_URL_TEST: run expense.bill-review.concurrency.test.ts [NEW] o
 the failing run without Task 1.3 and the passing run into the PR.
 Prove it with the plan's §10: the Phase 1 test list, the golden path steps 1-8, and edge cases 1, 2, 3, 4 and 5
 in the browser at localhost:3101. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 17 — `wt-step25`
@@ -353,6 +356,7 @@ exportDocument and InvoiceDocumentPreview BY SYMBOL at HEAD.
 Deploy note for the PR: API before web (D5-A).
 Prove it with the plan's §10: the Phase 1 test list, then Journeys 1 and 2 and edge cases 1-3 in the browser at
 localhost:3101. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 17 — `wt-step26`
@@ -370,6 +374,7 @@ VerifyDialog BY SYMBOL at HEAD.
 Prove it with the plan's §10: the Phase 1 tests, then the golden path (Journey 1 without the Phase 3 rate row)
 and edge cases 1 and 4 in the browser at localhost:3101. Never run git stash, git reset or git checkout. Never
 point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 18 — `wt-step20` (rebase first, see §6)
@@ -389,6 +394,7 @@ Task 2.4 and Tasks 3.1-3.2 are the page's only edits in this track until step 22
 Re-locate saveChildren, isSettled, patch and the allow-list comment BY SYMBOL at HEAD.
 Prove it with the plan's §10: edge case 4 (the lock half), golden path step 6 and the Phase 2 test list, then
 edge cases 6 and 7 for Phase 3. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 18 — `wt-step21`
@@ -409,6 +415,7 @@ The plan was read at 6bb3a1bf: re-locate createBill, the J4 block and the claim 
 CI has no DATABASE_URL_TEST: run the interleave on the dev Neon branch and paste its output (its name listed,
 not skipped). Prove it with the plan's §10: Journey 3 and edge case 1 in the browser at localhost:3101.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 18 — `wt-step23` (rebase first)
@@ -424,6 +431,7 @@ Re-locate the update verb, BillEditDialog and the -bills.columns.tsx comment BY 
 Deploy note for the PR: API and web together, web built first (§7.2 of the plan).
 Prove it with the plan's §10 Journey 3, including the network-panel check that bills/update carries only the
 changed keys. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 18 — `wt-step24`
@@ -441,6 +449,7 @@ The plan was read at 6bb3a1bf: re-locate billsRouter.invoice, makeNo, InvoicingD
 SYMBOL at HEAD.
 Prove it with the plan's §10: the golden path (Journey 1) and edge cases 1, 2 and 6 in the browser at
 localhost:3101. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 18 — `wt-step26` (rebase first)
@@ -460,6 +469,7 @@ The plan was read at 6bb3a1bf: re-locate verify, reverse and the gate calls BY S
 CI has no DATABASE_URL_TEST: run 20 repetitions on the dev Neon branch, and paste cases 1-2 failing on Phase 1's
 handler plus all four passing into the PR. Prove it with the plan's §10 edge case 3 (two tabs, a smoke check).
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 19 — `wt-step21` (rebase first)
@@ -481,6 +491,7 @@ Re-locate saveChildren, the writer verbs, batch, exchangeRateBatch and describeS
 CI has no DATABASE_URL_TEST: run the saveChildren interleave on the dev Neon branch, and paste the failing run
 without the cost-row lock and the passing run. Prove it with the plan's §10 Journeys 1 and 2 and edge case 3 in
 the browser at localhost:3101. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 19 — `wt-step22` (rebase first)
@@ -496,6 +507,7 @@ Grep apps/web/src for the link sentence before touching any copy.
 Re-locate the link, the chip list, CreateBillDialog and the CostLine interface BY SYMBOL at HEAD.
 This phase is web only. Prove it with the plan's §10 Journey 3 and edge case 1, plus the web test and
 cost-lines.control-row.spec.ts. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 19 — `wt-step23` (rebase first)
@@ -515,6 +527,7 @@ Step 26 Phase 3 edits the neighbouring block of modules/expense/permissions.ts l
 Re-locate the procedures, the writer review verb, the allow-list entry and the permissions block BY SYMBOL at HEAD.
 Prove it with the plan's §10 edge case 6 (the 404) and the Journey 4 golden path, plus registry.sync, reachability
 and both architecture tests. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 19 — `wt-step24` (rebase first)
@@ -533,6 +546,7 @@ The plan was read at 6bb3a1bf: re-locate billsRouter.invoice BY SYMBOL at HEAD.
 CI has no DATABASE_URL_TEST: run the three races 20 times each on the dev Neon branch and paste the output.
 Prove it with the plan's §10 edge case 5 and an unchanged Journey 1 in the browser at localhost:3101.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 19 — `wt-step26` (rebase first)
@@ -554,6 +568,7 @@ Re-locate paymentWriter, payments.create, reverse, PaymentFormSheet and the writ
 Deploy note for the PR: web and API together.
 Prove it with the plan's §10 edge case 2 (Journeys 4 and 5) in the browser at localhost:3101.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 20 — `wt-step21` (rebase first)
@@ -575,6 +590,7 @@ Run the drift script read-only on the dev branch only, and paste its counts.
 Re-locate every procedure, allow-list entry and permissions block BY SYMBOL at HEAD.
 Prove it with the plan's §10 Journey 4 and edge case 2, plus the e2e specs in Task 3.5.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project bill-build` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 20 — `wt-step24` (rebase first; merges before 25 P2)
@@ -593,6 +609,7 @@ Re-run step 26's write-off tests: write-offs.ts :694 and :1124 must still read a
 Re-locate billsRouter.invoice, the -bills.columns.tsx icon and InvoicingDialog BY SYMBOL at HEAD.
 Prove it with the plan's §10 edge cases 3 and 4 and the cancel regression check.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 20 — `wt-step25` (rebase first; merges after 24 P3)
@@ -614,6 +631,7 @@ Re-locate invoices.cancel and the confirm dialog BY SYMBOL at HEAD.
 CI has no DATABASE_URL_TEST: run the interleave on the dev Neon branch, and paste the failing run without the
 locks and the passing run. Prove it with the plan's §10 Journey 3 (as amended by X31) in the browser at
 localhost:3101. Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 21 — `wt-step26` (optional; rebase first)
@@ -628,6 +646,7 @@ You edit only invoices.list and one column of invoices.tsx; step 25 owns the res
 Re-locate invoices.list and the invoices.tsx columns BY SYMBOL at HEAD.
 Prove it with the plan's §10 edge case 5 in the browser at localhost:3101.
 Never run git stash, git reset or git checkout. Never point anything at production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project invoice-close` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 > If the session has the `/execute` skill, `/execute C:/nct-plans/step-2N-….md` works too. Tell it the phases in the same words, and repeat the "decisions are settled — implement the Chosen option and do not re-open it", "re-locate by symbol" and "never stash, reset or checkout" lines.

@@ -166,6 +166,7 @@ lines included (D8-A). Write the three widened test cases the plan lists. Do not
 Any conditional migration is named 00NN_<name> and takes the next free number at merge (X14) — under D3-A there is none.
 Prove it with the plan's §10 before telling me it is done: the Phase 2 and Phase 3 test list, then the golden path
 and edge cases 3 and 5 in the browser at localhost:3101. Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 6 — `wt-step12`
@@ -184,6 +185,7 @@ Task 1.4 creates collective-order.numbering.concurrency.test.ts. CI has no DATAB
 dev Neon branch and paste BOTH outputs into the PR: the failing run on the pre-change code and the passing run after.
 "Skipped" is not a pass. Never point anything at production.
 Prove it with §10. Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 6 — `wt-step13-p2`
@@ -203,6 +205,7 @@ Task 2.3's collective-order.intake.concurrency.test.ts is step 13's own file —
 collective-order.concurrency.test.ts, which belongs to step 15 (X8). Paste the pre-change failing run and the passing
 run into the PR; CI skips it.
 Prove it with §10. Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 6 — SOP text (session in `C:/Project/ZYT-Task`, not the code repo)
@@ -240,6 +243,7 @@ BY SYMBOL at HEAD. Every line number in the plan has moved.
 CI has no DATABASE_URL_TEST: run the concurrency test against the dev Neon branch, paste the failing pre-lock run and
 the passing run into the PR, and never point it at production.
 Prove it with §10 (Journey 1 in the browser, plus edge cases 2, 3 and 4). Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 8 — `wt-step15` (rebase first, see §6)
@@ -257,6 +261,7 @@ Run the drift report read-only on the dev branch and paste its counts into the P
 not run it there.
 Prove it with §10 Journey 2, including the /rpc/collectiveOrder/review 404 and the self-decision refusal.
 Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 9 — `wt-step14`
@@ -281,6 +286,7 @@ skipped run is not a pass.
 Prove it with §10 Phase 1: the test list, the operations seeder printing "collective_order submitted 6" and exiting 0,
 the three e2e specs, and the golden path plus edge cases 1 and 3 in the browser.
 Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 10 — `wt-step15` (rebase first; merges before 14 P2)
@@ -298,6 +304,7 @@ Re-locate every anchor BY SYMBOL at HEAD.
 A rollback of this phase is a PARTIAL revert (§8 of the plan), because the audit_flow_gate rows it writes would make
 the Order review flow unsaveable. Do not plan a plain revert, and tell me before any rollback.
 Prove it with §10 Journey 3 and Journey 4 plus edge case 1. Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 10 — `wt-step14` (rebase first; merges after 15 P3)
@@ -311,6 +318,7 @@ Step 15 Phase 1 put an under-review notice in the same file. Keep that notice AB
 re-locate both by symbol at HEAD.
 This phase is web only. Prove it with §10 Phase 2: the test list, plus the golden path and edge case in the browser.
 Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 11 — `wt-step14` (rebase first)
@@ -326,6 +334,7 @@ HEAD. The nine line numbers in Task 3.4 were read at 6bb3a1bf and will all have 
 Server and web ship in one release (D15-A), with apps/web built before deploy.
 Prove it with §10 Phase 3: the test list including the nine order-ledger-parity tests, then the golden path and both
 edge cases in the browser. Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project order-open` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 > If the session has the `/execute` skill, `/execute C:/nct-plans/step-1N-….md` works too. Tell it the phases in the same words, and repeat the "decisions are settled" and "re-locate by symbol" lines.

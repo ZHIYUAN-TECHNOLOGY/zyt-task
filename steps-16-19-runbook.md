@@ -249,6 +249,7 @@ pre-lock code and the passing run into the PR. "Skipped" is not a pass. Run the 
 dev branch only. Never point anything at production.
 Prove it with the plan's §10: the Phase 1 test list, then Journey 1 steps 3-4, Journey 3 and edge cases 1, 2,
 2b and 3 in the browser at localhost:3101. Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 12 — `wt-step18`
@@ -271,6 +272,7 @@ HEAD.
 Prove it with the plan's §10: the Phase 1 test list, then Journey 1 steps 1-4 and 7 plus edge cases 1 and 4 in
 the browser at localhost:3101. Steps 5-6 are proven after step 19 Phase 2 merges; say so in the PR.
 Never run git stash, git reset or git checkout.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 12 — `wt-step19`
@@ -290,6 +292,7 @@ The plan was read at 6bb3a1bf: re-locate blJob.get, the board, exceptions() and 
 HEAD.
 Prove it with the plan's §10: the Phase 1 test list, then Journey 1 and edge case 1a at localhost:3101.
 Never run git stash, git reset or git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 13 — `wt-step16` (rebase first, see §6)
@@ -310,6 +313,7 @@ Server before web: the count link needs Task 2.2's orderId filter from its first
 Prove it with the plan's §10: the Phase 2 test list, then Journey 1 steps 1-2 and 5 and edge case 5 in the
 browser (if a second branch cannot be set up, say so and rely on Task 2.3). Never run git stash, git reset or
 git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 13 — `wt-step18` (rebase first)
@@ -326,6 +330,7 @@ Re-locate the review screen's type badge, submit() and the payload type BY SYMBO
 This phase is web only for deploy purposes.
 Prove it with the plan's §10: the Phase 2 test list, then Journey 2 (D-PL and D-BAD) and edge case 5 in the
 browser. Never run git stash, git reset or git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 13 — `wt-step19` (rebase first)
@@ -347,6 +352,7 @@ Seeded orders never match seeded jobs: set O1's MB/L to SEED-BL-006 by hand, as 
 Deploy note for Wilfred: this phase's server must deploy only after step 18 Phase 1 is deployed.
 Prove it with the plan's §10: the Phase 2 test list, then Journey 2 and edge cases 2a-2c in the browser.
 Never run git stash, git reset or git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 14 — `wt-step16` (rebase first)
@@ -362,6 +368,7 @@ The browser proof of Journey 2 needs a dev server with the AI gateway configured
 answers SERVICE_UNAVAILABLE; rely on the unit tests and say which in the PR.
 Prove it with the plan's §10: the Phase 3 test list, Journey 2 and edge case 4. Never run git stash, git reset
 or git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 14 — `wt-step18` (rebase first)
@@ -382,6 +389,7 @@ voids extras with bl-job.void.
 Re-locate blIntakeHook, runApprovalHooks and ALLOWED_EXECUTE_SITES BY SYMBOL at HEAD.
 Prove it with the plan's §10: the Phase 3 test list and Journey 3 steps 1-2. Never run git stash, git reset or
 git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 14 — `wt-step19` (rebase first)
@@ -397,6 +405,7 @@ The Fees link targets /order/$orderId/expenses (step 20's page); show it only wh
 Re-locate blJob.get, orderScopeCols, TRADE_SEGMENT and the record page's Record group BY SYMBOL at HEAD.
 Prove it with the plan's §10: the Phase 3 test list, then Journey 3 and edge case 3a in the browser.
 Never run git stash, git reset or git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 15 — `wt-step17`
@@ -421,6 +430,7 @@ Re-locate everything BY SYMBOL at HEAD; the plan was read at 6bb3a1bf, before st
 API before web. Prove it with the plan's §10: the Phase 1 test list (both architecture tests), then Journeys 1-2
 and edge cases 1 and 2 in the browser at localhost:3101. Never run git stash, git reset or git checkout.
 Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 ### Wave 16 — `wt-step17` (rebase first)
@@ -444,6 +454,7 @@ Task 2.6: your drift script omits 17-P3, which is 16-P3 in step 16's script (X25
 Re-locate applyWorkflow, WORKFLOW, uploadAttachment and the row menu BY SYMBOL at HEAD.
 Prove it with the plan's §10: the Phase 2 test list, then Journeys 3-4 and edge cases 3 and 4.
 Never run git stash, git reset or git checkout. Never touch production.
+Before the PR: run the golden path that covers your step — `npx playwright test --config e2e/playwright.config.ts --project lading-run` — and update its assertions to your step's new behaviour. The journey for your step is the spec whose header lists it; e2e/README.md 'Adding a golden path' has the rules. Never run two golden paths at once (each needs ports 3000/3101 and seeds a throwaway org on the dev branch), and no golden path may ever press Send on a quotation or invoice.
 ```
 
 > If the session has the `/execute` skill, `/execute C:/nct-plans/step-1N-….md` works too. Tell it the phases in the same words, and repeat the "decisions are settled" and "re-locate by symbol" lines.
