@@ -20,7 +20,7 @@
 // RUNNER_SLOWMO ms (600), RUNNER_EXTRA_ORIGINS (comma list, e.g. a local -DryRun preview).
 
 import { spawn, spawnSync } from 'node:child_process';
-import { copyFileSync, createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, createReadStream, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
@@ -36,12 +36,45 @@ const ALLOWED_ORIGINS = new Set([
 
 // The last finished run of each job, kept beside this file so a restart of the
 // runner — or a terminal run of the suite, which clears e2e/out/ before it
-// writes — cannot take the recording away. <job>.json holds the verdict and
-// the step list, <job>.mp4 the video. One per job: a new run replaces it.
+// writes — cannot take the recording away. <job>.json holds the verdict, the
+// step list and the list of clips; <job>-<n>.mp4 are the clips. A journey with
+// several people records one clip per person (one browser context each), so
+// "the video" is a list, labelled by role. One run per job: a new run replaces it.
 const RUNS_DIR = join(dirname(fileURLToPath(import.meta.url)), 'runs');
 mkdirSync(RUNS_DIR, { recursive: true });
 const savedJson = (jobId) => join(RUNS_DIR, `${jobId}.json`);
-const savedVideo = (jobId) => join(RUNS_DIR, `${jobId}.mp4`);
+const savedClip = (jobId, i) => join(RUNS_DIR, `${jobId}-${i}.mp4`);
+
+/** The clips a run left in its e2e/out folder, in the order the reporter wrote
+ * them, each with the role whose screen it is (meta.json `videoRoles`). */
+function clipsOf(job) {
+  const out = dirname(join(NCT_DIR, job.video));
+  let meta = {};
+  try { meta = JSON.parse(readFileSync(join(out, 'meta.json'), 'utf8')); } catch {}
+  const names = meta.videos ?? (existsSync(join(out, 'video.mp4')) ? ['video.mp4'] : []);
+  // Reversed: Playwright tears fixtures down in the reverse of their set-up
+  // order, and each role page files its video at teardown — so the reporter
+  // lists the LAST person first. Each golden path names its cast in story
+  // order, so the reversal puts the clips in the order the journey plays.
+  return names
+    .map((name, i) => ({ path: join(out, name), role: meta.videoRoles?.[i] ?? '' }))
+    .filter((c) => existsSync(c.path))
+    .reverse();
+}
+
+/** Replace a job's saved clips with this run's. */
+function saveClips(jobId, clips) {
+  for (const f of readdirSync(RUNS_DIR)) {
+    if (f.startsWith(`${jobId}-`) && f.endsWith('.mp4')) rmSync(join(RUNS_DIR, f));
+  }
+  clips.forEach((c, i) => copyFileSync(c.path, savedClip(jobId, i)));
+  return clips.map((c, i) => ({ i, role: c.role }));
+}
+
+/** Runner URLs for a saved run's clips; `v` only defeats the browser cache. */
+function clipUrls(jobId, videos, v) {
+  return (videos ?? []).map((c) => ({ role: c.role, src: `/video/${encodeURIComponent(jobId)}/${c.i}?v=${v}` }));
+}
 
 function readSaved(jobId) {
   try { return JSON.parse(readFileSync(savedJson(jobId), 'utf8')); } catch { return null; }
@@ -146,13 +179,12 @@ function startRun(jobId) {
     const current = run;
     if (!current || current.id !== id) return;
     if (current.status === 'running') current.status = code === 0 ? 'passed' : 'failed';
-    const recorded = join(NCT_DIR, job.video);
-    let hasVideo = existsSync(recorded);
     // A stopped run keeps whatever was saved before it: half a journey is not
     // a recording worth replacing a whole one with.
+    let videos = readSaved(jobId)?.videos ?? [];
     if (current.status !== 'stopped') {
       try {
-        if (hasVideo) copyFileSync(recorded, savedVideo(jobId));
+        videos = saveClips(jobId, clipsOf(job));
         writeFileSync(savedJson(jobId), JSON.stringify({
           job: jobId,
           title: job.title,
@@ -161,18 +193,18 @@ function startRun(jobId) {
           finishedAt: Date.now(),
           steps: stepsOf(current.events),
           output: current.status === 'passed' ? undefined : tail.slice(-20).join('\n'),
-          hasVideo,
+          videos,
+          hasVideo: videos.length > 0,
         }, null, 2));
       } catch (err) {
         console.error('could not save the run:', err.message);
       }
     }
-    hasVideo = hasVideo || existsSync(savedVideo(jobId));
     publish({
       type: 'run-end',
       status: current.status,
       exitCode: code,
-      video: hasVideo ? `/video/${jobId}?v=${id}` : null,
+      videos: clipUrls(jobId, videos, id),
       output: current.status === 'passed' ? undefined : tail.slice(-20).join('\n'),
     });
     current.child = null;
@@ -232,12 +264,13 @@ const server = createServer((req, res) => {
   // Chrome's Local Network Access blocks a <video src> pointing here (an element
   // cannot opt in), so the page fetches this and plays it as a blob — which makes
   // it a CORS request like every other, hence the check above.
+  // /video/<job>/<n>: one saved clip.
   if (req.method === 'GET' && url.pathname.startsWith('/video/')) {
-    const jobId = decodeURIComponent(url.pathname.slice(7));
-    const job = JOBS[jobId];
-    // The saved copy first: e2e/out/ is cleared by any run of the suite.
-    const file = !job ? null : existsSync(savedVideo(jobId)) ? savedVideo(jobId) : join(NCT_DIR, job.video);
-    if (!file || !existsSync(file)) return json(res, 404, { error: 'no video yet' });
+    const [rawJob, rawIndex] = url.pathname.slice(7).split('/');
+    const jobId = decodeURIComponent(rawJob ?? '');
+    const i = Number(rawIndex);
+    const file = JOBS[jobId] && Number.isInteger(i) && i >= 0 ? savedClip(jobId, i) : null;
+    if (!file || !existsSync(file)) return json(res, 404, { error: 'no such clip' });
     const size = statSync(file).size;
     const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
     if (range) {
@@ -266,7 +299,7 @@ const server = createServer((req, res) => {
     if (!JOBS[jobId]) return json(res, 404, { error: `unknown job: ${jobId}` });
     const saved = readSaved(jobId);
     if (!saved) return json(res, 404, { error: 'never run' });
-    return json(res, 200, { ...saved, video: saved.hasVideo || existsSync(savedVideo(jobId)) ? `/video/${jobId}?v=${saved.finishedAt}` : null });
+    return json(res, 200, { ...saved, videos: clipUrls(jobId, saved.videos, saved.finishedAt) });
   }
 
   if (req.method === 'POST' && url.pathname === '/run') {

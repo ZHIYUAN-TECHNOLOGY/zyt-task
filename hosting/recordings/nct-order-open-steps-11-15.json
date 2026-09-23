@@ -1,0 +1,60 @@
+{
+  "job": "nct-order-open-steps-11-15",
+  "title": "NCT · SOP steps 11–15 golden path",
+  "status": "passed",
+  "startedAt": 1790147129928,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Before the journey · an approved quotation, and the two flows as the org has them",
+      "state": "ok",
+      "ms": 9422
+    },
+    {
+      "title": "Step 11 · Convert the approved quotation into a job",
+      "state": "ok",
+      "ms": 8839
+    },
+    {
+      "title": "Step 12 · The job arrives already numbered — nothing to stamp",
+      "state": "ok",
+      "ms": 1513
+    },
+    {
+      "title": "Step 13 · Operations receive it from To Receive",
+      "state": "ok",
+      "ms": 7598
+    },
+    {
+      "title": "Step 14 · Fill in the operational detail and save",
+      "state": "ok",
+      "ms": 11249
+    },
+    {
+      "title": "Step 15 · Submit the order for approval from its ledger",
+      "state": "ok",
+      "ms": 1324
+    },
+    {
+      "title": "Step 15 · Accounting approves it from the order queue",
+      "state": "ok",
+      "ms": 6202
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "salesperson"
+    },
+    {
+      "i": 1,
+      "role": "managerA"
+    },
+    {
+      "i": 2,
+      "role": "accountant"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176233
+}

@@ -58,3 +58,8 @@
    it as a bordered card rather than as a section of the task drawer. */
 .gp-inline { margin: 0 0 1rem; padding: .85rem 1rem 1rem; border: 1px solid var(--gp-border); border-radius: 12px; background: var(--gp-surface); }
 .gp-inline .gp-blurb { font-size: .78rem; }
+
+/* One clip per person in a multi-role journey: whose screen to watch. */
+.gp-clips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem; }
+.gp-clip { font: 500 .76rem inherit; color: var(--gp-muted); background: none; border: 1px solid var(--gp-border); border-radius: 999px; padding: .25rem .7rem; cursor: pointer; }
+.gp-clip[aria-pressed="true"] { color: #fff; background: var(--gp-accent); border-color: var(--gp-accent); }

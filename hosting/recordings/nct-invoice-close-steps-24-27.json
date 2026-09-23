@@ -1,0 +1,47 @@
+{
+  "job": "nct-invoice-close-steps-24-27",
+  "title": "NCT · SOP steps 24–27 golden path",
+  "status": "passed",
+  "startedAt": 1790147140757,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Before the journey · an approved bill for the customer",
+      "state": "ok",
+      "ms": 6950
+    },
+    {
+      "title": "Step 24 · Issue the invoice from the bill",
+      "state": "ok",
+      "ms": 7396
+    },
+    {
+      "title": "Step 25 · Produce the invoice document and download it to hand over",
+      "state": "ok",
+      "ms": 6580
+    },
+    {
+      "title": "Step 26 · Record the customer's payment",
+      "state": "ok",
+      "ms": 6626
+    },
+    {
+      "title": "Step 26 · Settle the payment against the bill",
+      "state": "ok",
+      "ms": 2652
+    },
+    {
+      "title": "Step 27 · Close the month: produce the month-end pack",
+      "state": "ok",
+      "ms": 5114
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "accountant"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176228
+}

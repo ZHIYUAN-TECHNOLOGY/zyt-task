@@ -1,0 +1,67 @@
+{
+  "job": "nct-bl-run-steps-16-19",
+  "title": "NCT · SOP steps 16–19 golden path",
+  "status": "passed",
+  "startedAt": 1790147118254,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Before the journey · the job the B/L belongs to",
+      "state": "ok",
+      "ms": 1087
+    },
+    {
+      "title": "Step 16 · Raise the bill of lading against the job",
+      "state": "ok",
+      "ms": 6546
+    },
+    {
+      "title": "Step 17 · Check it in, and the record says so",
+      "state": "ok",
+      "ms": 3301
+    },
+    {
+      "title": "Step 17 · Put it on hold, then release it",
+      "state": "ok",
+      "ms": 3291
+    },
+    {
+      "title": "Step 17 · Check it out",
+      "state": "ok",
+      "ms": 979
+    },
+    {
+      "title": "Step 18 · The carrier's MBL arrives, and waits for review",
+      "state": "ok",
+      "ms": 15196
+    },
+    {
+      "title": "Step 18 · Approve the extraction",
+      "state": "ok",
+      "ms": 4495
+    },
+    {
+      "title": "Step 19 · Tracking has the B/L — and no clock, because nothing has berthed",
+      "state": "ok",
+      "ms": 3809
+    },
+    {
+      "title": "Step 19 · The vessel berths (as the port sweep would record it) — the 72h clock runs",
+      "state": "ok",
+      "ms": 15252
+    },
+    {
+      "title": "Step 19 · The overview shows the countdown too",
+      "state": "ok",
+      "ms": 3865
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "managerA"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176224
+}

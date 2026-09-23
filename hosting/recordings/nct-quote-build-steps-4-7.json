@@ -1,0 +1,67 @@
+{
+  "job": "nct-quote-build-steps-4-7",
+  "title": "NCT · SOP steps 4–7 golden path",
+  "status": "passed",
+  "startedAt": 1790147139603,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Before the journey · an approved rate card and a customer",
+      "state": "ok",
+      "ms": 6898
+    },
+    {
+      "title": "Step 4 · Start a quotation for the customer",
+      "state": "ok",
+      "ms": 6212
+    },
+    {
+      "title": "Step 6 · Record what the customer is shipping: 3 × 40-footers",
+      "state": "ok",
+      "ms": 1031
+    },
+    {
+      "title": "Step 5 · The date and the salesperson are filled in for you",
+      "state": "ok",
+      "ms": 1995
+    },
+    {
+      "title": "Step 5 · Saved, and the ledger shows the same date and salesperson",
+      "state": "ok",
+      "ms": 5249
+    },
+    {
+      "title": "Step 4 · Only the approved rate card is offered",
+      "state": "ok",
+      "ms": 5291
+    },
+    {
+      "title": "Step 6 · Price the 40-footer from the sheet",
+      "state": "ok",
+      "ms": 4128
+    },
+    {
+      "title": "Step 6 · The quantity comes from the containers — 3, not retyped",
+      "state": "ok",
+      "ms": 2541
+    },
+    {
+      "title": "Step 7 · Below the sheet, the floor refuses the save",
+      "state": "ok",
+      "ms": 1276
+    },
+    {
+      "title": "Step 7 · Use tariff puts the floor price back, and it saves",
+      "state": "ok",
+      "ms": 1851
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "salesperson"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176237
+}

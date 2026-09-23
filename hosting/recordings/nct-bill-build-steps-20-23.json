@@ -1,0 +1,65 @@
+{
+  "job": "nct-bill-build-steps-20-23",
+  "title": "NCT · SOP steps 20–23 golden path",
+  "status": "passed",
+  "startedAt": 1790147120940,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Before the journey · a job, and the two review flows as the org has them",
+      "state": "ok",
+      "ms": 5045
+    },
+    {
+      "title": "Step 20 · Enter what the job bills and what it costs",
+      "state": "ok",
+      "ms": 6977
+    },
+    {
+      "title": "Step 21 · Submit both fees for review",
+      "state": "ok",
+      "ms": 8330
+    },
+    {
+      "title": "Step 21 · The accountant approves them from the cost review queue",
+      "state": "ok",
+      "ms": 5653
+    },
+    {
+      "title": "Step 22 · Group the approved fees into bills",
+      "state": "ok",
+      "ms": 7584
+    },
+    {
+      "title": "Step 23 · Submit the bill for approval",
+      "state": "ok",
+      "ms": 5001
+    },
+    {
+      "title": "Step 23 · First eyes: the accountant approves it",
+      "state": "ok",
+      "ms": 5522
+    },
+    {
+      "title": "Step 23 · Second eyes: the director approves it",
+      "state": "ok",
+      "ms": 11023
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "managerA"
+    },
+    {
+      "i": 1,
+      "role": "accountant"
+    },
+    {
+      "i": 2,
+      "role": "directorA"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176220
+}

@@ -178,7 +178,9 @@ another computer, there is nothing to show.
 
 **Published recordings.** `node hosting/runner/publish-recordings.mjs` copies the runner's passed saves
 into `hosting/recordings/` (TRACKED — a deploy from another worktree must not wipe them), and
-`deploy-site.ps1` publishes them at `/golden-paths/<job>.mp4|.json`. Every panel loads its journey's
+`deploy-site.ps1` publishes them at `/golden-paths/<job>.json` + `<job>-<n>.mp4`. A journey with several
+people has one clip per person (one browser context each); the JSON names each clip's role, and the
+panel offers a "whose screen" switcher (Salesperson · Branch manager · Accountant…). Every panel loads its journey's
 published recording first, with no runner needed, on any machine; a newer local save replaces it
 on screen, and Regenerate still needs the runner. The service worker leaves `/golden-paths/` alone
 (video is fetched in Range requests, which a cached whole response answers wrongly). The site is
