@@ -79,7 +79,7 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 
 .zg-main { flex: 1; min-height: 0; display: grid; grid-template-columns: 19rem minmax(0, 1fr); }
 
-/* the flow: phases, each a vertical chain of steps; breaks sit on the line where they fall */
+/* the flow: phases, each a vertical chain of steps */
 .zg-flow {
   min-height: 0; overflow-y: auto; overscroll-behavior: contain;
   padding: 1rem .9rem 2rem 1rem; border-right: 1px solid var(--rule); background: var(--surface);
@@ -144,11 +144,6 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 }
 .zg-next-mine:hover { background: var(--accent); color: var(--surface); }
 .zg-next-mine:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.zg-break {
-  display: flex; gap: .45rem; align-items: baseline; margin: .35rem 0 0 -.95rem; transform: translateX(-.3rem);
-  font: .64rem/1.3 var(--mono); letter-spacing: .04em; color: var(--oxide);
-}
-.zg-break-mark { font: 700 .9rem/1 var(--display); background: var(--surface); }
 
 /* the step guide, out of its modal: fills the right column and scrolls on its own */
 .zg-step { min-height: 0; display: flex; }
@@ -168,7 +163,6 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
   .zg-item { padding: 0; }
   .zg-item::before, .zg-node::before { display: none; }
   .zg-node { width: auto; white-space: nowrap; }
-  .zg-break { display: none; }
   .zg-step .sm-body { overflow: visible; }
 }
 

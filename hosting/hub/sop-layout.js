@@ -106,7 +106,7 @@
   guide.appendChild(main);
   wrap.insertBefore(guide, wrap.firstChild);
 
-  // the flow: phases in order, each step a button, breaks between them where they fall
+  // the flow: phases in order, each step a button
   var order = SOP.ORDER || Object.keys(SOP.STEP).map(Number).sort(function (a, b) { return a - b; });
   var nodes = {};
   var lastPhase = null;
@@ -139,13 +139,6 @@
     btn.appendChild(make('span', 'zg-label', s.label));
     btn.addEventListener('click', function () { show(n, true); });
     li.appendChild(btn);
-    var brk = SOP.BREAK && SOP.BREAK[n];
-    if (brk) {
-      var b = make('div', 'zg-break');
-      b.appendChild(make('span', 'zg-break-mark', '‖'));
-      b.appendChild(make('span', 'zg-break-label', 'Chain break · ' + brk.label));
-      li.appendChild(b);
-    }
     list.appendChild(li);
     nodes[n] = btn;
   });
