@@ -3,7 +3,7 @@
    Everything here MOVES existing nodes, so the listeners the page bound by id keep working.
      1. The page is one section: a bar with the role tabs and the App URL, the steps as a
         vertical flow on the left, and the step guide the page builds for its modal shown
-        inline on the right, without its hand-over prompt. The title block, phase index,
+        inline on the right, without Watch out, the chain break, What to fix or the prompt. The title block, phase index,
         "How they arrive", the chart, "What to fix first" and "The document" are removed.
      2. The step guide's Run panel (golden path) for the journey the step belongs to.
      3. The ZYT top bar's theme button (same zyt.theme key as the dashboard). */
@@ -219,7 +219,7 @@
     if (body) body.scrollTop = 0;
     if (nodes[n]) nodes[n].scrollIntoView({ block: 'nearest' });
     markNotMine(box, n);
-    dropPrompt(box);
+    dropSections(box);
     addRunPanel(box, n);
   }
   new MutationObserver(function (records) {
@@ -230,19 +230,20 @@
     });
   }).observe(document.body, { childList: true });
 
-  // the hand-over prompt for fixing the step's defects is not shown on this page:
-  // its heading and everything under it up to the next heading go
-  function dropPrompt(box) {
-    var heads = box.querySelectorAll('h4');
-    for (var i = 0; i < heads.length; i++) {
-      if (!/^prompt$/i.test(heads[i].textContent.trim())) continue;
-      var el = heads[i];
-      while (el && !(el !== heads[i] && el.tagName === 'H4')) {
+  // Sections this page does not show: the Watch out notes, the chain break after the step, the
+  // defects to fix and the hand-over prompt. Each heading goes with everything under it up to
+  // the next heading in the same column.
+  var DROP = /^(watch out|chain break after this step|what to fix|prompt)$/i;
+  function dropSections(box) {
+    Array.prototype.slice.call(box.querySelectorAll('h4')).forEach(function (head) {
+      if (!head.isConnected || !DROP.test(head.textContent.trim())) return;
+      var el = head;
+      while (el && !(el !== head && el.tagName === 'H4')) {
         var next = el.nextElementSibling;
         el.remove();
         el = next;
       }
-    }
+    });
   }
 
   // "not one of your steps" reads as a caution, with a way on to the role's next step
