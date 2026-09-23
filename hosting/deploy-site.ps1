@@ -232,6 +232,23 @@ node (Join-Path $PSScriptRoot 'hub/build-runbook.mjs') $xcSrc $xcBody 'Crosschec
 if ($LASTEXITCODE -ne 0) { throw 'build-runbook.mjs failed for the steps 12-15 crosscheck' }
 Write-Utf8 (Join-Path $public 'nct/steps-12-15-crosscheck/index.html') (Get-SopHtml ([IO.File]::ReadAllText($xcBody)) 'nct' 'NCT')
 
+# -- NCT: plans 01-10 and the steps 4-10 crosscheck (published, unlisted; plan 09-23 Phase 2) ---
+# Same row shape as $nctPages1627 below. The plan pages are in projects.json `unlisted`; the
+# crosscheck is a `pages` entry with nav "hidden", so neither shows in the sidebar.
+$nctPages0110 = @(
+  @{ src = 'plans/step-01-enquiry-channel.md';                page = 'step-01-plan';            kind = 'Plan';       zip = 'steps-1-3-plans.zip' },
+  @{ src = 'plans/step-02-credit-and-duplicates.md';          page = 'step-02-plan';            kind = 'Plan';       zip = 'steps-1-3-plans.zip' },
+  @{ src = 'plans/step-03-contact-nomination.md';             page = 'step-03-plan';            kind = 'Plan';       zip = 'steps-1-3-plans.zip' },
+  @{ src = 'plans/step-04-rate-card-gate.md';                 page = 'step-04-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/step-05-quotation-date-and-staff.md';       page = 'step-05-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/step-06-tariff-quantity-from-containers.md'; page = 'step-06-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/step-07-ambiguous-tariff-floor.md';         page = 'step-07-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/step-08-quotation-approval-integrity.md';   page = 'step-08-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/step-09-send-outbox.md';                    page = 'step-09-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/step-10-decision-correction.md';            page = 'step-10-plan';            kind = 'Plan';       zip = 'steps-4-10-plans.zip' },
+  @{ src = 'plans/steps-4-10-crosscheck.md';                  page = 'steps-4-10-crosscheck';   kind = 'Crosscheck'; zip = 'steps-4-10-plans.zip' }
+)
+
 # -- NCT: steps 16-19, 20-26 and 27 — runbooks, plans and crosschecks (same Markdown renderer) ---
 # Each row: source (repo-relative), output page folder under nct/, kicker, download bundle.
 $nctPages1627 = @(
@@ -253,7 +270,7 @@ $nctPages1627 = @(
   @{ src = 'step-27-runbook.md';                         page = 'step-27-runbook';         kind = 'Runbook';    zip = 'step-27-plans.zip' },
   @{ src = 'plans/step-27-month-close-truth.md';         page = 'step-27-plan';            kind = 'Plan';       zip = 'step-27-plans.zip' }
 )
-foreach ($p in $nctPages1627) {
+foreach ($p in $nctPages0110 + $nctPages1627) {
   $pSrc = Join-Path $root $p.src
   $pBody = Join-Path $site "$($p.page).body.html"
   node (Join-Path $PSScriptRoot 'hub/build-runbook.mjs') $pSrc $pBody $p.kind 'NCT Freight Forwarding' 'NCT' "--download=/nct/downloads/$($p.zip)"
@@ -323,8 +340,8 @@ Write-Utf8 (Join-Path $public 'harper\bot-answers\index.html') (Get-SopHtml ([IO
 
 # ── downloadable plan bundles ────────────────────────────────────────────────
 # One zip per runbook: the runbook's own markdown plus the plans its prompts name, so a
-# colleague can unzip to C:/nct-plans/ and follow it. The plans are not in git; this is the
-# only self-service copy. Every file here is already readable as a page on this public site.
+# colleague can unzip to C:/nct-plans/ and follow it. The plans are also in git (plans/), and
+# every file here is readable as a page on this public site; the zip is the one-click copy.
 $downloads = Join-Path $public 'nct\downloads'
 New-Item -ItemType Directory -Force $downloads | Out-Null
 $bundles = @(
@@ -433,6 +450,14 @@ $shotList = (Get-ChildItem (Join-Path $sopDir 'shots') -Filter *.jpg |
 $shotList += ', ' + (($jwaRefs | ForEach-Object { "'/jwa/full-chain-sop/shots/$_'" }) -join ', ')
 $sw = [IO.File]::ReadAllText((Join-Path $pwa 'sw.js')).Replace('__BUILD__', $build).Replace('/*__SHOTS__*/', $shotList)
 Write-Utf8 (Join-Path $public 'sw.js') $sw
+# Every PAGES path must have been built: one missing page fails the worker's addAll, and the
+# install then fails silently, leaving visitors on the old cache.
+$pagesLine = [regex]::Match($sw, "const PAGES = \[([^\]]*)\]").Groups[1].Value
+foreach ($m in [regex]::Matches($pagesLine, "'([^']+)'")) {
+  $pth = $m.Groups[1].Value
+  $built = if ($pth -eq '/') { Join-Path $public 'index.html' } else { Join-Path $public (($pth.Trim('/') -replace '/', '\') + '\index.html') }
+  if (-not (Test-Path $built)) { throw "sw.js PAGES lists $pth, which was not built" }
+}
 
 $files = (Get-ChildItem -Recurse -File $public).Count
 Write-Output "Built $public ($files files; Convex $ConvexUrl; NCT SOP references $($refs.Count) screenshots, JWA SOP $($jwaRefs.Count), all present)"

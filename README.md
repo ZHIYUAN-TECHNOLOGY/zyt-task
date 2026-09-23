@@ -158,9 +158,9 @@ implementer can copy or download them from each step's **Prompt** box without th
 - Nothing has been implemented. Next actions: step 1 of `steps-1-3-runbook.html`, and
   Wave 1 of `steps-4-10-runbook.md` (04 · 08 Phases 1+4 · 05). The two can run alongside
   each other; they share only the migration journal.
-- The plans are not in git. A colleague running the steps 04–10 runbook needs the
-  `plans/` folder sent to them.
-- The steps 04–10 runbook is not published as a page yet (the steps 1–3 one is).
+- The plans are in git (`plans/`) and published: every step plan has an unlisted page at
+  `/nct/step-NN-plan/`, and each runbook's plans download as one zip from `/nct/downloads/`.
+- The steps 04–10 runbook is published at `/nct/steps-4-10-runbook/`.
 - Open gates, owner only:
   - **Production's company-name collision count** (step 02 Phase 3). The dev branch reads
     0; production is unmeasured — `dev-db-guard` blocks it unless the owner overrides.
