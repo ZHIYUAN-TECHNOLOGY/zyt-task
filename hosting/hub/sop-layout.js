@@ -40,10 +40,12 @@
   // recorded one beside it. hub/golden-path.js maps the step number to a job
   // and owns the panel; steps with no journey get nothing rather than a dead button.
   var runPanels = {};
+  // which SOP this page is: the first path segment (/nct/customer-intake-sop/ → 'nct')
+  var SOP_KEY = (location.pathname.split('/')[1] || '').toLowerCase();
 
   function addRunPanel(box, n) {
     if (!window.ZytGoldenPath || !n || isNaN(n)) return;
-    var match = window.ZytGoldenPath.jobForStep(Number(n));
+    var match = window.ZytGoldenPath.jobForStep(Number(n), SOP_KEY);
     if (!match) return;
     var heads = box.querySelectorAll('h4');
     var head = null;

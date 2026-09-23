@@ -21,19 +21,22 @@
 (function () {
   var URL_BASE = 'http://127.0.0.1:4317';
 
-  /** SOP step number → the journey that covers it; every NCT step 1–27 has
-   * one. A step outside the map returns null, and the caller shows nothing
-   * rather than a dead button. Keep in step with `JOBS` in
-   * hosting/runner/server.mjs. */
-  var BY_STEP = [
-    { from: 1, to: 3, job: 'nct-intake-steps-1-3', covers: 'steps 1–3' },
-    { from: 4, to: 7, job: 'nct-quote-build-steps-4-7', covers: 'steps 4–7' },
-    { from: 8, to: 10, job: 'nct-quote-decide-steps-8-10', covers: 'steps 8–10' },
-    { from: 11, to: 15, job: 'nct-order-open-steps-11-15', covers: 'steps 11–15' },
-    { from: 16, to: 19, job: 'nct-bl-run-steps-16-19', covers: 'steps 16–19' },
-    { from: 20, to: 23, job: 'nct-bill-build-steps-20-23', covers: 'steps 20–23' },
-    { from: 24, to: 27, job: 'nct-invoice-close-steps-24-27', covers: 'steps 24–27' },
-  ];
+  /** SOP → step number → the journey that covers it. Keyed by SOP (the first
+   * path segment of its page, e.g. /nct/customer-intake-sop/ → 'nct') so one
+   * SOP's recordings never show on another's steps. A step outside the map
+   * returns null, and the caller shows nothing rather than a dead button. Keep
+   * in step with `JOBS` in hosting/runner/server.mjs. */
+  var BY_STEP = {
+    nct: [
+      { from: 1, to: 3, job: 'nct-intake-steps-1-3', covers: 'steps 1–3' },
+      { from: 4, to: 7, job: 'nct-quote-build-steps-4-7', covers: 'steps 4–7' },
+      { from: 8, to: 10, job: 'nct-quote-decide-steps-8-10', covers: 'steps 8–10' },
+      { from: 11, to: 15, job: 'nct-order-open-steps-11-15', covers: 'steps 11–15' },
+      { from: 16, to: 19, job: 'nct-bl-run-steps-16-19', covers: 'steps 16–19' },
+      { from: 20, to: 23, job: 'nct-bill-build-steps-20-23', covers: 'steps 20–23' },
+      { from: 24, to: 27, job: 'nct-invoice-close-steps-24-27', covers: 'steps 24–27' },
+    ],
+  };
 
   /** The seeded e2e actor keys (nct-layout e2e/fixtures/seed-cli.ts ACTORS),
    * as a person would name the screen. */
@@ -49,9 +52,10 @@
   };
   function roleLabel(role) { return ROLE_LABELS[role] || role || ''; }
 
-  function jobForStep(n) {
-    for (var i = 0; i < BY_STEP.length; i++) {
-      if (n >= BY_STEP[i].from && n <= BY_STEP[i].to) return BY_STEP[i];
+  function jobForStep(n, sop) {
+    var list = BY_STEP[sop] || [];
+    for (var i = 0; i < list.length; i++) {
+      if (n >= list[i].from && n <= list[i].to) return list[i];
     }
     return null;
   }
