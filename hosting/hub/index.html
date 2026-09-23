@@ -829,8 +829,39 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   });
   // The internal company: it has its own page (Resources) and is not in the switcher.
   var HOME = 'zyt';
-  var CLIENTS = SEED.projects.filter(function (p) { return p.key !== HOME; });
-  if (!CLIENTS.length) CLIENTS = SEED.projects.slice();
+  var CLIENTS;
+  function setClients() {
+    CLIENTS = SEED.projects.filter(function (p) { return p.key !== HOME; });
+    if (!CLIENTS.length) CLIENTS = SEED.projects.slice();
+  }
+  setClients();
+  // Cloudflare Access signs people in before the page loads. Staff see every company; anyone
+  // else sees the companies whose "access" list (projects.json) has their email or @domain.
+  // This only tidies the view: the pages themselves are locked by Access's own path rules.
+  var STAFF_DOMAIN = '@zhiyuantech.ai';
+  function allowedFor(email, p) {
+    return (p.access || []).some(function (a) {
+      a = String(a).trim().toLowerCase();
+      return a.charAt(0) === '@' ? email.slice(-a.length) === a : email === a;
+    });
+  }
+  // null when there is no Access sign-in (local preview, or Access off): then nothing is hidden
+  function whoAmI() {
+    var timeout = new Promise(function (ok) { setTimeout(function () { ok(null); }, 4000); });
+    var ask = fetch('/cdn-cgi/access/get-identity', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (id) { return id && typeof id.email === 'string' ? id.email.trim().toLowerCase() : null; })
+      .catch(function () { return null; });
+    return Promise.race([ask, timeout]);
+  }
+  function limitTo(email) {
+    if (!email || email.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN) return true;
+    SEED.projects = SEED.projects.filter(function (p) { return p.key !== HOME && allowedFor(email, p); });
+    if (!SEED.projects.length) return false;
+    setClients();
+    $('tab-zyt').hidden = true;
+    return true;
+  }
   function projectOf(key) { return SEED.projects.filter(function (p) { return p.key === key; })[0]; }
 
   // view: 'tasks' | 'task' | 'overview' | 'findings'. taskId/expanded belong to the task view,
@@ -2525,8 +2556,17 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   if (window.convex && /^https:\/\//.test(CONVEX_URL)) {
     try { client = new convex.ConvexClient(CONVEX_URL); } catch (e) { client = null; }
   }
-  if (!client) setConn('offline', 'Read-only · live sync unavailable');
-  routeFromUrl();
+  whoAmI().then(function (email) {
+    if (!limitTo(email)) {
+      document.querySelector('.toptabs').style.display = 'none';
+      $('main').textContent = '';
+      append($('main'), h('div', { class: 'empty' }, h('h3', { text: 'No projects for ' + email }),
+        h('p', { text: 'Your email isn’t linked to a company yet. Ask ZYT to add it.' })));
+      return;
+    }
+    if (!client) setConn('offline', 'Read-only · live sync unavailable');
+    routeFromUrl();
+  });
 })();
 </script>
 <!--PWA_SCRIPT-->

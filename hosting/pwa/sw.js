@@ -12,7 +12,11 @@ const PAGES = ['/', '/nct/customer-intake-sop/', '/nct/steps-1-3-runbook/', '/nc
 const PRECACHE = [...PAGES, '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/brand/logo-light-72.png', '/brand/logo-dark-72.png','/favicon.svg', /*__SHOTS__*/];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  // One by one, skipping failures: Cloudflare Access refuses a client the other companies' pages,
+  // and addAll would then fail the whole install.
+  event.waitUntil(caches.open(CACHE)
+    .then((c) => Promise.all(PRECACHE.map((u) => c.add(u).catch(() => {}))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (event) => {
@@ -65,6 +69,8 @@ self.addEventListener('fetch', (event) => {
   // Range requests, which a cached whole response answers wrongly, and the
   // verdict beside it must never be a stale copy.
   if (url.pathname.startsWith('/golden-paths/')) return;
+  // Cloudflare Access (sign-in, sign-out, who is signed in) must never be answered from cache.
+  if (url.pathname.startsWith('/cdn-cgi/')) return;
 
   if (request.mode === 'navigate' && url.origin === self.location.origin) {
     event.respondWith(networkFirst(request));

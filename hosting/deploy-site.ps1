@@ -6,7 +6,7 @@
 #   /harper/guest-concierge-sop/ Harper Suite WhatsApp concierge SOP        OpenWA/sop/guest-concierge/sop.json
 #
 # Live at https://admin.zhiyuantech.ai — Worker "zyt-admin" in Ngchwanlii@zhiyuantech.ai's
-# Account (it owns the zhiyuantech.ai zone). PUBLIC: anyone with the link can read it and tick.
+# Account (it owns the zhiyuantech.ai zone). Behind Cloudflare Access (see SITE.md Invariants).
 # Task content comes from tracker/seed (via hosting/hub/projects.json); tick state lives in
 # Convex (hosting/convex-app, prod URL in hosting/convex-app/deployment.json).
 # Brand (logo, favicons, palette) comes from zhiyuantech.ai: hosting/hub/brand/BRAND.md.

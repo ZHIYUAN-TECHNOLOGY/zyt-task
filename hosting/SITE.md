@@ -26,7 +26,7 @@ files are the spec for those. If something below stops being true, fix this file
 | `/harper/bot-answers/` | Generated at build time by `hosting/hub/build-bot-answers.mjs` from `C:/Project/OpenWA/kapso/prompt/kb.md` (the bot's knowledge base, one table per question in English, Malay and Chinese) plus `C:/Project/OpenWA/sop/guest-concierge/other-flows.md` (non-question messages), then rendered by `build-runbook.mjs` (kind "Reference") | Edit `kb.md` in OpenWA (that changes the bot too) or `other-flows.md`, then redeploy. A malformed `kb.md` entry fails the build |
 | `/zyt/commands/` (ZYT commands) | `C:/Project/ZYT-Task/docs/zyt-commands.md`, same renderer (kind "Commands", company `zyt` in `projects.json`, empty `tracker/seed/*-zyt.json`) | Hand edits (h2 = table-of-contents entry); verify commands against the zyt skills' scripts |
 
-| `/nct/downloads/*.zip` | Built by `deploy-site.ps1` from the runbook markdown plus the plans its prompts name (`steps-1-3-plans.zip`, `steps-4-10-plans.zip`, `steps-11-15-plans.zip`, `steps-16-19-plans.zip`, `steps-20-26-plans.zip`, `step-27-plans.zip`, `all-plans.zip`). The plans are also in git (`plans/`); the zip is the one-click copy. Public, like every other page (2026-09-18 decision) | Bundle lists live in `deploy-site.ps1`; a missing file fails the build |
+| `/nct/downloads/*.zip` | Built by `deploy-site.ps1` from the runbook markdown plus the plans its prompts name (`steps-1-3-plans.zip`, `steps-4-10-plans.zip`, `steps-11-15-plans.zip`, `steps-16-19-plans.zip`, `steps-20-26-plans.zip`, `step-27-plans.zip`, `all-plans.zip`). The plans are also in git (`plans/`); the zip is the one-click copy. Behind the NCT Access rule, like the rest of `/nct/` | Bundle lists live in `deploy-site.ps1`; a missing file fails the build |
 
 Live tick state (done / open, who, when) is not in any file: it is in Convex, project
 `wilfred-foo/zyt-admin`, tables `findings` and `events`.
@@ -66,7 +66,7 @@ belong in layers 1–3, not in the source**.
 | Step numbers | None to edit: steps are numbered 1…N per task, in stage order, when the page loads. A wait on a step in another task reads "<task short> · <n>" (e.g. "Steps 11–15 · 18"). `waitsFor` holds step ids and may cross tasks | Reordering or inserting a step renumbers the rest of its task; ids and ticks are unaffected |
 | A task's status | None to edit: derived from live ticks — Done (every step ticked), Waiting on Wilfred (every ready step is Wilfred's), In progress, Not started. A step is ready when it is open and everything it waits for is ticked | — |
 | Look of runbook, plan and crosscheck text (page and dashboard) | `hosting/hub/runbook-body.css` — inlined into every page by `build-runbook.mjs` and into the dashboard by `deploy-site.ps1` (the `RUNBOOK_CSS` placeholder). Page-only rules (table of contents, kicker, source line) stay in `build-runbook.mjs` | Redeploy |
-| Add a company or a page | `projects.json` + seed files + a build block in `deploy-site.ps1` + the path in `PAGES` in `hosting/pwa/sw.js` + a seed mutation in `convex-app/convex/seed.ts` | Redeploy; run its seed |
+| Add a company or a page | `projects.json` + seed files + a build block in `deploy-site.ps1` + the path in `PAGES` in `hosting/pwa/sw.js` + a seed mutation in `convex-app/convex/seed.ts` + for a new company, its `"access"` list in `projects.json` and then `node hosting/access/sync-access.mjs` (see Invariants) | Redeploy; run its seed |
 | Brand (logo, palette, fonts) | `hosting/hub/brand/BRAND.md`, files beside it, `hosting/pwa/make-icons.ps1` | Redeploy |
 | A runbook step's **Run golden path** button | `"run": "<job id>"` on the step in `tracker/seed/runbook-<key>.json`; job ids and what they run live in `JOBS` in `hosting/runner/server.mjs` | Redeploy (the job itself needs no deploy — restart the runner) |
 | Tick state | Never by hand — through the dashboard | — |
@@ -193,8 +193,8 @@ people has one clip per person (one browser context each); the JSON names each c
 panel offers a "whose screen" switcher (Salesperson · Branch manager · Accountant…). Every panel loads its journey's
 published recording first, with no runner needed, on any machine; a newer local save replaces it
 on screen, and Regenerate still needs the runner. The service worker leaves `/golden-paths/` alone
-(video is fetched in Range requests, which a cached whole response answers wrongly). The site is
-public, so these videos are too: they may only ever show the throwaway e2e orgs.
+(video is fetched in Range requests, which a cached whole response answers wrongly). Anyone signed in
+for that company can watch them (Access, `/golden-paths/<key>-*`), so they may only ever show the throwaway e2e orgs.
 
 A runbook step with a `run` field shows a **Golden path** section. Its button asks
 `hosting/runner/server.mjs` on **the viewer's own computer** (`http://127.0.0.1:4317`) to start a
@@ -239,13 +239,34 @@ node hosting/runner/server.mjs
 
 ## Invariants — breaking these breaks something
 
-- **The site is public.** Anyone with the link can read every page and tick tasks; `noindex` only
-  hides it from search.
-- **The bundles are public too** (2026-09-18 decision): anyone with the link can download every
-  plan as files. `hosting/site/worker.js` can gate `/nct/downloads/` behind a passphrase again —
-  set `"main": "./worker.js"` in `hosting/site/wrangler.jsonc` and
-  `printf %s '<passphrase>' | npx wrangler secret put DOWNLOADS_PASSPHRASE` from `hosting/site/`.
-  It fails closed, so set the secret before deploying with `main` on. Team-only fields (repairs, code locations) are shown by decision.
+- **Sign-in is Cloudflare Access** (2026-09-23, replacing the 2026-09-18 "public" decision). It lives in the
+  Cloudflare account that owns `zhiyuantech.ai` and is **made from `projects.json` by
+  `node hosting/access/sync-access.mjs`** (`--dry-run` first; token in the git-ignored
+  `hosting/access/.env`) — don't edit the `zyt-admin · …` items by hand in the dashboard, the next
+  sync overwrites them. Login is a one-time PIN sent by email. One self-hosted
+  application per rule, and where two cover a URL the longer path wins:
+
+  | Application | Allowed |
+  |---|---|
+  | `admin.zhiyuantech.ai` | ZYT staff + every client email |
+  | `admin.zhiyuantech.ai/nct`, `/golden-paths/nct-*` | ZYT staff + NCT emails |
+  | `admin.zhiyuantech.ai/jwa`, `/golden-paths/jwa-*` | ZYT staff + JWA emails |
+  | `admin.zhiyuantech.ai/harper` | ZYT staff + Harper emails |
+  | `admin.zhiyuantech.ai/zyt` | ZYT staff only |
+
+  "ZYT staff" is the `zyt` company's `"access"` list (each staff email, not the whole domain),
+  written into every policy; a client's emails are its own `"access"` list. The web-app manifest,
+  `/icons/*` and the favicons bypass sign-in (browsers fetch them without cookies).
+
+  The dashboard asks `/cdn-cgi/access/get-identity` who is signed in: `@zhiyuantech.ai` sees every
+  company; anyone else sees only the companies whose `"access"` list in `hub/projects.json` holds
+  their email or `@domain`, and no Resources tab. That list only tidies the view — **keep it and
+  the Access rules in step**; the rules are what lock the pages. With no Access sign-in (a local
+  preview) nothing is hidden. Convex is not behind Access: ticks still carry a typed name, and the
+  board data is readable by anyone who has the Convex URL. `sw.js` never answers `/cdn-cgi/` from
+  cache, and precaches page by page so a client's install survives the pages Access refuses them.
+- `hosting/site/worker.js` (the old downloads passphrase gate) is unused; Access covers
+  `/nct/downloads/`. Team-only fields (repairs, code locations) are shown to that company's users by decision.
 - **NCT page hooks the hosted layout depends on** (`sop-layout.js` / `.css`): `.chain`,
   `#chain-pane` with `.cp-num`, `.masthead`, `nav.index`, `#arrivals`, `#map`, `#baseurl`,
   `#fixes`, `.fixbrowser`, `#document`, `#doc-body`, `#doc-toggle`, `window.SOP.showStep`, `window.chainFocus`,
@@ -288,6 +309,8 @@ node hosting/runner/server.mjs
 
 - `README.md` — overview of this repo, both published sites.
 - `_plan/09-15_zyt-admin-dashboard/plan.md` — dashboard decisions (layout, Convex, open ticking).
+- 2026-09-23: sign-in by Cloudflare Access, chosen over Clerk as enough for an internal site. The
+  shelved Clerk plan (real users on ticks, Convex locked too) is `_plan/09-23_clerk-auth/plan/plan.md`.
 - `_plan/09-15_zyt-admin-dashboard/sop-layout.md` — SOP hosted-layout decisions and revisions.
 - `hosting/hub/brand/BRAND.md` — brand source and the darker product dark theme.
 

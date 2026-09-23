@@ -2,6 +2,7 @@
   {
     "key": "nct",
     "name": "NCT Freight Forwarding",
+    "access": ["norman@nct.com.my"],
     "initials": "NCT",
     "place": "Sepangar Port · Kota Kinabalu",
     "sector": "Logistics",
@@ -168,6 +169,7 @@
   {
     "key": "zyt",
     "name": "Zhiyuan Technology",
+    "access": ["wilfred@zhiyuantech.ai", "bryan@zhiyuantech.ai", "edwin@zhiyuantech.ai", "ngchwanlii@zhiyuantech.ai"],
     "initials": "ZYT",
     "place": "zhiyuantech.ai",
     "sector": "Internal",

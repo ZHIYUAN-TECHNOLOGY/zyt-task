@@ -11,7 +11,7 @@
 // - listens on 127.0.0.1 only, so nothing off this machine can reach it;
 // - every route except /video checks Origin against ALLOWED_ORIGINS, so other
 //   websites open in the same browser cannot start a run (the dashboard itself
-//   is public, but a visitor's click only reaches THEIR OWN localhost);
+//   is shared with clients, but a visitor's click only reaches THEIR OWN localhost);
 // - one run at a time; jobs are a fixed list below, never a command from the page;
 // - the e2e suite seeds its own organization, refuses the production database,
 //   and tears the organization down afterwards.

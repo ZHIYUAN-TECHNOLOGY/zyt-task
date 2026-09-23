@@ -4,7 +4,7 @@
 //   node hosting/runner/publish-recordings.mjs          passed runs only
 //   node hosting/runner/publish-recordings.mjs --all    failed runs too
 //
-// Then commit hosting/recordings/ and deploy. The site is PUBLIC: these videos
+// Then commit hosting/recordings/ and deploy. Every signed-in user of that company sees these videos, and they
 // show only the throwaway e2e orgs ("E2E …" names, example.invalid addresses),
 // the same app screens the SOP pages already publish as screenshots — never
 // point the runner at a database with real customers in it.

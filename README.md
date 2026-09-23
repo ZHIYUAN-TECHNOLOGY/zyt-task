@@ -16,9 +16,9 @@ this folder is inside that repo.
 **Contract for other repos:** `hosting/SITE.md` — what each page is built from, what can change and
 how, deploy, invariants. Keep it true when any of those change.
 
-**ZYT client-projects site:** https://admin.zhiyuantech.ai — **public: anyone with the link can
-read it and tick tasks**, and it shows team-only detail (repairs, code locations). No Cloudflare
-Access in front of it; `noindex` only keeps it out of search.
+**ZYT client-projects site:** https://admin.zhiyuantech.ai — **sign-in by Cloudflare Access**
+(email PIN): ZYT staff see everything, each client only their own company. It shows team-only
+detail (repairs, code locations) to that company's users. Rules: `hosting/SITE.md` → Invariants.
 
 | Path | Page | Source |
 |---|---|---|
