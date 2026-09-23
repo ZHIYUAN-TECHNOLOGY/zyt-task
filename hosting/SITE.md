@@ -215,11 +215,19 @@ node hosting/runner/server.mjs
     send the customer would get and **cancels** — quotation sends go through a real connected
     mailbox, so no golden path may ever press Send.
   Adding one to a runbook step still needs a deploy, because the `run` field is built into the page.
-- Reads `DATABASE_URL` and `BETTER_AUTH_SECRET` from `nct-layout/apps/server/.env`; the suite seeds
-  its own organization, refuses the production database and tears the org down.
+- JWA jobs, each a project in `_e2e/golden.config.ts` of the JWA worktree `JWA_DIR` (default
+  `C:/Project/JWASystemv2/jwa-golden`, branch `feat/jwa-golden-paths`), run with `bunx` from
+  `apps/web` against a web server of their own on **:3700** (a trusted auth origin; :3300 is another
+  worktree's) and the shared dev Convex, writing only `E2E-DEEP-` rows they delete afterwards:
+  `jwa-setup-steps-1-4`, `jwa-raise-steps-5-8`, `jwa-buy-steps-9-10`, `jwa-receive-steps-11-14`
+  → `_e2e/golden-out/<project>/`, clips already in story order (`meta.json` `storyOrder: true`).
+- The SOP step → job map is `BY_STEP` in `hub/golden-path.js`, keyed by SOP (the page's first path
+  segment: `nct`, `jwa`), so one SOP's recordings never show on another's steps.
+- NCT reads `DATABASE_URL` and `BETTER_AUTH_SECRET` from `nct-layout/apps/server/.env`; the suite
+  seeds its own organization, refuses the production database and tears the org down.
 - Accepts requests only from `https://admin.zhiyuantech.ai` (plus `RUNNER_EXTRA_ORIGINS`, e.g.
   `http://localhost:8791` for a `-DryRun` preview — `.claude/launch.json` has `hub-preview` and
-  `golden-path-runner`). One run at a time. Env: `NCT_DIR`, `RUNNER_PORT`, `RUNNER_SLOWMO` (ms, 600).
+  `golden-path-runner`). One run at a time. Env: `NCT_DIR`, `JWA_DIR`, `RUNNER_PORT`, `RUNNER_SLOWMO` (ms, 600).
 - **Chrome 142+ Local Network Access:** a public page may only reach `127.0.0.1` when the request
   opts in with `fetch(url, { targetAddressSpace: 'loopback' })`. Without it the fetch fails at once
   with a bare "Failed to fetch". `EventSource` and `<video src>` cannot opt in, so the dashboard

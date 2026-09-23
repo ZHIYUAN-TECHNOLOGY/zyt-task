@@ -36,10 +36,17 @@
       { from: 20, to: 23, job: 'nct-bill-build-steps-20-23', covers: 'steps 20–23' },
       { from: 24, to: 27, job: 'nct-invoice-close-steps-24-27', covers: 'steps 24–27' },
     ],
+    jwa: [
+      { from: 1, to: 4, job: 'jwa-setup-steps-1-4', covers: 'steps 1–4' },
+      { from: 5, to: 8, job: 'jwa-raise-steps-5-8', covers: 'steps 5–8' },
+      { from: 9, to: 10, job: 'jwa-buy-steps-9-10', covers: 'steps 9–10' },
+      { from: 11, to: 14, job: 'jwa-receive-steps-11-14', covers: 'steps 11–14' },
+    ],
   };
 
-  /** The seeded e2e actor keys (nct-layout e2e/fixtures/seed-cli.ts ACTORS),
-   * as a person would name the screen. */
+  /** The e2e actor keys, as a person would name the screen: NCT's seeded
+   * actors (nct-layout e2e/fixtures/seed-cli.ts ACTORS) and JWA's test roles
+   * (jwa-system _e2e/web/_roles.ts). */
   var ROLE_LABELS = {
     owner: 'Owner',
     salesperson: 'Salesperson',
@@ -49,6 +56,17 @@
     directorA: 'Director',
     directorB: 'Second director',
     viewer: 'Viewer',
+    admin: 'Administrator',
+    pm: 'Project Manager',
+    qs: 'Quantity Surveyor',
+    cfo: 'CFO',
+    coo: 'COO',
+    director: 'Director',
+    requestor: 'Site Supervisor',
+    cm: 'Construction Manager',
+    purchasing: 'Purchasing',
+    warehouse: 'Warehouse',
+    inventory_manager: 'Inventory Manager',
   };
   function roleLabel(role) { return ROLE_LABELS[role] || role || ''; }
 

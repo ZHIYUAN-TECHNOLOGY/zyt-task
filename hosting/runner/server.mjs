@@ -1,7 +1,7 @@
 // Local golden-path runner for the ZYT dashboard (admin.zhiyuantech.ai).
 //
 // The dashboard is a static page; it cannot start a browser. This small server,
-// run on the machine that has the NCT repo, starts a HEADED, slowed-down
+// run on the machine that has the NCT and JWA repos, starts a HEADED, slowed-down
 // Playwright run when a runbook step's "Run golden path" button is pressed, and
 // streams each test.step back to the page as it happens.
 //
@@ -16,7 +16,8 @@
 // - the e2e suite seeds its own organization, refuses the production database,
 //   and tears the organization down afterwards.
 //
-// Env: NCT_DIR (default C:/Project/NCT/nct-layout), RUNNER_PORT (4317),
+// Env: NCT_DIR (default C:/Project/NCT/nct-layout), JWA_DIR (default
+// C:/Project/JWASystemv2/jwa-golden), RUNNER_PORT (4317),
 // RUNNER_SLOWMO ms (600), RUNNER_EXTRA_ORIGINS (comma list, e.g. a local -DryRun preview).
 
 import { spawn, spawnSync } from 'node:child_process';
@@ -27,6 +28,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const NCT_DIR = process.env.NCT_DIR || 'C:/Project/NCT/nct-layout';
+const JWA_DIR = process.env.JWA_DIR || 'C:/Project/JWASystemv2/jwa-golden';
 const PORT = Number(process.env.RUNNER_PORT || 4317);
 const SLOWMO = String(process.env.RUNNER_SLOWMO || 600);
 const ALLOWED_ORIGINS = new Set([
@@ -48,18 +50,19 @@ const savedClip = (jobId, i) => join(RUNS_DIR, `${jobId}-${i}.mp4`);
 /** The clips a run left in its e2e/out folder, in the order the reporter wrote
  * them, each with the role whose screen it is (meta.json `videoRoles`). */
 function clipsOf(job) {
-  const out = dirname(join(NCT_DIR, job.video));
+  const out = job.out;
   let meta = {};
   try { meta = JSON.parse(readFileSync(join(out, 'meta.json'), 'utf8')); } catch {}
   const names = meta.videos ?? (existsSync(join(out, 'video.mp4')) ? ['video.mp4'] : []);
-  // Reversed: Playwright tears fixtures down in the reverse of their set-up
-  // order, and each role page files its video at teardown — so the reporter
-  // lists the LAST person first. Each golden path names its cast in story
-  // order, so the reversal puts the clips in the order the journey plays.
-  return names
+  const clips = names
     .map((name, i) => ({ path: join(out, name), role: meta.videoRoles?.[i] ?? '' }))
-    .filter((c) => existsSync(c.path))
-    .reverse();
+    .filter((c) => existsSync(c.path));
+  // NCT's reporter lists the LAST person first: Playwright tears fixtures down
+  // in the reverse of their set-up order, and each role page files its video at
+  // teardown. Each NCT golden path names its cast in story order, so reversing
+  // puts the clips in the order the journey plays. JWA's golden fixture writes
+  // story order itself and says so (`storyOrder: true`).
+  return meta.storyOrder ? clips : clips.reverse();
 }
 
 /** Replace a job's saved clips with this run's. */
@@ -81,42 +84,46 @@ function readSaved(jobId) {
 }
 
 // Job id -> what to run. The dashboard names a job by id (a runbook step's `run` field).
+// NCT: npx playwright from the repo root, with the API's .env (DATABASE_URL, BETTER_AUTH_SECRET).
+function nctJob(title, project, video) {
+  return {
+    title,
+    repo: 'NCT',
+    cwd: NCT_DIR,
+    cmd: 'npx',
+    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', project, '--headed'],
+    out: dirname(join(NCT_DIR, video)),
+    env: nctEnv,
+    starting: 'Starting the NCT app servers (about 30 s before the browser opens)…',
+  };
+}
+// JWA: bunx playwright from apps/web (where @playwright/test is installed), against a web
+// server of its own on :3700 and the shared dev Convex; the web app reads its own .env.
+function jwaJob(title, project) {
+  return {
+    title,
+    repo: 'JWA',
+    cwd: join(JWA_DIR, 'apps/web'),
+    cmd: 'bunx',
+    args: ['playwright', 'test', '--config', '../../_e2e/golden.config.ts', '--project', project, '--headed'],
+    out: join(JWA_DIR, '_e2e/golden-out', project),
+    env: () => ({}),
+    starting: 'Starting the JWA web app on :3700 (about 20 s before the browser opens)…',
+  };
+}
+
 const JOBS = {
-  'nct-intake-steps-1-3': {
-    title: 'NCT · SOP steps 1–3 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'intake', '--headed'],
-    video: 'e2e/out/email/intake-golden-path/video.mp4',
-  },
-  'nct-quote-build-steps-4-7': {
-    title: 'NCT · SOP steps 4–7 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'quote-build', '--headed'],
-    video: 'e2e/out/quotation/quote-build-golden-path/video.mp4',
-  },
-  'nct-quote-decide-steps-8-10': {
-    title: 'NCT · SOP steps 8–10 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'quote-decide', '--headed'],
-    video: 'e2e/out/quotation/quote-decide-golden-path/video.mp4',
-  },
-  'nct-order-open-steps-11-15': {
-    title: 'NCT · SOP steps 11–15 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'order-open', '--headed'],
-    video: 'e2e/out/collective-shipping/order-open-golden-path/video.mp4',
-  },
-  'nct-bl-run-steps-16-19': {
-    title: 'NCT · SOP steps 16–19 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'lading-run', '--headed'],
-    video: 'e2e/out/lading/bl-run-golden-path/video.mp4',
-  },
-  'nct-bill-build-steps-20-23': {
-    title: 'NCT · SOP steps 20–23 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'bill-build', '--headed'],
-    video: 'e2e/out/expense/bill-build-golden-path/video.mp4',
-  },
-  'nct-invoice-close-steps-24-27': {
-    title: 'NCT · SOP steps 24–27 golden path',
-    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'invoice-close', '--headed'],
-    video: 'e2e/out/expense/invoice-close-golden-path/video.mp4',
-  },
+  'nct-intake-steps-1-3': nctJob('NCT · SOP steps 1–3 golden path', 'intake', 'e2e/out/email/intake-golden-path/video.mp4'),
+  'nct-quote-build-steps-4-7': nctJob('NCT · SOP steps 4–7 golden path', 'quote-build', 'e2e/out/quotation/quote-build-golden-path/video.mp4'),
+  'nct-quote-decide-steps-8-10': nctJob('NCT · SOP steps 8–10 golden path', 'quote-decide', 'e2e/out/quotation/quote-decide-golden-path/video.mp4'),
+  'nct-order-open-steps-11-15': nctJob('NCT · SOP steps 11–15 golden path', 'order-open', 'e2e/out/collective-shipping/order-open-golden-path/video.mp4'),
+  'nct-bl-run-steps-16-19': nctJob('NCT · SOP steps 16–19 golden path', 'lading-run', 'e2e/out/lading/bl-run-golden-path/video.mp4'),
+  'nct-bill-build-steps-20-23': nctJob('NCT · SOP steps 20–23 golden path', 'bill-build', 'e2e/out/expense/bill-build-golden-path/video.mp4'),
+  'nct-invoice-close-steps-24-27': nctJob('NCT · SOP steps 24–27 golden path', 'invoice-close', 'e2e/out/expense/invoice-close-golden-path/video.mp4'),
+  'jwa-setup-steps-1-4': jwaJob('JWA · SOP steps 1–4 golden path', 'jwa-setup'),
+  'jwa-raise-steps-5-8': jwaJob('JWA · SOP steps 5–8 golden path', 'jwa-raise'),
+  'jwa-buy-steps-9-10': jwaJob('JWA · SOP steps 9–10 golden path', 'jwa-buy'),
+  'jwa-receive-steps-11-14': jwaJob('JWA · SOP steps 11–14 golden path', 'jwa-receive'),
 };
 
 // DATABASE_URL and BETTER_AUTH_SECRET come from the app's own server env, the same
@@ -140,22 +147,22 @@ function startRun(jobId) {
   const id = String(Date.now());
   run = { id, jobId, child: null, events: [], status: 'running', startedAt: Date.now() };
   publish({ type: 'run-start', runId: id, job: jobId, title: job.title });
-  publish({ type: 'log', text: 'Starting the NCT app servers (about 30 s before the browser opens)…' });
+  publish({ type: 'log', text: job.starting });
 
   let env;
   try {
-    env = { ...process.env, ...nctEnv(), E2E_STEP_EVENTS: '1', E2E_SLOWMO: SLOWMO };
+    env = { ...process.env, ...job.env(), E2E_STEP_EVENTS: '1', E2E_SLOWMO: SLOWMO };
     // Bun's server listens on $PORT when set. A launcher that sets PORT for THIS
     // runner would send the NCT API to the runner's port instead of :3000.
     delete env.PORT;
     delete env.BUN_PORT;
   } catch (err) {
     run.status = 'failed';
-    publish({ type: 'run-end', status: 'failed', error: `Could not read ${NCT_DIR}/apps/server/.env: ${err.message}` });
+    publish({ type: 'run-end', status: 'failed', error: `Could not read the ${job.repo} env: ${err.message}` });
     return;
   }
 
-  const child = spawn('npx', job.args, { cwd: NCT_DIR, env, shell: true, windowsHide: true });
+  const child = spawn(job.cmd, job.args, { cwd: job.cwd, env, shell: true, windowsHide: true });
   run.child = child;
   const tail = [];
   let buffer = '';
@@ -349,5 +356,6 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
 server.listen(PORT, '127.0.0.1', () => {
   console.log(`ZYT golden-path runner on http://127.0.0.1:${PORT}`);
   console.log(`  NCT repo: ${NCT_DIR}`);
+  console.log(`  JWA repo: ${JWA_DIR}`);
   console.log(`  accepts:  ${[...ALLOWED_ORIGINS].join(', ')}`);
 });

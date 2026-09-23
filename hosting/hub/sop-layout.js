@@ -60,7 +60,10 @@
         showTitle: false,
         runLabel: '▶ Run ' + match.covers,
         regenLabel: '↻ Regenerate ' + match.covers,
-        blurb: 'Plays ' + match.covers + ' — this step included — in a browser window on this computer, slowed down so you can follow it. It uses a throwaway test organization on the dev database and removes it afterwards.',
+        blurb: 'Plays ' + match.covers + ' — this step included — in a browser window on this computer, slowed down so you can follow it. ' +
+          (SOP_KEY === 'jwa'
+            ? 'It creates throwaway E2E-DEEP records on the dev database and removes them afterwards.'
+            : 'It uses a throwaway test organization on the dev database and removes it afterwards.'),
       });
     }
     var panel = runPanels[match.job].node;
