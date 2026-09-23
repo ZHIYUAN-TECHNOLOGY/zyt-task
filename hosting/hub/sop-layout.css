@@ -47,6 +47,10 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 /* ── the page is one section: role tabs + App URL, the flow on the left, the step on the right ── */
 .zyt-gone { display: none !important; }
 .wrap:has(> .zyt-guide) { padding-top: 0; }
+/* ?embed=1 (the dashboard's Overview iframe): no top bar, the section fills the frame */
+html.zyt-embed { --zyt-top: 0px; scroll-padding-top: 0; }
+html.zyt-embed .zyt-top { display: none !important; }
+html.zyt-embed .zyt-guide { margin-bottom: 0; }
 /* full window width, one window tall (see .ledger in sop-theme.css for --zyt-sbw) */
 .zyt-guide {
   width: calc(100vw - var(--zyt-sbw, 0px));

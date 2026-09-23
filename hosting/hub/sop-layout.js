@@ -6,7 +6,11 @@
         inline on the right, without Watch out, the chain break, What to fix or the prompt. The title block, phase index,
         "How they arrive", the chart, "What to fix first" and "The document" are removed.
      2. The step guide's Run panel (golden path) for the journey the step belongs to.
-     3. The ZYT top bar's theme button (same zyt.theme key as the dashboard). */
+     3. The ZYT top bar's theme button (same zyt.theme key as the dashboard), kept in step with
+        a theme change made in another tab or in the dashboard around an embedded page.
+     4. ?embed=1: the page sits in the dashboard's Overview iframe — no top bar, the section fills
+        the frame, #step-N from the parent opens that step, and links to other pages leave the
+        frame. */
 (function () {
   'use strict';
   function $(sel) { return document.querySelector(sel); }
@@ -17,6 +21,10 @@
     return el;
   }
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  // ── 4. embed mode ──
+  var EMBED = /(?:^|[?&])embed=1(?:&|$)/.test(location.search.slice(1));
+  if (EMBED) document.documentElement.classList.add('zyt-embed');
 
   // ── 3. theme ──
   var themeBtn = $('#zyt-theme');
@@ -33,6 +41,24 @@
       try { localStorage.setItem('zyt.theme', next); } catch (e) { /* per-visit only */ }
       applyTheme(next);
     });
+  }
+  // another tab, or the dashboard around this frame, changed the theme (no key, or cleared → dark)
+  window.addEventListener('storage', function (e) {
+    if (e.key !== 'zyt.theme' && e.key !== null) return;
+    applyTheme(e.key !== null && e.newValue === 'light' ? 'light' : 'dark');
+  });
+
+  // Embedded: a link to another page of the site opens in the dashboard's window, not the frame.
+  // Same-page links (?role=, #step-) stay here. One delegated capture listener, because the step
+  // guide is rebuilt with innerHTML on every step.
+  if (EMBED) {
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href^="/"]');
+      if (!a || (a.target && a.target !== '_self') || a.pathname === location.pathname) return;
+      e.preventDefault();
+      try { window.top.location.href = a.href; } catch (err) { location.href = a.href; }
+    }, true);
   }
 
   // ── 2. Run the journey a step belongs to ──
