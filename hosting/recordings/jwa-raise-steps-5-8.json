@@ -1,0 +1,50 @@
+{
+  "job": "jwa-raise-steps-5-8",
+  "title": "JWA · SOP steps 5–8 golden path",
+  "status": "passed",
+  "startedAt": 1790171259364,
+  "finishedAt": 1790171549665,
+  "steps": [
+    {
+      "title": "Before the journey · an active site with its CM and Site Supervisor",
+      "state": "ok",
+      "ms": 13759
+    },
+    {
+      "title": "Step 5 · The Site Supervisor raises an SRF and submits it",
+      "state": "ok",
+      "ms": 20537
+    },
+    {
+      "title": "Step 6 · The Construction Manager approves each line",
+      "state": "ok",
+      "ms": 15642
+    },
+    {
+      "title": "Step 7 · The Project Manager reads the budget tracker and approves each line",
+      "state": "ok",
+      "ms": 19695
+    },
+    {
+      "title": "Step 8 · The CM sends a second SRF back; the Site Supervisor amends it into a lettered SRF",
+      "state": "ok",
+      "ms": 32309
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "requestor"
+    },
+    {
+      "i": 1,
+      "role": "cm"
+    },
+    {
+      "i": 2,
+      "role": "pm"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790172583795
+}
