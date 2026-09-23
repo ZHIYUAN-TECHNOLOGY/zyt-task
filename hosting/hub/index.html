@@ -613,7 +613,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       return (a.key === S.companyKey ? 0 : 1) - (b.key === S.companyKey ? 0 : 1);
     });
     ordered.forEach(function (x) {
-      var own = x.pages.filter(function (pg) { return pg.nav !== 'header'; });
+      var own = x.pages.filter(function (pg) { return pg.nav !== 'header' && pg.nav !== 'hidden'; });
       if (!own.length) return;
       pages.appendChild(h('li', { class: 'page-group', 'data-current': String(x.key === S.companyKey) },
         h('span', { class: 'page-group-name', text: x.name }),

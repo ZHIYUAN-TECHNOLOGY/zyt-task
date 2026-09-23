@@ -31,6 +31,13 @@
         "source": "steps-4-10-runbook.md"
       },
       {
+        "type": "Crosscheck",
+        "title": "Steps 4–10",
+        "href": "/nct/steps-4-10-crosscheck/",
+        "source": "plans/steps-4-10-crosscheck.md",
+        "nav": "hidden"
+      },
+      {
         "type": "Runbook",
         "title": "Steps 11–15",
         "href": "/nct/steps-11-15-runbook/",
@@ -74,6 +81,16 @@
       }
     ],
     "unlisted": [
+      "/nct/step-01-plan/",
+      "/nct/step-02-plan/",
+      "/nct/step-03-plan/",
+      "/nct/step-04-plan/",
+      "/nct/step-05-plan/",
+      "/nct/step-06-plan/",
+      "/nct/step-07-plan/",
+      "/nct/step-08-plan/",
+      "/nct/step-09-plan/",
+      "/nct/step-10-plan/",
       "/nct/step-11-plan/",
       "/nct/step-12-plan/",
       "/nct/step-13-plan/",

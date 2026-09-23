@@ -15,6 +15,7 @@ files are the spec for those. If something below stops being true, fix this file
 | `/nct/steps-1-3-runbook/` | `C:/Project/ZYT-Task/steps-1-3-runbook.md`, same renderer | Hand edits |
 | `/nct/steps-4-10-runbook/` | `C:/Project/ZYT-Task/steps-4-10-runbook.md`, rendered by `hosting/hub/build-runbook.mjs` (marked) | Hand edits |
 | `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits |
+| `/nct/step-01-plan/` … `/nct/step-10-plan/`, `/nct/steps-4-10-crosscheck/` | `C:/Project/ZYT-Task/plans/step-0N-*.md`, `step-10-*.md`, `steps-4-10-crosscheck.md`, same renderer (kind "Plan" / "Crosscheck"). Built from the `$nctPages0110` table in `deploy-site.ps1` since 2026-09-23 | Hand edits. Published but unlisted: the plans are in `unlisted`, the crosscheck is a `pages` entry with `"nav": "hidden"` (the page list skips it). Their download buttons point at `steps-1-3-plans.zip` / `steps-4-10-plans.zip` |
 | `/nct/step-11-plan/` … `/nct/step-15-plan/` | `C:/Project/ZYT-Task/plans/step-1N-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9, all settled 2026-09-17. **Built and live, but deliberately not in `projects.json`** (2026-09-18): the page list would be 12 entries long, so the plans are reached from the steps 11–15 runbook's §0 table instead. A page can be published without being listed; only the listing is dropped |
 | `/nct/steps-12-15-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-12-15-crosscheck.md`, same renderer (kind "Crosscheck") | Hand edits |
 | `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1`. Dashboard stages G, H, I since 2026-09-23 (56 steps, one per wave heading plus setup, gates and clean-up) |
@@ -25,7 +26,7 @@ files are the spec for those. If something below stops being true, fix this file
 | `/harper/bot-answers/` | Generated at build time by `hosting/hub/build-bot-answers.mjs` from `C:/Project/OpenWA/kapso/prompt/kb.md` (the bot's knowledge base, one table per question in English, Malay and Chinese) plus `C:/Project/OpenWA/sop/guest-concierge/other-flows.md` (non-question messages), then rendered by `build-runbook.mjs` (kind "Reference") | Edit `kb.md` in OpenWA (that changes the bot too) or `other-flows.md`, then redeploy. A malformed `kb.md` entry fails the build |
 | `/zyt/commands/` (ZYT commands) | `C:/Project/ZYT-Task/docs/zyt-commands.md`, same renderer (kind "Commands", company `zyt` in `projects.json`, empty `tracker/seed/*-zyt.json`) | Hand edits (h2 = table-of-contents entry); verify commands against the zyt skills' scripts |
 
-| `/nct/downloads/*.zip` | Built by `deploy-site.ps1` from the runbook markdown plus the plans its prompts name (`steps-1-3-plans.zip`, `steps-4-10-plans.zip`, `steps-11-15-plans.zip`, `steps-16-19-plans.zip`, `steps-20-26-plans.zip`, `step-27-plans.zip`, `all-plans.zip`). The plans are not in git, so this is the only self-service copy. Public, like every other page (2026-09-18 decision) | Bundle lists live in `deploy-site.ps1`; a missing file fails the build |
+| `/nct/downloads/*.zip` | Built by `deploy-site.ps1` from the runbook markdown plus the plans its prompts name (`steps-1-3-plans.zip`, `steps-4-10-plans.zip`, `steps-11-15-plans.zip`, `steps-16-19-plans.zip`, `steps-20-26-plans.zip`, `step-27-plans.zip`, `all-plans.zip`). The plans are also in git (`plans/`); the zip is the one-click copy. Public, like every other page (2026-09-18 decision) | Bundle lists live in `deploy-site.ps1`; a missing file fails the build |
 
 Live tick state (done / open, who, when) is not in any file: it is in Convex, project
 `wilfred-foo/zyt-admin`, tables `findings` and `events`.
@@ -71,8 +72,9 @@ But **being published and being listed in the page list are two different things
 
 | | Page built | In the page list (`projects.json`) | Why |
 |---|---|---|---|
-| SOPs, runbooks, the steps 12–15 crosscheck, ZYT commands | yes | yes | People browse to them, read them on a phone, and link to a section |
-| Step plans (`/nct/step-11-plan/` … `step-15-plan/`) | yes | **no** — listed in the company's `unlisted` array | 700–1000 lines each; five more rows would bury the runbooks. They are reached from the steps 11–15 runbook's §0 table and from dashboard steps that deep-link a section (six stage D steps point into the step 11 plan) |
+| SOPs, runbooks, the steps 12–15, 16–19 and 20–26 crosschecks, ZYT commands | yes | yes | People browse to them, read them on a phone, and link to a section |
+| A crosscheck that should not be listed (the steps 4–10 one) | yes | **no** — a `pages` entry with `"nav": "hidden"` | It stays a `pages` entry so dashboard steps can take snippets from its source; the page list filters `hidden` out |
+| Step plans (`/nct/step-01-plan/` … `step-27-plan/`) | yes | **no** — listed in the company's `unlisted` array | 700–1000 lines each; five more rows would bury the runbooks. They are reached from the steps 11–15 runbook's §0 table and from dashboard steps that deep-link a section (six stage D steps point into the step 11 plan) |
 
 So a new plan is **published but unlisted**, and added to the download bundles. Do not delete a
 plan page to tidy the list: dashboard steps and runbook tables link into their headings, and a
@@ -98,11 +100,13 @@ A page is four edits, then a deploy, in this order:
 3. **`hosting/deploy-site.ps1`** — copy an existing block: run `hub/build-runbook.mjs <src> <body>
    [kind]`, then `Write-Utf8 … (Get-SopHtml … 'nct' 'NCT')`. Use forward slashes in `Join-Path`
    arguments.
-4. **`hosting/pwa/sw.js`** — add the path to `PAGES`, or the page is missing offline.
+4. **`hosting/pwa/sw.js`** — add the path to `PAGES`, or the page is missing offline. The build
+   throws `sw.js PAGES lists <path>, which was not built` if a `PAGES` path has no page, because one
+   missing page makes the service worker's install fail silently.
 5. **Deploy**: `-DryRun` first, then the real run (below).
 
-A runbook whose prompts name plan files also needs a **download bundle**, because the plans are not
-in git: add it to `$bundles` in `deploy-site.ps1` (the runbook markdown plus every plan its prompts
+A runbook whose prompts name plan files also needs a **download bundle**, so a colleague gets the
+plans as files in one click: add it to `$bundles` in `deploy-site.ps1` (the runbook markdown plus every plan its prompts
 name) and link it from the runbook's "Get the files" section as `/nct/downloads/<name>.zip`. The
 build fails if a listed file is missing, so a renamed plan is caught at deploy time.
 
