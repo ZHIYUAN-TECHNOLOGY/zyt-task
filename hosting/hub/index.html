@@ -344,15 +344,14 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .stat-link { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1.1rem; padding: .55rem .85rem; border: 1px solid var(--border); border-radius: 10px; background: var(--canvas); color: var(--heading); font-weight: 500; font-size: .85rem; }
 .stat-link:hover { border-color: var(--accent); text-decoration: none; }
 .stat-link b { font: 600 .9rem var(--mono); }
-/* Overview: the SOP embedded (?embed=1) under a bar with its title and the full-page link.
+/* Overview: the SOP embedded (?embed=1) under a bar with just the full-page link.
    The frame is sized to the window; below 52rem the page inside grows and the frame scrolls. */
-.ov-bar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .5rem 1rem; margin-bottom: .9rem; }
-.ov-t { min-width: 0; }
-.ov-t h1 { font: 600 clamp(1.35rem, 2.4vw, 1.8rem)/1.15 var(--grotesk); letter-spacing: -.03em; color: var(--heading); margin: 0; }
-.ov-t small { display: block; margin-top: .2rem; color: var(--muted); font-size: .78rem; }
+.ov-bar { display: flex; justify-content: flex-end; margin-bottom: .6rem; }
 .ov-open { flex: none; font-weight: 500; font-size: .85rem; padding: .42rem .8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--canvas); color: var(--heading); }
 .ov-open:hover { border-color: var(--accent); text-decoration: none; }
-.ov-frame { display: block; width: 100%; height: calc(100vh - var(--top) - 9rem); min-height: 32rem; border: 1px solid var(--border); border-radius: 16px; background: var(--canvas); }
+/* the SOP gets the whole main column, not the 84rem reading width */
+#view-overview { max-width: none; }
+.ov-frame { display: block; width: 100%; height: calc(100vh - var(--top) - 6rem); min-height: 32rem; border: 1px solid var(--border); border-radius: 16px; background: var(--canvas); }
 #ov-cards .sec-h { margin-top: 1.75rem; }
 /* Findings: audit chips, and the one-time import of the SOP page's old browser ticks */
 .audit-fixed { color: var(--ok); background: rgba(31,157,98,.1); }
@@ -1936,11 +1935,9 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       }
       var open = h('a', { class: 'ov-open', href: fullPageHref(c), fk: 'ov-open' }, 'Open full page ', h('span', { 'aria-hidden': 'true', text: '↗' }));
       ['pointerdown', 'focus', 'click'].forEach(function (ev) { open.addEventListener(ev, function () { open.href = fullPageHref(c); }); });
+      // no visible title: the SOP in the frame carries its own; the h1 stays for screen readers
       append(head, h('div', { class: 'ov-bar' },
-        h('div', { class: 'ov-t' },
-          h('p', { class: 'kicker', text: c.name + ' · ' + c.place }),
-          h('h1', { id: 'overview-title', text: pg.title }),
-          h('small', { text: 'SOP' + (pg.updated ? ' · Updated ' + day(pg.updated) : '') })),
+        h('h1', { id: 'overview-title', class: 'sr', text: pg.title }),
         open));
       if (others.length) append(cards, [
         h('h2', { class: 'sec-h' }, 'Other pages', h('small', { text: String(others.length) })),
