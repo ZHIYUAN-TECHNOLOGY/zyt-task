@@ -13,7 +13,7 @@
     document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
   })();
 </script>
-<title>Client projects · ZYT 致源科技</title>
+<title>Projects · ZYT 致源科技</title>
 <!--PWA_HEAD-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,17 +66,18 @@ button { font: inherit; }
 .brand { display: flex; flex: none; }
 .brand img { height: 1.9rem; width: auto; display: block; }
 .divider { width: 1px; height: 1.5rem; background: var(--border); flex: none; }
-/* Pages about this site rather than about a client's work — the ZYT commands
-   reference. In the bar, not in the client list, where it sat under a company
-   nobody has tasks for. */
-.topnav { display: flex; align-items: center; gap: .35rem; flex: none; }
-.topnav-link { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .6rem; border-radius: 9px; font: 500 .82rem var(--sans); color: var(--muted); white-space: nowrap; }
-.topnav-link:hover { color: var(--heading); background: var(--surface); text-decoration: none; }
-.topnav-icon { display: grid; place-items: center; color: var(--faint); }
-.topnav-link:hover .topnav-icon { color: var(--accent); }
-.crumb { font: 500 .72rem var(--sans); letter-spacing: .17em; text-transform: uppercase; color: var(--heading); white-space: nowrap; }
-.crumb:hover { text-decoration: none; }
-.topsearch { margin-left: auto; position: relative; width: min(22rem, 38vw); }
+/* Header tabs: Projects (the client dashboard) · My tasks · Zhiyuan Tech (the
+   internal company's own pages). Real links; the script keeps them in the page. */
+.toptabs { display: flex; align-items: center; gap: .15rem; flex: none; }
+.toptab { display: inline-flex; align-items: center; gap: .45rem; padding: .38rem .7rem; border-radius: 9px; font: 500 .84rem var(--sans); color: var(--muted); white-space: nowrap; }
+.toptab:hover { color: var(--heading); background: var(--surface); text-decoration: none; }
+.toptab svg { flex: none; color: var(--faint); }
+.toptab:hover svg { color: var(--accent); }
+.toptab[aria-current="page"] { color: var(--heading); background: var(--accent-soft); font-weight: 600; }
+.toptab[aria-current="page"] svg { color: var(--accent); }
+.toptab-s { display: none; }
+.toptab-n { display: inline-block; min-width: 1.2rem; padding: .16rem .32rem; border-radius: 999px; background: var(--accent); color: #fff; font: 600 .66rem/1 var(--mono); text-align: center; }
+.topsearch { margin-left: auto; position: relative; width: min(22rem, 38vw); min-width: 6rem; }
 .topsearch svg { position: absolute; left: .7rem; top: 50%; transform: translateY(-50%); color: var(--faint); pointer-events: none; }
 .topsearch input { width: 100%; font: 400 .88rem var(--sans); color: var(--text); background: var(--canvas); border: 1px solid var(--border); border-radius: 10px; padding: .45rem 2rem .45rem 2.1rem; }
 .topsearch input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(65,89,201,.16); }
@@ -90,47 +91,42 @@ button { font: inherit; }
 .shell { display: grid; grid-template-columns: 17.5rem minmax(0, 1fr) 27rem; min-height: calc(100vh - var(--top)); }
 
 /* left: the selected company and its pages */
-.company-side { background: var(--canvas); border-right: 1px solid var(--border); padding: 1.5rem 1rem; position: sticky; top: var(--top); height: calc(100vh - var(--top)); overflow-y: auto; display: flex; flex-direction: column; gap: .5rem; }
+.company-side { background: var(--canvas); border-right: 1px solid var(--border); padding: 1.5rem 1rem; position: sticky; top: var(--top); height: calc(100vh - var(--top)); display: flex; flex-direction: column; gap: .5rem; }
+/* no page list any more, so the column no longer scrolls: the switcher's list may overhang it */
 .company-av { width: 2.2rem; height: 2.2rem; border-radius: 10px; background: var(--heading); color: #fff; display: grid; place-items: center; font: 700 .62rem var(--grotesk); flex: none; }
-.company-side .switcher { display: flex; width: 100%; gap: .5rem; padding-right: 1.8rem; }
-.company-side .switcher::after { right: .75rem; }
-.company-side .switcher-text { flex: 1; }
-.company-side .switcher select { width: 100%; font-size: .86rem; }
-/* Pages, grouped by client: the client's name is said once as a section
-   heading instead of on every row, and the kind is a quiet right-hand label
-   rather than a filled badge — thirteen accent pills down one column read as
-   thirteen alerts. The client being viewed comes first. */
-.page-list { list-style: none; margin: .5rem 0 0; padding: .75rem 0 0; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: .15rem; }
-.page-group + .page-group { margin-top: .9rem; }
-.page-group-name { display: block; font: 500 .6rem var(--sans); letter-spacing: .17em; text-transform: uppercase; color: var(--faint); padding: 0 .5rem .35rem; }
-.page-group[data-current="true"] .page-group-name { color: var(--muted); }
-.page-list a { display: grid; grid-template-columns: 1rem minmax(0, 1fr); gap: .55rem; align-items: center; padding: .4rem .5rem; border-radius: 10px; color: var(--heading); font-weight: 500; font-size: .85rem; }
-.page-list a:hover { background: var(--surface); text-decoration: none; }
-.page-list a:hover .page-icon { color: var(--accent); }
-/* One glyph per kind, so a row is recognisable before it is read — a document
-   for an SOP, a checklist for a runbook, a branching route for a plan, two
-   ticks for a crosscheck. The word itself is on the link's title and
-   accessible name, which also keeps the longest title from being clipped. */
+/* The company switcher: a button and a listbox popover (one per column; the phone
+   copy sits in .switcher-row). Rows carry the place, sector and open count. */
+.cs { position: relative; }
+.cs-btn { display: flex; align-items: center; gap: .65rem; width: 100%; text-align: left; background: var(--canvas); border: 1px solid var(--border); border-radius: 10px; padding: .45rem .75rem .45rem .5rem; color: var(--text); cursor: pointer; transition: border-color .2s, box-shadow .2s; }
+.cs-btn:hover { border-color: #c9d2ea; }
+.cs-btn[aria-expanded="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(65,89,201,.16); }
+.cs .company-av { width: 2rem; height: 2rem; border-radius: 8px; font-size: .56rem; }
+.cs-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.cs-name { font: 600 .92rem/1.3 var(--grotesk); letter-spacing: -.01em; color: var(--heading); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cs-btn .cs-name { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.cs-sub { font-size: .74rem; line-height: 1.35; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cs-chev { flex: none; width: .45rem; height: .45rem; margin: 0 .15rem 0 .2rem; border-right: 1.6px solid var(--muted); border-bottom: 1.6px solid var(--muted); transform: translateY(-25%) rotate(45deg); transition: transform .2s var(--ease); }
+.cs-btn[aria-expanded="true"] .cs-chev { transform: translateY(20%) rotate(-135deg); }
+.cs-pop { position: absolute; z-index: 25; top: calc(100% + .35rem); left: 0; width: max(100%, min(23rem, calc(100vw - 2rem))); margin: 0; padding: .3rem; list-style: none; background: var(--canvas); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 14px 36px rgba(16,26,79,.16); max-height: min(24rem, 60vh); overflow-y: auto; }
+.cs-pop:focus { outline: none; }
+.cs-opt { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) auto .9rem; gap: .6rem; align-items: center; padding: .45rem .5rem; border-radius: 8px; cursor: pointer; }
+.cs-opt .company-av { width: 1.8rem; height: 1.8rem; border-radius: 7px; font-size: .5rem; }
+.cs-opt.active { background: var(--surface); }
+.cs-pop:focus-visible .cs-opt.active { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.cs-opt .cs-name { font-size: .86rem; }
+.cs-opt[aria-selected="true"] .cs-name { color: var(--accent); }
+.cs-n { font-size: .72rem; color: var(--muted); white-space: nowrap; }
+.cs-n b { font: 600 .78rem var(--mono); color: var(--heading); margin-right: .25rem; }
+.cs-check { color: var(--accent); display: grid; place-items: center; }
+/* One glyph per kind (kindIcon), so a page card is recognisable before it is read. */
 .page-icon { display: grid; place-items: center; color: var(--faint); }
-.page-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .side-foot { margin-top: auto; padding-top: .9rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .8rem; }
 .linkbtn { background: none; border: 0; padding: 0; font-weight: 500; color: var(--accent); cursor: pointer; }
 
 /* middle: company switcher + to-do */
 .todo { padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 4rem; min-width: 0; }
-.switcher-row { display: none; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin-bottom: 1.4rem; }
-.switcher { position: relative; display: inline-flex; align-items: center; gap: .6rem; max-width: 100%; background: var(--canvas); border: 1px solid var(--border); border-radius: 12px; padding: .35rem 2.4rem .35rem .45rem; cursor: pointer; transition: border-color .2s; }
-.switcher:hover { border-color: #c9d2ea; }
-.switcher:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(65,89,201,.16); }
-.switcher .company-av { width: 1.9rem; height: 1.9rem; border-radius: 8px; font-size: .56rem; }
-.switcher-text { display: flex; flex-direction: column; min-width: 0; }
-.switcher-label { font: 500 .6rem var(--sans); letter-spacing: .17em; text-transform: uppercase; color: var(--faint); line-height: 1.2; }
-.switcher select { appearance: none; border: 0; background: none; padding: 0; margin: 0; font: 600 .95rem var(--grotesk); letter-spacing: -.01em; color: var(--heading); cursor: pointer; max-width: 100%; text-overflow: ellipsis; }
-.switcher select:focus { outline: none; }
-.switcher select::before { content: none; }
-.switcher::after { content: ""; position: absolute; right: .95rem; top: 50%; width: .42rem; height: .42rem; border-right: 1.6px solid var(--muted); border-bottom: 1.6px solid var(--muted); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
-.mobile-pages { display: none; flex-wrap: wrap; gap: .25rem 1rem; flex-basis: 100%; }
-.mobile-page { font-weight: 500; font-size: .82rem; }
+.switcher-row { display: none; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-bottom: 1.4rem; }
+.switcher-row .cs { flex: 1 1 100%; }
 .kicker { font: 500 .72rem var(--sans); letter-spacing: .17em; text-transform: uppercase; color: var(--accent); margin: 0 0 .35rem; }
 .todo-head h1 { font: 600 clamp(1.6rem, 3vw, 2.2rem)/1.1 var(--grotesk); letter-spacing: -.035em; color: var(--heading); margin: 0; }
 .progress { height: .45rem; border-radius: 999px; background: var(--border); overflow: hidden; margin: 1.1rem 0 .45rem; max-width: 36rem; }
@@ -331,9 +327,44 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .activity { list-style: none; margin: 0; padding: .75rem 1rem .9rem; font-size: .78rem; color: var(--muted); display: flex; flex-direction: column; gap: .4rem; }
 .activity b { color: var(--heading); font-weight: 600; }
 .activity time { font: .7rem var(--mono); color: var(--faint); margin-left: .35rem; }
-.ov-actions { margin: 1.4rem 0 0; }
-a.primary { display: inline-block; }
-a.primary:hover { text-decoration: none; filter: brightness(1.1); }
+/* page cards: a company's pages on its Overview, and ZYT's own on Zhiyuan Tech */
+.pg-grid { list-style: none; margin: 1.3rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: .75rem; }
+.pg-card { display: flex; align-items: flex-start; gap: .85rem; height: 100%; padding: 1rem 1.05rem; background: var(--canvas); border: 1px solid var(--border); border-radius: 10px; color: var(--text); transition: border-color .2s; }
+.pg-card:hover { border-color: var(--accent); text-decoration: none; }
+.pg-ic { flex: none; width: 2.2rem; height: 2.2rem; border-radius: 10px; background: var(--accent-soft); display: grid; place-items: center; }
+.pg-ic .page-icon { color: var(--accent); }
+.pg-t { flex: 1; min-width: 0; }
+.pg-t b { display: block; font: 600 .98rem/1.3 var(--grotesk); letter-spacing: -.01em; color: var(--heading); }
+.pg-t small { display: block; margin-top: .2rem; font-size: .76rem; color: var(--muted); }
+.pg-t span { display: block; margin-top: .45rem; font-size: .8rem; line-height: 1.45; color: var(--text); }
+.pg-go { flex: none; color: var(--faint); transition: transform .2s var(--ease), color .2s; }
+.pg-card:hover .pg-go { color: var(--accent); transform: translateX(2px); }
+.sec-h { margin: 2rem 0 0; font: 600 .95rem var(--grotesk); color: var(--heading); display: flex; align-items: baseline; gap: .5rem; }
+.sec-h small { font: 500 .72rem var(--mono); color: var(--faint); }
+.stat-link { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1.1rem; padding: .55rem .85rem; border: 1px solid var(--border); border-radius: 10px; background: var(--canvas); color: var(--heading); font-weight: 500; font-size: .85rem; }
+.stat-link:hover { border-color: var(--accent); text-decoration: none; }
+.stat-link b { font: 600 .9rem var(--mono); }
+
+/* My tasks and Zhiyuan Tech: top-level pages, no company column */
+#shell[data-view="mine"], #shell[data-view="zyt"] { grid-template-columns: minmax(0, 1fr); }
+#shell[data-view="mine"] .company-side, #shell[data-view="zyt"] .company-side,
+#shell[data-view="mine"] .switcher-row, #shell[data-view="zyt"] .switcher-row { display: none; }
+#view-mine, #view-zyt { max-width: 62rem; margin-inline: auto; }
+.mine-proj { margin-top: 1.1rem; overflow: hidden; }
+.mine-proj > h2 { justify-content: flex-start; }
+.mine-proj > h2 .company-av { width: 1.6rem; height: 1.6rem; border-radius: 7px; font-size: .48rem; }
+.mine-proj > h2 small { margin-left: auto; }
+.mine-task + .mine-task { border-top: 1px solid var(--border); }
+.mine-task .stage-h a { color: var(--heading); }
+.mine-task .stage-h a:hover { color: var(--accent); }
+.mine-t { display: block; color: var(--text); font-weight: 500; }
+.mine-t:hover { text-decoration: none; }
+.mine-t:hover .tt { color: var(--accent); }
+.mine-done { border-top: 1px solid var(--border); }
+.mine-done > summary { cursor: pointer; padding: .55rem 1rem .55rem 1.05rem; font-size: .8rem; font-weight: 500; color: var(--muted); }
+.mine-done > summary:hover { color: var(--heading); }
+.mine-done .check .ci:first-child { border-top: 1px solid var(--border); }
+.empty .primary { margin-top: 1rem; }
 
 /* slide-over for plans and crosschecks: one aside, its text in a shadow root (no id clashes) */
 .sheet-scrim { position: fixed; inset: 0; background: rgba(16,26,79,.25); z-index: 45; }
@@ -430,7 +461,12 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   .tl-row { grid-template-columns: 1.1rem minmax(0, 1fr) 7rem 6rem; }
   .tl-next, .tl-clip { display: none; }
 }
-/* phone: one column; the switcher row carries the view switch and the company's page links */
+/* the header between phone and desktop: the tabs keep their words, the extras give way */
+@media (max-width: 64rem) {
+  .toptab svg, .conn span, .topsearch kbd { display: none; }
+  .topbar { gap: .75rem; }
+}
+/* phone: one column; the switcher row carries the company switcher and the view switch */
 @media (max-width: 48rem) {
   .shell, .shell[data-view] { grid-template-columns: minmax(0, 1fr); }
   .tl-row { grid-template-columns: 1.1rem minmax(0, 1fr) 4.5rem; gap: .75rem; padding: .8rem .85rem; }
@@ -447,11 +483,16 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   .sheet-head .select, .sheet-head .sheet-link { order: 2; }
   .company-side { display: none; }
   .switcher-row { display: flex; }
-  .switcher-row .switcher { flex: 1 1 100%; }
-  .switcher-row .switcher select { width: 100%; }
-  .mobile-pages { display: flex; }
-  .crumb, .divider, .conn span, .topsearch kbd, .topnav-text { display: none; }
-  .topnav-link { padding: .35rem .45rem; }
+  /* the header takes a second row: the tabs as a full-width segmented control */
+  :root { --top: 6rem; }
+  .topbar { flex-wrap: wrap; align-content: center; gap: .45rem .75rem; padding-block: .4rem; }
+  .toptabs { order: 9; flex: 1 1 100%; gap: .15rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .15rem; }
+  .toptab { flex: 1 1 0; min-width: 0; justify-content: center; gap: .35rem; padding: .3rem .35rem; font-size: .8rem; }
+  .toptab svg { display: block; }
+  .toptab[aria-current="page"] { background: var(--canvas); box-shadow: 0 1px 3px rgba(16,26,79,.12); }
+  .toptab-l.long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .toptab-s { display: inline; }
+  .divider, .conn span, .topsearch kbd { display: none; }
   .brand img { height: 1.5rem; }
   .topsearch { width: auto; flex: 1; }
   .panel { width: 100%; }
@@ -491,8 +532,12 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 [data-theme="dark"] .topbar { background: rgba(4,6,26,.85); }
 [data-theme="dark"] .topsearch input:focus,
 [data-theme="dark"] dialog input:focus,
-[data-theme="dark"] .switcher:focus-within { box-shadow: 0 0 0 3px rgba(139,154,232,.25); }
-[data-theme="dark"] .switcher:hover { border-color: rgba(139,154,232,.35); }
+[data-theme="dark"] .cs-btn[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(139,154,232,.25); }
+[data-theme="dark"] .cs-btn:hover { border-color: rgba(139,154,232,.35); }
+[data-theme="dark"] .cs-pop { box-shadow: 0 14px 36px rgba(0,0,0,.55); }
+[data-theme="dark"] .toptab-n { background: #4159c9; }
+[data-theme="dark"] .toptab[aria-current="page"] { box-shadow: none; }
+[data-theme="dark"] .pg-card:hover, [data-theme="dark"] .stat-link:hover { border-color: rgba(139,154,232,.45); }
 [data-theme="dark"] .ws-head:hover,
 [data-theme="dark"] .task:hover { background: rgba(139,154,232,.06); }
 [data-theme="dark"] .task.selected { background: rgba(139,154,232,.14); }
@@ -525,7 +570,6 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 [data-theme="dark"] .scrim { background: rgba(3,6,22,.55); }
 [data-theme="dark"] dialog { background: var(--canvas); }
 [data-theme="dark"] dialog::backdrop { background: rgba(3,6,22,.6); }
-[data-theme="dark"] .switcher select option { background: #080c24; color: #cdd6f5; }
 
 /* logo per theme: navy lockup on light, white lockup on dark */
 .brand .logo-dark { display: none; }
@@ -544,19 +588,22 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 <body>
 
 <header class="topbar">
-  <a class="brand" href="/" aria-label="ZYT 致源科技 — client projects home">
+  <a class="brand" href="/" aria-label="ZYT 致源科技 — projects home">
     <img class="logo-light" src="/brand/logo-light-72.png" alt="ZYT · Zhiyuan Technology · 致源科技" width="337" height="72">
     <img class="logo-dark" src="/brand/logo-dark-72.png" alt="ZYT · Zhiyuan Technology · 致源科技" width="361" height="72">
   </a>
   <span class="divider" aria-hidden="true"></span>
-  <a class="crumb" href="/">Client projects</a>
+  <nav class="toptabs" aria-label="Sections">
+    <a class="toptab" id="tab-projects" href="/" data-fk="tab:projects"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="toptab-l">Projects</span></a>
+    <a class="toptab" id="tab-mine" href="?page=mine" data-fk="tab:mine"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg><span class="toptab-l">My tasks</span><span class="toptab-n" id="mine-n" hidden><span id="mine-n-num"></span><span class="sr"> open</span></span></a>
+    <a class="toptab" id="tab-zyt" href="?page=zyt" data-fk="tab:zyt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 9h2a2 2 0 0 1 2 2v10"/><path d="M8 7h4M8 11h4M8 15h4M2 21h20"/></svg><span class="toptab-l long">Zhiyuan Tech</span><span class="toptab-s" aria-hidden="true">ZYT</span></a>
+  </nav>
   <label class="topsearch">
     <span class="sr" id="q-label">Search tasks and steps</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="search" placeholder="Search" autocomplete="off">
     <kbd>/</kbd>
   </label>
-  <nav class="topnav" id="topnav" aria-label="Site reference"></nav>
   <span class="conn" id="conn" data-state="connecting" role="status"><i aria-hidden="true"></i><span id="conn-text">Connecting…</span></span>
   <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to light mode">
     <svg class="sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -566,35 +613,22 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 
 <div class="shell" id="shell" data-view="tasks">
   <aside class="company-side" aria-label="Company">
-    <label class="switcher">
-      <span class="company-av" data-company-av aria-hidden="true"></span>
-      <span class="switcher-text">
-        <span class="switcher-label">Company</span>
-        <select id="company-select" data-company-select aria-label="Switch company"></select>
-      </span>
-    </label>
+    <div id="cs-slot"></div>
     <nav class="side-nav" id="side-nav" aria-label="Views"></nav>
-    <ul class="page-list" id="page-list" aria-label="All pages"></ul>
     <div class="side-foot">Ticking as <button type="button" class="linkbtn" id="who"></button></div>
   </aside>
 
   <main class="todo" id="main" aria-labelledby="tasks-title">
     <!-- phones only: the left column (with the switcher and the view menu) is hidden there -->
-    <div class="switcher-row">
-      <label class="switcher">
-        <span class="company-av" data-company-av aria-hidden="true"></span>
-        <span class="switcher-text">
-          <span class="switcher-label">Company</span>
-          <select id="company-select-m" data-company-select aria-label="Switch company"></select>
-        </span>
-      </label>
+    <div class="switcher-row" id="cs-slot-m">
       <nav class="seg views-m" id="views-m" aria-label="Views"></nav>
-      <span class="mobile-pages" id="mobile-pages"></span>
     </div>
 
     <div class="view" id="view-tasks" hidden></div>
     <div class="view" id="view-task" hidden></div>
     <div class="view" id="view-overview" hidden></div>
+    <div class="view" id="view-mine" hidden></div>
+    <div class="view" id="view-zyt" hidden></div>
 
     <div id="view-findings" hidden>
     <div class="todo-head">
@@ -738,24 +772,42 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     p.phase = {}; p.flow.phases.forEach(function (ph) { p.phase[ph.key] = ph.label; });
     p.wsOf = {}; p.workstreams.forEach(function (w) { w.covers.forEach(function (k) { p.wsOf[k] = w; }); });
     p.sop = (p.pages.filter(function (x) { return x.type === 'SOP'; })[0] || {}).href || null;
+    // Findings and steps remember their company: My tasks ticks steps of any company, so the
+    // live state, the pending tick and the mutation all go by the row's own company.
+    p.tasks.forEach(function (t) { t.pkey = p.key; });
+    p.rbSteps.forEach(function (x) { x.pkey = p.key; });
+    // the pages a person browses to (Overview's cards): the SOP first, then the rest in order
+    var shown = p.pages.filter(function (pg) { return pg.nav !== 'hidden'; });
+    p.visPages = shown.filter(function (pg) { return pg.type === 'SOP'; }).concat(shown.filter(function (pg) { return pg.type !== 'SOP'; }));
   });
+  // The internal company: it has its own page (Zhiyuan Tech) and is not in the switcher.
+  var HOME = 'zyt';
+  var CLIENTS = SEED.projects.filter(function (p) { return p.key !== HOME; });
+  if (!CLIENTS.length) CLIENTS = SEED.projects.slice();
+  function projectOf(key) { return SEED.projects.filter(function (p) { return p.key === key; })[0]; }
 
   // view: 'tasks' | 'task' | 'overview' | 'findings'. taskId/expanded belong to the task view,
   // taskKey to the findings panel; search text and filters are kept per view.
   var S = { companyKey: null, view: 'tasks', taskId: null, expanded: null, outline: null, taskKey: null, chip: 'all', show: 'all', cat: '',
-    qs: { tasks: '', findings: '' }, sopStep: null, collapsed: {}, live: null, events: [], pending: {}, conn: 'connecting' };
-  var client = null, unsubscribe = null, liveTimer = null;
+    qs: { tasks: '', findings: '', mine: '', zyt: '' }, sopStep: null, collapsed: {}, mineDone: {}, live: null, events: [], pending: {}, conn: 'connecting' };
+  // S.live / S.events are the selected company's board; LIVE holds every company's
+  // (My tasks, the tab badge and the switcher's counts read the others).
+  var LIVE = {}, SUBS = {}, FAILED = {};
+  var client = null, liveTimer = null;
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
   function smooth() { return REDUCED.matches ? 'auto' : 'smooth'; }
   function plainClick(e) { return !(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey); }
   function focusFk(fk) { var el = document.querySelector('[data-fk="' + fk.replace(/["\\]/g, '') + '"]'); if (el) el.focus({ preventScroll: true }); return el; }
 
-  function company() { return SEED.projects.filter(function (p) { return p.key === S.companyKey; })[0]; }
+  function company() { return projectOf(S.companyKey); }
   function category(t) { return t.kind === 'chain' ? 'chain' : (t.severity || 'friction'); }
   function catLabel(t) { var c = category(t); return c === 'chain' ? 'Chain #' + t.rank : (CAT[c] || c); }
+  // a pending tick's key: ids are only unique inside one company
+  function pk(t) { return (t.pkey || S.companyKey) + '|' + t.id; }
   function liveOf(t) {
-    if (S.pending[t.id]) return S.pending[t.id];
-    if (S.live && S.live[t.id]) return S.live[t.id];
+    if (S.pending[pk(t)]) return S.pending[pk(t)];
+    var board = LIVE[t.pkey || S.companyKey];
+    if (board && board.map[t.id]) return board.map[t.id];
     return { state: t.state === 'done' ? 'done' : 'open', updatedBy: null, updatedAt: null };
   }
   function isDone(t) { return liveOf(t).state === 'done'; }
@@ -786,7 +838,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.hidden = true; }, 4500);
   }
 
-  // ── company switcher (changes the to-do only) and every company's pages ──
+  // ── page kinds, the company switcher and the header tabs ──
   /**
    * A glyph per page kind. Markup is ours, never seed data — the kind only
    * picks which fixed string is used, and an unknown kind falls back to a dot
@@ -815,62 +867,120 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     return el;
   }
 
+  // The company switcher: a button that opens a listbox (a native <select> can't show a
+  // place, a sector or a count). One instance in the left column and one in the phone row;
+  // both are built once and only repainted, so a Convex push never takes focus from the list.
+  // The listbox keeps focus itself and points at the highlighted row (aria-activedescendant).
+  function openLabel(p) {
+    if (p.rbTasks.length) {
+      var t = p.rbTasks.filter(function (x) { return status(x) !== 'done'; }).length;
+      return { n: t, what: t === 1 ? 'open task' : 'open tasks' };
+    }
+    var f = p.tasks.filter(function (x) { return !isDone(x); }).length;
+    return { n: f, what: f === 1 ? 'open finding' : 'open findings' };
+  }
+  function placeLine(p) { return [p.place, p.sector].filter(Boolean).join(' · '); }
+
+  function makeSwitcher(slot, id) {
+    var btn = h('button', { type: 'button', class: 'cs-btn', id: id + '-btn', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', 'aria-controls': id + '-list' });
+    var list = h('ul', { class: 'cs-pop', id: id + '-list', role: 'listbox', tabindex: '-1', 'aria-label': 'Switch company', hidden: true });
+    var wrap = h('div', { class: 'cs' }, btn, list);
+    slot.insertBefore(wrap, slot.firstChild);
+    var sw = { open: false, active: 0 };
+
+    function rows() { return [].slice.call(list.children); }
+    function paint() {
+      rows().forEach(function (o, i) { o.classList.toggle('active', i === sw.active); });
+      var a = rows()[sw.active];
+      if (a) { list.setAttribute('aria-activedescendant', a.id); a.scrollIntoView({ block: 'nearest' }); }
+      else list.removeAttribute('aria-activedescendant');
+    }
+    function outside(e) { if (!wrap.contains(e.target)) close(false); }
+    function open() {
+      sw.open = true;
+      sw.active = Math.max(0, CLIENTS.map(function (p) { return p.key; }).indexOf(S.companyKey));
+      list.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      paint();
+      list.focus({ preventScroll: true });
+      document.addEventListener('pointerdown', outside, true);
+    }
+    function close(refocus) {
+      if (!sw.open) return;
+      sw.open = false; list.hidden = true; btn.setAttribute('aria-expanded', 'false');
+      list.removeAttribute('aria-activedescendant');
+      document.removeEventListener('pointerdown', outside, true);
+      if (refocus) btn.focus({ preventScroll: true });
+    }
+    function choose(i) { var p = CLIENTS[i]; close(true); if (p) pickCompany(p.key); }
+
+    btn.addEventListener('click', function () { if (sw.open) close(true); else open(); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); }
+    });
+    list.addEventListener('keydown', function (e) {
+      var n = CLIENTS.length, k = e.key;
+      if (k === 'ArrowDown') sw.active = Math.min(n - 1, sw.active + 1);
+      else if (k === 'ArrowUp') sw.active = Math.max(0, sw.active - 1);
+      else if (k === 'Home') sw.active = 0;
+      else if (k === 'End') sw.active = n - 1;
+      else if (k === 'Enter' || k === ' ') { e.preventDefault(); choose(sw.active); return; }
+      // Esc closes the list only: stop it reaching the page's own Esc (which collapses a step)
+      else if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); close(true); return; }
+      else if (k === 'Tab') { close(false); return; }
+      else if (k.length === 1 && /\S/.test(k)) {
+        // type-ahead: the next company whose name starts with that letter
+        for (var j = 1; j <= n; j++) {
+          var at = (sw.active + j) % n;
+          if (CLIENTS[at].name.toLowerCase().indexOf(k.toLowerCase()) === 0) { sw.active = at; break; }
+        }
+      } else return;
+      e.preventDefault();
+      paint();
+    });
+    list.addEventListener('click', function (e) {
+      var o = e.target.closest('[role="option"]');
+      if (o) choose(+o.dataset.i);
+    });
+    list.addEventListener('mousemove', function (e) {
+      var o = e.target.closest('[role="option"]');
+      if (o && +o.dataset.i !== sw.active) { sw.active = +o.dataset.i; paint(); }
+    });
+    list.addEventListener('focusout', function (e) { if (sw.open && !wrap.contains(e.relatedTarget)) close(false); });
+
+    sw.update = function (c) {
+      btn.textContent = '';
+      append(btn, [
+        h('span', { class: 'company-av', 'aria-hidden': 'true', text: c.initials }),
+        h('span', { class: 'cs-text' },
+          h('span', { class: 'sr', text: 'Company: ' }),
+          h('span', { class: 'cs-name', text: c.name }),
+          h('span', { class: 'cs-sub', text: placeLine(c) })),
+        h('span', { class: 'cs-chev', 'aria-hidden': 'true' })
+      ]);
+      list.textContent = '';
+      CLIENTS.forEach(function (p, i) {
+        var o = openLabel(p), cur = p.key === S.companyKey;
+        list.appendChild(h('li', { id: id + '-opt-' + p.key, role: 'option', 'aria-selected': String(cur), 'data-i': String(i), class: 'cs-opt' },
+          h('span', { class: 'company-av', 'aria-hidden': 'true', text: p.initials }),
+          h('span', { class: 'cs-text' }, h('span', { class: 'cs-name', text: p.name }), h('span', { class: 'cs-sub', text: placeLine(p) })),
+          h('span', { class: 'cs-n' }, h('b', { text: String(o.n) }), o.what),
+          h('span', { class: 'cs-check', 'aria-hidden': 'true', text: cur ? '✓' : '' })));
+      });
+      if (sw.open) paint();
+    };
+    return sw;
+  }
+  var SWITCHERS = [makeSwitcher($('cs-slot'), 'cs'), makeSwitcher($('cs-slot-m'), 'cs-m')];
+
+  function pickCompany(key) {
+    if (!setCompany(key)) return;
+    S.view = defaultView(company());
+    syncUrl(true); renderAll(); window.scrollTo(0, 0);
+  }
+
   function renderCompany() {
     var c = company();
-
-    // the left-column switcher and its phone copy stay in step
-    document.querySelectorAll('[data-company-select]').forEach(function (sel) {
-      if (sel.options.length !== SEED.projects.length) {
-        sel.textContent = '';
-        SEED.projects.forEach(function (x) { sel.appendChild(h('option', { value: x.key, text: x.name })); });
-      }
-      sel.value = S.companyKey;
-    });
-    document.querySelectorAll('[data-company-av]').forEach(function (av) { av.textContent = c.initials; });
-
-    // Every company's pages, whichever company's to-do is selected \u2014 grouped
-    // under the company's own name, the selected one first. A page marked
-    // `nav: "header"` in projects.json belongs to the top bar instead (the ZYT
-    // commands reference is about this site, not about a client's work).
-    var pages = $('page-list'); pages.textContent = '';
-    var mobile = $('mobile-pages'); mobile.textContent = '';
-    var nav = $('topnav'); nav.textContent = '';
-    var ordered = SEED.projects.slice().sort(function (a, b) {
-      return (a.key === S.companyKey ? 0 : 1) - (b.key === S.companyKey ? 0 : 1);
-    });
-    ordered.forEach(function (x) {
-      var own = x.pages.filter(function (pg) { return pg.nav !== 'header' && pg.nav !== 'hidden'; });
-      if (!own.length) return;
-      pages.appendChild(h('li', { class: 'page-group', 'data-current': String(x.key === S.companyKey) },
-        h('span', { class: 'page-group-name', text: x.name }),
-        own.map(function (pg) {
-          // The kind rides on the glyph rather than a word: with both, the
-          // longest title ("When a Customer Comes In") lost its tail to an
-          // ellipsis in a 17.5rem column. `title` and the accessible name keep
-          // the word for anyone who needs it spelled out.
-          return h('a', {
-            href: pg.href,
-            fk: 'page:' + pg.href,
-            title: pg.type + ' · ' + pg.title,
-            'aria-label': pg.type + ': ' + pg.title,
-          }, kindIcon(pg.type), h('span', { class: 'page-name', text: pg.title }));
-        })));
-      own.forEach(function (pg) {
-        mobile.appendChild(h('a', { class: 'mobile-page', href: pg.href, fk: 'mpage:' + pg.href, text: pg.type + ': ' + pg.title + ' \u2192' }));
-      });
-    });
-    SEED.projects.forEach(function (x) {
-      x.pages.filter(function (pg) { return pg.nav === 'header'; }).forEach(function (pg) {
-        // The label is hidden on phones (`display: none` takes it out of the
-        // accessibility tree too), so the link carries its own name.
-        var icon = h('span', { class: 'topnav-icon', 'aria-hidden': 'true' });
-        icon.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>';
-        nav.appendChild(h('a', { class: 'topnav-link', href: pg.href, fk: 'nav:' + pg.href, 'aria-label': pg.title },
-          icon,
-          h('span', { class: 'topnav-text', text: pg.title })));
-      });
-    });
-    mobile.hidden = !mobile.childNodes.length;
+    SWITCHERS.forEach(function (sw) { sw.update(c); });
     $('who').textContent = author() || 'set your name';
   }
 
@@ -885,7 +995,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     el.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + NAV_ICONS[v] + '</svg>';
     return el;
   }
-  function defaultView(c) { return c.rbTasks.length ? 'tasks' : c.sop ? 'overview' : 'findings'; }
+  function defaultView(c) { return c.rbTasks.length ? 'tasks' : c.visPages.length ? 'overview' : 'findings'; }
   function viewHref(v) {
     var c = company();
     return '?company=' + encodeURIComponent(c.key) + (v === defaultView(c) ? '' : '&view=' + v);
@@ -895,9 +1005,10 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   function renderNav(c) {
     var openTasks = c.rbTasks.filter(function (t) { return status(t) !== 'done'; }).length;
     var openFindings = c.tasks.filter(function (t) { return !isDone(t); }).length;
-    // Overview is the SOP page itself for now (it becomes an embedded view later)
+    // Overview lists the company's pages (the SOP first); off when it has none
+    var pages = c.visPages.length;
     var items = [
-      { v: 'overview', label: 'Overview', href: c.sop, n: c.sop ? 'SOP' : '', name: 'Overview: the SOP page' },
+      { v: 'overview', label: 'Overview', href: pages ? viewHref('overview') : null, n: pages ? String(pages) : '', name: 'Overview, ' + pages + (pages === 1 ? ' page' : ' pages') },
       { v: 'tasks', label: 'Tasks', href: viewHref('tasks'), n: c.rbTasks.length ? String(openTasks) : '', name: 'Tasks, ' + openTasks + ' open' },
       { v: 'findings', label: 'Findings', href: viewHref('findings'), n: c.tasks.length ? String(openFindings) : '', name: 'Findings, ' + openFindings + ' open' }
     ];
@@ -906,15 +1017,14 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       nav.textContent = '';
       items.forEach(function (it) {
         if (!it.href) {
-          nav.appendChild(h('span', { class: 'nav-off', 'aria-disabled': 'true', title: 'No SOP yet' },
-            phone ? null : navIcon(it.v), it.label, h('small', { text: 'No SOP yet' })));
+          nav.appendChild(h('span', { class: 'nav-off', 'aria-disabled': 'true', title: 'No pages yet' },
+            phone ? null : navIcon(it.v), it.label, h('small', { text: 'No pages yet' })));
           return;
         }
-        var own = it.v !== 'overview';
         nav.appendChild(h('a', { href: it.href, fk: (phone ? 'mnav:' : 'nav-v:') + it.v, 'aria-current': current === it.v ? 'page' : null,
-          'aria-label': it.name, onclick: own ? function (e) { if (plainClick(e)) { e.preventDefault(); setView(it.v); } } : null },
+          'aria-label': it.name, onclick: function (e) { if (plainClick(e)) { e.preventDefault(); setView(it.v); } } },
           phone ? null : navIcon(it.v), it.label, it.n && !phone ? h('span', { class: 'n', text: it.n }) : null,
-          it.n && phone && own ? h('small', { text: it.n }) : null));
+          it.n && phone ? h('small', { text: it.n }) : null));
       });
     });
   }
@@ -923,9 +1033,10 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   var STATUS = { none: 'Not started', progress: 'In progress', waiting: 'Waiting on Wilfred', done: 'Done' };
   function norm(s) { return String(s || '').trim().replace(/\s+/g, ' ').toLowerCase(); }
   function ownerLabel(x) { return x.owner === 'wilfred' ? 'Wilfred' : 'Session'; }
-  // waits are company-wide: a step may wait for a step in another task
+  // waits are company-wide: a step may wait for a step in another task (of the step's own
+  // company, which My tasks needs: it lists steps of every company at once)
   function waitingOn(x) {
-    var c = company();
+    var c = projectOf(x.pkey) || company();
     return x.waitsFor.filter(function (k) { return c.byKey[k] && !isDone(c.byKey[k]); }).map(function (k) { return c.byKey[k]; });
   }
   function readySteps(t) { return t.steps.filter(function (x) { return !isDone(x) && !waitingOn(x).length; }); }
@@ -1071,7 +1182,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var box = h('input', { type: 'checkbox', class: 'tick', fk: 'tick:' + x.id, 'aria-label': (done ? 'Reopen: ' : 'Mark done: ') + ref + ' ' + x.title,
       onchange: function (e) { setDone(x, e.target.checked); } });
     box.checked = done;
-    box.disabled = !!S.pending[x.id];
+    box.disabled = !!S.pending[pk(x)];
     var snips = x.snippets && x.snippets.length;
     return h('li', { class: 'ci' + (done ? ' done' : '') + (open ? ' expanded' : '') + (S.outline === x.id ? ' outlined' : ''), 'data-step': x.id },
       h('label', { class: 'tick-wrap' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' })),
@@ -1448,7 +1559,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var box = h('input', { type: 'checkbox', class: 'tick', fk: 'tick:' + t.id, 'aria-label': (done ? 'Reopen: ' : 'Mark done: ') + t.title,
       onchange: function (e) { setDone(t, e.target.checked); } });
     box.checked = done;
-    box.disabled = !!S.pending[t.id];
+    box.disabled = !!S.pending[pk(t)];
     return h('li', { class: 'task' + (done ? ' done' : '') + (selected ? ' selected' : '') },
       h('label', { class: 'tick-wrap' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' })),
       h('button', { type: 'button', class: 'task-main', fk: 'task:' + t.id, 'aria-current': selected ? 'true' : null, onclick: function () { selectFinding(t.id); } },
@@ -1507,18 +1618,174 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     document.querySelectorAll('#view-findings .seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.show === S.show)); });
   }
 
-  // ── Overview: for now a way to the SOP page (it is embedded in a later phase) ──
+  // ── page cards: a company's pages (Overview) and ZYT's own (Zhiyuan Tech) ──
+  var PAGE_BLURB = { SOP: 'The whole chain: every step, who does it and where in the system.' };
+  function pageCard(pg, c) {
+    // ?step=N (from a finding's "Where in the SOP") carries on to the SOP's own anchor
+    var href = pg.href + (pg.href === c.sop && S.sopStep ? '#step-' + S.sopStep : '');
+    return h('li', null, h('a', { class: 'pg-card', href: href, fk: 'pg:' + pg.href },
+      h('span', { class: 'pg-ic' }, kindIcon(pg.type)),
+      h('span', { class: 'pg-t' },
+        h('b', { text: pg.title }),
+        h('small', { text: pg.type + (pg.updated ? ' · Updated ' + day(pg.updated) : '') }),
+        PAGE_BLURB[pg.type] ? h('span', { text: PAGE_BLURB[pg.type] }) : null),
+      h('span', { class: 'pg-go', 'aria-hidden': 'true', text: '→' })));
+  }
+
+  // ── Overview: the company's pages as cards, the SOP first (embedded in a later phase) ──
   function renderOverview(c) {
-    var root = $('view-overview');
+    var root = $('view-overview'), n = c.visPages.length;
     root.textContent = '';
     append(root, [
       h('p', { class: 'kicker', text: c.name + ' · ' + c.place }),
       h('h1', { id: 'overview-title', text: 'Overview' }),
-      c.sop
-        ? [h('p', { class: 'sub', text: 'The SOP is the whole chain for ' + c.name + ': every step, who does it and where in the system.' }),
-           h('p', { class: 'ov-actions' }, h('a', { class: 'primary', href: c.sop + (S.sopStep ? '#step-' + S.sopStep : ''), fk: 'ov-open', text: 'Open the SOP ↗' }))]
-        : h('div', { class: 'empty' }, h('h3', { text: 'No SOP yet' }), h('p', { text: c.name + ' has no SOP page so far.' }))
+      n
+        ? [h('p', { class: 'sub', text: n === 1 ? 'The page written for ' + c.name + '.' : 'The ' + n + ' pages written for ' + c.name + '.' }),
+           h('ul', { class: 'pg-grid', 'aria-label': c.name + ' pages' }, c.visPages.map(function (pg) { return pageCard(pg, c); }))]
+        : h('div', { class: 'empty' }, h('h3', { text: 'No pages yet' }), h('p', { text: c.name + ' has no pages so far.' }))
     ]);
+  }
+
+  // ── Zhiyuan Tech: the internal company's own pages (and findings, if it ever has any) ──
+  function renderZyt() {
+    var root = $('view-zyt'), p = projectOf(HOME), q = S.qs.zyt;
+    root.textContent = '';
+    var head = [h('p', { class: 'kicker', text: 'Internal' + (p && p.place ? ' · ' + p.place : '') }), h('h1', { id: 'zyt-title', text: 'Zhiyuan Tech' })];
+    if (!p) { append(root, [head, h('div', { class: 'empty' }, h('h3', { text: 'Nothing here yet' }), h('p', { text: 'ZYT’s own pages will show here.' }))]); return; }
+    var pages = p.visPages.filter(function (pg) { return !q || (pg.title + ' ' + pg.type).toLowerCase().indexOf(q) !== -1; });
+    var open = p.tasks.filter(function (t) { return !isDone(t); }).length;
+    append(root, [
+      head,
+      h('p', { class: 'sub', text: 'Our own pages: how this site and its sessions work. Client work is under Projects.' }),
+      p.tasks.length ? h('a', { class: 'stat-link', href: '?company=' + encodeURIComponent(HOME) + '&view=findings', fk: 'zyt-findings',
+        onclick: function (e) { if (plainClick(e)) { e.preventDefault(); setCompany(HOME); setView('findings'); } } },
+        'Findings', h('b', { text: String(open) }), h('span', { class: 'muted', text: 'open of ' + p.tasks.length })) : null,
+      h('h2', { class: 'sec-h' }, 'Pages', h('small', { text: String(p.visPages.length) })),
+      pages.length
+        ? h('ul', { class: 'pg-grid', 'aria-label': 'ZYT pages' }, pages.map(function (pg) { return pageCard(pg, p); }))
+        : h('div', { class: 'empty' }, h('h3', { text: q ? 'No pages match' : 'No pages yet' }), h('p', { text: q ? 'Clear the search.' : 'ZYT’s own pages will show here.' }))
+    ]);
+  }
+
+  // ── My tasks: every company's runbook steps assigned to the viewer ──
+  // A step is mine when its assignee is my name, or it is Wilfred's (owner) and I am Wilfred.
+  function assignedTo(x, me) { return !!me && (norm(x.assignee) === me || (x.owner === 'wilfred' && me === 'wilfred')); }
+  function myOpenCount() {
+    var me = norm(author()), n = 0;
+    if (!me) return 0;
+    SEED.projects.forEach(function (p) { p.rbSteps.forEach(function (x) { if (assignedTo(x, me) && !isDone(x)) n++; }); });
+    return n;
+  }
+  function stepHref(p, id) { return '?company=' + encodeURIComponent(p.key) + '&task=' + encodeURIComponent(id); }
+  // a link into a company's task (and step): the same as its URL, without a reload
+  function goTask(p, taskId, stepId) {
+    return function (e) {
+      if (!plainClick(e)) return;
+      e.preventDefault();
+      setCompany(p.key);
+      openTask(taskId, stepId);
+    };
+  }
+
+  function renderMine() {
+    var root = $('view-mine'), me = norm(author()), q = S.qs.mine;
+    root.textContent = '';
+    var head = [h('p', { class: 'kicker', text: 'All projects' }), h('h1', { id: 'mine-title', text: 'My tasks' })];
+    if (!me) {
+      append(root, [head, h('div', { class: 'empty' },
+        h('h3', { text: 'Who’s ticking?' }),
+        h('p', { text: 'Set your name to see the runbook steps assigned to you, across every project.' }),
+        h('button', { type: 'button', class: 'primary', fk: 'mine-name', onclick: function () { askName(null); } }, 'Set your name'))]);
+      return;
+    }
+    var groups = [], open = 0, ready = 0, done = 0;
+    SEED.projects.forEach(function (p) {
+      var tasks = [];
+      p.rbTasks.forEach(function (t) {
+        var hit = !q || (t.title + ' ' + (t.short || '')).toLowerCase().indexOf(q) !== -1;
+        var xs = t.steps.filter(function (x) { return assignedTo(x, me) && (hit || stepHay(x).indexOf(q) !== -1); });
+        if (!xs.length) return;
+        var o = xs.filter(function (x) { return !isDone(x); }), d = xs.filter(isDone);
+        open += o.length; done += d.length;
+        ready += o.filter(function (x) { return !waitingOn(x).length; }).length;
+        tasks.push({ t: t, open: o, done: d });
+      });
+      if (tasks.length) groups.push({ p: p, tasks: tasks });
+    });
+    var who = author();
+    append(root, [
+      head,
+      h('p', { class: 'sub', text: groups.length
+        ? open + ' open · ' + ready + ' ready now · ' + done + ' done. Runbook steps assigned to ' + who + (me === 'wilfred' ? ', and every step Wilfred owns' : '') + '.'
+        : 'Runbook steps assigned to ' + who + ' show here, from every project.' }),
+      groups.length ? groups.map(function (g) {
+        var n = g.tasks.reduce(function (s, x) { return s + x.open.length; }, 0);
+        return h('section', { class: 'card mine-proj', 'aria-label': g.p.name },
+          h('h2', null, h('span', { class: 'company-av', 'aria-hidden': 'true', text: g.p.initials }), g.p.name, h('small', { text: n + ' open' })),
+          g.tasks.map(function (r) { return mineTask(g.p, r); }));
+      }) : h('div', { class: 'empty' },
+        h('h3', { text: q ? 'No steps match' : 'Nothing assigned to you' }),
+        h('p', { text: q ? 'Clear the search to see all your steps.' : 'Nothing in any runbook is assigned to ' + who + ' right now. Enjoy it.' }))
+    ]);
+    if (S.mineFocus) { var el = focusFk(S.mineFocus); if (!el || !el.disabled) S.mineFocus = null; }
+  }
+
+  function mineTask(p, r) {
+    var t = r.t, total = r.open.length + r.done.length;
+    // Open/closed lives in S (the list is rebuilt on every push). Recorded on the summary's
+    // click, which is synchronous: 'toggle' is queued, and a push landing in between would
+    // rebuild the list closed and aim the event at the detached old one.
+    var more = r.done.length ? h('details', { class: 'mine-done', open: !!S.mineDone[pk(t)],
+      ontoggle: function (e) { if (e.target.isConnected) S.mineDone[pk(t)] = e.target.open; } },
+      h('summary', { fk: 'mdone:' + pk(t), onclick: function (e) { S.mineDone[pk(t)] = !e.currentTarget.parentNode.open; } }, 'Done (' + r.done.length + ')'),
+      h('ul', { class: 'check' }, r.done.map(function (x) { return mineRow(p, t, x); }))) : null;
+    return h('div', { class: 'mine-task' },
+      h('h3', { class: 'stage-h' },
+        h('a', { href: stepHref(p, t.id), fk: 'mtask:' + pk(t), onclick: goTask(p, t.id) }, t.title),
+        h('small', { text: r.open.length + ' of ' + total + ' open' })),
+      r.open.length ? h('ul', { class: 'check' }, r.open.map(function (x) { return mineRow(p, t, x); })) : null,
+      more);
+  }
+
+  // one step, as in the task's checklist: tick, number, title (opens the step), ready or waits
+  function mineRow(p, t, x) {
+    var lv = liveOf(x), done = lv.state === 'done', waiting = done ? [] : waitingOn(x);
+    var box = h('input', { type: 'checkbox', class: 'tick', fk: 'mtick:' + pk(x),
+      'aria-label': (done ? 'Reopen: ' : 'Mark done: ') + (t.short || t.title) + ' step ' + x.n + ', ' + x.title,
+      // the row moves (into the closed "Done" list, or back out): keep the keyboard with it, on
+      // the list's summary or on the row's own tick once it is no longer disabled as pending
+      onchange: function (e) { S.mineFocus = e.target.checked ? 'mdone:' + pk(t) : 'mtick:' + pk(x); setDone(x, e.target.checked); } });
+    box.checked = done;
+    box.disabled = !!S.pending[pk(x)];
+    return h('li', { class: 'ci' + (done ? ' done' : '') },
+      h('label', { class: 'tick-wrap' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' })),
+      h('span', { class: 'step-no', text: String(x.n) }),
+      h('div', { class: 'ci-main' },
+        h('a', { class: 'mine-t', href: stepHref(p, x.id), fk: 'mstep:' + pk(x), onclick: goTask(p, t.id, x.id) }, h('span', { class: 'tt', text: x.title })),
+        h('span', { class: 'task-meta' },
+          x.owner === 'wilfred' ? h('span', { class: 'chip owner-wilfred', text: 'Wilfred' }) : null,
+          x.assignee ? h('span', { class: 'assignee', title: 'Assigned to', text: '@' + x.assignee }) : null,
+          waiting.length ? h('span', { class: 'waits' }, 'Waits for ', waiting.map(function (w, i) {
+            return [i ? ', ' : null, h('a', { class: 'ref-link', href: stepHref(p, w.id), fk: 'mref:' + pk(x) + ':' + w.id, title: w.title,
+              onclick: goTask(p, w.task.id, w.id) }, refOf(w, t))];
+          })) : null,
+          !done && !waiting.length ? h('span', { class: 'chip ready', text: 'Ready' }) : null,
+          done && lv.updatedBy ? h('span', { class: 'by', text: '✓ ' + lv.updatedBy }) : null,
+          x.run ? h('span', { class: 'gp-chip', text: '▶ Golden path' }) : null)),
+      h('span'));
+  }
+
+  // ── header tabs: which one is current, where Projects goes back to, and My tasks' count ──
+  function renderTabs() {
+    var cur = S.view === 'mine' || S.view === 'zyt' ? S.view : 'projects';
+    ['projects', 'mine', 'zyt'].forEach(function (k) {
+      var a = $('tab-' + k);
+      if (k === cur) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    $('tab-projects').setAttribute('href', S.companyKey && S.companyKey !== HOME ? '?company=' + encodeURIComponent(S.companyKey) : '/');
+    var n = myOpenCount();
+    $('mine-n').hidden = !n;
+    $('mine-n-num').textContent = String(n);
   }
 
   // ── right: the finding panel (Findings view only) ──
@@ -1539,7 +1806,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var box = h('input', { type: 'checkbox', class: 'tick', fk: 'panel-tick', 'aria-label': done ? 'Reopen this task' : 'Mark this task done',
       onchange: function (e) { setDone(t, e.target.checked); } });
     box.checked = done;
-    box.disabled = !!S.pending[t.id];
+    box.disabled = !!S.pending[pk(t)];
 
     append(body, [
       h('div', { class: 'panel-top' },
@@ -1623,7 +1890,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     $('snip-close').focus({ preventScroll: true });
   }
 
-  var TITLES = { tasks: 'tasks-title', task: 'task-title', overview: 'overview-title', findings: 'todo-title' };
+  var TITLES = { tasks: 'tasks-title', task: 'task-title', overview: 'overview-title', findings: 'todo-title', mine: 'mine-title', zyt: 'zyt-title' };
   var lastView = null;
   function renderAll() {
     var active = document.activeElement;
@@ -1634,14 +1901,17 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     if (S.view === 'task' && lastView !== 'task') TV.id = null;
     lastView = S.view;
     $('shell').dataset.view = S.view;
-    ['tasks', 'task', 'overview', 'findings'].forEach(function (v) { $('view-' + v).hidden = S.view !== v; });
+    ['tasks', 'task', 'overview', 'findings', 'mine', 'zyt'].forEach(function (v) { $('view-' + v).hidden = S.view !== v; });
     $('main').setAttribute('aria-labelledby', TITLES[S.view]);
+    renderTabs();
     renderCompany();
     renderNav(c);
     syncSearch();
     if (S.view === 'tasks') renderTasks(c);
     else if (S.view === 'task') renderTask(c);
     else if (S.view === 'overview') renderOverview(c);
+    else if (S.view === 'mine') renderMine();
+    else if (S.view === 'zyt') renderZyt();
     else renderTodo();
     renderPanel();
     if (fk) {
@@ -1650,12 +1920,14 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     }
   }
 
-  // search text is kept per view: Tasks (and the open task's checklist) or Findings
-  function qKey() { return S.view === 'findings' ? 'findings' : 'tasks'; }
+  // search text is kept per view: Tasks (and the open task's checklist), Findings, My tasks
+  // or Zhiyuan Tech's pages
+  var Q_LABELS = { tasks: 'Search tasks and steps', findings: 'Search findings', mine: 'Search my steps', zyt: 'Search pages' };
+  function qKey() { return S.view === 'findings' || S.view === 'mine' || S.view === 'zyt' ? S.view : 'tasks'; }
   function syncSearch() {
     var k = qKey(), input = $('q');
     if (input.dataset.for !== k) { input.dataset.for = k; input.value = S.qs[k]; }
-    var label = k === 'findings' ? 'Search findings' : 'Search tasks and steps';
+    var label = Q_LABELS[k];
     input.placeholder = label;
     $('q-label').textContent = label;
   }
@@ -1664,6 +1936,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   // The URL is query parameters only. Opening or closing a task and changing the view
   // push a history entry (so Back returns to the list); everything else replaces it.
   function urlNow() {
+    // the two top-level pages stand alone: ?page=mine, ?page=zyt
+    if (S.view === 'mine' || S.view === 'zyt') return location.pathname + '?page=' + S.view;
     var c = company(), p = new URLSearchParams();
     p.set('company', S.companyKey);
     if (S.view === 'task') p.set('task', S.expanded || S.taskId);
@@ -1753,9 +2027,11 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   }
 
   function setCompany(key) {
-    if (!SEED.projects.some(function (p) { return p.key === key; })) key = SEED.projects[0].key;
+    if (!projectOf(key)) key = CLIENTS[0].key;
     if (S.companyKey === key) return false;
-    S.companyKey = key; S.taskKey = null; S.taskId = null; S.expanded = null; S.live = null; S.events = []; S.pending = {};
+    // pending ticks are keyed by company (pk), so they survive the switch: My tasks may
+    // have one in flight for another company
+    S.companyKey = key; S.taskKey = null; S.taskId = null; S.expanded = null; S.live = null; S.events = [];
     subscribe();
     return true;
   }
@@ -1763,7 +2039,20 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   // Start-up and Back/Forward both land here, so a reload and a Back show the same thing.
   function routeFromUrl() {
     var q = new URLSearchParams(location.search);
-    setCompany(q.get('company') || q.get('project') || S.companyKey || SEED.projects[0].key);   // older links used ?project=
+    var page = q.get('page'), ck = q.get('company') || q.get('project');                        // older links used ?project=
+    if (page !== 'mine' && page !== 'zyt') page = null;
+    // ZYT is not a client: a bare ?company=zyt (the ZYT pages' own crumb) opens its page
+    if (!page && ck === HOME && !q.get('view') && !q.get('task')) page = 'zyt';
+    if (page) {
+      // keep the company last looked at, so the Projects tab goes back to it
+      setCompany(S.companyKey || (ck && ck !== HOME ? ck : CLIENTS[0].key));
+      S.view = page; S.taskKey = null; S.expanded = null; S.outline = null; S.sopStep = null;
+      renderAll();
+      syncUrl(false);
+      window.scrollTo(0, 0);
+      return;
+    }
+    setCompany(ck || S.companyKey || CLIENTS[0].key);
     var c = company(), v = q.get('view'), r = resolveKey(q.get('task'));
     if (v === 'runbook') v = 'tasks';                                                            // the old Runbook view
     if (['tasks', 'overview', 'findings'].indexOf(v) === -1) v = null;
@@ -1783,25 +2072,42 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   window.addEventListener('popstate', function () { closeSheet(true); routeFromUrl(); });
 
   // ── live state (Convex) ──
-  function subscribe() {
-    if (unsubscribe) { try { unsubscribe(); } catch (e) {} unsubscribe = null; }
-    clearTimeout(liveTimer);
-    if (!client) return;
-    setConn('connecting', 'Connecting…');
-    var key = S.companyKey;
-    liveTimer = setTimeout(function () { if (!S.live) setConn('offline', 'Read-only · server unreachable'); }, 12000);
-    unsubscribe = client.onUpdate(convex.anyApi.findings.board, { projectKey: key }, function (res) {
-      if (key !== S.companyKey) return;
+  // One board subscription per company, kept for the whole visit: My tasks, the tab's count
+  // and the switcher's open counts need every company's ticks, not just the selected one's.
+  // The connection badge speaks for the selected company.
+  function offlineText(err) { return 'Read-only · ' + String((err && err.message) || 'server error').slice(0, 60); }
+  function watch(key) {
+    if (!client || SUBS[key]) return;
+    SUBS[key] = client.onUpdate(convex.anyApi.findings.board, { projectKey: key }, function (res) {
       var map = {};
       res.findings.forEach(function (f) { map[f.key] = f; });
-      S.live = map;
-      S.events = res.events;
-      clearTimeout(liveTimer);
-      setConn('live', 'Live');
+      LIVE[key] = { map: map, events: res.events };
+      delete FAILED[key];
+      if (key === S.companyKey) {
+        S.live = map; S.events = res.events;
+        clearTimeout(liveTimer);
+        setConn('live', 'Live');
+      }
       renderAll();
     }, function (err) {
-      setConn('offline', 'Read-only · ' + String((err && err.message) || 'server error').slice(0, 60));
+      FAILED[key] = err;
+      if (key === S.companyKey) setConn('offline', offlineText(err));
     });
+  }
+  function subscribe() {
+    clearTimeout(liveTimer);
+    if (!client) return;
+    var key = S.companyKey, board = LIVE[key];
+    S.live = board ? board.map : null;
+    S.events = board ? board.events : [];
+    if (board) setConn('live', 'Live');
+    else if (FAILED[key]) setConn('offline', offlineText(FAILED[key]));
+    else {
+      setConn('connecting', 'Connecting…');
+      liveTimer = setTimeout(function () { if (!S.live) setConn('offline', 'Read-only · server unreachable'); }, 12000);
+    }
+    watch(key);
+    SEED.projects.forEach(function (p) { watch(p.key); });
   }
 
   function setDone(t, done) {
@@ -1815,13 +2121,14 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       askName(function (given) { if (given) setDone(t, done); else renderAll(); });
       return;
     }
-    var next = done ? 'done' : 'open';
-    S.pending[t.id] = { state: next, updatedBy: name, updatedAt: Date.now() };
+    // the row's own company: a tick from My tasks may belong to any of them
+    var next = done ? 'done' : 'open', key = pk(t);
+    S.pending[key] = { state: next, updatedBy: name, updatedAt: Date.now() };
     renderAll();
-    client.mutation(convex.anyApi.findings.setState, { projectKey: S.companyKey, key: t.id, state: next, author: name })
-      .then(function () { delete S.pending[t.id]; renderAll(); })
+    client.mutation(convex.anyApi.findings.setState, { projectKey: t.pkey || S.companyKey, key: t.id, state: next, author: name })
+      .then(function () { delete S.pending[key]; renderAll(); })
       .catch(function (err) {
-        delete S.pending[t.id];
+        delete S.pending[key];
         renderAll();
         toast((err && typeof err.data === 'string' && err.data) || 'That tick wasn’t saved. Try again.');
       });
@@ -1863,12 +2170,15 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     gs.forEach(function (g) { S.collapsed[g.id] = collapse; });
     renderAll();
   });
-  document.querySelectorAll('[data-company-select]').forEach(function (sel) {
-    sel.addEventListener('change', function (e) {
-      if (!setCompany(e.target.value)) return;
-      S.view = defaultView(company());
-      syncUrl(true); renderAll(); window.scrollTo(0, 0);
-    });
+  // header tabs: real links (a new tab, a reload and Back all work); a plain click stays in the page
+  $('tab-projects').addEventListener('click', function (e) {
+    if (!plainClick(e)) return;
+    e.preventDefault();
+    if (!S.companyKey || S.companyKey === HOME) setCompany(CLIENTS[0].key);
+    setView(defaultView(company()));
+  });
+  ['mine', 'zyt'].forEach(function (v) {
+    $('tab-' + v).addEventListener('click', function (e) { if (plainClick(e)) { e.preventDefault(); setView(v); } });
   });
 
   // ── theme: dark by default (set in <head> before paint), toggle remembered per browser ──

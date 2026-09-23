@@ -181,8 +181,7 @@
         "type": "Commands",
         "title": "ZYT commands",
         "href": "/zyt/commands/",
-        "source": "docs/zyt-commands.md",
-        "nav": "header"
+        "source": "docs/zyt-commands.md"
       }
     ]
   }

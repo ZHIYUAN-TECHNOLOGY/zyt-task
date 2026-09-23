@@ -15,7 +15,7 @@ files are the spec for those. If something below stops being true, fix this file
 | `/nct/steps-1-3-runbook/` | `C:/Project/ZYT-Task/steps-1-3-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) since Phase 3 (2026-09-23): the dashboard's task "Steps 1–3" shows its text. The same holds for every NCT runbook and crosscheck below |
 | `/nct/steps-4-10-runbook/` | `C:/Project/ZYT-Task/steps-4-10-runbook.md`, rendered by `hosting/hub/build-runbook.mjs` (marked; the article's rules are in `hub/runbook-body.css`) | Hand edits. Built, hidden from the list (`nav: hidden`) |
 | `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) |
-| `/nct/step-01-plan/` … `/nct/step-10-plan/`, `/nct/steps-4-10-crosscheck/` | `C:/Project/ZYT-Task/plans/step-0N-*.md`, `step-10-*.md`, `steps-4-10-crosscheck.md`, same renderer (kind "Plan" / "Crosscheck"). Built from the `$nctPages0110` table in `deploy-site.ps1` since 2026-09-23 | Hand edits. Published but unlisted: the plans are in `unlisted`, the crosscheck is a `pages` entry with `"nav": "hidden"` (the page list skips it). Their download buttons point at `steps-1-3-plans.zip` / `steps-4-10-plans.zip` |
+| `/nct/step-01-plan/` … `/nct/step-10-plan/`, `/nct/steps-4-10-crosscheck/` | `C:/Project/ZYT-Task/plans/step-0N-*.md`, `step-10-*.md`, `steps-4-10-crosscheck.md`, same renderer (kind "Plan" / "Crosscheck"). Built from the `$nctPages0110` table in `deploy-site.ps1` since 2026-09-23 | Hand edits. Published but unlisted: the plans are in `unlisted`, the crosscheck is a `pages` entry with `"nav": "hidden"` (Overview's page cards skip it). Their download buttons point at `steps-1-3-plans.zip` / `steps-4-10-plans.zip` |
 | `/nct/step-11-plan/` … `/nct/step-15-plan/` | `C:/Project/ZYT-Task/plans/step-1N-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9, all settled 2026-09-17. **Built and live, but deliberately not in `projects.json`** (2026-09-18): the page list would be 12 entries long, so the plans are reached from the steps 11–15 runbook's §0 table instead. A page can be published without being listed; only the listing is dropped |
 | `/nct/steps-12-15-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-12-15-crosscheck.md`, same renderer (kind "Crosscheck") | Hand edits. Built, hidden from the list (`nav: hidden`); an attachment of the task "Steps 11–15" |
 | `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1`. Dashboard tasks "Steps 16–19", "Steps 20–26", "Step 27" since 2026-09-23 (56 steps, one per wave heading plus setup, gates and clean-up). Built, hidden from the list (`nav: hidden`) |
@@ -56,7 +56,7 @@ belong in layers 1–3, not in the source**.
 | JWA SOP content | `sop.json` via `/zyt-update` in the JWA repo | Redeploy with `deploy-site.ps1` — the zyt skills' own publish step targets a separate Worker (`hosting/<worker-name>/`), not this site |
 | Look or behaviour of every SOP page | `hosting/hub/sop-theme.css`, `sop-layout.css`, `sop-layout.js` | Redeploy |
 | Dashboard UI | `hosting/hub/index.html` | Redeploy |
-| Which pages the left column lists, and in what order | `hosting/hub/projects.json` — pages are grouped under their client, the selected client first. `"nav": "header"` on a page moves it to the top bar instead (pages about this site, not about a client's work) | Redeploy |
+| Which pages a company's **Overview** shows as cards, and in what order | `hosting/hub/projects.json` — the company's `pages`, its SOP first, then the rest in file order; `"nav": "hidden"` leaves a page off. The internal company `zyt` is not in the switcher: its pages (ZYT commands) are the cards on the **Zhiyuan Tech** header tab (`?page=zyt`). The header's three tabs (Projects · My tasks · Zhiyuan Tech) are fixed in `index.html`, not read from `projects.json` (the old `"nav": "header"` flag is gone) | Redeploy |
 | Task titles, detail, repair, source locations, workstreams | `tracker/seed/*-<key>.json` | Redeploy; new task ids also need Convex rows (below) |
 | Runbook stages and steps (what's next, owner, waits-for, link to a runbook section) | `tracker/seed/runbook-<key>.json` | Redeploy; new step ids need Convex rows — run `seed:nct` (dev and `--prod`) **before** the site deploy, or ticking them fails with "That task does not exist." A real deploy now refuses to ship while any key has no row (the seed-row preflight in `deploy-site.ps1`); a DryRun only warns |
 | A wave heading in a task's runbook (`### Wave 12 — …`, `4. Wave 1: …`) | `tracker/seed/runbook-<key>.json` gets a step, in any task, whose `link` or `prompts` points at it | The build fails with `<source> wave heading #<id> has no step` until one does — a runbook cannot gain a wave without a checklist step. Every `Runbook` page with an `.md` source must be some task's `runbook` (`runbook page <href> is in no task`), so no runbook escapes this rule |
@@ -73,12 +73,12 @@ belong in layers 1–3, not in the source**.
 ## What gets a page, and what gets listed (2026-09-18)
 
 Every plan and runbook lives on this site; a markdown file left only in `plans/` is not done.
-But **being published and being listed in the page list are two different things**:
+But **being published and being listed (as a card on the company's Overview) are two different things**:
 
-| | Page built | In the page list (`projects.json`) | Why |
+| | Page built | Listed on Overview (`projects.json`) | Why |
 |---|---|---|---|
 | SOPs, ZYT commands, other companies' pages | yes | yes | People browse to them, read them on a phone, and link to a section |
-| NCT runbooks and crosschecks (since Phase 3, 2026-09-23) | yes | **no** — `pages` entries with `"nav": "hidden"` | The dashboard's Tasks view shows each runbook's text in its task and each crosscheck as an attachment. They stay `pages` entries (with `source`) so steps can take snippets from them and the build can check anchors; the page list filters `hidden` out. Their URLs still work |
+| NCT runbooks and crosschecks (since Phase 3, 2026-09-23) | yes | **no** — `pages` entries with `"nav": "hidden"` | The dashboard's Tasks view shows each runbook's text in its task and each crosscheck as an attachment. They stay `pages` entries (with `source`) so steps can take snippets from them and the build can check anchors; Overview filters `hidden` out. Their URLs still work |
 | Step plans (`/nct/step-01-plan/` … `step-27-plan/`) | yes | **no** — listed in the company's `unlisted` array | 700–1000 lines each; five more rows would bury the runbooks. They are reached from the steps 11–15 runbook's §0 table and from dashboard steps that deep-link a section (six stage D steps point into the step 11 plan) |
 
 So a new plan is **published but unlisted**, and added to the download bundles. Do not delete a
@@ -248,14 +248,16 @@ node hosting/runner/server.mjs
 
   | URL | Opens |
   |---|---|
-  | `/?company=nct` | **Tasks** when the company has a runbook, otherwise Overview when it has an SOP, otherwise Findings |
+  | `/?company=nct` | **Tasks** when the company has a runbook, otherwise Overview when it has pages, otherwise Findings (header tab **Projects**) |
+  | `?page=mine` | **My tasks** (header tab): every company's runbook steps assigned to the viewer's name (`zyt.author`), or owned by Wilfred when the name is Wilfred, grouped by company and task |
+  | `?page=zyt` | **Zhiyuan Tech** (header tab): the internal company's own pages. A bare `?company=zyt` (the ZYT pages' crumb) lands here too |
   | `?view=tasks` / `?view=overview` / `?view=findings` | that view |
   | `?view=runbook` (legacy) | Tasks |
   | `?task=task-nct-steps-4-10` | the task view |
   | `?task=rb-nct-b3-merge-wave-1` (a **step** id; `docs/zyt-commands.md` links these) | the owning task, with that step expanded, scrolled into view and outlined |
   | `?task=nct-identity` (a **finding** id) | Findings, with its panel open |
   | `?view=findings&step=8` | Findings filtered to SOP step 8 |
-  | `?view=overview&step=5` | Overview, with the SOP frame at `…?embed=1#step-5` |
+  | `?view=overview&step=5` | Overview, its SOP card linking to `#step-5` (the SOP is not embedded yet) |
 - **Step ids stay Convex keys; display numbers are per task.** Never renumber or rename an id to
   match a display number — the number is computed, the id holds the tick history.
 - **The task view reads `article.rb-body` and `nav.rb-toc` from the served page** (it fetches the
