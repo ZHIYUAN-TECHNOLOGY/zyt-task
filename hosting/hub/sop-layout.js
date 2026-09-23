@@ -163,20 +163,29 @@
     show(n, false);
   });
 
-  // role tabs: the page's own buttons select the role; the flow dims steps that are not theirs
+  // role tabs: the page's own buttons select the role. With one picked, the role's steps get a
+  // "mine" style and the rest dim; which step is open is a separate cue that combines with either.
   var R = window.SOP_ROLE;
+  function roleActive() { return !!(R && R.active && R.active()); }
+  function isMine(n) { return (R.parts(n) || []).length > 0; }
+  function roleSteps() { return roleActive() ? order.filter(isMine) : []; }
   function markRole() {
-    var active = !!(R && R.active && R.active());
+    var active = roleActive();
+    flow.classList.toggle('has-role', active);
     order.forEach(function (n) {
       if (!nodes[n]) return;
-      var mine = !active || (R.parts(n) || []).length > 0;
-      nodes[n].classList.toggle('off', !mine);
+      var mine = active && isMine(n);
+      nodes[n].classList.toggle('mine', mine);
+      nodes[n].classList.toggle('off', active && !mine);
     });
   }
-  // the open step is rebuilt too, so its "your part" line follows the role
+  // a role picked while one of someone else's steps is open jumps to the role's first step;
+  // otherwise the open step is rebuilt, so its "your part" line follows the role
   function roleChanged() {
     markRole();
-    if (current) window.openStepGuide(current);
+    var theirs = roleSteps();
+    if (theirs.length && (!current || !isMine(current))) window.openStepGuide(theirs[0]);
+    else if (current) window.openStepGuide(current);
   }
   guide.addEventListener('click', function (e) {
     if (e.target.closest && e.target.closest('.rr-btn')) setTimeout(roleChanged, 0);
@@ -209,6 +218,7 @@
     var body = box.querySelector('.sm-body');
     if (body) body.scrollTop = 0;
     if (nodes[n]) nodes[n].scrollIntoView({ block: 'nearest' });
+    markNotMine(box, n);
     addRunPanel(box, n);
   }
   new MutationObserver(function (records) {
@@ -218,6 +228,22 @@
       });
     });
   }).observe(document.body, { childList: true });
+
+  // "not one of your steps" reads as a caution, with a way on to the role's next step
+  function markNotMine(box, n) {
+    var line = box.querySelector('.sm-rolepart');
+    if (!line || !roleActive() || isMine(n)) return;
+    line.classList.add('zg-notmine');
+    var theirs = roleSteps();
+    if (!theirs.length) return;
+    var next = theirs.filter(function (k) { return order.indexOf(k) > order.indexOf(n); })[0] || theirs[0];
+    var who = line.querySelector('b');
+    var go = make('button', 'zg-next-mine', (order.indexOf(next) > order.indexOf(n) ? 'Next ' : 'First ') +
+      (who ? who.textContent : 'role') + ' step: ' + pad(next) + ' →');
+    go.type = 'button';
+    go.addEventListener('click', function () { show(next, false); });
+    line.appendChild(go);
+  }
 
   function show(n, bringIntoView) {
     if (!SOP.STEP[n]) return;
@@ -234,7 +260,7 @@
     return m ? Number(m[1]) : null;
   }
   markRole();
-  show(stepFromHash() || order[0], false);
+  show(stepFromHash() || roleSteps()[0] || order[0], false);
   window.addEventListener('hashchange', function () {
     var n = stepFromHash();
     if (n) show(n, true);
