@@ -1,12 +1,14 @@
 // Builds the JSON the dashboard embeds: every project in hosting/hub/projects.json with
 // its tasks, workstreams and flow from tracker/seed. Live tick state comes from Convex;
 // this is the content and the offline fallback.
-//   node hosting/hub/build-seed.mjs <out.json> [--runbook <path>] [--report-snippets]
+//   node hosting/hub/build-seed.mjs <out.json> [--runbook <path>] [--public <dir>] [--report-snippets]
 // --runbook <path>    use this runbook seed instead of projects.json's seed.runbook (the one project
 //                     that has one). For negative tests on a scratch copy; tracked files stay untouched.
+// --public <dir>      the built site (deploy-site.ps1 passes hosting/site/public): every task's
+//                     download zip must exist there. Without it only the zip's path shape is checked.
 // --report-snippets   print the runbook steps that would fail the "no silent empty snippets" rule,
 //                     then exit 0 without writing anything.
-import { readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Marked } from 'marked';
@@ -16,9 +18,10 @@ const root = resolve(here, '..', '..');
 const argv = process.argv.slice(2);
 const flag = (name) => { const i = argv.indexOf(name); return i === -1 ? null : (argv.splice(i, 2)[1] ?? ''); };
 const runbookOverride = flag('--runbook');
+const publicDir = flag('--public');
 const reportSnippets = argv.includes('--report-snippets');
 const out = argv.filter((a) => !a.startsWith('--'))[0];
-if (!out && !reportSnippets) throw new Error('usage: node build-seed.mjs <out.json> [--runbook <path>] [--report-snippets]');
+if (!out && !reportSnippets) throw new Error('usage: node build-seed.mjs <out.json> [--runbook <path>] [--public <dir>] [--report-snippets]');
 
 const read = (rel) => JSON.parse(readFileSync(isAbsolute(rel) ? rel : join(root, rel), 'utf8'));
 const registry = read('hosting/hub/projects.json');
@@ -116,6 +119,11 @@ const projects = registry.map((p) => {
         if (!['wilfred', 'session'].includes(s.owner)) throw new Error(`${p.key}: runbook step ${s.id} has owner "${s.owner}"`);
         const bad = (s.waitsFor || []).filter((k) => !stepIds.has(k));
         if (bad.length) throw new Error(`${p.key}: runbook step ${s.id} waits for unknown steps [${bad}]`);
+        if (s.assignee !== undefined) {
+          // the same rule as a tick's name (findings.ts, index.html): trim, collapse spaces, 1-40 chars
+          const name = typeof s.assignee === 'string' ? s.assignee.trim().replace(/\s+/g, ' ') : '';
+          if (!name || name.length > 40) throw new Error(`${p.key}: runbook step ${s.id} assignee must be 1–40 characters`);
+        }
         if (s.link && !allHrefs.has(s.link.split('#')[0])) {
           throw new Error(`${p.key}: runbook step ${s.id} links to ${s.link}, which is not a page in projects.json`);
         }
@@ -140,17 +148,71 @@ const projects = registry.map((p) => {
       }
     }
 
-    // Wave coverage (plan §4.3 #5, D2): every wave heading of every runbook page must be the anchor
-    // of some step's link or prompts, in any stage. Coverage is by anchor, so a new wave in a runbook
-    // cannot ship without a checklist step for it.
+    // Tasks (plan §4.2, §4.3 #2-#4): the dashboard's list. A task groups whole stages, in order; its
+    // id is not a Convex key but shares their key space so ?task= stays unambiguous.
     if (!reportSnippets) {
-      for (const pg of p.pages) {
-        if (pg.type !== 'Runbook' || !(pg.source || '').endsWith('.md')) continue;
-        for (const hd of sectionsOf(pg.source).headings) {
-          if (!WAVE_HEADING.test(hd.text.replace(/`/g, '').trim())) continue;
-          if (!anchored.has(`${pg.href}#${hd.id}`)) throw new Error(`${p.key}: ${pg.source} wave heading #${hd.id} has no step`);
+      const tasksOut = runbook.tasks || [];
+      const stageIds = new Set(runbook.stages.map((st) => st.id));
+      const owner = new Map();
+      for (const t of tasksOut) {
+        if (seen.has(t.id)) throw new Error(`${p.key}: task id ${t.id} is used twice (or by a step or finding)`);
+        seen.add(t.id);
+        for (const sid of t.stages || []) {
+          if (!stageIds.has(sid)) throw new Error(`${p.key}: task ${t.id} lists unknown stage ${sid}`);
+          if (owner.has(sid)) throw new Error(`${p.key}: runbook stage ${sid} is in two tasks (${owner.get(sid)}, ${t.id})`);
+          owner.set(sid, t.id);
+        }
+        if (t.runbook && !(sourceByHref.get(t.runbook) || '').endsWith('.md')) {
+          throw new Error(`${p.key}: task ${t.id} runbook ${t.runbook} is not a page with an .md source`);
+        }
+        for (const a of t.attach || []) {
+          if (!allHrefs.has(a.href)) throw new Error(`${p.key}: task ${t.id} attachment ${a.href} is not a page in projects.json`);
+        }
+        if (t.download !== undefined) {
+          if (!/^\/nct\/downloads\/[\w.-]+\.zip$/.test(t.download)) {
+            throw new Error(`${p.key}: task ${t.id} download ${t.download} is not /nct/downloads/<name>.zip`);
+          }
+          // the bundles are built before this script runs (deploy-site.ps1), so the zip must be there
+          if (publicDir && !existsSync(join(resolve(publicDir), t.download.slice(1)))) {
+            throw new Error(`${p.key}: task ${t.id} download ${t.download} is missing from ${publicDir}`);
+          }
         }
       }
+      for (const st of runbook.stages) {
+        if (!owner.has(st.id)) throw new Error(`${p.key}: runbook stage ${st.id} is in no task`);
+      }
+      // Every runbook page is some task's body, so the wave rule below reaches all of them.
+      const taskRunbooks = new Set(tasksOut.map((t) => t.runbook).filter(Boolean));
+      for (const pg of p.pages) {
+        if (pg.type === 'Runbook' && (pg.source || '').endsWith('.md') && !taskRunbooks.has(pg.href)) {
+          throw new Error(`${p.key}: runbook page ${pg.href} is in no task`);
+        }
+      }
+
+      // Wave coverage (plan §4.3 #5, D2): every wave heading of every task's runbook must be the
+      // anchor of some step's link or prompts, in any task. Coverage is by anchor, so a new wave in a
+      // runbook cannot ship without a checklist step for it.
+      for (const t of tasksOut) {
+        if (!t.runbook) continue;
+        const source = sourceByHref.get(t.runbook);
+        for (const hd of sectionsOf(source).headings) {
+          if (!WAVE_HEADING.test(hd.text.replace(/`/g, '').trim())) continue;
+          if (!anchored.has(`${t.runbook}#${hd.id}`)) throw new Error(`${p.key}: ${source} wave heading #${hd.id} has no step`);
+        }
+      }
+
+      // Enriched for the client: the runbook page's title and last edit, the same rule as pages[].
+      const pageByHref = new Map(p.pages.map((pg) => [pg.href, pg]));
+      runbook.tasks = tasksOut.map(({ runbook: href, ...t }) => {
+        const { id, title, short, loose, sop, settled, migrations, stages, download, attach } = t;
+        const out = { id, title, short, loose, sop, settled, migrations, stages, download };
+        if (href) {
+          const pg = pageByHref.get(href);
+          out.runbook = { href, title: pg ? pg.title : href, updated: statSync(join(root, sourceByHref.get(href))).mtime.toISOString() };
+        }
+        out.attach = attach || [];
+        return JSON.parse(JSON.stringify(out)); // drops the absent optional fields
+      });
     }
   }
 

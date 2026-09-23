@@ -22,13 +22,15 @@
         "type": "Runbook",
         "title": "Steps 1–3",
         "href": "/nct/steps-1-3-runbook/",
-        "source": "steps-1-3-runbook.md"
+        "source": "steps-1-3-runbook.md",
+        "nav": "hidden"
       },
       {
         "type": "Runbook",
         "title": "Steps 4–10",
         "href": "/nct/steps-4-10-runbook/",
-        "source": "steps-4-10-runbook.md"
+        "source": "steps-4-10-runbook.md",
+        "nav": "hidden"
       },
       {
         "type": "Crosscheck",
@@ -41,43 +43,50 @@
         "type": "Runbook",
         "title": "Steps 11–15",
         "href": "/nct/steps-11-15-runbook/",
-        "source": "steps-11-15-runbook.md"
+        "source": "steps-11-15-runbook.md",
+        "nav": "hidden"
       },
       {
         "type": "Crosscheck",
         "title": "Steps 12–15",
         "href": "/nct/steps-12-15-crosscheck/",
-        "source": "plans/steps-12-15-crosscheck.md"
+        "source": "plans/steps-12-15-crosscheck.md",
+        "nav": "hidden"
       },
       {
         "type": "Runbook",
         "title": "Steps 16–19",
         "href": "/nct/steps-16-19-runbook/",
-        "source": "steps-16-19-runbook.md"
+        "source": "steps-16-19-runbook.md",
+        "nav": "hidden"
       },
       {
         "type": "Crosscheck",
         "title": "Steps 16–19",
         "href": "/nct/steps-16-19-crosscheck/",
-        "source": "plans/steps-16-19-crosscheck.md"
+        "source": "plans/steps-16-19-crosscheck.md",
+        "nav": "hidden"
       },
       {
         "type": "Runbook",
         "title": "Steps 20–26",
         "href": "/nct/steps-20-26-runbook/",
-        "source": "steps-20-26-runbook.md"
+        "source": "steps-20-26-runbook.md",
+        "nav": "hidden"
       },
       {
         "type": "Crosscheck",
         "title": "Steps 20–26",
         "href": "/nct/steps-20-26-crosscheck/",
-        "source": "plans/steps-20-26-crosscheck.md"
+        "source": "plans/steps-20-26-crosscheck.md",
+        "nav": "hidden"
       },
       {
         "type": "Runbook",
         "title": "Step 27",
         "href": "/nct/step-27-runbook/",
-        "source": "step-27-runbook.md"
+        "source": "step-27-runbook.md",
+        "nav": "hidden"
       }
     ],
     "unlisted": [

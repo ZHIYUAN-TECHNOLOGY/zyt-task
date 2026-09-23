@@ -372,7 +372,8 @@ foreach ($b in $bundles) {
 
 # ── dashboard ─────────────────────────────────────────────────────────────────
 $seedFile = Join-Path $site 'seed.json'
-node (Join-Path $PSScriptRoot 'hub\build-seed.mjs') $seedFile
+# --public: every task's download zip must be among the bundles built above
+node (Join-Path $PSScriptRoot 'hub\build-seed.mjs') $seedFile --public $public
 if ($LASTEXITCODE -ne 0) { throw 'build-seed.mjs failed' }
 $seedJson = [IO.File]::ReadAllText($seedFile)
 
@@ -414,6 +415,8 @@ $hub = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\index.html'))
 $hub = $hub.Replace('<!--PWA_HEAD-->', $pwaHead).Replace('<!--PWA_SCRIPT-->', $pwaScript).
             Replace('{{CONVEX_URL}}', $ConvexUrl.TrimEnd('/')).Replace('/*SEED_JSON*/', $seedJson)
 $hub = $hub.Replace('<!--GOLDEN_PATH_JS-->', $goldenJs).Replace('/*GOLDEN_PATH_CSS*/', [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\golden-path.css')))
+# the runbook article's rules, shared with build-runbook.mjs (task view body; the sheet copies them)
+$hub = $hub.Replace('/*RUNBOOK_CSS*/', [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\runbook-body.css')))
 Write-Utf8 (Join-Path $public 'index.html') $hub
 Copy-Item (Join-Path $PSScriptRoot 'hub\404.html') $public
 

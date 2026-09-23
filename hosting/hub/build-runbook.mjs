@@ -3,7 +3,8 @@
 //   node hosting/hub/build-runbook.mjs <doc.md> <out.body.html> [kind, default Runbook]
 //     [org, default "NCT Freight Forwarding"] [short org for the <title>, default NCT]
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
-import { basename } from 'node:path';
+import { basename, dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Marked } from 'marked';
 
 const argv = process.argv.slice(2);
@@ -57,6 +58,8 @@ const updated = statSync(src).mtime.toLocaleDateString('en-GB', { day: 'numeric'
 const titleParts = [title || basename(src, '.md'), orgShort, 'ZYT'];
 const pageTitle = titleParts.filter((p, i) => p && !titleParts.slice(0, i).some((q) => q && q.toLowerCase().includes(p.toLowerCase()))).join(' · ');
 
+// the article's rules live in runbook-body.css, shared with the dashboard's task view (plan §4.4)
+const bodyCss = readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'runbook-body.css'), 'utf8');
 const css = `
 body { margin: 0; background: var(--ground); }
 .rb {
@@ -78,32 +81,7 @@ body { margin: 0; background: var(--ground); }
 .rb-toc a { color: var(--ink-soft); text-decoration: none; line-height: 1.35; display: block; }
 .rb-toc a:hover { color: var(--accent); }
 .rb-toc code { font: .8em var(--rb-mono); }
-.rb-body { min-width: 0; max-width: 54rem; }
-.rb-body h1 { margin: 0 0 1rem; font: 700 clamp(1.8rem, 3.5vw, 2.5rem)/1.15 var(--rb-head); letter-spacing: -.03em; color: var(--ink); }
-.rb-body h2 { margin: 2.6rem 0 .8rem; padding-top: 1.3rem; border-top: 1px solid var(--rule); font: 600 1.45rem/1.25 var(--rb-head); letter-spacing: -.02em; color: var(--ink); }
-.rb-body h3 { margin: 1.9rem 0 .6rem; font: 600 1.12rem/1.3 var(--rb-head); color: var(--ink); }
-.rb-body h4 { margin: 1.5rem 0 .5rem; font: 600 .98rem var(--rb-head); color: var(--ink); }
-.rb-body h2, .rb-body h3, .rb-body h4 { position: relative; scroll-margin-top: calc(3.75rem + 1rem); }
-.rb-anchor { position: absolute; left: -1.2em; color: var(--ink-faint); text-decoration: none; opacity: 0; transition: opacity .15s; }
-.rb-body h2:hover .rb-anchor, .rb-body h3:hover .rb-anchor, .rb-body h4:hover .rb-anchor, .rb-anchor:focus-visible { opacity: 1; }
-.rb-body p, .rb-body li { color: var(--ink-soft); }
-.rb-body strong { color: var(--ink); }
-.rb-body a { color: var(--accent); }
-.rb-body ul, .rb-body ol { padding-left: 1.3rem; }
-.rb-body li + li { margin-top: .25rem; }
-.rb-body code { font: .85em var(--rb-mono); background: var(--surface-sunk); border: 1px solid var(--rule); border-radius: 6px; padding: .05em .35em; overflow-wrap: anywhere; }
-.rb-body pre { margin: 1rem 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: .9rem 1rem; overflow-x: auto; }
-.rb-body pre code { background: none; border: 0; padding: 0; font-size: .82rem; white-space: pre; overflow-wrap: normal; }
-.rb-table { margin: 1rem 0; overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; }
-.rb-body table { border-collapse: collapse; width: 100%; font-size: .88rem; }
-.rb-body th, .rb-body td { text-align: left; vertical-align: top; padding: .55rem .75rem; border-bottom: 1px solid var(--rule); }
-.rb-body th { background: var(--surface); color: var(--ink); font-weight: 600; white-space: nowrap; }
-.rb-body tr:last-child td { border-bottom: 0; }
-.rb-body blockquote { margin: 1rem 0; padding: .6rem 1rem; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
-.rb-body blockquote p { margin: .3rem 0; }
-.rb-body hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
-.rb-body hr:has(+ h2) { display: none; } /* h2 already draws its own rule */
-/* the same button under the table of contents, when --download= is passed */
+${bodyCss}/* the same button under the table of contents, when --download= is passed */
 .rb-toc a.rb-toc-dl {
   display: flex; align-items: center; justify-content: center; gap: .45rem; margin-top: 1rem;
   font: 600 .85rem var(--rb-head); color: #fff; background: var(--accent);
@@ -113,20 +91,11 @@ body { margin: 0; background: var(--ground); }
 .rb-toc a.rb-toc-dl:hover { filter: brightness(1.12); color: #fff; text-decoration: none; }
 /* dark theme softens --accent for text; the button keeps the solid brand indigo behind white */
 :root[data-theme="dark"] .rb-toc a.rb-toc-dl { background: #4159c9; }
-/* <a class="rb-dl"> in the markdown: a download button, e.g. under a table of plans */
-.rb-body .rb-dl {
-  display: inline-flex; align-items: center; gap: .5rem; margin: .25rem 0 1.25rem;
-  font: 600 .9rem var(--rb-head); color: var(--ink); background: var(--surface);
-  border: 1px solid var(--rule); border-radius: 12px; padding: .6rem 1rem; text-decoration: none;
-}
-.rb-body .rb-dl:hover { border-color: var(--accent); color: var(--accent); }
-.rb-body .rb-dl small { font: 400 .78rem var(--rb-body); color: var(--ink-faint); }
 .rb-source { grid-column: 2; margin-top: 3rem; font-size: .78rem; color: var(--ink-faint); }
 @media (max-width: 60rem) {
   .rb { grid-template-columns: minmax(0, 1fr); }
   .rb-toc { position: static; max-height: none; border-left: 0; padding-left: 0; padding-bottom: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
   .rb-source { grid-column: 1; }
-  .rb-anchor { display: none; }
 }
 @media print { .rb { display: block; } .rb-toc { display: none; } }
 `;

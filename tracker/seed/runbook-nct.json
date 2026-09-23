@@ -1,4 +1,272 @@
 {
+  "tasks": [
+    {
+      "id": "task-nct-before-deploy",
+      "title": "Before anyone deploys the site again",
+      "short": "Before deploy",
+      "loose": true,
+      "stages": [
+        "rb-nct-a-before-deploy"
+      ],
+      "attach": []
+    },
+    {
+      "id": "task-nct-steps-1-3",
+      "title": "Steps 1–3 · enquiry record, credit and duplicates, contact nomination",
+      "short": "Steps 1–3",
+      "runbook": "/nct/steps-1-3-runbook/",
+      "stages": [
+        "rb-nct-b-steps-1-3"
+      ],
+      "sop": "01–03",
+      "settled": "2026-09-14",
+      "migrations": "0066, 0067",
+      "attach": [
+        {
+          "kind": "Plan",
+          "title": "Step 01 · enquiry channel",
+          "href": "/nct/step-01-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 02 · credit and duplicates",
+          "href": "/nct/step-02-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 03 · contact nomination",
+          "href": "/nct/step-03-plan/"
+        }
+      ],
+      "download": "/nct/downloads/steps-1-3-plans.zip"
+    },
+    {
+      "id": "task-nct-steps-4-10",
+      "title": "Steps 4–10 · quote → approval → send → decision",
+      "short": "Steps 4–10",
+      "runbook": "/nct/steps-4-10-runbook/",
+      "stages": [
+        "rb-nct-c-steps-4-10"
+      ],
+      "sop": "04–10",
+      "settled": "2026-09-15",
+      "migrations": "04, 09, 10 (numbered at merge)",
+      "attach": [
+        {
+          "kind": "Plan",
+          "title": "Step 04 · rate card gate",
+          "href": "/nct/step-04-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 05 · quotation date and staff",
+          "href": "/nct/step-05-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 06 · tariff quantity from containers",
+          "href": "/nct/step-06-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 07 · ambiguous tariff floor",
+          "href": "/nct/step-07-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 08 · quotation approval integrity",
+          "href": "/nct/step-08-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 09 · send outbox",
+          "href": "/nct/step-09-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 10 · decision correction",
+          "href": "/nct/step-10-plan/"
+        },
+        {
+          "kind": "Crosscheck",
+          "title": "Steps 4–10",
+          "href": "/nct/steps-4-10-crosscheck/"
+        }
+      ],
+      "download": "/nct/downloads/steps-4-10-plans.zip"
+    },
+    {
+      "id": "task-nct-steps-11-15",
+      "title": "Steps 11–15 · convert → job number → intake → job shape → order approval",
+      "short": "Steps 11–15",
+      "runbook": "/nct/steps-11-15-runbook/",
+      "stages": [
+        "rb-nct-d-step-11",
+        "rb-nct-f-steps-12-15"
+      ],
+      "sop": "11–15",
+      "settled": "2026-09-17",
+      "migrations": "none under the settled options",
+      "attach": [
+        {
+          "kind": "Plan",
+          "title": "Step 11 · convert won quote",
+          "href": "/nct/step-11-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 12 · job number",
+          "href": "/nct/step-12-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 13 · intake decisions",
+          "href": "/nct/step-13-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 14 · job shape",
+          "href": "/nct/step-14-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 15 · order approval integrity",
+          "href": "/nct/step-15-plan/"
+        },
+        {
+          "kind": "Crosscheck",
+          "title": "Steps 12–15",
+          "href": "/nct/steps-12-15-crosscheck/"
+        }
+      ],
+      "download": "/nct/downloads/steps-11-15-plans.zip"
+    },
+    {
+      "id": "task-nct-steps-16-19",
+      "title": "Steps 16–19 · bill of lading → release → B/L document → demurrage clock",
+      "short": "Steps 16–19",
+      "runbook": "/nct/steps-16-19-runbook/",
+      "stages": [
+        "rb-nct-steps-16-19"
+      ],
+      "sop": "16–19",
+      "settled": "2026-09-21",
+      "migrations": "see runbook §7",
+      "attach": [
+        {
+          "kind": "Plan",
+          "title": "Step 16 · lading create",
+          "href": "/nct/step-16-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 17 · lading states and review",
+          "href": "/nct/step-17-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 18 · B/L document approval",
+          "href": "/nct/step-18-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 19 · demurrage clock reach",
+          "href": "/nct/step-19-plan/"
+        },
+        {
+          "kind": "Crosscheck",
+          "title": "Steps 16–19",
+          "href": "/nct/steps-16-19-crosscheck/"
+        }
+      ],
+      "download": "/nct/downloads/steps-16-19-plans.zip"
+    },
+    {
+      "id": "task-nct-steps-20-26",
+      "title": "Steps 20–26 · fees → bills → invoice → settlement",
+      "short": "Steps 20–26",
+      "runbook": "/nct/steps-20-26-runbook/",
+      "stages": [
+        "rb-nct-steps-20-26"
+      ],
+      "sop": "20–26",
+      "settled": "2026-09-21",
+      "migrations": "see runbook §7",
+      "attach": [
+        {
+          "kind": "Plan",
+          "title": "Step 20 · fee entry integrity",
+          "href": "/nct/step-20-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 21 · fee review integrity",
+          "href": "/nct/step-21-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 22 · bill grouping integrity",
+          "href": "/nct/step-22-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 23 · bill approval integrity",
+          "href": "/nct/step-23-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 24 · invoice issue integrity",
+          "href": "/nct/step-24-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 25 · invoice document truth",
+          "href": "/nct/step-25-plan/"
+        },
+        {
+          "kind": "Plan",
+          "title": "Step 26 · settlement integrity",
+          "href": "/nct/step-26-plan/"
+        },
+        {
+          "kind": "Crosscheck",
+          "title": "Steps 20–26",
+          "href": "/nct/steps-20-26-crosscheck/"
+        }
+      ],
+      "download": "/nct/downloads/steps-20-26-plans.zip"
+    },
+    {
+      "id": "task-nct-step-27",
+      "title": "Step 27 · month close",
+      "short": "Step 27",
+      "runbook": "/nct/step-27-runbook/",
+      "stages": [
+        "rb-nct-step-27"
+      ],
+      "sop": "27",
+      "settled": "2026-09-21",
+      "migrations": "see runbook §7",
+      "attach": [
+        {
+          "kind": "Plan",
+          "title": "Step 27 · month close truth",
+          "href": "/nct/step-27-plan/"
+        }
+      ],
+      "download": "/nct/downloads/step-27-plans.zip"
+    },
+    {
+      "id": "task-nct-anytime",
+      "title": "Anytime · MCP access, NCT app URL, JWA tasks",
+      "short": "Anytime",
+      "loose": true,
+      "stages": [
+        "rb-nct-e-anytime"
+      ],
+      "attach": []
+    }
+  ],
   "stages": [
     {
       "id": "rb-nct-a-before-deploy",
@@ -338,7 +606,7 @@
     {
       "id": "rb-nct-f-steps-12-15",
       "title": "Steps 12–15 · job number, intake, job shape, order approval",
-      "blurb": "Waves 6–11 of the steps 11–15 runbook. All 53 decisions settled 2026-09-17; sessions implement the chosen option. Wave 5 (step 11 Phases 2–3) is stage D.",
+      "blurb": "Waves 6–11 of the steps 11–15 runbook. All 53 decisions settled 2026-09-17; sessions implement the chosen option. Wave 5 is the Step 11 group above.",
       "steps": [
         {
           "id": "rb-nct-f1-commit-e2e",
@@ -352,7 +620,7 @@
           "id": "rb-nct-f2-wave-6",
           "owner": "session",
           "title": "Wave 6: step 12 Phase 1 (+ optional Phase 3), then step 13 Phase 2",
-          "detail": "wt-step12 runs the Assign number row lock and re-stamp; wt-step13-p2 runs the reopen verb and intake rules. Merge 12 P1 → 13 P2, rebasing and re-locating symbols at HEAD. Needs Wave 5 (stage D) merged.",
+          "detail": "wt-step12 runs the Assign number row lock and re-stamp; wt-step13-p2 runs the reopen verb and intake rules. Merge 12 P1 → 13 P2, rebasing and re-locating symbols at HEAD. Needs Wave 5 (Step 11 · 5) merged.",
           "waitsFor": [
             "rb-nct-d5-phase-2",
             "rb-nct-f1-commit-e2e"
@@ -1129,6 +1397,7 @@
         {
           "id": "rb-nct-27-decisions",
           "owner": "wilfred",
+          "assignee": "Wilfred",
           "title": "Confirm the settled decisions (27 D1–D11)",
           "detail": "Settled 2026-09-21: D1–D11 are all A. D11-A partly reverses the 1 September 2026 product decision (d4c7df34), chosen knowingly. Tick to confirm; sessions implement the Chosen option and do not re-open it.",
           "link": "/nct/step-27-runbook/#1-before-any-wave-starts-settle-these-decisions",

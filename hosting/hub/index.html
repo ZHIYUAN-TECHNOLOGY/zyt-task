@@ -18,6 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<!-- The runbook pages' body styles (hub/runbook-body.css, inlined by deploy-site.ps1). Ahead of
+     the dashboard's own sheet so the few overrides below (.task-doc) win on equal specificity;
+     the slide-over's shadow root takes its own copy of this element's text. -->
+<style id="runbook-css">/*RUNBOOK_CSS*/</style>
 <style>
 /* Palette, type and shape from zhiyuantech.ai — see hosting/hub/brand/BRAND.md */
 :root {
@@ -32,6 +36,14 @@
   --accent: #4159c9;
   --accent-soft: #eaeefb;
   --ok: #1f9d62;
+  --warn: #b45309;
+  --warn-soft: #fdf1dc;
+  /* the runbook pages' names (hub/sop-theme.css), so runbook-body.css renders here as it does there */
+  --surface-sunk: #f1f4fb;
+  --ink: #101a4f;
+  --ink-soft: #3d4668;
+  --ink-faint: #6b7280;
+  --rule: #e2e8f5;
   --shadow-card: 0 25px 60px rgba(30, 60, 120, .12);
   --grotesk: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
   --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -172,10 +184,6 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .cat-data { color: var(--accent); background: var(--accent-soft); }
 .cat-blocked { color: #b42318; background: #fdecea; }
 .cat-friction { color: #475569; background: #eef2f7; }
-.views { display: inline-flex; gap: .15rem; margin: 0 0 .9rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: .18rem; }
-.views button { border: 0; background: none; font: 600 .86rem var(--grotesk); color: var(--muted); padding: .38rem 1rem; border-radius: 9px; cursor: pointer; }
-.views button[aria-pressed="true"] { background: var(--canvas); color: var(--heading); box-shadow: 0 1px 3px rgba(16,26,79,.12); }
-.views button small { font: 500 .7rem var(--mono); color: var(--faint); margin-left: .35rem; }
 .step-no { font: 500 .72rem var(--mono); color: var(--faint); flex: none; width: 1.7rem; padding-top: .7rem; }
 .owner-wilfred { color: #8a4b00; background: #fdf1dc; }
 .owner-session { color: #475569; background: #eef2f7; }
@@ -187,6 +195,156 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
 .empty h3 { font: 600 1.1rem var(--grotesk); color: var(--heading); margin: 0 0 .25rem; }
 .empty p { margin: 0; }
+
+/* ── views: Overview · Tasks · Findings. Only Findings keeps the right-hand panel ── */
+.shell[data-view="tasks"], .shell[data-view="task"], .shell[data-view="overview"] { grid-template-columns: 17.5rem minmax(0, 1fr); }
+.shell:not([data-view="findings"]) .panel, .shell:not([data-view="findings"]) .scrim { display: none !important; }
+.side-nav { display: flex; flex-direction: column; gap: .15rem; margin-top: .5rem; }
+.side-nav a, .side-nav .nav-off { display: flex; align-items: center; gap: .6rem; padding: .45rem .55rem; border-radius: 10px; color: var(--heading); font-weight: 500; font-size: .88rem; }
+.side-nav a:hover { background: var(--surface); text-decoration: none; }
+.side-nav a[aria-current="page"] { background: var(--accent-soft); font-weight: 600; }
+.nav-ic { display: grid; place-items: center; color: var(--faint); flex: none; }
+.side-nav a:hover .nav-ic, .side-nav a[aria-current="page"] .nav-ic { color: var(--accent); }
+.side-nav .n { margin-left: auto; font: 500 .72rem var(--mono); color: var(--faint); }
+.side-nav .nav-off { color: var(--faint); cursor: not-allowed; }
+.side-nav .nav-off small { margin-left: auto; font-size: .7rem; }
+.views-m { display: flex; flex-basis: 100%; }
+.views-m a, .views-m .nav-off { flex: 1; text-align: center; font-weight: 500; font-size: .82rem; color: var(--muted); padding: .35rem .4rem; border-radius: 8px; white-space: nowrap; }
+.views-m a:hover { color: var(--heading); text-decoration: none; }
+.views-m a[aria-current="page"] { background: var(--canvas); color: var(--heading); box-shadow: 0 1px 3px rgba(16,26,79,.12); }
+.views-m .nav-off { color: var(--faint); }
+.views-m small { font: 500 .68rem var(--mono); color: var(--faint); margin-left: .3rem; }
+.view { max-width: 84rem; }
+.view > h1, .thead h1 { font: 600 clamp(1.5rem, 2.8vw, 2.1rem)/1.12 var(--grotesk); letter-spacing: -.035em; color: var(--heading); margin: 0; }
+.thead h1 { font-size: clamp(1.35rem, 2.4vw, 1.85rem); }
+.thead h1:focus { outline: none; }
+.sub { color: var(--muted); margin: .45rem 0 0; max-width: 44rem; }
+
+/* tasks list: one row per runbook (plus the loose tasks), Linear-style */
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1.3rem 0 .9rem; }
+.chip-f { border: 1px solid var(--border); background: var(--canvas); color: var(--muted); border-radius: 999px; padding: .28rem .85rem; cursor: pointer; font-size: .8rem; font-weight: 500; }
+.chip-f:hover { color: var(--heading); }
+.chip-f[aria-pressed="true"] { background: var(--accent-soft); color: var(--heading); border-color: transparent; font-weight: 600; }
+.tl { list-style: none; margin: 0; padding: 0; background: var(--canvas); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.tl li + li { border-top: 1px solid var(--border); }
+.tl-row { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr) 7.5rem minmax(0, 15rem) 7rem 2.4rem; gap: .9rem; align-items: center; padding: .85rem 1rem; color: var(--text); }
+.tl-row:hover { background: #fbfcff; text-decoration: none; }
+.tl-t { min-width: 0; }
+.tl-t b { display: block; color: var(--heading); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tl-t small { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .5rem; margin-top: .2rem; color: var(--muted); font-size: .76rem; }
+.match { color: var(--accent); }
+.bar { display: block; height: .38rem; background: var(--border); border-radius: 99px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+.bar.done i { background: var(--ok); }
+.pct { display: block; margin-top: .25rem; font: 500 .72rem var(--mono); color: var(--muted); }
+.tl-next { min-width: 0; font-size: .78rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tl-next b { font: 500 .74rem var(--mono); color: var(--text); margin-right: .35rem; }
+.tl-own { display: flex; flex-wrap: wrap; gap: .25rem; }
+.tl-clip { font: 500 .72rem var(--mono); color: var(--faint); text-align: right; }
+/* status dot: a pie of the progress; dashed ring when nothing is done yet */
+.st { width: 1.05rem; height: 1.05rem; border-radius: 50%; border: 2px solid var(--faint); }
+.st.progress { border-color: var(--accent); background: conic-gradient(var(--accent) var(--p), transparent 0); }
+.st.waiting { border-color: var(--warn); background: conic-gradient(var(--warn) var(--p), transparent 0); }
+.st.done { border-color: var(--ok); background: var(--ok); }
+.st.none { border-style: dashed; }
+.pill { display: inline-flex; align-items: center; border-radius: 999px; padding: .12rem .6rem; font-size: .74rem; font-weight: 600; white-space: nowrap; }
+.pill.progress { background: var(--accent-soft); color: var(--accent); }
+.pill.waiting { background: var(--warn-soft); color: var(--warn); }
+.pill.done { background: rgba(31,157,98,.12); color: var(--ok); }
+.pill.none { background: var(--surface); color: var(--muted); }
+
+/* task view: checklist and runbook text on the left, properties rail on the right */
+.back { display: inline-block; margin: 0 0 .9rem; font-size: .82rem; font-weight: 500; color: var(--muted); }
+.back:hover { color: var(--accent); text-decoration: none; }
+.thead { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: .6rem 1rem; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 19rem; grid-template-areas: "check rail" "doc rail"; gap: 1.25rem 1.5rem; margin-top: 1.3rem; align-items: start; }
+.cols-check { grid-area: check; min-width: 0; }
+.cols-doc { grid-area: doc; min-width: 0; }
+.rail { grid-area: rail; min-width: 0; display: flex; flex-direction: column; gap: 1rem; position: sticky; top: calc(var(--top) + 1rem); max-height: calc(100vh - var(--top) - 2rem); overflow-y: auto; }
+.card { background: var(--canvas); border: 1px solid var(--border); border-radius: 16px; scroll-margin-top: calc(var(--top) + 1rem); }
+.card > h2 { margin: 0; padding: .8rem 1rem; border-bottom: 1px solid var(--border); font: 600 .92rem var(--grotesk); color: var(--heading); display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+.card > h2 small { font: 500 .72rem var(--mono); color: var(--muted); }
+.card > h2 a { font: 500 .78rem var(--sans); }
+.check-stage + .check-stage { border-top: 1px solid var(--border); }
+.stage-h { margin: 0; padding: .75rem 1rem .4rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .6rem; font: 600 .82rem var(--grotesk); color: var(--heading); }
+.stage-h small { font: 500 .7rem var(--mono); color: var(--faint); }
+.check { list-style: none; margin: 0; padding: 0; }
+.ci { display: grid; grid-template-columns: 2.2rem 1.9rem minmax(0, 1fr) auto; align-items: start; padding: 0 .9rem 0 .45rem; border-top: 1px solid var(--border); }
+.check-stage .check .ci:first-child { border-top-color: transparent; }
+.cols-check > .check-body > .check > .ci:first-child { border-top: 0; }
+.ci { scroll-margin-top: calc(var(--top) + .75rem); }
+.ci.expanded { background: #fbfcff; }
+.ci.outlined { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 8px; }
+.ci-main { min-width: 0; padding: .6rem .6rem .6rem 0; }
+.ci-title { display: block; width: 100%; border: 0; background: none; padding: 0; text-align: left; color: var(--text); font-weight: 500; cursor: pointer; }
+.ci-title:hover .tt { color: var(--accent); }
+.ci-title .chev { display: inline-block; width: .38rem; height: .38rem; margin: 0 .45rem .12rem .1rem; transform: rotate(-45deg); }
+.ci-title[aria-expanded="true"] .chev { transform: rotate(45deg); }
+.ci.done .tt { color: var(--faint); text-decoration: line-through; text-decoration-color: rgba(148,163,184,.7); }
+.ref-link { border: 0; background: none; padding: 0; font: 500 .74rem var(--mono); color: var(--accent); cursor: pointer; }
+.ref-link:hover { text-decoration: underline; }
+.assignee { color: var(--heading); }
+.gp-chip { font-size: .68rem; font-weight: 600; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0 .45rem; white-space: nowrap; }
+.snip-mini { margin-top: .55rem; border: 0; background: #4159c9; color: #fff; border-radius: 8px; font: 600 .72rem var(--sans); padding: .25rem .6rem; cursor: pointer; white-space: nowrap; }
+.snip-mini:hover { filter: brightness(1.1); }
+/* the expanded step: full row width, so a golden-path video gets the room it needs */
+.ci-more { grid-column: 1 / -1; min-width: 0; padding: 0 .5rem 1.1rem; }
+.ci-more > .panel-sec:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+.ci-more .gp { width: 100%; }
+.checks-empty { margin: 0; padding: 1.2rem 1rem; color: var(--muted); font-size: .85rem; }
+/* runbook text: the served page's article, fetched once and kept (DOC_NODES) */
+/* the pages call the card colour --surface (sop-theme.css); the dashboard uses that name for the
+   sunk grey, so the runbook text and the slide-over get the page meaning back */
+.task-doc, .sheet-host { --surface: var(--canvas); }
+.task-doc { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: 1.75rem; padding: 1rem 1.25rem 2rem; font: 15px/1.65 "Geist", system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink-soft); }
+.doc-toc { position: sticky; top: calc(var(--top) + 1rem); align-self: start; max-height: calc(100vh - var(--top) - 2rem); overflow-y: auto; border-left: 1px solid var(--rule); padding-left: .8rem; font-size: .8rem; }
+.doc-toc b { display: block; margin-bottom: .5rem; font: 600 .78rem var(--grotesk); color: var(--ink); }
+.doc-toc ol, .doc-toc-m ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+.doc-toc a, .doc-toc-m a { display: block; color: var(--ink-soft); line-height: 1.35; }
+.doc-toc a:hover, .doc-toc-m a:hover { color: var(--accent); text-decoration: none; }
+.doc-toc-m { display: none; border: 1px solid var(--rule); border-radius: 12px; padding: .55rem .8rem; font-size: .85rem; }
+.doc-toc-m summary { cursor: pointer; font: 600 .82rem var(--grotesk); color: var(--ink); }
+.doc-toc-m[open] summary { margin-bottom: .55rem; }
+.doc-main { min-width: 0; }
+.doc-note { margin: 0 0 1rem; padding: .6rem .85rem; border-radius: 10px; background: var(--warn-soft); color: var(--warn); font-size: .82rem; }
+.task-doc .rb-dl { display: none; }
+.doc-skel { grid-column: 1 / -1; display: flex; flex-direction: column; gap: .7rem; padding: .5rem 0; }
+.doc-skel i { display: block; height: .8rem; border-radius: 6px; background: var(--surface-sunk); animation: pulse 1.4s ease-in-out infinite; }
+.doc-skel i:nth-child(1) { width: 45%; height: 1.3rem; }
+.doc-skel i:nth-child(3n) { width: 70%; }
+@keyframes pulse { 50% { opacity: .45; } }
+.doc-err { grid-column: 1 / -1; padding: .5rem 0; color: var(--text); font-size: .88rem; }
+.doc-err b { display: block; color: var(--heading); margin-bottom: .2rem; }
+.doc-err p { margin: 0; color: var(--muted); }
+/* rail */
+.props { display: grid; grid-template-columns: 6.8rem minmax(0, 1fr); gap: .55rem .8rem; margin: 0; padding: .9rem 1rem; font-size: .8rem; }
+.props > div { display: contents; }
+.props dt { color: var(--faint); }
+.props dd { margin: 0; color: var(--text); overflow-wrap: anywhere; display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .4rem; }
+.props dd .bar { flex: 1 1 100%; }
+.att { list-style: none; margin: 0; padding: .4rem; }
+.att button, .att a { display: flex; gap: .6rem; align-items: center; width: 100%; text-align: left; border: 0; background: none; padding: .45rem .6rem; border-radius: 9px; color: var(--text); cursor: pointer; font-size: .8rem; }
+.att button:hover, .att a:hover { background: var(--surface); text-decoration: none; }
+.att .ic { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 7px; display: grid; place-items: center; font: 600 .58rem var(--mono); background: var(--surface); color: var(--muted); }
+.att .ic.dl { background: #4159c9; color: #fff; font-size: .8rem; }
+.att .att-t { min-width: 0; flex: 1; }
+.activity { list-style: none; margin: 0; padding: .75rem 1rem .9rem; font-size: .78rem; color: var(--muted); display: flex; flex-direction: column; gap: .4rem; }
+.activity b { color: var(--heading); font-weight: 600; }
+.activity time { font: .7rem var(--mono); color: var(--faint); margin-left: .35rem; }
+.ov-actions { margin: 1.4rem 0 0; }
+a.primary { display: inline-block; }
+a.primary:hover { text-decoration: none; filter: brightness(1.1); }
+
+/* slide-over for plans and crosschecks: one aside, its text in a shadow root (no id clashes) */
+.sheet-scrim { position: fixed; inset: 0; background: rgba(16,26,79,.25); z-index: 45; }
+.sheet { position: fixed; top: 0; right: 0; bottom: 0; width: min(62rem, 100%); background: var(--canvas); border-left: 1px solid var(--border); box-shadow: var(--shadow-card); z-index: 50; display: flex; flex-direction: column; }
+.sheet:focus { outline: none; }
+.sheet-head { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; padding: .75rem 1rem; border-bottom: 1px solid var(--border); background: var(--canvas); }
+.sheet-head h2 { flex: 1 1 14rem; min-width: 0; margin: 0; font: 600 1rem/1.3 var(--grotesk); color: var(--heading); }
+.sheet-head .select select { max-width: 15rem; }
+.sheet-link { font-weight: 500; font-size: .8rem; color: var(--heading); border: 1px solid var(--border); border-radius: 9px; padding: .38rem .65rem; white-space: nowrap; }
+.sheet-link:hover { border-color: var(--accent); text-decoration: none; }
+.sheet-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 
 /* right: task panel */
 .panel { background: var(--canvas); border-left: 1px solid var(--border); position: sticky; top: var(--top); height: calc(100vh - var(--top)); overflow-y: auto; }
@@ -252,16 +410,41 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); background: var(--heading); color: #fff; padding: .6rem 1rem; border-radius: 12px; font-size: .85rem; box-shadow: var(--shadow-card); z-index: 60; max-width: calc(100% - 2rem); }
 
 /* medium: the task panel slides over from the right */
+/* the runbook text's own section column gives way first: below 80rem it is a <details> */
+@media (max-width: 80rem) {
+  .task-doc { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .doc-toc { display: none; }
+  .doc-toc-m { display: block; }
+}
 @media (max-width: 75rem) {
-  .shell { grid-template-columns: 16rem minmax(0, 1fr); }
+  .shell, .shell[data-view] { grid-template-columns: 16rem minmax(0, 1fr); }
   .panel { position: fixed; top: var(--top); right: 0; bottom: 0; height: auto; width: min(28rem, 100%); z-index: 40; box-shadow: var(--shadow-card); transform: translateX(105%); transition: transform .35s var(--ease); visibility: hidden; }
   .panel[data-open="true"] { transform: none; visibility: visible; }
   .panel-empty { display: none; }
   .scrim { display: block; position: fixed; inset: var(--top) 0 0 0; background: rgba(16,26,79,.18); z-index: 35; }
 }
-/* phone: one column; the switcher row carries the company's page link */
+/* task view in one column: checklist, then the rail, then the runbook text */
+@media (max-width: 70rem) {
+  .cols { grid-template-columns: minmax(0, 1fr); grid-template-areas: "check" "rail" "doc"; }
+  .rail { position: static; max-height: none; overflow: visible; }
+  .tl-row { grid-template-columns: 1.1rem minmax(0, 1fr) 7rem 6rem; }
+  .tl-next, .tl-clip { display: none; }
+}
+/* phone: one column; the switcher row carries the view switch and the company's page links */
 @media (max-width: 48rem) {
-  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell, .shell[data-view] { grid-template-columns: minmax(0, 1fr); }
+  .tl-row { grid-template-columns: 1.1rem minmax(0, 1fr) 4.5rem; gap: .75rem; padding: .8rem .85rem; }
+  .tl-own { display: none; }
+  .tl-t b { white-space: normal; }
+  .ci { grid-template-columns: 2.2rem 1.5rem minmax(0, 1fr) auto; padding-right: .5rem; }
+  .task-doc { padding: .9rem .9rem 1.5rem; }
+  .props { grid-template-columns: 6rem minmax(0, 1fr); }
+  .sheet { width: 100%; border-left: 0; }
+  .sheet-head { position: sticky; top: 0; }
+  /* Close stays on the title's line; the section picker and links wrap below */
+  .sheet-head h2 { flex: 1 1 calc(100% - 3rem); }
+  .sheet-head .icon-btn { order: 1; }
+  .sheet-head .select, .sheet-head .sheet-link { order: 2; }
   .company-side { display: none; }
   .switcher-row { display: flex; }
   .switcher-row .switcher { flex: 1 1 100%; }
@@ -295,6 +478,13 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   --accent: #8b9ae8;
   --accent-soft: rgba(139,154,232,.12);
   --ok: #3ccf8e;
+  --warn: #f5c27a;
+  --warn-soft: rgba(245,158,11,.14);
+  --surface-sunk: #0d1333;
+  --ink: #ffffff;
+  --ink-soft: #c3cae3;
+  --ink-faint: #7f89ad;
+  --rule: rgba(139,154,232,.13);
   --shadow-card: 0 25px 60px rgba(0,0,0,.6);
   background: #04061a;
 }
@@ -322,7 +512,14 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 [data-theme="dark"] .owner-wilfred { color: #f5c27a; background: rgba(245,158,11,.14); }
 [data-theme="dark"] .owner-session { color: #c3cae3; background: rgba(167,176,209,.12); }
 [data-theme="dark"] .ready { background: rgba(60,207,142,.14); }
-[data-theme="dark"] .views button[aria-pressed="true"] { box-shadow: 0 1px 3px rgba(3,6,22,.6); }
+[data-theme="dark"] .views-m a[aria-current="page"] { box-shadow: 0 1px 3px rgba(3,6,22,.6); }
+[data-theme="dark"] .tl-row:hover,
+[data-theme="dark"] .ci.expanded { background: rgba(139,154,232,.06); }
+[data-theme="dark"] .pill.done { background: rgba(60,207,142,.14); }
+[data-theme="dark"] .ci.done .tt { text-decoration-color: rgba(107,119,158,.8); }
+[data-theme="dark"] .task-doc, [data-theme="dark"] .sheet-host { --accent-soft: rgba(139,154,232,.14); }
+[data-theme="dark"] .sheet-scrim { background: rgba(3,6,22,.55); }
+[data-theme="dark"] .sheet-link:hover { border-color: rgba(139,154,232,.45); }
 [data-theme="dark"] .panel-state { background: var(--surface); }
 [data-theme="dark"] .icon-btn:hover { border-color: rgba(139,154,232,.45); }
 [data-theme="dark"] .scrim { background: rgba(3,6,22,.55); }
@@ -341,7 +538,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 [data-theme="dark"] .theme-btn .sun { display: block; }
 [data-theme="dark"] .theme-btn .moon { display: none; }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } .doc-skel i { animation: none; } }
 </style>
 </head>
 <body>
@@ -354,7 +551,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   <span class="divider" aria-hidden="true"></span>
   <a class="crumb" href="/">Client projects</a>
   <label class="topsearch">
-    <span class="sr">Search runbook and findings</span>
+    <span class="sr" id="q-label">Search tasks and steps</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="search" placeholder="Search" autocomplete="off">
     <kbd>/</kbd>
@@ -367,7 +564,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   </button>
 </header>
 
-<div class="shell">
+<div class="shell" id="shell" data-view="tasks">
   <aside class="company-side" aria-label="Company">
     <label class="switcher">
       <span class="company-av" data-company-av aria-hidden="true"></span>
@@ -376,12 +573,13 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
         <select id="company-select" data-company-select aria-label="Switch company"></select>
       </span>
     </label>
+    <nav class="side-nav" id="side-nav" aria-label="Views"></nav>
     <ul class="page-list" id="page-list" aria-label="All pages"></ul>
     <div class="side-foot">Ticking as <button type="button" class="linkbtn" id="who"></button></div>
   </aside>
 
-  <main class="todo" aria-labelledby="todo-title">
-    <!-- phones only: the left column (with the switcher) is hidden there -->
+  <main class="todo" id="main" aria-labelledby="tasks-title">
+    <!-- phones only: the left column (with the switcher and the view menu) is hidden there -->
     <div class="switcher-row">
       <label class="switcher">
         <span class="company-av" data-company-av aria-hidden="true"></span>
@@ -390,15 +588,18 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
           <select id="company-select-m" data-company-select aria-label="Switch company"></select>
         </span>
       </label>
+      <nav class="seg views-m" id="views-m" aria-label="Views"></nav>
       <span class="mobile-pages" id="mobile-pages"></span>
     </div>
+
+    <div class="view" id="view-tasks" hidden></div>
+    <div class="view" id="view-task" hidden></div>
+    <div class="view" id="view-overview" hidden></div>
+
+    <div id="view-findings" hidden>
     <div class="todo-head">
       <p class="kicker" id="company-place"></p>
-      <div class="views" role="group" aria-label="View">
-        <button type="button" data-view="runbook" aria-pressed="true">Runbook<small id="count-runbook"></small></button>
-        <button type="button" data-view="findings" aria-pressed="false">Findings<small id="count-findings"></small></button>
-      </div>
-      <h1 id="todo-title">Runbook</h1>
+      <h1 id="todo-title">Findings</h1>
       <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
       <p class="progress-text" id="progress-text"></p>
     </div>
@@ -422,12 +623,13 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     </div>
     <div id="groups"></div>
     <div class="empty" id="empty" hidden><h3>No tasks match</h3><p>Clear the search or change the filters.</p></div>
+    </div>
   </main>
 
-  <aside class="panel" id="panel" aria-label="Task details" data-open="false">
+  <aside class="panel" id="panel" aria-label="Finding details" data-open="false">
     <div class="panel-empty" id="panel-empty">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-      <p>Select a task to see its details.</p>
+      <p>Select a finding to see its details.</p>
     </div>
     <article class="panel-body" id="panel-body" hidden></article>
   </aside>
@@ -507,24 +709,46 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     // SOP-ledger titles carry a trailing "new" marker; show it as a chip instead
     p.tasks.forEach(function (t) { t.isNew = / new$/.test(t.title); t.title = t.title.replace(/ new$/, ''); });
     p.byKey = {}; p.tasks.forEach(function (t) { p.byKey[t.id] = t; });
-    // runbook steps tick through the same Convex rows as tasks; "B5" = stage B, step 5
-    p.stages = []; p.rbSteps = [];
-    if (p.runbook) p.runbook.stages.forEach(function (st, i) {
-      var letter = String.fromCharCode(65 + i);
-      p.stages.push({ id: st.id, title: st.title, blurb: st.blurb, letter: letter, covers: st.steps.map(function (x) { return x.id; }) });
-      st.steps.forEach(function (x, j) {
-        x.rb = true; x.no = letter + (j + 1); x.stage = p.stages[i]; x.waitsFor = x.waitsFor || [];
-        p.byKey[x.id] = x; p.rbSteps.push(x);
+    // Runbook work is grouped into tasks (one per runbook, plus loose ones). A task's
+    // checklist is its stages' steps in order, numbered 1…n per task (x.n); a step
+    // still ticks through the same Convex row as a finding, keyed by its id.
+    p.rbTasks = []; p.rbTaskById = {}; p.rbByHref = {}; p.rbSteps = [];
+    if (p.runbook) {
+      var stageById = {};
+      p.runbook.stages.forEach(function (st) { stageById[st.id] = st; });
+      // a seed without tasks[] (older builds) still shows: one task per stage
+      var list = p.runbook.tasks && p.runbook.tasks.length ? p.runbook.tasks : p.runbook.stages.map(function (st) {
+        return { id: 'task-' + st.id, title: st.title, short: st.title.split(' · ')[0], stages: [st.id] };
       });
-    });
+      list.forEach(function (t) {
+        t.attach = t.attach || []; t.steps = [];
+        t.stageList = t.stages.map(function (id) { return stageById[id]; }).filter(Boolean);
+        t.stageList.forEach(function (st) {
+          st.steps.forEach(function (x) {
+            x.rb = true; x.task = t; x.stage = st; x.waitsFor = x.waitsFor || [];
+            t.steps.push(x); x.n = x.label = t.steps.length;
+            p.byKey[x.id] = x; p.rbSteps.push(x);
+          });
+        });
+        p.rbTasks.push(t); p.rbTaskById[t.id] = t;
+        if (t.runbook && t.runbook.href) p.rbByHref[t.runbook.href] = t;
+      });
+    }
     p.stepByN = {}; p.flow.steps.forEach(function (s) { p.stepByN[s.n] = s; });
     p.phase = {}; p.flow.phases.forEach(function (ph) { p.phase[ph.key] = ph.label; });
     p.wsOf = {}; p.workstreams.forEach(function (w) { w.covers.forEach(function (k) { p.wsOf[k] = w; }); });
     p.sop = (p.pages.filter(function (x) { return x.type === 'SOP'; })[0] || {}).href || null;
   });
 
-  var S = { companyKey: null, taskKey: null, view: 'runbook', show: 'all', cat: '', q: '', collapsed: {}, live: null, events: [], pending: {}, conn: 'connecting' };
+  // view: 'tasks' | 'task' | 'overview' | 'findings'. taskId/expanded belong to the task view,
+  // taskKey to the findings panel; search text and filters are kept per view.
+  var S = { companyKey: null, view: 'tasks', taskId: null, expanded: null, outline: null, taskKey: null, chip: 'all', show: 'all', cat: '',
+    qs: { tasks: '', findings: '' }, sopStep: null, collapsed: {}, live: null, events: [], pending: {}, conn: 'connecting' };
   var client = null, unsubscribe = null, liveTimer = null;
+  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function smooth() { return REDUCED.matches ? 'auto' : 'smooth'; }
+  function plainClick(e) { return !(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey); }
+  function focusFk(fk) { var el = document.querySelector('[data-fk="' + fk.replace(/["\\]/g, '') + '"]'); if (el) el.focus({ preventScroll: true }); return el; }
 
   function company() { return SEED.projects.filter(function (p) { return p.key === S.companyKey; })[0]; }
   function category(t) { return t.kind === 'chain' ? 'chain' : (t.severity || 'friction'); }
@@ -545,6 +769,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var hr = Math.round(m / 60); if (hr < 24) return hr + ' h ago';
     return stamp(ms);
   }
+  // a seed date (ISO or already written out) as "23 Sept 2026"
+  function day(v) { var d = new Date(v); return isNaN(d) ? String(v) : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
   function stamp(ms) { return new Date(ms).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
 
   function setConn(state, text) {
@@ -648,15 +874,567 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     $('who').textContent = author() || 'set your name';
   }
 
-  // ── middle: to-do ──
+  // ── the menu: Overview · Tasks · Findings (left column; a segmented copy on phones) ──
+  var NAV_ICONS = {
+    overview: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+    tasks: '<path d="M4 6h1.5L7 7.5 10 4"/><path d="M4 13h1.5L7 14.5 10 11"/><path d="M13 6h7"/><path d="M13 13h7"/><path d="M4 20h16"/>',
+    findings: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>'
+  };
+  function navIcon(v) {
+    var el = h('span', { class: 'nav-ic', 'aria-hidden': 'true' });
+    el.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + NAV_ICONS[v] + '</svg>';
+    return el;
+  }
+  function defaultView(c) { return c.rbTasks.length ? 'tasks' : c.sop ? 'overview' : 'findings'; }
+  function viewHref(v) {
+    var c = company();
+    return '?company=' + encodeURIComponent(c.key) + (v === defaultView(c) ? '' : '&view=' + v);
+  }
+  function taskHref(id) { return '?company=' + encodeURIComponent(S.companyKey) + '&task=' + encodeURIComponent(id); }
+
+  function renderNav(c) {
+    var openTasks = c.rbTasks.filter(function (t) { return status(t) !== 'done'; }).length;
+    var openFindings = c.tasks.filter(function (t) { return !isDone(t); }).length;
+    // Overview is the SOP page itself for now (it becomes an embedded view later)
+    var items = [
+      { v: 'overview', label: 'Overview', href: c.sop, n: c.sop ? 'SOP' : '', name: 'Overview: the SOP page' },
+      { v: 'tasks', label: 'Tasks', href: viewHref('tasks'), n: c.rbTasks.length ? String(openTasks) : '', name: 'Tasks, ' + openTasks + ' open' },
+      { v: 'findings', label: 'Findings', href: viewHref('findings'), n: c.tasks.length ? String(openFindings) : '', name: 'Findings, ' + openFindings + ' open' }
+    ];
+    var current = S.view === 'task' ? 'tasks' : S.view;
+    [$('side-nav'), $('views-m')].forEach(function (nav, phone) {
+      nav.textContent = '';
+      items.forEach(function (it) {
+        if (!it.href) {
+          nav.appendChild(h('span', { class: 'nav-off', 'aria-disabled': 'true', title: 'No SOP yet' },
+            phone ? null : navIcon(it.v), it.label, h('small', { text: 'No SOP yet' })));
+          return;
+        }
+        var own = it.v !== 'overview';
+        nav.appendChild(h('a', { href: it.href, fk: (phone ? 'mnav:' : 'nav-v:') + it.v, 'aria-current': current === it.v ? 'page' : null,
+          'aria-label': it.name, onclick: own ? function (e) { if (plainClick(e)) { e.preventDefault(); setView(it.v); } } : null },
+          phone ? null : navIcon(it.v), it.label, it.n && !phone ? h('span', { class: 'n', text: it.n }) : null,
+          it.n && phone && own ? h('small', { text: it.n }) : null));
+      });
+    });
+  }
+
+  // ── runbook tasks: status is derived from the ticks, never stored ──
+  var STATUS = { none: 'Not started', progress: 'In progress', waiting: 'Waiting on Wilfred', done: 'Done' };
+  function norm(s) { return String(s || '').trim().replace(/\s+/g, ' ').toLowerCase(); }
+  function ownerLabel(x) { return x.owner === 'wilfred' ? 'Wilfred' : 'Session'; }
+  // waits are company-wide: a step may wait for a step in another task
+  function waitingOn(x) {
+    var c = company();
+    return x.waitsFor.filter(function (k) { return c.byKey[k] && !isDone(c.byKey[k]); }).map(function (k) { return c.byKey[k]; });
+  }
+  function readySteps(t) { return t.steps.filter(function (x) { return !isDone(x) && !waitingOn(x).length; }); }
+  function doneCount(t) { return t.steps.filter(isDone).length; }
+  function status(t) {
+    var done = doneCount(t);
+    if (!t.steps.length) return 'none';
+    if (done === t.steps.length) return 'done';
+    var r = readySteps(t);
+    if (r.length && r.every(function (x) { return x.owner === 'wilfred'; })) return 'waiting';
+    return done ? 'progress' : 'none';
+  }
+  function needsWilfred(t) { return readySteps(t).some(function (x) { return x.owner === 'wilfred'; }); }
+  // mine: a step assigned to the viewer, or one the viewer ticked
+  function mine(t) {
+    var me = norm(author());
+    return !!me && t.steps.some(function (x) { return norm(x.assignee) === me || (isDone(x) && norm(liveOf(x).updatedBy) === me); });
+  }
+  // "5" inside its own task, "Steps 11–15 · 18" from anywhere else
+  function refOf(x, from) { return x.task === from ? String(x.n) : (x.task.short || x.task.title) + ' · ' + x.n; }
+  function stepHay(x) { return [x.title, x.detail || '', x.id, x.assignee || ''].join(' ').toLowerCase(); }
+
+  var CHIPS = [['all', 'All'], ['open', 'Open'], ['wilfred', 'Needs Wilfred'], ['mine', 'My tasks']];
+  function chipMatch(t) {
+    if (S.chip === 'open') return status(t) !== 'done';
+    if (S.chip === 'wilfred') return needsWilfred(t);
+    if (S.chip === 'mine') return mine(t);
+    return true;
+  }
+  function pickChip(k) {
+    // "My tasks" means nothing without a name: ask for one, then apply the chip
+    if (k === 'mine' && !author()) { askName(function (given) { if (given) S.chip = 'mine'; renderAll(); }); return; }
+    S.chip = k; renderAll();
+  }
+
+  function renderTasks(c) {
+    var root = $('view-tasks'), q = S.qs.tasks;
+    root.textContent = '';
+    var rows = c.rbTasks.map(function (t) {
+      var hits = q ? t.steps.filter(function (x) { return stepHay(x).indexOf(q) !== -1; }).length : 0;
+      var named = !q || (t.title + ' ' + (t.short || '')).toLowerCase().indexOf(q) !== -1;
+      return { t: t, hits: hits, show: chipMatch(t) && (named || hits > 0) };
+    }).filter(function (r) { return r.show; });
+    var open = c.rbTasks.filter(function (t) { return status(t) !== 'done'; }).length;
+    var ready = c.rbTasks.reduce(function (n, t) { return n + readySteps(t).length; }, 0);
+    append(root, [
+      h('p', { class: 'kicker', text: c.name + ' · ' + c.place }),
+      h('h1', { id: 'tasks-title', text: 'Tasks' }),
+      h('p', { class: 'sub', text: c.rbTasks.length
+        ? c.rbTasks.length + ' tasks · ' + open + ' open · ' + ready + (ready === 1 ? ' step' : ' steps') + ' ready now. Each runbook is one task: its checklist, the whole runbook, and the plans it needs.'
+        : 'Nothing is planned for ' + c.name + ' so far.' }),
+      c.rbTasks.length ? h('div', { class: 'chips', role: 'group', 'aria-label': 'Show' }, CHIPS.map(function (k) {
+        return h('button', { type: 'button', class: 'chip-f', fk: 'chip:' + k[0], 'aria-pressed': String(S.chip === k[0]), onclick: function () { pickChip(k[0]); } }, k[1]);
+      })) : null,
+      rows.length
+        ? h('ul', { class: 'tl', 'aria-label': 'Tasks' }, rows.map(function (r) { return taskListRow(r.t, r.hits); }))
+        : h('div', { class: 'empty' },
+            h('h3', { text: c.rbTasks.length ? 'No tasks match' : 'No runbook yet' }),
+            h('p', { text: c.rbTasks.length ? (S.chip === 'mine' ? 'Nothing is assigned to or ticked by ' + author() + ' yet.' : 'Clear the search or pick another filter.') : 'Runbook tasks for ' + c.name + ' will show here.' }))
+    ]);
+  }
+
+  function taskListRow(t, hits) {
+    var st = status(t), n = doneCount(t), N = t.steps.length, pct = N ? Math.round(n * 100 / N) : 0;
+    var r = readySteps(t), next = r[0], owners = {};
+    r.forEach(function (x) { owners[x.owner] = true; });
+    return h('li', null, h('a', { class: 'tl-row', href: taskHref(t.id), fk: 'trow:' + t.id,
+      onclick: function (e) { if (plainClick(e)) { e.preventDefault(); openTask(t.id); } } },
+      h('span', { class: 'st ' + st, style: '--p:' + pct + '%', 'aria-hidden': 'true' }),
+      h('span', { class: 'tl-t' },
+        h('b', { text: t.title }),
+        h('small', null, t.loose ? 'Loose task' : 'Runbook' + (t.sop ? ' · SOP ' + t.sop : ''),
+          h('span', { class: 'pill ' + st, text: STATUS[st] }),
+          hits ? h('span', { class: 'match', text: hits + (hits === 1 ? ' matching step' : ' matching steps') }) : null)),
+      h('span', null,
+        h('span', { class: 'bar' + (st === 'done' ? ' done' : ''), 'aria-hidden': 'true' }, h('i', { style: 'width:' + pct + '%' })),
+        h('span', { class: 'pct', text: N ? n + ' / ' + N : '—' })),
+      h('span', { class: 'tl-next' }, next
+        ? [h('span', { class: 'sr', text: 'Next: ' }), h('b', { text: String(next.n) }), next.title]
+        : (st === 'done' ? 'All done' : N ? 'Nothing ready yet' : '—')),
+      h('span', { class: 'tl-own' }, Object.keys(owners).sort().reverse().map(function (o) {
+        return h('span', { class: 'chip owner-' + o, text: o === 'wilfred' ? 'Wilfred' : 'Session' });
+      })),
+      h('span', { class: 'tl-clip', title: t.attach.length ? t.attach.length + ' attachments' : null, text: t.attach.length ? '⧉ ' + t.attach.length : '' })));
+  }
+
+  // ── task view. The shell (header, cards, the runbook text) is built once per open task;
+  // a render only rebuilds the pill, the checklist rows and the rail, and re-parents the
+  // cached nodes (DOC_NODES, GP_PANELS) so a tick never reloads the body or moves the scroll.
+  var TV = { id: null };
+
+  function renderTask(c) {
+    var t = c.rbTaskById[S.taskId];
+    if (TV.id !== t.id || TV.key !== c.key || !$('view-task').contains(TV.check)) buildTaskShell(c, t);
+    var st = status(t);
+    TV.pill.className = 'pill ' + st; TV.pill.textContent = STATUS[st];
+    renderChecklist(c, t);
+    renderRail(c, t);
+  }
+
+  function buildTaskShell(c, t) {
+    var root = $('view-task');
+    root.textContent = '';
+    TV = { id: t.id, key: c.key, pill: h('span', { class: 'pill' }), count: h('small'), check: h('div', { class: 'check-body' }),
+      rail: h('aside', { class: 'rail', 'aria-label': 'About this task' }) };
+    append(root, [
+      h('a', { class: 'back', href: viewHref('tasks'), fk: 'back', onclick: function (e) { if (plainClick(e)) { e.preventDefault(); closeTask(); } } }, '← All tasks'),
+      h('div', { class: 'thead' },
+        h('div', null,
+          h('p', { class: 'kicker', text: c.name + ' · ' + (t.loose ? 'Task' : 'Runbook') }),
+          h('h1', { id: 'task-title', tabindex: '-1', text: t.title })),
+        TV.pill),
+      h('div', { class: 'cols' },
+        h('section', { class: 'card cols-check', 'aria-labelledby': 'check-h' }, h('h2', { id: 'check-h' }, 'Checklist', TV.count), TV.check),
+        TV.rail,
+        t.runbook && t.runbook.href ? h('section', { class: 'card cols-doc', id: 'doc-card', 'aria-labelledby': 'doc-h' },
+          h('h2', { id: 'doc-h' }, 'Runbook', h('a', { href: t.runbook.href, target: '_blank', rel: 'noopener', text: 'Open the page ↗' })),
+          docNode(t)) : null)
+    ]);
+  }
+
+  function renderChecklist(c, t) {
+    var q = S.qs.tasks, shown = 0, multi = t.stageList.length > 1;
+    TV.check.textContent = '';
+    t.stageList.forEach(function (st) {
+      var items = st.steps.filter(function (x) { return !q || stepHay(x).indexOf(q) !== -1; });
+      if (!items.length) return;
+      shown += items.length;
+      var ul = h('ul', { class: 'check' }, items.map(function (x) { return checkRow(c, t, x); }));
+      if (!multi) { TV.check.appendChild(ul); return; }
+      var first = st.steps[0].n, last = st.steps[st.steps.length - 1].n;
+      TV.check.appendChild(h('section', { class: 'check-stage', 'aria-label': st.title },
+        h('h3', { class: 'stage-h' }, st.title.split(' · ')[0], h('small', { text: first === last ? String(first) : first + '–' + last }),
+          st.title.indexOf(' · ') !== -1 ? h('span', { class: 'muted', text: st.title.slice(st.title.indexOf(' · ') + 3) }) : null),
+        ul));
+    });
+    if (!shown) TV.check.appendChild(h('p', { class: 'checks-empty', text: t.steps.length ? 'No steps match “' + q + '”.' : 'No checklist yet.' }));
+    TV.count.textContent = doneCount(t) + ' of ' + t.steps.length + ' done' + (q ? ' · ' + shown + ' shown' : '');
+  }
+
+  function checkRow(c, t, x) {
+    var lv = liveOf(x), done = lv.state === 'done', waiting = waitingOn(x), open = S.expanded === x.id, ref = refOf(x, t);
+    var box = h('input', { type: 'checkbox', class: 'tick', fk: 'tick:' + x.id, 'aria-label': (done ? 'Reopen: ' : 'Mark done: ') + ref + ' ' + x.title,
+      onchange: function (e) { setDone(x, e.target.checked); } });
+    box.checked = done;
+    box.disabled = !!S.pending[x.id];
+    var snips = x.snippets && x.snippets.length;
+    return h('li', { class: 'ci' + (done ? ' done' : '') + (open ? ' expanded' : '') + (S.outline === x.id ? ' outlined' : ''), 'data-step': x.id },
+      h('label', { class: 'tick-wrap' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' })),
+      h('span', { class: 'step-no', text: String(x.n) }),
+      h('div', { class: 'ci-main' },
+        h('button', { type: 'button', class: 'ci-title', fk: 'step:' + x.id, 'aria-expanded': String(open), 'aria-controls': open ? 'more-' + x.id : null,
+          onclick: function () { toggleStep(x.id); } },
+          h('span', { class: 'chev', 'aria-hidden': 'true' }), h('span', { class: 'tt', text: x.title })),
+        h('span', { class: 'task-meta' },
+          h('span', { class: 'chip owner-' + x.owner, text: ownerLabel(x) }),
+          x.assignee ? h('span', { class: 'assignee', title: 'Assigned to', text: '@' + x.assignee }) : null,
+          !done && waiting.length ? h('span', { class: 'waits' }, 'Waits for ', refLinks(x, waiting, t)) : null,
+          !done && !waiting.length ? h('span', { class: 'chip ready', text: 'Ready' }) : null,
+          done && lv.updatedBy ? h('span', { class: 'by', text: '✓ ' + lv.updatedBy }) : null,
+          x.run ? h('span', { class: 'gp-chip', text: '▶ Golden path' }) : null)),
+      snips ? h('button', { type: 'button', class: 'snip-mini', fk: 'snip:' + x.id, 'aria-label': 'Prompts and commands for ' + ref + ' (' + snips + ')',
+        onclick: function () { openSnippets(x, t); } }, '⧉ ' + snips) : h('span'),
+      open ? stepMore(c, t, x) : null);
+  }
+
+  function refLinks(x, list, t) {
+    return list.map(function (w, i) {
+      return [i ? ', ' : null, h('button', { type: 'button', class: 'ref-link', fk: 'ref:' + x.id + ':' + w.id, title: w.title,
+        onclick: function () { goStep(w, t); } }, refOf(w, t))];
+    });
+  }
+
+  function fact(label, value) { return h('div', null, h('dt', { text: label }), h('dd', null, value)); }
+  function section(title, content) { return h('section', { class: 'panel-sec' }, h('h3', { text: title }), content); }
+  function historyList(key) {
+    var history = S.events.filter(function (e) { return e.findingKey === key; });
+    return history.length
+      ? h('ol', { class: 'history' }, history.map(function (e) {
+          return h('li', null, h('b', { text: e.author }), (e.to === 'done' ? ' marked it done ' : ' reopened it '),
+            h('time', { datetime: new Date(e.at).toISOString(), text: stamp(e.at) }));
+        }))
+      : h('p', { class: 'muted', text: S.conn === 'live' ? 'No changes yet.' : 'History appears once connected.' });
+  }
+
+  // a page's name for the "How to do it" link: this runbook, an attachment, or any listed page
+  function pageName(page, t) {
+    if (t.runbook && page === t.runbook.href) return 'This runbook';
+    var c = company(), hit = null;
+    c.rbTasks.forEach(function (o) {
+      if (o.runbook && o.runbook.href === page) hit = hit || o.short + ' runbook';
+      o.attach.forEach(function (a) { if (a.href === page) hit = hit || a.kind + ' · ' + a.title; });
+    });
+    return hit || SEED.pageTitles[page] || page;
+  }
+
+  function stepMore(c, t, x) {
+    var page = x.link ? x.link.split('#')[0] : null;
+    var snips = x.snippets && x.snippets.length;
+    return h('div', { class: 'ci-more', id: 'more-' + x.id },
+      h('section', { class: 'panel-sec' }, h('p', { text: x.detail || '' })),
+      snips ? section('Prompts and commands', h('button', { type: 'button', class: 'snip-open', fk: 'snip-open:' + x.id, onclick: function () { openSnippets(x, t); } },
+        '⧉ Show and copy', h('small', { text: snips + (snips === 1 ? ' block' : ' blocks') }))) : null,
+      x.run ? gpSection(x.run) : null,
+      x.waitsFor.length ? section('Waits for', h('ul', { class: 'steps' }, x.waitsFor.map(function (k) {
+        var w = c.byKey[k];
+        if (!w) return null;
+        var wDone = isDone(w);
+        return h('li', null, h('button', { type: 'button', class: 'step-link', fk: 'waits:' + x.id + ':' + k, onclick: function () { goStep(w, t); } },
+          h('b', null, h('span', { class: wDone ? 'done-mark' : null, text: (wDone ? '✓ ' : '') + refOf(w, t) }), ' · ' + w.title),
+          h('small', { text: (wDone ? 'Done' : 'Open') + ' · ' + ownerLabel(w) })));
+      }))) : null,
+      x.link ? section('How to do it', h('ul', { class: 'steps' }, h('li', null, h('a', { href: x.link, fk: 'howto:' + x.id,
+        onclick: function (e) { onDocLink(e, x.link, null); } },
+        h('b', { text: pageName(page, t) }), h('small', { text: x.link }))))) : null,
+      x.src && x.src.length ? section('Files', h('ul', { class: 'src' }, x.src.map(function (s) { return h('li', null, h('code', { text: s })); }))) : null,
+      section('History', historyList(x.id)));
+  }
+
+  function renderRail(c, t) {
+    var st = status(t), n = doneCount(t), N = t.steps.length;
+    var owners = [], assignees = [];
+    t.steps.forEach(function (x) {
+      if (owners.indexOf(x.owner) === -1) owners.push(x.owner);
+      if (x.assignee && assignees.indexOf(x.assignee) === -1) assignees.push(x.assignee);
+    });
+    TV.rail.textContent = '';
+    append(TV.rail, [
+      h('section', { class: 'card', 'aria-labelledby': 'props-h' }, h('h2', { id: 'props-h', text: 'Properties' }),
+        h('dl', { class: 'props' },
+          fact('Status', h('span', { class: 'pill ' + st, text: STATUS[st] })),
+          fact('Progress', [n + ' of ' + N + ' done', h('span', { class: 'bar' + (st === 'done' ? ' done' : ''), 'aria-hidden': 'true' }, h('i', { style: 'width:' + (N ? Math.round(n * 100 / N) : 0) + '%' }))]),
+          t.sop ? fact('SOP steps', t.sop) : null,
+          fact('Owners', owners.sort().reverse().map(function (o) { return h('span', { class: 'chip owner-' + o, text: o === 'wilfred' ? 'Wilfred' : 'Session' }); })),
+          fact('Assignees', assignees.length ? assignees.join(', ') : '—'),
+          t.settled ? fact('Decisions', 'Settled ' + t.settled) : null,
+          t.migrations ? fact('Migrations', t.migrations) : null,
+          t.runbook && t.runbook.href ? fact('Page', h('a', { href: t.runbook.href, target: '_blank', rel: 'noopener', text: t.runbook.href + ' ↗' })) : null,
+          t.runbook && t.runbook.updated ? fact('Updated', day(t.runbook.updated)) : null)),
+      t.attach.length || t.download ? h('section', { class: 'card', 'aria-labelledby': 'att-h' },
+        h('h2', { id: 'att-h' }, 'Attachments', h('small', { text: String(t.attach.length + (t.download ? 1 : 0)) })),
+        h('ul', { class: 'att' },
+          t.attach.map(function (a) {
+            return h('li', null, h('button', { type: 'button', fk: 'att:' + a.href, onclick: function () { openSheet(a.href, null, t); } },
+              h('span', { class: 'ic', 'aria-hidden': 'true', text: a.kind === 'Crosscheck' ? 'XC' : 'MD' }),
+              h('span', { class: 'att-t' }, h('span', { class: 'sr', text: a.kind + ': ' }), a.title)));
+          }),
+          t.download ? h('li', null, h('a', { href: t.download, download: true, fk: 'att-dl' },
+            h('span', { class: 'ic dl', 'aria-hidden': 'true', text: '⤓' }), h('span', { class: 'att-t', text: t.download.split('/').pop() }))) : null)) : null,
+      h('section', { class: 'card', 'aria-labelledby': 'act-h' }, h('h2', { id: 'act-h', text: 'Activity' }), activityList(t))
+    ]);
+  }
+
+  // The board keeps the latest 300 events per company; say so when this task's older
+  // ticks fall outside that window.
+  function activityList(t) {
+    var keys = {};
+    t.steps.forEach(function (x) { keys[x.id] = x; });
+    var evs = S.events.filter(function (e) { return keys[e.findingKey]; });
+    var items = evs.slice(0, 15).map(function (e) {
+      var x = keys[e.findingKey];
+      return h('li', { title: x.title }, h('b', { text: e.author }), (e.to === 'done' ? ' ticked ' : ' reopened ') + x.n,
+        h('time', { datetime: new Date(e.at).toISOString(), 'data-at': String(e.at), title: stamp(e.at), text: ago(e.at) }));
+    });
+    if (evs.length > 15) items.push(h('li', { text: (evs.length - 15) + ' earlier changes' }));
+    if (S.events.length >= 300) {
+      var oldestEvent = S.events.reduce(function (m, e) { return Math.min(m, e.at); }, Infinity), oldestTick = Infinity;
+      t.steps.forEach(function (x) { var lv = S.live && S.live[x.id]; if (lv && lv.updatedAt) oldestTick = Math.min(oldestTick, lv.updatedAt); });
+      if (oldestTick < oldestEvent) items.push(h('li', { text: 'Older changes are not shown.' }));
+    }
+    if (!items.length) items.push(h('li', { text: S.conn === 'live' ? 'No ticks yet.' : 'Activity appears once connected.' }));
+    return h('ol', { class: 'activity' }, items);
+  }
+
+  // ── runbook text and plans: the served page is the fragment ──
+  var DOCS = {};                                   // href -> Promise<{ toc:[{id,text}], html, title }>
+  function loadDoc(href) {
+    if (!DOCS[href]) DOCS[href] = fetch(href, { credentials: 'same-origin' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(function (txt) {
+        var d = new DOMParser().parseFromString(txt, 'text/html');   // inert: no scripts, no font loads
+        var art = d.querySelector('article.rb-body'); if (!art) throw new Error('no article');
+        return { html: art.outerHTML /* keep <article class="rb-body">: every .rb-body rule needs it */, title: (d.querySelector('title') || {}).textContent || href,
+          toc: [].map.call(d.querySelectorAll('nav.rb-toc a[href^="#"]'), function (a) {
+            return { id: a.getAttribute('href').slice(1), text: a.textContent }; }) };
+      });
+    DOCS[href].catch(function () { delete DOCS[href]; });          // retry on next open
+    return DOCS[href];
+  }
+  // our own pages, but strip anything live before it goes into the document
+  function scrub(root) {
+    [].forEach.call(root.querySelectorAll('script, iframe, object, embed'), function (n) { n.parentNode.removeChild(n); });
+    [].forEach.call(root.querySelectorAll('*'), function (el) {
+      [].slice.call(el.attributes).forEach(function (a) { if (/^on/i.test(a.name)) el.removeAttribute(a.name); });
+    });
+  }
+
+  var DOC_NODES = {};                              // runbook href -> the .task-doc element, filled once
+  function docNode(t) {
+    var href = t.runbook.href, node = DOC_NODES[href];
+    if (node && node.dataset.state !== 'error') return node;
+    node = h('div', { class: 'task-doc', 'data-state': 'loading', 'aria-busy': 'true' },
+      h('div', { class: 'doc-skel', role: 'status', 'aria-label': 'Loading the runbook' }, [1, 2, 3, 4, 5, 6, 7].map(function () { return h('i'); })));
+    node.addEventListener('click', function (e) { onDocLink(e, null, href); });
+    DOC_NODES[href] = node;
+    node.ready = loadDoc(href).then(function (d) {
+      function links() { return h('ol', null, d.toc.map(function (x) { return h('li', null, h('a', { href: '#' + x.id, text: x.text })); })); }
+      var art = h('div', { class: 'doc-art' });
+      art.innerHTML = d.html;
+      scrub(art);
+      node.textContent = '';
+      append(node, [
+        d.toc.length ? h('nav', { class: 'doc-toc', 'aria-label': 'Runbook sections' }, h('b', { text: 'Sections' }), links()) : h('span'),
+        d.toc.length ? h('details', { class: 'doc-toc-m' }, h('summary', { text: 'Sections (' + d.toc.length + ')' }), h('nav', { 'aria-label': 'Runbook sections' }, links())) : null,
+        h('div', { class: 'doc-main' }, h('p', { class: 'doc-note', role: 'status', hidden: true }), art)
+      ]);
+      node.dataset.state = 'ready'; node.removeAttribute('aria-busy');
+      return node;
+    }, function () {
+      node.dataset.state = 'error'; node.removeAttribute('aria-busy');
+      node.textContent = '';
+      node.appendChild(h('div', { class: 'doc-err', role: 'alert' },
+        h('b', { text: 'The runbook text could not be loaded.' }),
+        h('p', null, 'The checklist above still works. ', h('a', { href: href, target: '_blank', rel: 'noopener', text: 'Open the page ↗' }))));
+      return node;
+    });
+    return node;
+  }
+
+  // Scroll the open task's runbook text to a heading; when the cached copy predates it,
+  // land on the top of the text and say so.
+  function scrollToHeading(id) {
+    var c = company(), t = S.view === 'task' ? c.rbTaskById[S.taskId] : null;
+    var node = t && t.runbook ? DOC_NODES[t.runbook.href] : null;
+    if (!node || !node.ready) return;
+    node.ready.then(function () {
+      if (!node.isConnected || node.dataset.state !== 'ready') { if (node.isConnected) node.scrollIntoView({ block: 'start', behavior: smooth() }); return; }
+      var note = node.querySelector('.doc-note');
+      var target = id ? node.querySelector('.doc-art [id="' + String(id).replace(/["\\]/g, '\\$&') + '"]') : null;
+      note.hidden = !!target || !id;
+      if (target) { target.scrollIntoView({ block: 'start', behavior: smooth() }); return; }
+      if (id) {
+        note.textContent = '';
+        append(note, ['This section is not in the cached copy yet — ', h('a', { href: t.runbook.href + '#' + id, target: '_blank', rel: 'noopener', text: 'open the page ↗' })]);
+      }
+      ($('doc-card') || node).scrollIntoView({ block: 'start', behavior: smooth() });
+    });
+  }
+  window.scrollToHeading = scrollToHeading;        // for the console check in the plan's §10
+
+  // What a link in a runbook body (or a step's "How to do it") does inside the dashboard:
+  // #id scrolls, a plan or crosscheck opens the slide-over, another runbook opens its task.
+  // Anything else (zips, the SOP, outside links) is left to the browser.
+  function linkAction(href, base) {
+    var url;
+    try { url = new URL(href, location.origin + (base || '/')); } catch (err) { return null; }
+    if (url.origin !== location.origin && url.hostname !== 'admin.zhiyuantech.ai') return null;
+    var path = url.pathname, id = decodeURIComponent(url.hash.slice(1));
+    var c = company(), t = S.view === 'task' ? c.rbTaskById[S.taskId] : null;
+    if (/\/downloads\//.test(path)) return null;
+    if (t && t.runbook && path === t.runbook.href) return function () { scrollToHeading(id); };
+    if (c.rbByHref[path]) return function () { openTask(c.rbByHref[path].id); scrollToHeading(id); };
+    if (/-(plan|crosscheck)\/$/.test(path)) return function () { openSheet(path, id, t); };
+    return null;
+  }
+  function onDocLink(e, raw, base) {
+    if (!plainClick(e)) return;
+    var a = raw ? e.currentTarget : (e.target.closest ? e.target.closest('a[href]') : null);
+    if (!a || a.hasAttribute('download') || a.target === '_blank') return;
+    var act = linkAction(raw || a.getAttribute('href'), base);
+    if (!act) return;
+    e.preventDefault();
+    act();
+  }
+
+  // ── slide-over: plans and crosschecks. One aside, created on first use and kept; its text
+  // lives in a shadow root with its own copy of the runbook styles, so the plan's heading ids
+  // never collide with the runbook body's. ──
+  var SHEET = null;
+  var SHEET_CSS = ':host { display: block; padding: 1.25rem clamp(1rem, 3vw, 2rem) 4rem; font: 15px/1.65 "Geist", system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink-soft); }\n' +
+    '.sheet-state { color: var(--ink-faint); font-size: .9rem; } .sheet-state a { color: var(--accent); }\n';
+  var SHEET_AFTER = '\n.rb-body .rb-dl { display: none; }\n.rb-body h1, .rb-body h2, .rb-body h3, .rb-body h4 { scroll-margin-top: 1rem; }\n';
+
+  function sheet() {
+    if (SHEET) return SHEET;
+    var s = SHEET = { href: null };
+    s.scrim = h('div', { class: 'sheet-scrim', hidden: true, onclick: function () { closeSheet(); } });
+    s.title = h('h2', { id: 'sheet-title' });
+    s.sel = h('select', { 'aria-label': 'Go to section', onchange: function () { sheetScroll(s.sel.value); } });
+    s.selWrap = h('label', { class: 'select' }, s.sel);
+    s.open = h('a', { class: 'sheet-link', target: '_blank', rel: 'noopener', text: 'Open page ↗' });
+    s.zip = h('a', { class: 'sheet-link', download: true });
+    s.close = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Close', onclick: function () { closeSheet(); } }, '×');
+    s.host = h('div', { class: 'sheet-host' });
+    s.body = h('div', { class: 'sheet-body' }, s.host);
+    s.el = h('aside', { id: 'sheet', class: 'sheet', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'sheet-title', tabindex: '-1', hidden: true },
+      h('header', { class: 'sheet-head' }, s.title, s.selWrap, s.open, s.zip, s.close), s.body);
+    s.root = s.host.attachShadow({ mode: 'open' });
+    var style = document.createElement('style');
+    style.textContent = SHEET_CSS + $('runbook-css').textContent + SHEET_AFTER;
+    s.content = document.createElement('div');
+    s.root.appendChild(style);
+    s.root.appendChild(s.content);
+    s.root.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a || !plainClick(e) || a.hasAttribute('download')) return;
+      var url;
+      try { url = new URL(a.getAttribute('href'), location.origin + s.href); } catch (err) { return; }
+      if (url.origin !== location.origin && url.hostname !== 'admin.zhiyuantech.ai') return;
+      var id = decodeURIComponent(url.hash.slice(1)), c = company();
+      if (url.pathname === s.href) { e.preventDefault(); sheetScroll(id); }
+      else if (/-(plan|crosscheck)\/$/.test(url.pathname)) { e.preventDefault(); openSheet(url.pathname, id, s.task); }
+      else if (c.rbByHref[url.pathname]) { e.preventDefault(); closeSheet(true); openTask(c.rbByHref[url.pathname].id); scrollToHeading(id); }
+    }, false);
+    // anything the sheet does not handle opens in a new tab rather than replacing the dashboard
+    s.root.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a || e.defaultPrevented || !plainClick(e) || a.hasAttribute('download')) return;
+      var url;
+      try { url = new URL(a.getAttribute('href'), location.origin + (s.href || '/')); } catch (err) { return; }
+      e.preventDefault();
+      window.open(url.href, '_blank', 'noopener');
+    });
+    s.el.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      // focus trap: the header's controls, then the links in the text, round again
+      var list = [].filter.call(s.el.querySelectorAll('select, a[href], button'), function (el) { return !el.closest('[hidden]'); })
+        .concat([].slice.call(s.root.querySelectorAll('a[href]')));
+      if (!list.length) return;
+      var cur = s.root.activeElement || document.activeElement, first = list[0], last = list[list.length - 1];
+      if (e.shiftKey && (cur === first || cur === s.el)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && cur === last) { e.preventDefault(); first.focus(); }
+    });
+    document.body.appendChild(s.scrim);
+    document.body.appendChild(s.el);
+    return s;
+  }
+  function sheetOpen() { return !!(SHEET && !SHEET.el.hidden); }
+  function setInert(on) {
+    ['shell'].forEach(function (id) { if (on) $(id).setAttribute('inert', ''); else $(id).removeAttribute('inert'); });
+    var top = document.querySelector('.topbar');
+    if (on) top.setAttribute('inert', ''); else top.removeAttribute('inert');
+  }
+
+  function openSheet(href, anchor, t) {
+    var s = sheet();
+    if (s.el.hidden) {
+      var a = document.activeElement;
+      s.openerFk = a && a.dataset ? a.dataset.fk : null;
+      s.opener = a;
+    }
+    s.task = t || null;
+    var att = t ? t.attach.filter(function (x) { return x.href === href; })[0] : null;
+    s.title.textContent = att ? att.kind + ' · ' + att.title : (SEED.pageTitles[href] || pageName(href, t || {}));
+    s.open.href = href + (anchor ? '#' + anchor : '');
+    s.zip.hidden = !(t && t.download);
+    if (t && t.download) { s.zip.href = t.download; s.zip.textContent = '⤓ ' + t.download.split('/').pop(); }
+    s.el.hidden = false; s.scrim.hidden = false;
+    setInert(true);
+    s.close.focus({ preventScroll: true });
+    if (s.href !== href) {
+      s.href = href;
+      s.content.textContent = '';
+      s.content.appendChild(h('p', { class: 'sheet-state', role: 'status', text: 'Loading…' }));
+      s.sel.textContent = ''; s.selWrap.hidden = true;
+      s.loading = loadDoc(href).then(function (d) {
+        if (s.href !== href) return;
+        s.content.innerHTML = d.html;
+        scrub(s.content);
+        if (!att) s.title.textContent = d.title.split(' · ')[0];
+        s.sel.textContent = '';
+        s.sel.appendChild(h('option', { value: '', text: 'Sections…' }));
+        d.toc.forEach(function (x) { s.sel.appendChild(h('option', { value: x.id, text: x.text })); });
+        s.selWrap.hidden = !d.toc.length;
+      }, function () {
+        if (s.href !== href) return;
+        s.href = null;                                             // try again on the next open
+        s.content.textContent = '';
+        s.content.appendChild(h('p', { class: 'sheet-state', role: 'alert' }, 'This page could not be loaded. ', h('a', { href: href, target: '_blank', rel: 'noopener', text: 'Open the page ↗' })));
+      });
+    }
+    s.loading.then(function () { if (s.href === href) sheetScroll(anchor); });
+  }
+  function sheetScroll(id) {
+    var s = SHEET;
+    var el = id ? s.root.getElementById(id) : null;
+    if (el) el.scrollIntoView({ block: 'start', behavior: smooth() });
+    else s.body.scrollTop = 0;
+  }
+  function closeSheet(noFocus) {
+    var s = SHEET;
+    if (!s || s.el.hidden) return;
+    s.el.hidden = true; s.scrim.hidden = true;
+    setInert(false);
+    if (noFocus) return;
+    // back to what opened it: the same element, or its replacement after a re-render
+    if (s.opener && s.opener.isConnected) s.opener.focus({ preventScroll: true });
+    else if (s.openerFk) focusFk(s.openerFk);
+  }
+
+  // ── findings (the SOP ledger and client tasks), grouped by workstream ──
   function matches(t) {
-    var done = isDone(t);
+    var done = isDone(t), q = S.qs.findings;
     if (S.show === 'open' && done) return false;
     if (S.show === 'done' && !done) return false;
-    if (S.cat && !t.rb && category(t) !== S.cat) return false;
-    if (S.q) {
-      var hay = [t.no || '', t.title, t.detail, t.repair || '', t.id, (t.src || []).join(' ')].join(' ').toLowerCase();
-      if (hay.indexOf(S.q) === -1) return false;
+    if (S.cat && category(t) !== S.cat) return false;
+    if (q) {
+      var hay = [t.title, t.detail, t.repair || '', t.id, (t.src || []).join(' ')].join(' ').toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
     }
     return true;
   }
@@ -673,7 +1451,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     box.disabled = !!S.pending[t.id];
     return h('li', { class: 'task' + (done ? ' done' : '') + (selected ? ' selected' : '') },
       h('label', { class: 'tick-wrap' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' })),
-      h('button', { type: 'button', class: 'task-main', fk: 'task:' + t.id, 'aria-current': selected ? 'true' : null, onclick: function () { selectTask(t.id); } },
+      h('button', { type: 'button', class: 'task-main', fk: 'task:' + t.id, 'aria-current': selected ? 'true' : null, onclick: function () { selectFinding(t.id); } },
         h('span', { class: 'task-title', text: t.title }),
         h('span', { class: 'task-meta' },
           h('span', { class: 'chip cat-' + category(t), text: catLabel(t) }),
@@ -682,59 +1460,23 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
           done && lv.updatedBy ? h('span', { class: 'by', text: '✓ ' + lv.updatedBy }) : null)));
   }
 
-  function ownerLabel(t) { return t.owner === 'wilfred' ? 'Wilfred' : 'Session'; }
-  function waitingOn(t) { var c = company(); return t.waitsFor.filter(function (k) { return !isDone(c.byKey[k]); }).map(function (k) { return c.byKey[k]; }); }
-
-  function stepRow(t) {
-    var lv = liveOf(t), done = lv.state === 'done', selected = S.taskKey === t.id, waiting = waitingOn(t);
-    var box = h('input', { type: 'checkbox', class: 'tick', fk: 'tick:' + t.id, 'aria-label': (done ? 'Reopen: ' : 'Mark done: ') + t.no + ' ' + t.title,
-      onchange: function (e) { setDone(t, e.target.checked); } });
-    box.checked = done;
-    box.disabled = !!S.pending[t.id];
-    return h('li', { class: 'task' + (done ? ' done' : '') + (selected ? ' selected' : '') },
-      h('label', { class: 'tick-wrap' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' })),
-      h('span', { class: 'step-no', text: t.no }),
-      h('button', { type: 'button', class: 'task-main', fk: 'task:' + t.id, 'aria-current': selected ? 'true' : null, onclick: function () { selectTask(t.id); } },
-        h('span', { class: 'task-title', text: t.title }),
-        h('span', { class: 'task-meta' },
-          h('span', { class: 'chip owner-' + t.owner, text: ownerLabel(t) }),
-          !done && waiting.length ? h('span', { class: 'waits', text: 'Waits for ' + waiting.map(function (w) { return w.no; }).join(', ') }) : null,
-          !done && !waiting.length ? h('span', { class: 'chip ready', text: 'Ready' }) : null,
-          done && lv.updatedBy ? h('span', { class: 'by', text: '✓ ' + lv.updatedBy }) : null)));
-  }
-
-  // the middle column's groups for the current view: runbook stages, or finding workstreams
   function viewGroups(c) {
-    if (S.view === 'runbook') return c.stages.map(function (st) {
-      return { id: st.id, title: st.letter + ' · ' + st.title, blurb: st.blurb, items: st.covers.map(function (k) { return c.byKey[k]; }) };
-    });
     return c.workstreams.map(function (w) {
       return { id: w.id, title: w.title, blurb: w.blurb, items: w.covers.map(function (k) { return c.byKey[k]; }) };
     });
   }
 
   function renderTodo() {
-    var c = company(), rb = S.view === 'runbook';
-    var items = rb ? c.rbSteps : c.tasks;
+    var c = company(), items = c.tasks;
     var groupsData = viewGroups(c);
     $('company-place').textContent = c.name + ' · ' + c.place;
-    $('todo-title').textContent = rb ? 'Runbook' : 'Findings';
-    document.querySelectorAll('.views button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.view === S.view)); });
-    $('count-runbook').textContent = c.rbSteps.length ? c.rbSteps.filter(isDone).length + '/' + c.rbSteps.length : '';
-    $('count-findings').textContent = c.tasks.length ? c.tasks.filter(isDone).length + '/' + c.tasks.length : '';
-    $('cat-wrap').hidden = rb;
     var done = items.filter(isDone).length;
     $('progress-bar').style.width = (items.length ? Math.round(done * 100 / items.length) : 0) + '%';
-    if (!items.length) {
-      $('progress-text').textContent = rb ? 'No runbook steps yet' : 'No tasks yet';
-    } else if (rb) {
-      var ready = c.rbSteps.filter(function (t) { return !isDone(t) && !waitingOn(t).length; }).length;
-      $('progress-text').textContent = done + ' of ' + items.length + ' steps done · ' + c.stages.length + ' stages · ' + ready + ' ready now';
-    } else {
-      $('progress-text').textContent = done + ' of ' + items.length + ' tasks done · ' + c.workstreams.length + ' workstreams';
-    }
+    $('progress-text').textContent = items.length
+      ? done + ' of ' + items.length + ' tasks done · ' + c.workstreams.length + ' workstreams'
+      : 'No tasks yet';
 
-    var filtering = !!(S.q || (S.cat && !rb) || S.show !== 'all');
+    var filtering = !!(S.qs.findings || S.cat || S.show !== 'all');
     var groups = $('groups'); groups.textContent = '';
     var shown = 0;
     groupsData.forEach(function (g) {
@@ -752,28 +1494,38 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
           h('span', { class: 'ws-count' },
             h('span', { class: 'mini', 'aria-hidden': 'true' }, h('i', { style: 'width:' + Math.round(gDone * 100 / g.items.length) + '%' })),
             h('span', { text: gDone + '/' + g.items.length }))),
-        h('ul', { class: 'tasks', id: listId, hidden: collapsed }, visible.map(rb ? stepRow : taskRow))));
+        h('ul', { class: 'tasks', id: listId, hidden: collapsed }, visible.map(taskRow))));
     });
     $('empty').hidden = shown !== 0;
     // a company with nothing tracked yet is not the same as a search that matched nothing
     var nothing = items.length === 0;
-    $('empty').querySelector('h3').textContent = nothing ? (rb ? 'No runbook yet' : 'No tasks yet') : (rb ? 'No steps match' : 'No tasks match');
-    $('empty').querySelector('p').textContent = nothing
-      ? (rb ? 'Nothing is planned for ' + c.name + ' so far.' : 'Nothing is tracked for ' + c.name + ' so far.')
-      : 'Clear the search or change the filters.';
+    $('empty').querySelector('h3').textContent = nothing ? 'No tasks yet' : 'No tasks match';
+    $('empty').querySelector('p').textContent = nothing ? 'Nothing is tracked for ' + c.name + ' so far.' : 'Clear the search or change the filters.';
     var allCollapsed = groupsData.length && groupsData.every(function (g) { return S.collapsed[g.id]; });
     $('toggle-all').textContent = allCollapsed ? 'Expand all' : 'Collapse all';
     $('toggle-all').hidden = filtering || !groupsData.length;
-    document.querySelectorAll('.seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.show === S.show)); });
+    document.querySelectorAll('#view-findings .seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.show === S.show)); });
   }
 
-  // ── right: task panel ──
-  function fact(label, value) { return h('div', null, h('dt', { text: label }), h('dd', null, value)); }
-  function section(title, content) { return h('section', { class: 'panel-sec' }, h('h3', { text: title }), content); }
+  // ── Overview: for now a way to the SOP page (it is embedded in a later phase) ──
+  function renderOverview(c) {
+    var root = $('view-overview');
+    root.textContent = '';
+    append(root, [
+      h('p', { class: 'kicker', text: c.name + ' · ' + c.place }),
+      h('h1', { id: 'overview-title', text: 'Overview' }),
+      c.sop
+        ? [h('p', { class: 'sub', text: 'The SOP is the whole chain for ' + c.name + ': every step, who does it and where in the system.' }),
+           h('p', { class: 'ov-actions' }, h('a', { class: 'primary', href: c.sop + (S.sopStep ? '#step-' + S.sopStep : ''), fk: 'ov-open', text: 'Open the SOP ↗' }))]
+        : h('div', { class: 'empty' }, h('h3', { text: 'No SOP yet' }), h('p', { text: c.name + ' has no SOP page so far.' }))
+    ]);
+  }
 
+  // ── right: the finding panel (Findings view only) ──
   function renderPanel() {
     var c = company();
-    var t = S.taskKey ? c.byKey[S.taskKey] : null;
+    var t = S.view === 'findings' && S.taskKey ? c.byKey[S.taskKey] : null;
+    if (t && t.rb) t = null;
     var panel = $('panel'), body = $('panel-body');
     panel.dataset.open = t ? 'true' : 'false';
     $('panel-empty').hidden = !!t;
@@ -781,10 +1533,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     $('scrim').hidden = !t;
     body.textContent = '';
     if (!t) return;
-    if (t.rb) { renderStepPanel(c, t, body); return; }
 
     var lv = liveOf(t), done = lv.state === 'done', w = c.wsOf[t.id], cat = category(t);
-    var history = S.events.filter(function (e) { return e.findingKey === t.id; });
 
     var box = h('input', { type: 'checkbox', class: 'tick', fk: 'panel-tick', 'aria-label': done ? 'Reopen this task' : 'Mark this task done',
       onchange: function (e) { setDone(t, e.target.checked); } });
@@ -794,7 +1544,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     append(body, [
       h('div', { class: 'panel-top' },
         h('p', { class: 'kicker', text: w ? w.title : 'No workstream' }),
-        h('button', { type: 'button', class: 'icon-btn', fk: 'panel-close', 'aria-label': 'Close task details', onclick: function () { selectTask(null); } }, '×')),
+        h('button', { type: 'button', class: 'icon-btn', fk: 'panel-close', 'aria-label': 'Close task details', onclick: function () { selectFinding(null); } }, '×')),
       h('h2', { class: 'panel-title', text: t.title }),
       h('div', { class: 'panel-state' },
         h('label', { class: 'state-toggle' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' }),
@@ -819,59 +1569,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       section('Source', t.src && t.src.length
         ? h('ul', { class: 'src' }, t.src.map(function (s) { return h('li', null, h('code', { text: s })); }))
         : h('p', { class: 'muted', text: 'No code location recorded.' })),
-      section('History', history.length
-        ? h('ol', { class: 'history' }, history.map(function (e) {
-            return h('li', null, h('b', { text: e.author }), (e.to === 'done' ? ' marked it done ' : ' reopened it '),
-              h('time', { datetime: new Date(e.at).toISOString(), text: stamp(e.at) }));
-          }))
-        : h('p', { class: 'muted', text: S.conn === 'live' ? 'No changes yet.' : 'History appears once connected.' }))
-    ]);
-  }
-
-  function renderStepPanel(c, t, body) {
-    var lv = liveOf(t), done = lv.state === 'done', waiting = waitingOn(t);
-    var history = S.events.filter(function (e) { return e.findingKey === t.id; });
-    var box = h('input', { type: 'checkbox', class: 'tick', fk: 'panel-tick', 'aria-label': done ? 'Reopen this step' : 'Mark this step done',
-      onchange: function (e) { setDone(t, e.target.checked); } });
-    box.checked = done;
-    box.disabled = !!S.pending[t.id];
-    var page = t.link ? t.link.split('#')[0] : null;
-
-    append(body, [
-      h('div', { class: 'panel-top' },
-        h('p', { class: 'kicker', text: t.stage.letter + ' · ' + t.stage.title }),
-        h('button', { type: 'button', class: 'icon-btn', fk: 'panel-close', 'aria-label': 'Close step details', onclick: function () { selectTask(null); } }, '×')),
-      h('h2', { class: 'panel-title', text: t.title }),
-      h('div', { class: 'panel-state' },
-        h('label', { class: 'state-toggle' }, box, h('span', { class: 'tick-box', 'aria-hidden': 'true' }),
-          h('span', { class: 'tick-label', text: done ? 'Done' : 'Open' })),
-        lv.updatedBy
-          ? h('span', { class: 'muted', text: (done ? 'Ticked by ' : 'Reopened by ') + lv.updatedBy + ' · ' + ago(lv.updatedAt) })
-          : h('span', { class: 'muted', text: done ? '' : 'Tick the circle when it’s done.' })),
-      h('dl', { class: 'facts' },
-        fact('Step', t.no),
-        fact('Owner', h('span', { class: 'chip owner-' + t.owner, text: ownerLabel(t) })),
-        fact('Status', done ? 'Done' : waiting.length ? 'Waiting on ' + waiting.map(function (w) { return w.no; }).join(', ') : 'Ready now'),
-        fact('Key', h('code', { text: t.id }))),
-      section('Detail', h('p', { text: t.detail })),
-      t.snippets && t.snippets.length ? section('Prompts and commands', h('button', { type: 'button', class: 'snip-open', fk: 'snip-open', onclick: function () { openSnippets(t); } },
-        '⧉ Show and copy', h('small', { text: t.snippets.length + (t.snippets.length === 1 ? ' block' : ' blocks') }))) : null,
-      t.run ? gpSection(t.run) : null,
-      t.waitsFor.length ? section('Waits for', h('ul', { class: 'steps' }, t.waitsFor.map(function (k) {
-        var w = c.byKey[k], wDone = isDone(w);
-        return h('li', null, h('button', { type: 'button', class: 'step-link', fk: 'waits:' + k, onclick: function () { selectTask(k); } },
-          h('b', null, h('span', { class: wDone ? 'done-mark' : null, text: (wDone ? '✓ ' : '') + w.no }), ' · ' + w.title),
-          h('small', { text: (wDone ? 'Done' : 'Open') + ' · ' + ownerLabel(w) })));
-      }))) : null,
-      t.link ? section('How to do it', h('ul', { class: 'steps' }, h('li', null, h('a', { href: t.link, fk: 'step-link' },
-        h('b', { text: SEED.pageTitles[page] || page }), h('small', { text: t.link }))))) : null,
-      t.src && t.src.length ? section('Files', h('ul', { class: 'src' }, t.src.map(function (x) { return h('li', null, h('code', { text: x })); }))) : null,
-      section('History', history.length
-        ? h('ol', { class: 'history' }, history.map(function (e) {
-            return h('li', null, h('b', { text: e.author }), (e.to === 'done' ? ' marked it done ' : ' reopened it '),
-              h('time', { datetime: new Date(e.at).toISOString(), text: stamp(e.at) }));
-          }))
-        : h('p', { class: 'muted', text: S.conn === 'live' ? 'No changes yet.' : 'History appears once connected.' }))
+      section('History', historyList(t.id))
     ]);
   }
 
@@ -910,10 +1608,10 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
     else fallback();
   }
-  function openSnippets(t) {
+  function openSnippets(x, t) {
     var list = $('snip-list'); list.textContent = '';
-    $('snip-sub').textContent = t.no + ' · ' + t.title;
-    t.snippets.forEach(function (sn) {
+    $('snip-sub').textContent = refOf(x, t || x.task) + ' · ' + x.title;
+    x.snippets.forEach(function (sn) {
       var btn = h('button', { type: 'button', class: 'snip-copy' }, 'Copy');
       var pre = h('pre', { class: sn.lang === 'text' ? 'wrap' : null }, h('code', { text: sn.text }));
       btn.addEventListener('click', function () { copyText(sn.text, btn, pre); });
@@ -925,11 +1623,26 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     $('snip-close').focus({ preventScroll: true });
   }
 
+  var TITLES = { tasks: 'tasks-title', task: 'task-title', overview: 'overview-title', findings: 'todo-title' };
+  var lastView = null;
   function renderAll() {
     var active = document.activeElement;
     var fk = active && active.dataset ? active.dataset.fk : null;
+    var c = company();
+    if (S.view === 'task' && !c.rbTaskById[S.taskId]) S.view = 'tasks';
+    // arriving at a task (not re-rendering one) rebuilds its shell, which also retries a failed body
+    if (S.view === 'task' && lastView !== 'task') TV.id = null;
+    lastView = S.view;
+    $('shell').dataset.view = S.view;
+    ['tasks', 'task', 'overview', 'findings'].forEach(function (v) { $('view-' + v).hidden = S.view !== v; });
+    $('main').setAttribute('aria-labelledby', TITLES[S.view]);
     renderCompany();
-    renderTodo();
+    renderNav(c);
+    syncSearch();
+    if (S.view === 'tasks') renderTasks(c);
+    else if (S.view === 'task') renderTask(c);
+    else if (S.view === 'overview') renderOverview(c);
+    else renderTodo();
     renderPanel();
     if (fk) {
       var again = document.querySelector('[data-fk="' + fk.replace(/["\\]/g, '') + '"]');
@@ -937,30 +1650,137 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     }
   }
 
-  // ── selection and URL ──
-  function syncUrl() {
-    var params = new URLSearchParams();
-    params.set('company', S.companyKey);
-    if (S.view !== 'runbook') params.set('view', S.view);
-    if (S.taskKey) params.set('task', S.taskKey);
-    try { history.replaceState(null, '', location.pathname + '?' + params.toString()); } catch (e) {}
+  // search text is kept per view: Tasks (and the open task's checklist) or Findings
+  function qKey() { return S.view === 'findings' ? 'findings' : 'tasks'; }
+  function syncSearch() {
+    var k = qKey(), input = $('q');
+    if (input.dataset.for !== k) { input.dataset.for = k; input.value = S.qs[k]; }
+    var label = k === 'findings' ? 'Search findings' : 'Search tasks and steps';
+    input.placeholder = label;
+    $('q-label').textContent = label;
   }
-  function selectTask(key) {
-    var item = key ? company().byKey[key] : null;
-    if (item) S.view = item.rb ? 'runbook' : 'findings';
-    S.taskKey = key;
-    syncUrl();
+
+  // ── views, selection and URL ──
+  // The URL is query parameters only. Opening or closing a task and changing the view
+  // push a history entry (so Back returns to the list); everything else replaces it.
+  function urlNow() {
+    var c = company(), p = new URLSearchParams();
+    p.set('company', S.companyKey);
+    if (S.view === 'task') p.set('task', S.expanded || S.taskId);
+    else {
+      if (S.view !== defaultView(c)) p.set('view', S.view);
+      if (S.view === 'findings' && S.taskKey) p.set('task', S.taskKey);
+      if ((S.view === 'findings' || S.view === 'overview') && S.sopStep) p.set('step', S.sopStep);
+    }
+    return location.pathname + '?' + p.toString();
+  }
+  function syncUrl(push) {
+    var url = urlNow();
+    if (url === location.pathname + location.search) return;
+    try { history[push ? 'pushState' : 'replaceState'](null, '', url); } catch (e) {}
+  }
+
+  // a ?task= value is a task id, a runbook step id (old links) or a finding id
+  function resolveKey(key) {
+    var c = company();
+    if (!key) return null;
+    if (c.rbTaskById[key]) return { kind: 'task', task: c.rbTaskById[key] };
+    var x = c.byKey[key];
+    if (!x) return null;
+    if (x.rb) return { kind: 'step', task: x.task, step: x };
+    return { kind: 'finding', finding: x };
+  }
+
+  function setView(v) {
+    S.view = v; S.expanded = null; S.outline = null;
+    if (v !== 'findings') S.taskKey = null;
+    syncUrl(true);
+    renderAll();
+    window.scrollTo(0, 0);
+  }
+
+  function openTask(id, stepKey) {
+    var c = company();
+    if (!c.rbTaskById[id]) return;
+    var changed = S.view !== 'task' || S.taskId !== id;
+    S.view = 'task'; S.taskId = id; S.taskKey = null;
+    S.expanded = stepKey || null; S.outline = stepKey || null;
+    syncUrl(true);
+    renderAll();
+    if (stepKey) { revealStep(stepKey); focusFk('step:' + stepKey); }
+    else if (changed) { window.scrollTo(0, 0); var h1 = $('task-title'); if (h1) h1.focus({ preventScroll: true }); }
+  }
+  function closeTask() {
+    var id = S.taskId;
+    setView('tasks');
+    focusFk('trow:' + id);
+  }
+
+  function toggleStep(key) {
+    S.expanded = S.expanded === key ? null : key;
+    S.outline = null;
+    syncUrl(false);
+    renderAll();
+  }
+  // scroll a step's row into view and outline it: for a moment after a click, or until the
+  // next click when the step came in on a link (it can take a while to spot on arrival)
+  var outlineTimer = null;
+  function clearOutline() {
+    S.outline = null;
+    [].forEach.call(document.querySelectorAll('.ci.outlined'), function (el) { el.classList.remove('outlined'); });
+  }
+  function revealStep(key, sticky) {
+    S.outline = key;
+    var row = document.querySelector('.ci[data-step="' + key.replace(/["\\]/g, '') + '"]');
+    // on arrival, jump: the first live render lands mid-animation and would stop a smooth scroll
+    if (row) { row.classList.add('outlined'); row.scrollIntoView({ block: row.classList.contains('expanded') ? 'start' : 'center', behavior: sticky ? 'auto' : smooth() }); }
+    clearTimeout(outlineTimer);
+    if (sticky) document.addEventListener('pointerdown', clearOutline, { once: true });
+    else outlineTimer = setTimeout(clearOutline, 2600);
+  }
+  // a "waits for" link: same task scrolls to the step, another task opens with it expanded
+  function goStep(w, from) {
+    if (w.task === from) { revealStep(w.id); focusFk('step:' + w.id); }
+    else openTask(w.task.id, w.id);
+  }
+
+  function selectFinding(key) {
+    S.view = 'findings';
+    S.taskKey = key || null;
+    syncUrl(false);
     renderAll();
     if (key && NARROW.matches) { var close = document.querySelector('[data-fk="panel-close"]'); if (close) close.focus({ preventScroll: true }); }
   }
-  function selectCompany(key) {
+
+  function setCompany(key) {
     if (!SEED.projects.some(function (p) { return p.key === key; })) key = SEED.projects[0].key;
-    if (S.companyKey === key) return;
-    S.companyKey = key; S.taskKey = null; S.live = null; S.events = []; S.pending = {};
+    if (S.companyKey === key) return false;
+    S.companyKey = key; S.taskKey = null; S.taskId = null; S.expanded = null; S.live = null; S.events = []; S.pending = {};
     subscribe();
-    syncUrl();
-    renderAll();
+    return true;
   }
+
+  // Start-up and Back/Forward both land here, so a reload and a Back show the same thing.
+  function routeFromUrl() {
+    var q = new URLSearchParams(location.search);
+    setCompany(q.get('company') || q.get('project') || S.companyKey || SEED.projects[0].key);   // older links used ?project=
+    var c = company(), v = q.get('view'), r = resolveKey(q.get('task'));
+    if (v === 'runbook') v = 'tasks';                                                            // the old Runbook view
+    if (['tasks', 'overview', 'findings'].indexOf(v) === -1) v = null;
+    S.taskKey = null; S.expanded = null; S.outline = null;
+    S.sopStep = /^\d+$/.test(q.get('step') || '') ? q.get('step') : null;
+    if (r && r.kind === 'task') { S.view = 'task'; S.taskId = r.task.id; }
+    else if (r && r.kind === 'step') { S.view = 'task'; S.taskId = r.task.id; S.expanded = r.step.id; }
+    else if (r) { S.view = 'findings'; S.taskKey = r.finding.id; }
+    else S.view = v || defaultView(c);
+    renderAll();
+    syncUrl(false);                                  // settle old spellings on the current form
+    if (S.expanded) revealStep(S.expanded, true); else window.scrollTo(0, 0);
+  }
+  // the page places itself (a linked step, the top of a view); the browser's own restore would
+  // land after that and undo it
+  try { history.scrollRestoration = 'manual'; } catch (e) {}
+  window.addEventListener('popstate', function () { closeSheet(true); routeFromUrl(); });
 
   // ── live state (Convex) ──
   function subscribe() {
@@ -1024,7 +1844,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var cb = nameCallback; nameCallback = null;
     var name = String(value || '').trim().replace(/\s+/g, ' ').slice(0, 40);
     if (name) store.set('zyt.author', name);
-    renderCompany();
+    renderAll();                                   // My tasks depends on the name
     if (cb) cb(name || null);
   }
   $('name-form').addEventListener('submit', function (e) { e.preventDefault(); var v = $('name-input').value; $('name-dialog').close(); finishName(v); });
@@ -1034,24 +1854,21 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   $('name-dialog').addEventListener('cancel', function () { finishName(null); });
 
   // ── controls ──
-  $('q').addEventListener('input', function (e) { S.q = e.target.value.trim().toLowerCase(); renderAll(); });
+  $('q').addEventListener('input', function (e) { S.qs[qKey()] = e.target.value.trim().toLowerCase(); renderAll(); });
   $('f-cat').addEventListener('change', function (e) { S.cat = e.target.value; renderAll(); });
-  document.querySelectorAll('.seg button').forEach(function (b) { b.addEventListener('click', function () { S.show = b.dataset.show; renderAll(); }); });
+  document.querySelectorAll('#view-findings .seg button').forEach(function (b) { b.addEventListener('click', function () { S.show = b.dataset.show; renderAll(); }); });
   $('toggle-all').addEventListener('click', function () {
     var gs = viewGroups(company());
     var collapse = !gs.every(function (g) { return S.collapsed[g.id]; });
     gs.forEach(function (g) { S.collapsed[g.id] = collapse; });
     renderAll();
   });
-  document.querySelectorAll('.views button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      if (S.view === b.dataset.view) return;
-      S.view = b.dataset.view; S.taskKey = null;
-      syncUrl(); renderAll();
-    });
-  });
   document.querySelectorAll('[data-company-select]').forEach(function (sel) {
-    sel.addEventListener('change', function (e) { selectCompany(e.target.value); });
+    sel.addEventListener('change', function (e) {
+      if (!setCompany(e.target.value)) return;
+      S.view = defaultView(company());
+      syncUrl(true); renderAll(); window.scrollTo(0, 0);
+    });
   });
 
   // ── theme: dark by default (set in <head> before paint), toggle remembered per browser ──
@@ -1069,28 +1886,33 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   });
 
   $('who').addEventListener('click', function () { askName(null); });
-  $('scrim').addEventListener('click', function () { selectTask(null); });
+  $('scrim').addEventListener('click', function () { selectFinding(null); });
   document.addEventListener('keydown', function (e) {
-    if ($('snip-dialog').open) { if (e.key === 'Escape') { e.preventDefault(); $('snip-dialog').close(); } return; }
-    if ($('name-dialog').open) return;
     var tag = (document.activeElement && document.activeElement.tagName) || '';
+    // Esc: the slide-over first, then the snippet dialog, then the expanded step (or the finding panel)
+    if (e.key === 'Escape') {
+      if (sheetOpen()) { e.preventDefault(); closeSheet(); return; }
+      if ($('snip-dialog').open) { e.preventDefault(); $('snip-dialog').close(); return; }
+      if ($('name-dialog').open || /INPUT|SELECT|TEXTAREA/.test(tag)) return;
+      if (S.view === 'task' && S.expanded) { var step = S.expanded; toggleStep(step); focusFk('step:' + step); }
+      else if (S.view === 'findings' && S.taskKey) { var key = S.taskKey; selectFinding(null); focusFk('task:' + key); }
+      return;
+    }
+    if (sheetOpen() || $('snip-dialog').open || $('name-dialog').open) return;
     if (e.key === '/' && !/INPUT|SELECT|TEXTAREA/.test(tag)) { e.preventDefault(); $('q').focus(); }
-    else if (e.key === 'Escape' && S.taskKey) { var key = S.taskKey; selectTask(null); var row = document.querySelector('[data-fk="task:' + key + '"]'); if (row) row.focus(); }
   });
-  setInterval(function () { if (S.taskKey) renderPanel(); }, 60000);
+  // relative times: the finding panel is cheap to redraw; the task view only updates its <time>s
+  setInterval(function () {
+    if (S.view === 'findings' && S.taskKey) renderPanel();
+    if (S.view === 'task') [].forEach.call(document.querySelectorAll('#view-task time[data-at]'), function (el) { el.textContent = ago(+el.dataset.at); });
+  }, 60000);
 
   // ── start ──
   if (window.convex && /^https:\/\//.test(CONVEX_URL)) {
     try { client = new convex.ConvexClient(CONVEX_URL); } catch (e) { client = null; }
   }
   if (!client) setConn('offline', 'Read-only · live sync unavailable');
-
-  // ?company= (older links used ?project=)
-  var params = new URLSearchParams(location.search);
-  if (params.get('view') === 'findings') S.view = 'findings';
-  selectCompany(params.get('company') || params.get('project') || SEED.projects[0].key);
-  var wanted = params.get('task');
-  if (wanted && company().byKey[wanted]) selectTask(wanted);
+  routeFromUrl();
 })();
 </script>
 <!--PWA_SCRIPT-->

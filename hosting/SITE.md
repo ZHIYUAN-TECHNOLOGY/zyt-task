@@ -10,17 +10,17 @@ files are the spec for those. If something below stops being true, fix this file
 
 | URL | Source of truth | Managed by |
 |---|---|---|
-| `/` dashboard (companies · Runbook / Findings · detail panel) | `hosting/hub/index.html`; companies and their pages in `hosting/hub/projects.json`; runbook steps in `tracker/seed/runbook-<key>.json` (optional, `seed.runbook`); finding content in `tracker/seed/{tasks,client-tasks,flow}-<key>.json` | Hand edits in this repo |
+| `/` dashboard (companies · Overview · Tasks · Findings; a task view with its runbook's text, checklist and attachments) | `hosting/hub/index.html`; companies and their pages in `hosting/hub/projects.json`; tasks, stages and steps in `tracker/seed/runbook-<key>.json` (optional, `seed.runbook`); finding content in `tracker/seed/{tasks,client-tasks,flow}-<key>.json`; the runbook text's styles in `hosting/hub/runbook-body.css` (shared with the pages) | Hand edits in this repo |
 | `/nct/customer-intake-sop/` | `C:/Project/ZYT-Task/customer-intake-sop/sop.json` + `shots/*.jpg` beside it, built with zyt-setup's `build-page.mjs`. Falls back to the hand-written `customer-intake-sop.html` only if `sop.json` is missing | zyt pipeline since 2026-09-16. Registry id `ZYT-Task/customer-intake-sop` (live, code root `C:/Project/NCT/nct-layout`); 7-role "Show my flow" view; fix list kept public |
-| `/nct/steps-1-3-runbook/` | `C:/Project/ZYT-Task/steps-1-3-runbook.md`, same renderer | Hand edits |
-| `/nct/steps-4-10-runbook/` | `C:/Project/ZYT-Task/steps-4-10-runbook.md`, rendered by `hosting/hub/build-runbook.mjs` (marked) | Hand edits |
-| `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits |
+| `/nct/steps-1-3-runbook/` | `C:/Project/ZYT-Task/steps-1-3-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) since Phase 3 (2026-09-23): the dashboard's task "Steps 1–3" shows its text. The same holds for every NCT runbook and crosscheck below |
+| `/nct/steps-4-10-runbook/` | `C:/Project/ZYT-Task/steps-4-10-runbook.md`, rendered by `hosting/hub/build-runbook.mjs` (marked; the article's rules are in `hub/runbook-body.css`) | Hand edits. Built, hidden from the list (`nav: hidden`) |
+| `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) |
 | `/nct/step-01-plan/` … `/nct/step-10-plan/`, `/nct/steps-4-10-crosscheck/` | `C:/Project/ZYT-Task/plans/step-0N-*.md`, `step-10-*.md`, `steps-4-10-crosscheck.md`, same renderer (kind "Plan" / "Crosscheck"). Built from the `$nctPages0110` table in `deploy-site.ps1` since 2026-09-23 | Hand edits. Published but unlisted: the plans are in `unlisted`, the crosscheck is a `pages` entry with `"nav": "hidden"` (the page list skips it). Their download buttons point at `steps-1-3-plans.zip` / `steps-4-10-plans.zip` |
 | `/nct/step-11-plan/` … `/nct/step-15-plan/` | `C:/Project/ZYT-Task/plans/step-1N-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9, all settled 2026-09-17. **Built and live, but deliberately not in `projects.json`** (2026-09-18): the page list would be 12 entries long, so the plans are reached from the steps 11–15 runbook's §0 table instead. A page can be published without being listed; only the listing is dropped |
-| `/nct/steps-12-15-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-12-15-crosscheck.md`, same renderer (kind "Crosscheck") | Hand edits |
-| `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1`. Dashboard stages G, H, I since 2026-09-23 (56 steps, one per wave heading plus setup, gates and clean-up) |
+| `/nct/steps-12-15-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-12-15-crosscheck.md`, same renderer (kind "Crosscheck") | Hand edits. Built, hidden from the list (`nav: hidden`); an attachment of the task "Steps 11–15" |
+| `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1`. Dashboard tasks "Steps 16–19", "Steps 20–26", "Step 27" since 2026-09-23 (56 steps, one per wave heading plus setup, gates and clean-up). Built, hidden from the list (`nav: hidden`) |
 | `/nct/step-16-plan/` … `/nct/step-27-plan/` | `C:/Project/ZYT-Task/plans/step-{16..27}-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9 settled 2026-09-21. Published but unlisted, like steps 11–15 |
-| `/nct/steps-16-19-crosscheck/`, `/nct/steps-20-26-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-16-19-crosscheck.md`, `steps-20-26-crosscheck.md` (kind "Crosscheck"). X17–X40 settled 2026-09-21 | Hand edits. Step 27's collision check is inside its runbook §2 |
+| `/nct/steps-16-19-crosscheck/`, `/nct/steps-20-26-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-16-19-crosscheck.md`, `steps-20-26-crosscheck.md` (kind "Crosscheck"). X17–X40 settled 2026-09-21 | Hand edits. Built, hidden from the list (`nav: hidden`); attachments of their tasks. Step 27's collision check is inside its runbook §2 |
 | `/jwa/full-chain-sop/` | `C:/Project/JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json` + `shots/` beside it | zyt pipeline. Registry id `jwa-system/jwa-full-chain` (draft); built with zyt-setup's `build-page.mjs` without `--no-ledger` since 2026-09-16, so its fix list is public like NCT's |
 | `/harper/guest-concierge-sop/` | `C:/Project/OpenWA/sop/guest-concierge/sop.json` (no screenshots), built with zyt-setup's `build-page.mjs` | zyt pipeline since 2026-09-21. Company `harper` ("Harper Suite", Harper Boutique Hotel at Sutera Avenue). Documents the live Kapso workflow `harper-concierge` + `harper-ops` + `harper-watch` in `OpenWA/kapso/`; Step 03 lists every question the bot answers. (A first version built from the unrelated `C:/Project/Kapso` prototype was replaced the same day.) Fix list public; empty `tracker/seed/*-harper.json` |
 | `/harper/bot-answers/` | Generated at build time by `hosting/hub/build-bot-answers.mjs` from `C:/Project/OpenWA/kapso/prompt/kb.md` (the bot's knowledge base, one table per question in English, Malay and Chinese) plus `C:/Project/OpenWA/sop/guest-concierge/other-flows.md` (non-question messages), then rendered by `build-runbook.mjs` (kind "Reference") | Edit `kb.md` in OpenWA (that changes the bot too) or `other-flows.md`, then redeploy. A malformed `kb.md` entry fails the build |
@@ -59,7 +59,12 @@ belong in layers 1–3, not in the source**.
 | Which pages the left column lists, and in what order | `hosting/hub/projects.json` — pages are grouped under their client, the selected client first. `"nav": "header"` on a page moves it to the top bar instead (pages about this site, not about a client's work) | Redeploy |
 | Task titles, detail, repair, source locations, workstreams | `tracker/seed/*-<key>.json` | Redeploy; new task ids also need Convex rows (below) |
 | Runbook stages and steps (what's next, owner, waits-for, link to a runbook section) | `tracker/seed/runbook-<key>.json` | Redeploy; new step ids need Convex rows — run `seed:nct` (dev and `--prod`) **before** the site deploy, or ticking them fails with "That task does not exist." A real deploy now refuses to ship while any key has no row (the seed-row preflight in `deploy-site.ps1`); a DryRun only warns |
-| A wave heading in a runbook (`### Wave 12 — …`, `4. Wave 1: …`) | `tracker/seed/runbook-<key>.json` gets a step whose `link` or `prompts` points at it | The build fails with `<source> wave heading #<id> has no step` until one does — a runbook cannot gain a wave without a checklist step |
+| A wave heading in a task's runbook (`### Wave 12 — …`, `4. Wave 1: …`) | `tracker/seed/runbook-<key>.json` gets a step, in any task, whose `link` or `prompts` points at it | The build fails with `<source> wave heading #<id> has no step` until one does — a runbook cannot gain a wave without a checklist step. Every `Runbook` page with an `.md` source must be some task's `runbook` (`runbook page <href> is in no task`), so no runbook escapes this rule |
+| The Tasks list: which tasks, their order, runbook, attachments, zip, SOP steps, settled date, migrations | `tasks[]` in `tracker/seed/runbook-<key>.json`. A task groups whole stages in order; each stage is in exactly one task. Task ids (`task-nct-…`) are not Convex keys but must not clash with a step or finding id. `runbook` is a `pages` href with an `.md` source, every `attach[].href` a listed or unlisted page, `download` a `/nct/downloads/<name>.zip` that the bundles build | Redeploy; no Convex rows needed. The build fails with the exact reason (`stage … is in no task`, `… is in two tasks (…)`, `task … attachment … is not a page in projects.json`, `download … is missing from …`) |
+| Who a step is for ("My tasks") | `"assignee": "<first name>"` on the step (1–40 characters after trimming, the same rule as a tick's name). My tasks lists a task when a step is assigned to the viewer's name, or the viewer ticked one of its steps (case and spaces ignored) | Redeploy |
+| Step numbers | None to edit: steps are numbered 1…N per task, in stage order, when the page loads. A wait on a step in another task reads "<task short> · <n>" (e.g. "Steps 11–15 · 18"). `waitsFor` holds step ids and may cross tasks | Reordering or inserting a step renumbers the rest of its task; ids and ticks are unaffected |
+| A task's status | None to edit: derived from live ticks — Done (every step ticked), Waiting on Wilfred (every ready step is Wilfred's), In progress, Not started. A step is ready when it is open and everything it waits for is ticked | — |
+| Look of runbook, plan and crosscheck text (page and dashboard) | `hosting/hub/runbook-body.css` — inlined into every page by `build-runbook.mjs` and into the dashboard by `deploy-site.ps1` (the `RUNBOOK_CSS` placeholder). Page-only rules (table of contents, kicker, source line) stay in `build-runbook.mjs` | Redeploy |
 | Add a company or a page | `projects.json` + seed files + a build block in `deploy-site.ps1` + the path in `PAGES` in `hosting/pwa/sw.js` + a seed mutation in `convex-app/convex/seed.ts` | Redeploy; run its seed |
 | Brand (logo, palette, fonts) | `hosting/hub/brand/BRAND.md`, files beside it, `hosting/pwa/make-icons.ps1` | Redeploy |
 | A runbook step's **Run golden path** button | `"run": "<job id>"` on the step in `tracker/seed/runbook-<key>.json`; job ids and what they run live in `JOBS` in `hosting/runner/server.mjs` | Redeploy (the job itself needs no deploy — restart the runner) |
@@ -72,8 +77,8 @@ But **being published and being listed in the page list are two different things
 
 | | Page built | In the page list (`projects.json`) | Why |
 |---|---|---|---|
-| SOPs, runbooks, the steps 12–15, 16–19 and 20–26 crosschecks, ZYT commands | yes | yes | People browse to them, read them on a phone, and link to a section |
-| A crosscheck that should not be listed (the steps 4–10 one) | yes | **no** — a `pages` entry with `"nav": "hidden"` | It stays a `pages` entry so dashboard steps can take snippets from its source; the page list filters `hidden` out |
+| SOPs, ZYT commands, other companies' pages | yes | yes | People browse to them, read them on a phone, and link to a section |
+| NCT runbooks and crosschecks (since Phase 3, 2026-09-23) | yes | **no** — `pages` entries with `"nav": "hidden"` | The dashboard's Tasks view shows each runbook's text in its task and each crosscheck as an attachment. They stay `pages` entries (with `source`) so steps can take snippets from them and the build can check anchors; the page list filters `hidden` out. Their URLs still work |
 | Step plans (`/nct/step-01-plan/` … `step-27-plan/`) | yes | **no** — listed in the company's `unlisted` array | 700–1000 lines each; five more rows would bury the runbooks. They are reached from the steps 11–15 runbook's §0 table and from dashboard steps that deep-link a section (six stage D steps point into the step 11 plan) |
 
 So a new plan is **published but unlisted**, and added to the download bundles. Do not delete a
@@ -92,9 +97,13 @@ A page is four edits, then a deploy, in this order:
    becomes a table-of-contents entry, so headings are the page's navigation. Never rename a heading
    another page links to: the anchors are its slug.
 2. **`hosting/hub/projects.json`** — a **plan** goes in the company's `unlisted` array (the path
-   only); anything people browse to gets an entry in `pages`: `type` (SOP · Runbook ·
+   only); anything else gets an entry in `pages`: `type` (SOP · Runbook ·
    Plan · Crosscheck · Commands, shown as the chip), `title`, `href` (`/nct/<slug>/`) and `source`
    (repo-relative path; the build reads its mtime for "last edited" and fails if it is missing).
+   An NCT **runbook** is a `pages` entry with `"nav": "hidden"` **plus** a `tasks[]` entry in
+   `tracker/seed/runbook-nct.json` (`runbook` = its href, its stages, its plans and crosscheck in
+   `attach`, its zip in `download`) — the Tasks view is where people read it. A crosscheck is a
+   hidden `pages` entry and an `attach` item of its task.
    `build-seed.mjs` accepts a dashboard-step link to any listed **or** unlisted path, and rejects
    anything else, so a typo in a link still fails the build.
 3. **`hosting/deploy-site.ps1`** — copy an existing block: run `hub/build-runbook.mjs <src> <body>
@@ -233,7 +242,23 @@ node hosting/runner/server.mjs
   Renaming any of them in the source breaks the hosted layout.
 - **`#step-N` anchors** are linked from the dashboard's task panel (`/nct/customer-intake-sop/#step-N`).
 - **Task ids and runbook step ids in `tracker/seed` are Convex keys** (one key space, rows in `findings`). Renaming one orphans its tick history. Runbook `link` anchors are the renderer's heading slugs, so renaming a runbook heading breaks the link.
-- **The dashboard opens on the Runbook view**; `?view=findings` or a finding's `?task=` opens Findings.
+- **Dashboard URLs** (query parameters only; shared links depend on them):
+
+  | URL | Opens |
+  |---|---|
+  | `/?company=nct` | **Tasks** when the company has a runbook, otherwise Overview when it has an SOP, otherwise Findings |
+  | `?view=tasks` / `?view=overview` / `?view=findings` | that view |
+  | `?view=runbook` (legacy) | Tasks |
+  | `?task=task-nct-steps-4-10` | the task view |
+  | `?task=rb-nct-b3-merge-wave-1` (a **step** id; `docs/zyt-commands.md` links these) | the owning task, with that step expanded, scrolled into view and outlined |
+  | `?task=nct-identity` (a **finding** id) | Findings, with its panel open |
+  | `?view=findings&step=8` | Findings filtered to SOP step 8 |
+  | `?view=overview&step=5` | Overview, with the SOP frame at `…?embed=1#step-5` |
+- **Step ids stay Convex keys; display numbers are per task.** Never renumber or rename an id to
+  match a display number — the number is computed, the id holds the tick history.
+- **The task view reads `article.rb-body` and `nav.rb-toc` from the served page** (it fetches the
+  runbook or plan URL and parses it), so `build-runbook.mjs` must keep emitting both, and the page's
+  `.rb-body` rules must stay in `runbook-body.css`, not in the page-only CSS.
 - **Every task belongs to exactly one workstream**; `hosting/hub/build-seed.mjs` fails the build
   otherwise.
 - **Every screenshot the page references must exist**; the build fails otherwise.
