@@ -172,6 +172,14 @@ exists because a terminal run of the suite clears `e2e/out/` before it writes. R
 the machine that made them: the panel reaches them through the runner, so with the runner off, or on
 another computer, there is nothing to show.
 
+**Published recordings.** `node hosting/runner/publish-recordings.mjs` copies the runner's passed saves
+into `hosting/recordings/` (TRACKED — a deploy from another worktree must not wipe them), and
+`deploy-site.ps1` publishes them at `/golden-paths/<job>.mp4|.json`. Every panel loads its journey's
+published recording first, with no runner needed, on any machine; a newer local save replaces it
+on screen, and Regenerate still needs the runner. The service worker leaves `/golden-paths/` alone
+(video is fetched in Range requests, which a cached whole response answers wrongly). The site is
+public, so these videos are too: they may only ever show the throwaway e2e orgs.
+
 A runbook step with a `run` field shows a **Golden path** section. Its button asks
 `hosting/runner/server.mjs` on **the viewer's own computer** (`http://127.0.0.1:4317`) to start a
 headed, slowed Playwright run in the NCT repo, and streams each `test.step` into the panel, then

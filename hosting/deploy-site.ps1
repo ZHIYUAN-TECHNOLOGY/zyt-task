@@ -400,6 +400,20 @@ $hub = $hub.Replace('<!--GOLDEN_PATH_JS-->', $goldenJs).Replace('/*GOLDEN_PATH_C
 Write-Utf8 (Join-Path $public 'index.html') $hub
 Copy-Item (Join-Path $PSScriptRoot 'hub\404.html') $public
 
+# ── golden-path recordings ───────────────────────────────────────────────────
+# Each journey's last PUBLISHED recording (video + verdict + step list), served at
+# /golden-paths/<job>.mp4|.json so a panel can show it with no runner running.
+# hosting/recordings/ is TRACKED on purpose: a deploy publishes what is on disk,
+# and a deploy from another worktree must not wipe the videos. It is filled by
+# `node hosting/runner/publish-recordings.mjs` from the runner's local saves.
+$recordings = Join-Path $PSScriptRoot 'recordings'
+if (Test-Path $recordings) {
+  $gpOut = Join-Path $public 'golden-paths'
+  New-Item -ItemType Directory -Force $gpOut | Out-Null
+  Copy-Item (Join-Path $recordings '*.mp4'), (Join-Path $recordings '*.json') $gpOut -ErrorAction SilentlyContinue
+  Write-Host "golden paths: $(@(Get-ChildItem $gpOut -Filter *.mp4).Count) recordings published"
+}
+
 # ── brand ─────────────────────────────────────────────────────────────────────
 $logo = Join-Path $brand 'logo-light-72.png'
 if (-not (Test-Path $logo)) { throw "Missing $logo - run hosting/pwa/make-icons.ps1 first" }

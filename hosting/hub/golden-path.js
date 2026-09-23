@@ -80,8 +80,9 @@
       streaming: false,
       videoUrl: null,
       videoFor: null,
-      // True while what is shown is a SAVED run from before, not one live now.
-      saved: false,
+      // Where the recording on screen came from: 'live' (a run now), 'local'
+      // (the runner's save on this computer) or 'published' (on the site).
+      source: null,
     };
     var node = h('section', { class: 'gp' + (opts.className ? ' ' + opts.className : '') });
 
@@ -122,11 +123,33 @@
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (last) {
           if (!last || (S.run && S.run.status === 'running')) return;
-          S.saved = true;
+          // A published recording stays on screen unless this one is newer.
+          if (S.source === 'published' && S.end && S.end.at >= last.finishedAt) return;
+          S.source = 'local';
           S.run = { id: 'saved', status: last.status, startedAt: last.startedAt };
           S.steps = last.steps || [];
           S.end = { status: last.status, at: last.finishedAt, video: last.video, output: last.output };
           if (last.video) video(last.video);
+          paint();
+        })
+        .catch(function () {});
+    }
+
+    // The recording published on the site: same origin, so no runner and no
+    // loopback opt-in. Anyone who opens the page sees it, on any machine.
+    function loadPublished() {
+      fetch('/golden-paths/' + encodeURIComponent(S.job) + '.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (pub) {
+          if (!pub || S.source === 'live' || S.source === 'local') return;
+          S.source = 'published';
+          S.run = { id: 'published', status: pub.status, startedAt: pub.startedAt };
+          S.steps = pub.steps || [];
+          var path = pub.hasVideo ? '/golden-paths/' + encodeURIComponent(S.job) + '.mp4' : null;
+          S.end = { status: pub.status, at: pub.finishedAt, video: path };
+          // A plain src: same origin needs no blob, and the video streams.
+          S.videoFor = path;
+          S.videoUrl = path;
           paint();
         })
         .catch(function () {});
@@ -160,7 +183,7 @@
     function event(raw) {
       var e; try { e = JSON.parse(raw); } catch (err) { return; }
       if (e.job && e.job !== S.job) return;
-      if (e.type === 'run-start') { S.run = { id: e.runId, status: 'running', startedAt: e.at }; S.steps = []; S.end = null; S.note = ''; S.saved = false; }
+      if (e.type === 'run-start') { S.run = { id: e.runId, status: 'running', startedAt: e.at }; S.steps = []; S.end = null; S.note = ''; S.source = 'live'; }
       else if (e.type === 'log') S.note = e.text;
       else if (e.type === 'test-begin') S.note = 'Browser open — watch the new window.';
       else if (e.type === 'step-begin') S.steps.push({ title: e.title, state: 'running' });
@@ -219,23 +242,14 @@
       if (S.title && opts.showTitle !== false) append(node, h('p', { class: 'gp-title', text: S.title }));
       append(node, h('p', { class: 'gp-blurb', text: opts.blurb || 'Plays this journey in a browser window on this computer, slowed down so you can follow it. It uses a throwaway test organization on the dev database and removes it afterwards.' }));
 
-      if (S.reach === 'unknown') {
-        append(node, h('p', { class: 'gp-blurb gp-note', text: 'Looking for the runner on this computer…' }));
-        return;
-      }
-      if (S.reach === 'down' || S.reach === 'nojob') {
-        append(node, h('div', { class: 'gp-off' },
-          h('p', { text: S.reach === 'down' ? 'The runner isn’t running on this computer. Start it in C:\\Project\\ZYT-Task:' : 'The runner on this computer doesn’t know this journey. Restart it:' }),
-          h('code', { class: 'gp-cmd', text: 'node hosting/runner/server.mjs' }),
-          h('p', { class: 'gp-blurb', text: 'Already started it? Chrome asks once before a website may reach this computer — press Check again and allow it.' }),
-          h('button', { type: 'button', class: 'gp-retry', disabled: S.busy, onclick: function () { check(true); } }, 'Check again')));
-        return;
-      }
-
-      append(node, h('div', { class: 'gp-actions' },
+      var up = S.reach === 'up';
+      if (up) append(node, h('div', { class: 'gp-actions' },
         h('button', { type: 'button', class: 'gp-run', disabled: running || S.busy, onclick: start },
           running ? 'Running…' : S.end ? (opts.regenLabel || '↻ Regenerate') : (opts.runLabel || '▶ Run golden path')),
         running ? h('button', { type: 'button', class: 'gp-stop', onclick: stop }, 'Stop') : null));
+      else if (S.reach === 'unknown' && !S.end) {
+        append(node, h('p', { class: 'gp-blurb gp-note', text: 'Looking for the runner on this computer…' }));
+      }
 
       if (S.note) append(node, h('p', { class: 'gp-blurb gp-note', role: 'status', text: S.note }));
 
@@ -252,8 +266,11 @@
         var secs = S.run ? Math.round((S.end.at - S.run.startedAt) / 1000) : null;
         var word = { passed: 'Passed', failed: 'Failed', stopped: 'Stopped' }[S.end.status] || S.end.status;
         append(node, h('p', { class: 'gp-result gp-' + S.end.status, role: 'status', text: word + (secs != null ? ' · ' + secs + ' s' : '') }));
-        if (S.saved && S.end.at) {
-          append(node, h('p', { class: 'gp-blurb gp-when', text: 'Recorded ' + new Date(S.end.at).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + ' on this computer. Regenerate to record it again.' }));
+        if ((S.source === 'local' || S.source === 'published') && S.end.at) {
+          var when = new Date(S.end.at).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+          append(node, h('p', { class: 'gp-blurb gp-when', text: S.source === 'published'
+            ? 'Recorded ' + when + ' · published on this site.'
+            : 'Recorded ' + when + ' on this computer. Regenerate to record it again.' }));
         }
         if (S.end.error) append(node, h('p', { class: 'gp-err', text: S.end.error }));
         if (S.end.output) append(node, h('pre', { class: 'gp-out', text: S.end.output }));
@@ -263,8 +280,18 @@
           append(node, h('p', { class: 'gp-blurb', text: 'Fetching the recording…' }));
         }
       }
+      if (S.reach === 'down' || S.reach === 'nojob') {
+        append(node, h('div', { class: 'gp-off' },
+          h('p', { text: S.reach === 'nojob'
+            ? 'The runner on this computer doesn’t know this journey. Restart it:'
+            : (S.end ? 'To play it again live or regenerate it, start the runner in C:\Project\ZYT-Task:' : 'The runner isn’t running on this computer. Start it in C:\Project\ZYT-Task:') }),
+          h('code', { class: 'gp-cmd', text: 'node hosting/runner/server.mjs' }),
+          h('p', { class: 'gp-blurb', text: 'Already started it? Chrome asks once before a website may reach this computer — press Check again and allow it.' }),
+          h('button', { type: 'button', class: 'gp-retry', disabled: S.busy, onclick: function () { check(true); } }, 'Check again')));
+      }
     }
 
+    loadPublished();
     if (S.reach === 'unknown' && !S.busy) check();
     paint();
     return { node: node, refresh: function () { if (!S.busy) check(); } };

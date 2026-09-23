@@ -61,6 +61,10 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
+  // Golden-path recordings go straight to the network: a video is fetched in
+  // Range requests, which a cached whole response answers wrongly, and the
+  // verdict beside it must never be a stale copy.
+  if (url.pathname.startsWith('/golden-paths/')) return;
 
   if (request.mode === 'navigate' && url.origin === self.location.origin) {
     event.respondWith(networkFirst(request));
