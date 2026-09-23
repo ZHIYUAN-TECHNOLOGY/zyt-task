@@ -66,7 +66,7 @@ button { font: inherit; }
 .brand { display: flex; flex: none; }
 .brand img { height: 1.9rem; width: auto; display: block; }
 .divider { width: 1px; height: 1.5rem; background: var(--border); flex: none; }
-/* Header tabs: Projects (the client dashboard) · My tasks · Zhiyuan Tech (the
+/* Header tabs: Projects (the client dashboard) · My tasks · Resources (the
    internal company's own pages). Real links; the script keeps them in the page. */
 .toptabs { display: flex; align-items: center; gap: .15rem; flex: none; }
 .toptab { display: inline-flex; align-items: center; gap: .45rem; padding: .38rem .7rem; border-radius: 9px; font: 500 .84rem var(--sans); color: var(--muted); white-space: nowrap; }
@@ -327,7 +327,7 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .activity { list-style: none; margin: 0; padding: .75rem 1rem .9rem; font-size: .78rem; color: var(--muted); display: flex; flex-direction: column; gap: .4rem; }
 .activity b { color: var(--heading); font-weight: 600; }
 .activity time { font: .7rem var(--mono); color: var(--faint); margin-left: .35rem; }
-/* page cards: a company's pages on its Overview, and ZYT's own on Zhiyuan Tech */
+/* page cards: a company's pages on its Overview, and ZYT's own on Resources */
 .pg-grid { list-style: none; margin: 1.3rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: .75rem; }
 .pg-card { display: flex; align-items: flex-start; gap: .85rem; height: 100%; padding: 1rem 1.05rem; background: var(--canvas); border: 1px solid var(--border); border-radius: 10px; color: var(--text); transition: border-color .2s; }
 .pg-card:hover { border-color: var(--accent); text-decoration: none; }
@@ -345,7 +345,7 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .stat-link:hover { border-color: var(--accent); text-decoration: none; }
 .stat-link b { font: 600 .9rem var(--mono); }
 
-/* My tasks and Zhiyuan Tech: top-level pages, no company column */
+/* My tasks and Resources: top-level pages, no company column */
 #shell[data-view="mine"], #shell[data-view="zyt"] { grid-template-columns: minmax(0, 1fr); }
 #shell[data-view="mine"] .company-side, #shell[data-view="zyt"] .company-side,
 #shell[data-view="mine"] .switcher-row, #shell[data-view="zyt"] .switcher-row { display: none; }
@@ -596,7 +596,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   <nav class="toptabs" aria-label="Sections">
     <a class="toptab" id="tab-projects" href="/" data-fk="tab:projects"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="toptab-l">Projects</span></a>
     <a class="toptab" id="tab-mine" href="?page=mine" data-fk="tab:mine"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg><span class="toptab-l">My tasks</span><span class="toptab-n" id="mine-n" hidden><span id="mine-n-num"></span><span class="sr"> open</span></span></a>
-    <a class="toptab" id="tab-zyt" href="?page=zyt" data-fk="tab:zyt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 9h2a2 2 0 0 1 2 2v10"/><path d="M8 7h4M8 11h4M8 15h4M2 21h20"/></svg><span class="toptab-l long">Zhiyuan Tech</span><span class="toptab-s" aria-hidden="true">ZYT</span></a>
+    <a class="toptab" id="tab-zyt" href="?page=zyt" data-fk="tab:zyt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 9h2a2 2 0 0 1 2 2v10"/><path d="M8 7h4M8 11h4M8 15h4M2 21h20"/></svg><span class="toptab-l">Resources</span></a>
   </nav>
   <label class="topsearch">
     <span class="sr" id="q-label">Search tasks and steps</span>
@@ -780,7 +780,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var shown = p.pages.filter(function (pg) { return pg.nav !== 'hidden'; });
     p.visPages = shown.filter(function (pg) { return pg.type === 'SOP'; }).concat(shown.filter(function (pg) { return pg.type !== 'SOP'; }));
   });
-  // The internal company: it has its own page (Zhiyuan Tech) and is not in the switcher.
+  // The internal company: it has its own page (Resources) and is not in the switcher.
   var HOME = 'zyt';
   var CLIENTS = SEED.projects.filter(function (p) { return p.key !== HOME; });
   if (!CLIENTS.length) CLIENTS = SEED.projects.slice();
@@ -1618,7 +1618,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     document.querySelectorAll('#view-findings .seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.show === S.show)); });
   }
 
-  // ── page cards: a company's pages (Overview) and ZYT's own (Zhiyuan Tech) ──
+  // ── page cards: a company's pages (Overview) and ZYT's own (Resources) ──
   var PAGE_BLURB = { SOP: 'The whole chain: every step, who does it and where in the system.' };
   function pageCard(pg, c) {
     // ?step=N (from a finding's "Where in the SOP") carries on to the SOP's own anchor
@@ -1646,11 +1646,11 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     ]);
   }
 
-  // ── Zhiyuan Tech: the internal company's own pages (and findings, if it ever has any) ──
+  // ── Resources: the internal company's own pages (and findings, if it ever has any) ──
   function renderZyt() {
     var root = $('view-zyt'), p = projectOf(HOME), q = S.qs.zyt;
     root.textContent = '';
-    var head = [h('p', { class: 'kicker', text: 'Internal' + (p && p.place ? ' · ' + p.place : '') }), h('h1', { id: 'zyt-title', text: 'Zhiyuan Tech' })];
+    var head = [h('p', { class: 'kicker', text: 'Internal' + (p && p.place ? ' · ' + p.place : '') }), h('h1', { id: 'zyt-title', text: 'Resources' })];
     if (!p) { append(root, [head, h('div', { class: 'empty' }, h('h3', { text: 'Nothing here yet' }), h('p', { text: 'ZYT’s own pages will show here.' }))]); return; }
     var pages = p.visPages.filter(function (pg) { return !q || (pg.title + ' ' + pg.type).toLowerCase().indexOf(q) !== -1; });
     var open = p.tasks.filter(function (t) { return !isDone(t); }).length;
@@ -1921,7 +1921,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   }
 
   // search text is kept per view: Tasks (and the open task's checklist), Findings, My tasks
-  // or Zhiyuan Tech's pages
+  // or the Resources pages
   var Q_LABELS = { tasks: 'Search tasks and steps', findings: 'Search findings', mine: 'Search my steps', zyt: 'Search pages' };
   function qKey() { return S.view === 'findings' || S.view === 'mine' || S.view === 'zyt' ? S.view : 'tasks'; }
   function syncSearch() {

@@ -56,7 +56,7 @@ belong in layers 1–3, not in the source**.
 | JWA SOP content | `sop.json` via `/zyt-update` in the JWA repo | Redeploy with `deploy-site.ps1` — the zyt skills' own publish step targets a separate Worker (`hosting/<worker-name>/`), not this site |
 | Look or behaviour of every SOP page | `hosting/hub/sop-theme.css`, `sop-layout.css`, `sop-layout.js` | Redeploy |
 | Dashboard UI | `hosting/hub/index.html` | Redeploy |
-| Which pages a company's **Overview** shows as cards, and in what order | `hosting/hub/projects.json` — the company's `pages`, its SOP first, then the rest in file order; `"nav": "hidden"` leaves a page off. The internal company `zyt` is not in the switcher: its pages (ZYT commands) are the cards on the **Zhiyuan Tech** header tab (`?page=zyt`). The header's three tabs (Projects · My tasks · Zhiyuan Tech) are fixed in `index.html`, not read from `projects.json` (the old `"nav": "header"` flag is gone) | Redeploy |
+| Which pages a company's **Overview** shows as cards, and in what order | `hosting/hub/projects.json` — the company's `pages`, its SOP first, then the rest in file order; `"nav": "hidden"` leaves a page off. The internal company `zyt` is not in the switcher: its pages (ZYT commands) are the cards on the **Resources** header tab (`?page=zyt`). The header's three tabs (Projects · My tasks · Resources) are fixed in `index.html`, not read from `projects.json` (the old `"nav": "header"` flag is gone) | Redeploy |
 | Task titles, detail, repair, source locations, workstreams | `tracker/seed/*-<key>.json` | Redeploy; new task ids also need Convex rows (below) |
 | Runbook stages and steps (what's next, owner, waits-for, link to a runbook section) | `tracker/seed/runbook-<key>.json` | Redeploy; new step ids need Convex rows — run `seed:nct` (dev and `--prod`) **before** the site deploy, or ticking them fails with "That task does not exist." A real deploy now refuses to ship while any key has no row (the seed-row preflight in `deploy-site.ps1`); a DryRun only warns |
 | A wave heading in a task's runbook (`### Wave 12 — …`, `4. Wave 1: …`) | `tracker/seed/runbook-<key>.json` gets a step, in any task, whose `link` or `prompts` points at it | The build fails with `<source> wave heading #<id> has no step` until one does — a runbook cannot gain a wave without a checklist step. Every `Runbook` page with an `.md` source must be some task's `runbook` (`runbook page <href> is in no task`), so no runbook escapes this rule |
@@ -250,7 +250,7 @@ node hosting/runner/server.mjs
   |---|---|
   | `/?company=nct` | **Tasks** when the company has a runbook, otherwise Overview when it has pages, otherwise Findings (header tab **Projects**) |
   | `?page=mine` | **My tasks** (header tab): every company's runbook steps assigned to the viewer's name (`zyt.author`), or owned by Wilfred when the name is Wilfred, grouped by company and task |
-  | `?page=zyt` | **Zhiyuan Tech** (header tab): the internal company's own pages. A bare `?company=zyt` (the ZYT pages' crumb) lands here too |
+  | `?page=zyt` | **Resources** (header tab): the internal company's own pages. A bare `?company=zyt` (the ZYT pages' crumb) lands here too |
   | `?view=tasks` / `?view=overview` / `?view=findings` | that view |
   | `?view=runbook` (legacy) | Tasks |
   | `?task=task-nct-steps-4-10` | the task view |
