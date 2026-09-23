@@ -150,22 +150,27 @@ $themeScript = "<script>(function(){var t='dark';try{t=localStorage.getItem('zyt
 # service worker's PAGES list and no page can be served with a stale copy of the other half.
 $goldenCss = "<style>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\golden-path.css')) + "`n</style>"
 $goldenJs  = "<script>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\golden-path.js')) + "`n</script>"
-# ZYT palette, appended after the page's own <style> so its token blocks win.
-$sopTheme = $goldenCss + "`n" + $goldenJs + "`n" +
-            "<style>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\sop-theme.css')) + "`n</style>`n" +
-            # scrollbar width for the full-bleed ledger (see sop-theme.css)
-            "<script>(function(){function s(){document.documentElement.style.setProperty('--zyt-sbw',Math.max(0,window.innerWidth-document.documentElement.clientWidth)+'px')}" +
-            "s();addEventListener('resize',s);addEventListener('load',s)})();</script>`n" +
-            # hosted layout: top bar styles, top block in Step 01's pane, chart guide sheet, window-tall ledger
-            "<style>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\sop-layout.css')) + "`n</style>`n" +
-            "<script>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\sop-layout.js')) + "`n</script>"
+# ZYT palette + hosted layout CSS, placed right after the page's own <style> so its token blocks
+# win. It must come before the page's markup: at the end of the ~370 KB body the browser painted
+# the page in its own amber palette with an unstyled top bar first, then flipped to the ZYT one.
+$sopCss = $goldenCss + "`n" +
+          "<style>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\sop-theme.css')) + "`n</style>`n" +
+          # hosted layout: top bar styles, top block in Step 01's pane, chart guide sheet, window-tall ledger
+          "<style>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\sop-layout.css')) + "`n</style>`n"
+$sopJs = $goldenJs + "`n" +
+         # scrollbar width for the full-bleed ledger (see sop-theme.css)
+         "<script>(function(){function s(){document.documentElement.style.setProperty('--zyt-sbw',Math.max(0,window.innerWidth-document.documentElement.clientWidth)+'px')}" +
+         "s();addEventListener('resize',s);addEventListener('load',s)})();</script>`n" +
+         "<script>`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'hub\sop-layout.js')) + "`n</script>"
 # Wraps an artifact-style SOP body (no html/head/body) in the hosted page; shared by every SOP.
 function Get-SopHtml([string]$body, [string]$coKey, [string]$coLabel) {
   $bar = $backBar.Replace('__CO_KEY__', $coKey).Replace('__CO_LABEL__', $coLabel)
+  $i = $body.IndexOf('</style>')
+  $body = if ($i -ge 0) { $body.Insert($i + 8, "`n" + $sopCss) } else { $sopCss + $body }
   "<!doctype html>`n<html lang=`"en`">`n<head>`n<meta charset=`"utf-8`">`n" +
   "<meta name=`"viewport`" content=`"width=device-width,initial-scale=1`">`n" +
   "<meta name=`"robots`" content=`"noindex,nofollow`">`n" + $pwaHead + $themeScript + $reset +
-  "</head>`n<body>`n" + $bar + "`n" + $body + "`n" + $sopTheme + "`n" + $pwaScript + "`n</body>`n</html>`n"
+  "</head>`n<body>`n" + $bar + "`n" + $body + "`n" + $sopJs + "`n" + $pwaScript + "`n</body>`n</html>`n"
 }
 $sopHtml = Get-SopHtml $sopBody 'nct' 'NCT'
 Write-Utf8 (Join-Path $sopDir 'index.html') $sopHtml
