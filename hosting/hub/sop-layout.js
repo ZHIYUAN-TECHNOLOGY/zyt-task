@@ -241,7 +241,7 @@
     });
     var body = box.querySelector('.sm-body');
     if (body) body.scrollTop = 0;
-    if (nodes[n]) nodes[n].scrollIntoView({ block: 'nearest' });
+    if (nodes[n]) revealInFlow(nodes[n]);
     markNotMine(box, n);
     dropSections(box);
     addRunPanel(box, n);
@@ -286,12 +286,27 @@
     line.appendChild(go);
   }
 
+  // Bring a flow node into view by scrolling the flow itself — down the column, or along the
+  // strip on a phone. Never scrollIntoView: that also scrolls the page and, embedded, the
+  // dashboard's window around the frame.
+  function revealInFlow(node) {
+    var f = flow.getBoundingClientRect(), r = node.getBoundingClientRect();
+    if (r.top < f.top) flow.scrollTop -= f.top - r.top;
+    else if (r.bottom > f.bottom) flow.scrollTop += r.bottom - f.bottom;
+    if (r.left < f.left) flow.scrollLeft -= f.left - r.left;
+    else if (r.right > f.right) flow.scrollLeft += r.right - f.right;
+  }
+
   function show(n, bringIntoView) {
     if (!SOP.STEP[n]) return;
     if (n !== current) window.openStepGuide(n);
     if (bringIntoView) {
       var top = guide.getBoundingClientRect().top;
-      if (top < 0 || top > window.innerHeight / 2) guide.scrollIntoView({ block: 'start' });
+      if (top < 0 || top > window.innerHeight / 2) {
+        // embedded, scrollIntoView would scroll the dashboard around the frame too
+        if (EMBED) { var se = document.scrollingElement; se.scrollTop += top; }
+        else guide.scrollIntoView({ block: 'start' });
+      }
     }
   }
 

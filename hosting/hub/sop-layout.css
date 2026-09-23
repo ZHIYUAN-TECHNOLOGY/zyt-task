@@ -46,6 +46,11 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 
 /* ── the page is one section: role tabs + App URL, the flow on the left, the step on the right ── */
 .zyt-gone { display: none !important; }
+/* The chart and the long-form document are never shown here. Hidden from the <head> CSS, before
+   the page's own script runs: that script scrolls to a #step-N article in the document on load,
+   which inside the dashboard's iframe scrolled the dashboard too. Only the three SOP pages have
+   these ids; sop-layout.js also marks them .zyt-gone. */
+.wrap > #map, .wrap > #document, .wrap > #doc-body { display: none !important; }
 .wrap:has(> .zyt-guide) { padding-top: 0; }
 /* ?embed=1 (the dashboard's Overview iframe): no top bar, the section fills the frame */
 html.zyt-embed { --zyt-top: 0px; scroll-padding-top: 0; }
