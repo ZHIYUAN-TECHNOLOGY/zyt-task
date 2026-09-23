@@ -35,6 +35,20 @@
     { from: 24, to: 27, job: 'nct-invoice-close-steps-24-27', covers: 'steps 24–27' },
   ];
 
+  /** The seeded e2e actor keys (nct-layout e2e/fixtures/seed-cli.ts ACTORS),
+   * as a person would name the screen. */
+  var ROLE_LABELS = {
+    owner: 'Owner',
+    salesperson: 'Salesperson',
+    managerA: 'Branch manager',
+    managerB: 'Second branch manager',
+    accountant: 'Accountant',
+    directorA: 'Director',
+    directorB: 'Second director',
+    viewer: 'Viewer',
+  };
+  function roleLabel(role) { return ROLE_LABELS[role] || role || ''; }
+
   function jobForStep(n) {
     for (var i = 0; i < BY_STEP.length; i++) {
       if (n >= BY_STEP[i].from && n <= BY_STEP[i].to) return BY_STEP[i];
@@ -78,8 +92,11 @@
       note: '',
       busy: false,
       streaming: false,
-      videoUrl: null,
-      videoFor: null,
+      // The run's clips, one per person on screen: { src, role, local }.
+      clips: [],
+      ci: 0,
+      // Runner clip src → blob URL (or 'loading').
+      blobs: {},
       // Where the recording on screen came from: 'live' (a run now), 'local'
       // (the runner's save on this computer) or 'published' (on the site).
       source: null,
@@ -128,8 +145,8 @@
           S.source = 'local';
           S.run = { id: 'saved', status: last.status, startedAt: last.startedAt };
           S.steps = last.steps || [];
-          S.end = { status: last.status, at: last.finishedAt, video: last.video, output: last.output };
-          if (last.video) video(last.video);
+          S.end = { status: last.status, at: last.finishedAt, output: last.output };
+          setClips((last.videos || []).map(function (v) { return { src: v.src, role: v.role, local: true }; }));
           paint();
         })
         .catch(function () {});
@@ -145,11 +162,11 @@
           S.source = 'published';
           S.run = { id: 'published', status: pub.status, startedAt: pub.startedAt };
           S.steps = pub.steps || [];
-          var path = pub.hasVideo ? '/golden-paths/' + encodeURIComponent(S.job) + '.mp4' : null;
-          S.end = { status: pub.status, at: pub.finishedAt, video: path };
-          // A plain src: same origin needs no blob, and the video streams.
-          S.videoFor = path;
-          S.videoUrl = path;
+          S.end = { status: pub.status, at: pub.finishedAt };
+          // Plain srcs: same origin needs no blob, and the video streams.
+          setClips((pub.videos || []).map(function (v) {
+            return { src: '/golden-paths/' + encodeURIComponent(S.job) + '-' + v.i + '.mp4', role: v.role, local: false };
+          }));
           paint();
         })
         .catch(function () {});
@@ -193,25 +210,39 @@
       } else if (e.type === 'run-end') {
         S.end = e; if (S.run) S.run.status = e.status; S.note = '';
         S.steps.forEach(function (x) { if (x.state === 'running') x.state = 'fail'; });
+        setClips((e.videos || []).map(function (v) { return { src: v.src, role: v.role, local: true }; }));
       }
-      if (S.end && S.end.video) video(S.end.video);
       paint();
     }
 
-    // A <video> element cannot opt in to a loopback request, so the file is
-    // fetched (which can) and handed to the element as a blob.
-    function video(path) {
-      if (S.videoFor === path) return;
-      S.videoFor = path;
-      req(path, null, 30000)
+    // A journey with several people has one clip per person, labelled by the
+    // role whose screen it is; the first is shown until another is picked.
+    function setClips(clips) {
+      S.clips = clips;
+      S.ci = 0;
+      if (clips.length) loadClip(clips[0]);
+    }
+
+    // A runner clip is fetched and handed to the <video> as a blob, because an
+    // element cannot opt in to a loopback request; a published clip is same
+    // origin and plays from its URL.
+    function loadClip(clip) {
+      if (!clip.local || S.blobs[clip.src]) return;
+      S.blobs[clip.src] = 'loading';
+      req(clip.src, null, 30000)
         .then(function (r) { return r.ok ? r.blob() : null; })
         .then(function (b) {
-          if (!b) return;
-          if (S.videoUrl) window.URL.revokeObjectURL(S.videoUrl);
-          S.videoUrl = window.URL.createObjectURL(b);
+          if (!b) { delete S.blobs[clip.src]; return; }
+          S.blobs[clip.src] = window.URL.createObjectURL(b);
           paint();
         })
-        .catch(function () { S.videoFor = null; });
+        .catch(function () { delete S.blobs[clip.src]; });
+    }
+
+    function clipUrl(clip) {
+      if (!clip.local) return clip.src;
+      var u = S.blobs[clip.src];
+      return u && u !== 'loading' ? u : null;
     }
 
     function start() {
@@ -234,8 +265,10 @@
 
     function paint() {
       var running = S.run && S.run.status === 'running';
+      var clip = S.clips[S.ci] || null;
       var oldVideo = node.querySelector('video');
-      var keepVideo = oldVideo && S.end && oldVideo.dataset.src === S.end.video ? oldVideo : null;
+      // The same clip keeps its element, so a repaint does not restart it.
+      var keepVideo = oldVideo && clip && oldVideo.dataset.src === clip.src ? oldVideo : null;
       node.textContent = '';
 
       if (opts.heading !== false) append(node, h('h3', { text: 'Golden path' }));
@@ -274,9 +307,21 @@
         }
         if (S.end.error) append(node, h('p', { class: 'gp-err', text: S.end.error }));
         if (S.end.output) append(node, h('pre', { class: 'gp-out', text: S.end.output }));
-        if (S.end.video && S.videoUrl) {
-          append(node, keepVideo || h('video', { class: 'gp-video', controls: true, preload: 'metadata', src: S.videoUrl, 'data-src': S.end.video }));
-        } else if (S.end.video) {
+        if (S.clips.length > 1) {
+          // One clip per person: whose screen to watch.
+          append(node, h('div', { class: 'gp-clips', role: 'group', 'aria-label': 'Whose screen' }, S.clips.map(function (c, i) {
+            return h('button', {
+              type: 'button',
+              class: 'gp-clip',
+              'aria-pressed': String(i === S.ci),
+              onclick: function () { S.ci = i; loadClip(c); paint(); },
+            }, roleLabel(c.role) || 'Screen ' + (i + 1));
+          })));
+        }
+        var url = clip && clipUrl(clip);
+        if (url) {
+          append(node, keepVideo || h('video', { class: 'gp-video', controls: true, preload: 'metadata', src: url, 'data-src': clip.src }));
+        } else if (clip) {
           append(node, h('p', { class: 'gp-blurb', text: 'Fetching the recording…' }));
         }
       }
@@ -284,7 +329,7 @@
         append(node, h('div', { class: 'gp-off' },
           h('p', { text: S.reach === 'nojob'
             ? 'The runner on this computer doesn’t know this journey. Restart it:'
-            : (S.end ? 'To play it again live or regenerate it, start the runner in C:\Project\ZYT-Task:' : 'The runner isn’t running on this computer. Start it in C:\Project\ZYT-Task:') }),
+            : (S.end ? 'To play it again live or regenerate it, start the runner in C:\\Project\\ZYT-Task:' : 'The runner isn’t running on this computer. Start it in C:\\Project\\ZYT-Task:') }),
           h('code', { class: 'gp-cmd', text: 'node hosting/runner/server.mjs' }),
           h('p', { class: 'gp-blurb', text: 'Already started it? Chrome asks once before a website may reach this computer — press Check again and allow it.' }),
           h('button', { type: 'button', class: 'gp-retry', disabled: S.busy, onclick: function () { check(true); } }, 'Check again')));

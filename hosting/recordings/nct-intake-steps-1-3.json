@@ -1,0 +1,42 @@
+{
+  "job": "nct-intake-steps-1-3",
+  "title": "NCT · SOP steps 1–3 golden path",
+  "status": "passed",
+  "startedAt": 1790147162850,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Step 1 · The inbox is paused — the enquiry cannot be read here today",
+      "state": "ok",
+      "ms": 2993
+    },
+    {
+      "title": "Step 2 · Search the directory, then add the company",
+      "state": "ok",
+      "ms": 3279
+    },
+    {
+      "title": "Step 2 · The customer shows in the directory",
+      "state": "ok",
+      "ms": 4084
+    },
+    {
+      "title": "Step 3 · Record the person who wrote in as primary contact",
+      "state": "ok",
+      "ms": 2594
+    },
+    {
+      "title": "Step 3 · The contact is listed as Primary",
+      "state": "ok",
+      "ms": 275
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "owner"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176226
+}

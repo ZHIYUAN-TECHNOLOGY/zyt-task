@@ -1,0 +1,56 @@
+{
+  "job": "nct-quote-decide-steps-8-10",
+  "title": "NCT · SOP steps 8–10 golden path",
+  "status": "passed",
+  "startedAt": 1790147142433,
+  "finishedAt": 1790147176075,
+  "steps": [
+    {
+      "title": "Before the journey · a customer with a primary contact, and a quotation",
+      "state": "ok",
+      "ms": 4881
+    },
+    {
+      "title": "Step 8 · Sales submits the quotation for review",
+      "state": "ok",
+      "ms": 7310
+    },
+    {
+      "title": "Step 8 · The branch manager approves it from the review queue",
+      "state": "ok",
+      "ms": 4978
+    },
+    {
+      "title": "Step 8 · Approved — and now the record refuses to change",
+      "state": "ok",
+      "ms": 4901
+    },
+    {
+      "title": "Step 9 · Send is prepared for the primary contact — and cancelled",
+      "state": "ok",
+      "ms": 4956
+    },
+    {
+      "title": "Step 10 · Nothing can be decided, because nothing was sent",
+      "state": "ok",
+      "ms": 34
+    },
+    {
+      "title": "Step 10 · Duplicate starts the chain again from draft",
+      "state": "ok",
+      "ms": 6582
+    }
+  ],
+  "videos": [
+    {
+      "i": 0,
+      "role": "salesperson"
+    },
+    {
+      "i": 1,
+      "role": "managerA"
+    }
+  ],
+  "hasVideo": true,
+  "publishedAt": 1790147176239
+}
