@@ -92,3 +92,8 @@ hosting/site/harper-guest-concierge-sop.html
 # The runner keeps each journey's last run here (hosting/runner/server.mjs).
 # Videos of a throwaway test org: local evidence, not source.
 hosting/runner/runs/
+
+# ── Runbooks-as-tasks mockup: copies of already-published files it serves locally ──
+_plan/09-23_runbook-tasks/sop/
+_plan/09-23_runbook-tasks/brand/
+_plan/09-23_runbook-tasks/favicon.*

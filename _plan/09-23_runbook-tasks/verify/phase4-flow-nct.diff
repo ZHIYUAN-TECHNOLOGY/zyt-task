@@ -1,0 +1,13 @@
+diff --git a/tracker/seed/flow-nct.json b/tracker/seed/flow-nct.json
+index bebaf0a..4900206 100644
+--- a/tracker/seed/flow-nct.json
++++ b/tracker/seed/flow-nct.json
+@@ -28,7 +28,7 @@
+     {
+       "n": 1,
+       "key": "step-01",
+-      "title": "Read the enquiry Email only",
++      "title": "Read the enquiry",
+       "phase": "A",
+       "role": "Sales · needs thread:read",
+       "routes": [
