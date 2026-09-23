@@ -337,7 +337,10 @@ Write-Utf8 (Join-Path $public 'harper\guest-concierge-sop\index.html') (Get-SopH
 # -- Harper Suite: every question the bot answers, generated from the bot's own knowledge base --
 $baMd = Join-Path $site 'harper-bot-answers.md'
 $baBody = Join-Path $site 'harper-bot-answers.body.html'
-node (Join-Path $PSScriptRoot 'hub\build-bot-answers.mjs') (Join-Path $root '..\OpenWA\kapso\prompt\kb.md') (Join-Path $root '..\OpenWA\sop\guest-concierge\other-flows.md') $baMd
+# OpenWA f1578a5 moved kb.md, unchanged, to prompt/legacy/ when ready-made replies (presets.json) took
+# over from KB paraphrasing; this page is still built from that knowledge base
+$baKb = Join-Path $root '..\OpenWA\kapso\prompt\legacy\kb.md'
+node (Join-Path $PSScriptRoot 'hub\build-bot-answers.mjs') $baKb (Join-Path $root '..\OpenWA\sop\guest-concierge\other-flows.md') $baMd
 if ($LASTEXITCODE -ne 0) { throw 'build-bot-answers.mjs failed for Harper Suite' }
 node (Join-Path $PSScriptRoot 'hub\build-runbook.mjs') $baMd $baBody 'Reference' 'Harper Suite' 'Harper'
 if ($LASTEXITCODE -ne 0) { throw 'build-runbook.mjs failed for the Harper bot answers page' }

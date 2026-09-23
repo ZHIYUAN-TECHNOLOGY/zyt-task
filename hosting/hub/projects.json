@@ -161,7 +161,7 @@
         "type": "Reference",
         "title": "What the bot answers",
         "href": "/harper/bot-answers/",
-        "source": "../OpenWA/kapso/prompt/kb.md"
+        "source": "../OpenWA/kapso/prompt/legacy/kb.md"
       }
     ]
   },
