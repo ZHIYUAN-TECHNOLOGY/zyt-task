@@ -2,10 +2,9 @@
    page's own scripts. customer-intake-sop.html (also the claude.ai artifact) is not edited.
    Everything here MOVES existing nodes, so the listeners the page bound by id keep working.
      1. Title block, phase index and "How they arrive" show in the chain pane while Step 01 is shown.
-     2. The whole chain (chart + step pane) lives in a full-screen view opened by the tab on the
-        right edge; it fits one window. The App URL sits above the step pane; the chart's intro
+     2. "What to fix first" is removed; the whole chain (chart + step pane) sits in its place as
+        a window-tall section. The App URL sits above the step pane; the chart's intro
         paragraph and legend are removed.
-     3. "The document" moves below "What to fix first".
      4. The ZYT top bar's theme button (same zyt.theme key as the dashboard). */
 (function () {
   'use strict';
@@ -55,50 +54,22 @@
     placeIntro();
   }
 
-  // ── 2. the whole chain as a full-screen view ──
+  // ── 2. the whole chain, inline where "What to fix first" was ──
+  // The ranked-defects ledger is dropped from this page; the chart and step pane take its
+  // place as a window-tall section, so no modal, edge tab or close button is needed.
   var chain = $('.chain');
   var map = $('#map');
-  var sheet = null, tab = null, closeBtn = null, lastFocus = null;
-
-  function isOpen() { return !!sheet && !sheet.hidden; }
-
-  function setPageInert(on) {
-    ['.zyt-top', '.wrap'].forEach(function (sel) {
-      var el = $(sel);
-      if (el) { el.inert = on; if (on) el.setAttribute('aria-hidden', 'true'); else el.removeAttribute('aria-hidden'); }
-    });
-  }
+  var fixes = $('#fixes');
+  var sheet = null;
 
   function openChain() {
-    if (!sheet || isOpen()) return;
-    lastFocus = document.activeElement;
-    sheet.hidden = false;
-    // a class, not an inline style: the step guide clears html.style.overflow when it closes
-    document.documentElement.classList.add('zyt-chain-open');
-    setPageInert(true);
-    tab.setAttribute('aria-expanded', 'true');
-    closeBtn.focus({ preventScroll: true });
-  }
-
-  function closeChain(restoreFocus) {
-    if (!isOpen()) return;
-    sheet.hidden = true;
-    document.documentElement.classList.remove('zyt-chain-open');
-    setPageInert(false);
-    tab.setAttribute('aria-expanded', 'false');
-    if (restoreFocus !== false) {
-      var back = lastFocus && document.contains(lastFocus) && lastFocus !== document.body ? lastFocus : tab;
-      back.focus({ preventScroll: true });
-    }
+    if (sheet) sheet.scrollIntoView({ block: 'start' });
   }
 
   if (chain) {
-    sheet = make('div', 'zyt-chain');
+    sheet = make('section', 'zyt-chain');
     sheet.id = 'zyt-chain';
-    sheet.setAttribute('role', 'dialog');
-    sheet.setAttribute('aria-modal', 'true');
     sheet.setAttribute('aria-label', 'The whole chain');
-    sheet.hidden = true;
 
     // no header: the chart's intro paragraph and legend are dropped from this page
     ['#map > .lede', '#map > .map-legend'].forEach(function (sel) {
@@ -106,23 +77,16 @@
       if (el) el.remove();
     });
 
-    closeBtn = make('button', 'zyt-chain-close', '×');
-    closeBtn.type = 'button';
-    closeBtn.setAttribute('aria-label', 'Close the whole chain');
-
-    // right column = App URL + close above the step pane. The pane is rebuilt on every hover
+    // right column = App URL above the step pane. The pane is rebuilt on every hover
     // (innerHTML = ""), so the form sits beside it rather than inside it.
     if (pane) {
       var side = make('div', 'zyt-side');
       var sideTools = make('div', 'zyt-side-tools');
       var appUrl = $('#baseurl');
       if (appUrl) sideTools.appendChild(appUrl);
-      sideTools.appendChild(closeBtn);
       pane.parentNode.insertBefore(side, pane);
-      side.appendChild(sideTools);
+      if (appUrl) side.appendChild(sideTools);
       side.appendChild(pane);
-    } else {
-      sheet.appendChild(closeBtn);
     }
 
     var body = make('div', 'zyt-chain-body');
@@ -131,42 +95,15 @@
     if (roleSelect && roleSelect.classList.contains('role-select')) body.appendChild(roleSelect);
     body.appendChild(chain);
     sheet.appendChild(body);
-    document.body.appendChild(sheet);
+    // the hosted page showed What to fix first above The document; the chain takes that slot
+    var anchor = $('#document') || fixes || map;
+    if (anchor) anchor.parentNode.insertBefore(sheet, anchor);
+    else document.body.appendChild(sheet);
     if (map) map.hidden = true;
-
-    tab = make('button', 'zyt-chain-tab', 'The whole chain');
-    tab.type = 'button';
-    tab.setAttribute('aria-controls', 'zyt-chain');
-    tab.setAttribute('aria-expanded', 'false');
-    document.body.appendChild(tab);
-
-    tab.addEventListener('click', openChain);
-    closeBtn.addEventListener('click', function () { closeChain(); });
-
-    // Esc closes the view — unless the step guide is open on top of it; that closes first.
-    // Capture phase, so this sees the guide before the guide's own handler removes it.
-    window.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape' || !isOpen() || document.querySelector('.sm-backdrop')) return;
-      closeChain();
-    }, true);
-
-    // links from the pane to the document ("Open step 08 in the document") leave the view
-    sheet.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('a[href^="#"]');
-      if (!a) return;
-      var href = a.getAttribute('href');
-      if (href === '#arrivals' || href === '#map') return; // already inside this view
-      closeChain(false);
-    });
-
-    // "Repairs · Step 25" chips in What to fix first point at the chart: open the view first
-    if (typeof window.chainFocus === 'function') {
-      var focusInChart = window.chainFocus;
-      window.chainFocus = function (kind, n) { openChain(); return focusInChart(kind, n); };
-    }
   }
+  if (fixes) fixes.remove();
 
-  // #arrivals (and #map) now live inside the view: open it, show Step 01, then scroll
+  // #arrivals (and #map) now live inside the chain section: show Step 01, then scroll
   function followHash() {
     if (location.hash === '#map') { openChain(); return; }
     if (location.hash !== '#arrivals') return;
@@ -178,8 +115,8 @@
     var target = $('#arrivals');
     if (target) target.scrollIntoView({ block: 'start' });
   }
-  // A shared ?role= link means "show me my flow", and the role rail lives inside the view.
-  // The page drops an unknown role from the URL on init, so only a real role opens it.
+  // A shared ?role= link means "show me my flow", and the role rail lives in the chain section.
+  // The page drops an unknown role from the URL on init, so only a real role scrolls to it.
   function followRole() {
     var role = null;
     try { role = new URL(location.href).searchParams.get('role'); } catch (e) {}
@@ -250,7 +187,4 @@
     }
   }).observe(document.body, { childList: true });
 
-  // ── 3. The document below What to fix first ──
-  var fixes = $('#fixes'), docHead = $('#document'), docBody = $('#doc-body');
-  if (fixes && docHead && docBody && fixes.after) fixes.after(docHead, docBody);
 })();

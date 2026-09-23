@@ -36,7 +36,7 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 .zyt-theme .sun { display: none; }
 :root[data-theme="dark"] .zyt-theme .sun { display: block; }
 :root[data-theme="dark"] .zyt-theme .moon { display: none; }
-.zyt-theme:focus-visible, .zyt-chain-tab:focus-visible, .zyt-chain-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.zyt-theme:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 40rem) {
   .zyt-divider { display: none; }
   .zyt-brand img { height: 1.5rem; }
@@ -51,32 +51,20 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 .chain-pane .zyt-intro .index { margin-top: 1.4rem; }
 .chain-pane .zyt-intro .arrivals { margin-top: 1.6rem; }
 
-/* ── the whole chain: tab on the right edge opens a full-screen view ── */
-.zyt-chain-tab {
-  position: fixed; right: 0; top: 50%; z-index: 45;
-  transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl;
-  padding: 1rem .55rem; border: 1px solid var(--rule-strong); border-left: 0; border-radius: 0 10px 10px 0;
-  background: var(--surface); color: var(--ink);
-  font: 500 .68rem var(--mono); letter-spacing: .14em; text-transform: uppercase;
-  cursor: pointer; box-shadow: 8px 0 24px rgba(0, 0, 0, .18);
-}
-.zyt-chain-tab:hover, .zyt-chain-tab[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
-@media (max-width: 40rem) { .zyt-chain-tab { padding: .75rem .4rem; font-size: .6rem; } }
-
-html.zyt-chain-open, html.zyt-chain-open body { overflow: hidden !important; }
-
-/* below the step guide (.sm-backdrop, z-index 50) so a step opened from the chart sits on top */
+/* ── the whole chain: an inline, window-tall section where "What to fix first" was ── */
+/* full window width, like the ledger it replaces (see .ledger in sop-theme.css for --zyt-sbw) */
 .zyt-chain {
-  position: fixed; inset: 0; z-index: 46;
+  width: calc(100vw - var(--zyt-sbw, 0px));
+  margin: 0 0 3rem calc(50% - (100vw - var(--zyt-sbw, 0px)) / 2);
+  height: calc(100vh - var(--zyt-top));
   display: flex; flex-direction: column;
   background: var(--ground); color: var(--ink);
-  animation: zyt-chain-in .25s cubic-bezier(.16, 1, .3, 1);
+  border-block: 1px solid var(--rule);
 }
-@keyframes zyt-chain-in { from { opacity: 0; transform: translateX(2rem); } }
 .zyt-chain-body { flex: 1; min-height: 0; }
 
 /* one window: the chart scales to fit its cell (the SVG's viewBox keeps its proportions), the
-   right column holds App URL + close above the step pane, and only the pane scrolls */
+   right column holds App URL above the step pane, and only the pane scrolls */
 .zyt-chain .chain {
   width: auto; max-width: none; margin: 0; transform: none; height: 100%;
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 28rem); gap: 0; align-items: stretch;
@@ -99,11 +87,6 @@ html.zyt-chain-open, html.zyt-chain-open body { overflow: hidden !important; }
 .zyt-side-tools .baseurl input { flex: 1 1 6rem; font-size: .82rem; padding: .3rem .45rem; }
 .zyt-side-tools .baseurl button { flex: none; padding: .35rem .7rem; }
 .zyt-side-tools .baseurl-hint:not(.bad) { display: none; }
-.zyt-chain-close {
-  flex: none; width: 2.1rem; height: 2.1rem; border: 1px solid var(--rule); border-radius: 10px;
-  background: var(--surface); color: var(--ink-soft); font-size: 1.25rem; line-height: 1; cursor: pointer;
-}
-.zyt-chain-close:hover { color: var(--ink); border-color: var(--rule-strong); }
 .zyt-chain .chain-pane {
   position: static; top: auto; max-height: none; min-height: 0; flex: 1; height: auto;
   overflow-y: auto; overscroll-behavior: contain; border: 0; border-left: 3px solid var(--accent);
@@ -121,37 +104,21 @@ html.zyt-chain-open, html.zyt-chain-open body { overflow: hidden !important; }
 .zyt-chain .chain.has-roles > .zyt-side { grid-column: 3; grid-row: 1; }
 .zyt-chain-body > .role-select { display: none; }
 
-/* tablet / phone: a chart shrunk to fit would be unreadable, so the view scrolls instead;
-   the chart keeps its own width and scrolls sideways, and × stays pinned top-right */
+/* tablet / phone: a chart shrunk to fit would be unreadable, so the section grows to its
+   content instead; the chart keeps its own width and scrolls sideways */
 @media (max-width: 64rem) {
-  .zyt-chain-body { overflow-y: auto; overscroll-behavior: contain; }
+  .zyt-chain { height: auto; }
   .zyt-chain .chain { display: block; height: auto; }
   .zyt-chain .chain-canvas { display: block; height: auto; overflow: auto; padding: .5rem .25rem; border-bottom: 1px solid var(--rule); }
   .zyt-chain .chain-canvas svg { width: 100%; height: auto; min-width: 62rem; }
   .zyt-side { height: auto; border-left: 0; }
-  .zyt-side-tools { padding-right: 3.4rem; }
   .zyt-side-tools .baseurl { flex-wrap: wrap; }
   .zyt-chain .chain-pane { height: auto; overflow: visible; }
-  .zyt-chain-close { position: fixed; top: .6rem; right: .6rem; z-index: 2; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); }
   /* role view: the select above the chart replaces the rail */
   .zyt-chain .chain.has-roles > .role-rail { display: none; }
-  .zyt-chain-body > .role-select { display: flex; margin: 0; padding: .6rem 3.4rem .6rem .75rem; border-bottom: 1px solid var(--rule); }
+  .zyt-chain-body > .role-select { display: flex; margin: 0; padding: .6rem .75rem; border-bottom: 1px solid var(--rule); }
 }
 
-/* ── What to fix first: the step list and the defects are one window tall, each scrolls ── */
-#fixes .fixbrowser {
-  height: calc(100vh - var(--zyt-top));
-  grid-template-rows: minmax(0, 1fr); align-items: stretch;
-}
-#fixes .fx-steps, #fixes .fx-detail { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
-@media (max-width: 52rem) {
-  /* one scroll area on narrow screens instead of two stacked ones */
-  #fixes .fixbrowser { display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; }
-  #fixes .fx-steps, #fixes .fx-detail { overflow: visible; flex: none; }
-}
-
-@media (prefers-reduced-motion: reduce) { .zyt-chain { animation: none; } }
 @media print {
-  .zyt-top, .zyt-chain-tab, .zyt-chain { display: none !important; }
-  #fixes .fixbrowser { height: auto; }
+  .zyt-top, .zyt-chain { display: none !important; }
 }
