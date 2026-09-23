@@ -44,81 +44,112 @@ html { scroll-padding-top: calc(var(--zyt-top) + .75rem); }
 
 .wrap { padding-top: 2rem; }
 
-/* ── title block, phase index and How they arrive inside Step 01's pane ── */
-.chain-pane .zyt-intro { padding-bottom: 1.3rem; margin-bottom: 1.3rem; border-bottom: 1px solid var(--rule); }
-.chain-pane .zyt-intro .masthead { gap: .9rem; }
-.chain-pane .zyt-intro h1 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
-.chain-pane .zyt-intro .index { margin-top: 1.4rem; }
-.chain-pane .zyt-intro .arrivals { margin-top: 1.6rem; }
-
-/* ── the whole chain: an inline, window-tall section where "What to fix first" was ── */
-/* full window width, like the ledger it replaces (see .ledger in sop-theme.css for --zyt-sbw) */
-.zyt-chain {
+/* ── the page is one section: role tabs + App URL, the flow on the left, the step on the right ── */
+.zyt-gone { display: none !important; }
+.wrap:has(> .zyt-guide) { padding-top: 0; }
+/* full window width, one window tall (see .ledger in sop-theme.css for --zyt-sbw) */
+.zyt-guide {
   width: calc(100vw - var(--zyt-sbw, 0px));
   margin: 0 0 3rem calc(50% - (100vw - var(--zyt-sbw, 0px)) / 2);
   height: calc(100vh - var(--zyt-top));
   display: flex; flex-direction: column;
   background: var(--ground); color: var(--ink);
-  border-block: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
-.zyt-chain-body { flex: 1; min-height: 0; }
+.zg-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* one window: the chart scales to fit its cell (the SVG's viewBox keeps its proportions), the
-   right column holds App URL above the step pane, and only the pane scrolls */
-.zyt-chain .chain {
-  width: auto; max-width: none; margin: 0; transform: none; height: 100%;
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 28rem); gap: 0; align-items: stretch;
+/* bar: role tabs, then App URL on the same line */
+.zg-bar {
+  flex: none; display: flex; align-items: center; gap: .75rem 1.25rem;
+  padding: .5rem 1rem; border-bottom: 1px solid var(--rule); background: var(--surface);
 }
-.zyt-chain .chain-canvas {
-  height: 100%; min-height: 0; overflow: hidden; border: 0; padding: .75rem 1rem;
-  display: flex; align-items: center; justify-content: center;
+.zg-bar .zg-roles { position: static; border: 0; padding: 0; margin: 0; flex: 1 1 auto; min-width: 0; }
+.zg-bar .zg-roles .rr-list { flex-direction: row; gap: .25rem; overflow-x: auto; scrollbar-width: thin; }
+.zg-bar .rr-btn {
+  width: auto; flex: none; white-space: nowrap; align-items: center;
+  border: 1px solid transparent; border-radius: 999px; padding: .32rem .75rem;
 }
-.zyt-chain .chain-canvas svg { width: 100%; height: 100%; min-width: 0; }
-.zyt-side {
-  display: flex; flex-direction: column; min-height: 0; height: 100%;
-  border-left: 1px solid var(--rule); background: var(--surface);
-}
-.zyt-side-tools {
-  flex: none; display: flex; align-items: center; gap: .5rem;
-  padding: .55rem .75rem; border-bottom: 1px solid var(--rule);
-}
-.zyt-side-tools .baseurl { flex: 1; min-width: 0; margin: 0; padding: .3rem .45rem; gap: .35rem .5rem; flex-wrap: nowrap; }
-.zyt-side-tools .baseurl label { flex: none; }
-.zyt-side-tools .baseurl input { flex: 1 1 6rem; font-size: .82rem; padding: .3rem .45rem; }
-.zyt-side-tools .baseurl button { flex: none; padding: .35rem .7rem; }
-.zyt-side-tools .baseurl-hint:not(.bad) { display: none; }
-.zyt-chain .chain-pane {
-  position: static; top: auto; max-height: none; min-height: 0; flex: 1; height: auto;
-  overflow-y: auto; overscroll-behavior: contain; border: 0; border-left: 3px solid var(--accent);
-}
+.zg-bar .rr-btn .nm { overflow-wrap: normal; }
+.zg-bar .rr-btn[aria-pressed="true"] { border-color: var(--accent); border-left-color: var(--accent); }
+.zg-bar .zg-url { flex: 0 1 26rem; min-width: 16rem; margin: 0; padding: .3rem .45rem; gap: .35rem .5rem; flex-wrap: nowrap; }
+.zg-bar .zg-url label { flex: none; }
+.zg-bar .zg-url input { flex: 1 1 6rem; font-size: .82rem; padding: .3rem .45rem; }
+.zg-bar .zg-url button { flex: none; padding: .35rem .7rem; }
+.zg-bar .zg-url .baseurl-hint:not(.bad) { display: none; }
 
-/* role view (SOP data with roles[]): the page puts a "Show my flow" rail first in .chain and
-   a .role-select before it. Here: slim rail | chart | App URL + pane, still one window.
-   Selectors carry .zyt-chain to outrank the page's own .chain.has-roles placement rules. */
-.zyt-chain .chain.has-roles { grid-template-columns: 12rem minmax(0, 1fr) minmax(22rem, 28rem); gap: 0; }
-.zyt-chain .chain.has-roles > .role-rail {
-  grid-column: 1; grid-row: 1; position: static; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
-  margin: .75rem 0 .75rem .75rem; border-top: 2px solid var(--ink);
-}
-.zyt-chain .chain.has-roles > .chain-canvas { grid-column: 2; grid-row: 1; }
-.zyt-chain .chain.has-roles > .zyt-side { grid-column: 3; grid-row: 1; }
-.zyt-chain-body > .role-select { display: none; }
+.zg-main { flex: 1; min-height: 0; display: grid; grid-template-columns: 19rem minmax(0, 1fr); }
 
-/* tablet / phone: a chart shrunk to fit would be unreadable, so the section grows to its
-   content instead; the chart keeps its own width and scrolls sideways */
-@media (max-width: 64rem) {
-  .zyt-chain { height: auto; }
-  .zyt-chain .chain { display: block; height: auto; }
-  .zyt-chain .chain-canvas { display: block; height: auto; overflow: auto; padding: .5rem .25rem; border-bottom: 1px solid var(--rule); }
-  .zyt-chain .chain-canvas svg { width: 100%; height: auto; min-width: 62rem; }
-  .zyt-side { height: auto; border-left: 0; }
-  .zyt-side-tools .baseurl { flex-wrap: wrap; }
-  .zyt-chain .chain-pane { height: auto; overflow: visible; }
-  /* role view: the select above the chart replaces the rail */
-  .zyt-chain .chain.has-roles > .role-rail { display: none; }
-  .zyt-chain-body > .role-select { display: flex; margin: 0; padding: .6rem .75rem; border-bottom: 1px solid var(--rule); }
+/* the flow: phases, each a vertical chain of steps; breaks sit on the line where they fall */
+.zg-flow {
+  min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: 1rem .9rem 2rem 1rem; border-right: 1px solid var(--rule); background: var(--surface);
+}
+.zg-phase + .zg-phase { margin-top: 1.1rem; }
+.zg-phase-head { display: flex; gap: .6rem; align-items: baseline; margin-bottom: .45rem; }
+.zg-phase-letter { font: 700 1rem var(--display); color: var(--accent); }
+.zg-phase-text { display: flex; flex-direction: column; min-width: 0; }
+.zg-phase-name { font: 700 .88rem var(--display); color: var(--ink); }
+.zg-phase-who { font: .62rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+.zg-steps { list-style: none; margin: 0; padding: 0 0 0 1.55rem; position: relative; }
+.zg-item { position: relative; padding-bottom: .45rem; }
+/* the line down to the next step */
+.zg-item::before {
+  content: ""; position: absolute; left: -.95rem; top: 1.1rem; bottom: -.1rem;
+  border-left: 1px solid var(--rule-strong);
+}
+.zg-item:last-child::before { display: none; }
+.zg-node {
+  position: relative; display: flex; gap: .55rem; align-items: baseline; width: 100%; text-align: left;
+  font: 600 .84rem/1.3 var(--display); color: var(--ink);
+  background: var(--ground); border: 1px solid var(--rule); border-radius: 4px;
+  padding: .45rem .6rem; cursor: pointer;
+}
+/* the dot on the line */
+.zg-node::before {
+  content: ""; position: absolute; left: calc(-.95rem - 4px); top: .8rem;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--surface); border: 1px solid var(--rule-strong);
+  transform: translateX(-1px);
+}
+.zg-node:hover { border-color: var(--rule-strong); }
+.zg-node:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.zg-num { font: .7rem var(--mono); color: var(--accent); flex: none; }
+.zg-label { min-width: 0; }
+.zg-node.aside { border-style: dashed; background: var(--accent-soft); }
+.zg-node.pitfall .zg-num { color: var(--oxide); }
+.zg-node.on { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.zg-node.on::before { background: var(--accent); border-color: var(--accent); }
+.zg-node.off { opacity: .38; }
+.zg-node.off.on { opacity: 1; }
+.zg-break {
+  display: flex; gap: .45rem; align-items: baseline; margin: .35rem 0 0 -.95rem; transform: translateX(-.3rem);
+  font: .64rem/1.3 var(--mono); letter-spacing: .04em; color: var(--oxide);
+}
+.zg-break-mark { font: 700 .9rem/1 var(--display); background: var(--surface); }
+
+/* the step guide, out of its modal: fills the right column and scrolls on its own */
+.zg-step { min-height: 0; display: flex; }
+.zg-step .sm { width: 100%; height: auto; max-width: none; min-height: 0; flex: 1; background: var(--ground); }
+.zg-step .sm-head { background: var(--surface); }
+
+/* tablet / phone: the flow becomes a strip of steps above the guide, and the page scrolls */
+@media (max-width: 52rem) {
+  .zyt-guide { height: auto; }
+  .zg-bar { flex-wrap: wrap; }
+  .zg-bar .zg-url { flex: 1 1 100%; min-width: 0; }
+  .zg-main { display: block; }
+  .zg-flow { display: flex; gap: 1rem; overflow-x: auto; overflow-y: hidden; padding: .75rem 1rem; border-right: 0; border-bottom: 1px solid var(--rule); }
+  .zg-phase + .zg-phase { margin-top: 0; }
+  .zg-phase { flex: none; }
+  .zg-steps { display: flex; gap: .4rem; padding: 0; }
+  .zg-item { padding: 0; }
+  .zg-item::before, .zg-node::before { display: none; }
+  .zg-node { width: auto; white-space: nowrap; }
+  .zg-break { display: none; }
+  .zg-step .sm-body { overflow: visible; }
 }
 
 @media print {
-  .zyt-top, .zyt-chain { display: none !important; }
+  .zyt-top, .zg-bar, .zg-flow { display: none !important; }
+  .zyt-guide, .zg-main, .zg-step .sm { height: auto; display: block; }
+  .zg-step .sm-nav { display: none; }
 }
