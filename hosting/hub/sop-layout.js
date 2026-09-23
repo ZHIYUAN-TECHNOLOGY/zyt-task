@@ -217,6 +217,7 @@
         heading: false,
         showTitle: false,
         runLabel: '▶ Run ' + match.covers,
+        regenLabel: '↻ Regenerate ' + match.covers,
         blurb: 'Plays ' + match.covers + ' — this step included — in a browser window on this computer, slowed down so you can follow it. It uses a throwaway test organization on the dev database and removes it afterwards.',
       });
     }

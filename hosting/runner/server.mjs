@@ -20,10 +20,11 @@
 // RUNNER_SLOWMO ms (600), RUNNER_EXTRA_ORIGINS (comma list, e.g. a local -DryRun preview).
 
 import { spawn, spawnSync } from 'node:child_process';
-import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
+import { copyFileSync, createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const NCT_DIR = process.env.NCT_DIR || 'C:/Project/NCT/nct-layout';
 const PORT = Number(process.env.RUNNER_PORT || 4317);
@@ -32,6 +33,19 @@ const ALLOWED_ORIGINS = new Set([
   'https://admin.zhiyuantech.ai',
   ...(process.env.RUNNER_EXTRA_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean),
 ]);
+
+// The last finished run of each job, kept beside this file so a restart of the
+// runner — or a terminal run of the suite, which clears e2e/out/ before it
+// writes — cannot take the recording away. <job>.json holds the verdict and
+// the step list, <job>.mp4 the video. One per job: a new run replaces it.
+const RUNS_DIR = join(dirname(fileURLToPath(import.meta.url)), 'runs');
+mkdirSync(RUNS_DIR, { recursive: true });
+const savedJson = (jobId) => join(RUNS_DIR, `${jobId}.json`);
+const savedVideo = (jobId) => join(RUNS_DIR, `${jobId}.mp4`);
+
+function readSaved(jobId) {
+  try { return JSON.parse(readFileSync(savedJson(jobId), 'utf8')); } catch { return null; }
+}
 
 // Job id -> what to run. The dashboard names a job by id (a runbook step's `run` field).
 const JOBS = {
@@ -49,6 +63,26 @@ const JOBS = {
     title: 'NCT · SOP steps 8–10 golden path',
     args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'quote-decide', '--headed'],
     video: 'e2e/out/quotation/quote-decide-golden-path/video.mp4',
+  },
+  'nct-order-open-steps-11-15': {
+    title: 'NCT · SOP steps 11–15 golden path',
+    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'order-open', '--headed'],
+    video: 'e2e/out/collective-shipping/order-open-golden-path/video.mp4',
+  },
+  'nct-bl-run-steps-16-19': {
+    title: 'NCT · SOP steps 16–19 golden path',
+    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'lading-run', '--headed'],
+    video: 'e2e/out/lading/bl-run-golden-path/video.mp4',
+  },
+  'nct-bill-build-steps-20-23': {
+    title: 'NCT · SOP steps 20–23 golden path',
+    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'bill-build', '--headed'],
+    video: 'e2e/out/expense/bill-build-golden-path/video.mp4',
+  },
+  'nct-invoice-close-steps-24-27': {
+    title: 'NCT · SOP steps 24–27 golden path',
+    args: ['playwright', 'test', '--config', 'e2e/playwright.config.ts', '--project', 'invoice-close', '--headed'],
+    video: 'e2e/out/expense/invoice-close-golden-path/video.mp4',
   },
 };
 
@@ -112,7 +146,28 @@ function startRun(jobId) {
     const current = run;
     if (!current || current.id !== id) return;
     if (current.status === 'running') current.status = code === 0 ? 'passed' : 'failed';
-    const hasVideo = existsSync(join(NCT_DIR, job.video));
+    const recorded = join(NCT_DIR, job.video);
+    let hasVideo = existsSync(recorded);
+    // A stopped run keeps whatever was saved before it: half a journey is not
+    // a recording worth replacing a whole one with.
+    if (current.status !== 'stopped') {
+      try {
+        if (hasVideo) copyFileSync(recorded, savedVideo(jobId));
+        writeFileSync(savedJson(jobId), JSON.stringify({
+          job: jobId,
+          title: job.title,
+          status: current.status,
+          startedAt: current.startedAt,
+          finishedAt: Date.now(),
+          steps: stepsOf(current.events),
+          output: current.status === 'passed' ? undefined : tail.slice(-20).join('\n'),
+          hasVideo,
+        }, null, 2));
+      } catch (err) {
+        console.error('could not save the run:', err.message);
+      }
+    }
+    hasVideo = hasVideo || existsSync(savedVideo(jobId));
     publish({
       type: 'run-end',
       status: current.status,
@@ -122,6 +177,20 @@ function startRun(jobId) {
     });
     current.child = null;
   });
+}
+
+/** The step list as the panel shows it, folded out of a run's events. */
+function stepsOf(events) {
+  const steps = [];
+  for (const e of events) {
+    if (e.type === 'step-begin') steps.push({ title: e.title, state: 'running' });
+    if (e.type === 'step-end') {
+      const s = steps.find((x) => x.title === e.title && x.state === 'running');
+      if (s) Object.assign(s, { state: e.ok ? 'ok' : 'fail', error: e.error, ms: e.durationMs });
+    }
+  }
+  for (const s of steps) if (s.state === 'running') s.state = 'fail';
+  return steps;
 }
 
 // taskkill /T: the child is npx -> node -> playwright -> browser + two dev servers.
@@ -164,8 +233,10 @@ const server = createServer((req, res) => {
   // cannot opt in), so the page fetches this and plays it as a blob — which makes
   // it a CORS request like every other, hence the check above.
   if (req.method === 'GET' && url.pathname.startsWith('/video/')) {
-    const job = JOBS[decodeURIComponent(url.pathname.slice(7))];
-    const file = job && join(NCT_DIR, job.video);
+    const jobId = decodeURIComponent(url.pathname.slice(7));
+    const job = JOBS[jobId];
+    // The saved copy first: e2e/out/ is cleared by any run of the suite.
+    const file = !job ? null : existsSync(savedVideo(jobId)) ? savedVideo(jobId) : join(NCT_DIR, job.video);
     if (!file || !existsSync(file)) return json(res, 404, { error: 'no video yet' });
     const size = statSync(file).size;
     const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
@@ -187,6 +258,15 @@ const server = createServer((req, res) => {
       jobs: Object.entries(JOBS).map(([id, job]) => ({ id, title: job.title })),
       run: summary(),
     });
+  }
+
+  // The last finished run of one job, for a panel opening with no run live.
+  if (req.method === 'GET' && url.pathname.startsWith('/last/')) {
+    const jobId = decodeURIComponent(url.pathname.slice(6));
+    if (!JOBS[jobId]) return json(res, 404, { error: `unknown job: ${jobId}` });
+    const saved = readSaved(jobId);
+    if (!saved) return json(res, 404, { error: 'never run' });
+    return json(res, 200, { ...saved, video: saved.hasVideo || existsSync(savedVideo(jobId)) ? `/video/${jobId}?v=${saved.finishedAt}` : null });
   }
 
   if (req.method === 'POST' && url.pathname === '/run') {

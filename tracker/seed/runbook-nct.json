@@ -470,7 +470,8 @@
           "link": "/nct/steps-11-15-runbook/#wave-11-wt-step14-rebase-first",
           "prompts": [
             "/nct/steps-11-15-runbook/#wave-11-wt-step14-rebase-first"
-          ]
+          ],
+          "run": "nct-order-open-steps-11-15"
         },
         {
           "id": "rb-nct-f12-unowned-gaps",

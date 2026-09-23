@@ -158,6 +158,14 @@ service worker and no page can serve half a copy). It appears in two places:
   8–10 to the three jobs. Steps with no journey yet (11–15) show nothing rather than a dead
   button. Keep that map in step with `JOBS` in the runner.
 
+**Recordings are kept.** When a run finishes, the runner saves its verdict, step list and video to
+`hosting/runner/runs/<job>.json` + `.mp4` (gitignored). A panel opening with no run live loads
+that saved run — "Recorded 23 Sep, 14:02 on this computer" — and its button becomes **↻ Regenerate**,
+which records the journey again and replaces the saved copy. A Stopped run replaces nothing. The copy
+exists because a terminal run of the suite clears `e2e/out/` before it writes. Recordings are local to
+the machine that made them: the panel reaches them through the runner, so with the runner off, or on
+another computer, there is nothing to show.
+
 A runbook step with a `run` field shows a **Golden path** section. Its button asks
 `hosting/runner/server.mjs` on **the viewer's own computer** (`http://127.0.0.1:4317`) to start a
 headed, slowed Playwright run in the NCT repo, and streams each `test.step` into the panel, then

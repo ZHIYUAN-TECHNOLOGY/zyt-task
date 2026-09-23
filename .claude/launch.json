@@ -32,7 +32,7 @@
         "C:/Project/ZYT-Task/hosting/runner/server.mjs"
       ],
       "env": {
-        "RUNNER_EXTRA_ORIGINS": "http://localhost:8791"
+        "RUNNER_EXTRA_ORIGINS": "http://localhost:8791,http://localhost:8794"
       },
       "port": 4317
     },

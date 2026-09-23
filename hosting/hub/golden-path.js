@@ -21,13 +21,18 @@
 (function () {
   var URL_BASE = 'http://127.0.0.1:4317';
 
-  /** SOP step number → the journey that covers it. Steps with no journey yet
-   * (11–15) return null, and the caller shows nothing rather than a dead
-   * button. Keep in step with `JOBS` in hosting/runner/server.mjs. */
+  /** SOP step number → the journey that covers it; every NCT step 1–27 has
+   * one. A step outside the map returns null, and the caller shows nothing
+   * rather than a dead button. Keep in step with `JOBS` in
+   * hosting/runner/server.mjs. */
   var BY_STEP = [
     { from: 1, to: 3, job: 'nct-intake-steps-1-3', covers: 'steps 1–3' },
     { from: 4, to: 7, job: 'nct-quote-build-steps-4-7', covers: 'steps 4–7' },
     { from: 8, to: 10, job: 'nct-quote-decide-steps-8-10', covers: 'steps 8–10' },
+    { from: 11, to: 15, job: 'nct-order-open-steps-11-15', covers: 'steps 11–15' },
+    { from: 16, to: 19, job: 'nct-bl-run-steps-16-19', covers: 'steps 16–19' },
+    { from: 20, to: 23, job: 'nct-bill-build-steps-20-23', covers: 'steps 20–23' },
+    { from: 24, to: 27, job: 'nct-invoice-close-steps-24-27', covers: 'steps 24–27' },
   ];
 
   function jobForStep(n) {
@@ -75,6 +80,8 @@
       streaming: false,
       videoUrl: null,
       videoFor: null,
+      // True while what is shown is a SAVED run from before, not one live now.
+      saved: false,
     };
     var node = h('section', { class: 'gp' + (opts.className ? ' ' + opts.className : '') });
 
@@ -101,10 +108,28 @@
           S.title = mine && mine.title;
           S.reach = mine ? 'up' : 'nojob';
           if (d.run && d.run.job === S.job) connect();
+          else if (mine && !S.end) loadLast();
           S.note = '';
         })
         .catch(function () { S.reach = 'down'; S.note = asked ? 'No answer from the runner on this computer.' : ''; })
         .finally(function () { S.busy = false; paint(); });
+    }
+
+    // The last finished run of this journey, as the runner saved it. Shown until
+    // someone regenerates it; a runner restart does not lose it.
+    function loadLast() {
+      req('/last/' + encodeURIComponent(S.job), null, 5000)
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (last) {
+          if (!last || (S.run && S.run.status === 'running')) return;
+          S.saved = true;
+          S.run = { id: 'saved', status: last.status, startedAt: last.startedAt };
+          S.steps = last.steps || [];
+          S.end = { status: last.status, at: last.finishedAt, video: last.video, output: last.output };
+          if (last.video) video(last.video);
+          paint();
+        })
+        .catch(function () {});
     }
 
     function connect() {
@@ -135,7 +160,7 @@
     function event(raw) {
       var e; try { e = JSON.parse(raw); } catch (err) { return; }
       if (e.job && e.job !== S.job) return;
-      if (e.type === 'run-start') { S.run = { id: e.runId, status: 'running', startedAt: e.at }; S.steps = []; S.end = null; S.note = ''; }
+      if (e.type === 'run-start') { S.run = { id: e.runId, status: 'running', startedAt: e.at }; S.steps = []; S.end = null; S.note = ''; S.saved = false; }
       else if (e.type === 'log') S.note = e.text;
       else if (e.type === 'test-begin') S.note = 'Browser open — watch the new window.';
       else if (e.type === 'step-begin') S.steps.push({ title: e.title, state: 'running' });
@@ -209,7 +234,7 @@
 
       append(node, h('div', { class: 'gp-actions' },
         h('button', { type: 'button', class: 'gp-run', disabled: running || S.busy, onclick: start },
-          running ? 'Running…' : (opts.runLabel || '▶ Run golden path')),
+          running ? 'Running…' : S.end ? (opts.regenLabel || '↻ Regenerate') : (opts.runLabel || '▶ Run golden path')),
         running ? h('button', { type: 'button', class: 'gp-stop', onclick: stop }, 'Stop') : null));
 
       if (S.note) append(node, h('p', { class: 'gp-blurb gp-note', role: 'status', text: S.note }));
@@ -227,6 +252,9 @@
         var secs = S.run ? Math.round((S.end.at - S.run.startedAt) / 1000) : null;
         var word = { passed: 'Passed', failed: 'Failed', stopped: 'Stopped' }[S.end.status] || S.end.status;
         append(node, h('p', { class: 'gp-result gp-' + S.end.status, role: 'status', text: word + (secs != null ? ' · ' + secs + ' s' : '') }));
+        if (S.saved && S.end.at) {
+          append(node, h('p', { class: 'gp-blurb gp-when', text: 'Recorded ' + new Date(S.end.at).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + ' on this computer. Regenerate to record it again.' }));
+        }
         if (S.end.error) append(node, h('p', { class: 'gp-err', text: S.end.error }));
         if (S.end.output) append(node, h('pre', { class: 'gp-out', text: S.end.output }));
         if (S.end.video && S.videoUrl) {
