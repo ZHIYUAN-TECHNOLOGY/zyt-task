@@ -19,9 +19,10 @@ a handful of fields are hidden from them.
 project        id, client_org, name, flow_id, state
 flow           id, name, phases[{key,label}], steps[{n,key,title,phase,role,routes[],summary}]
 
-finding        id, project, kind(chain|step), title, detail, severity, rank?,
+finding        id, project, kind(chain|step), title, isNew, detail, severity, rank?,
                steps[{kind(step|break-after), n}],
                repair ⓣ, src[] ⓣ, owner ⓣ,
+               status?(open|partly-fixed|fixed), fixedAt?, origin?, ruleId?,
                state(open|in_progress|blocked|fixed|wont_fix),
                opened_at, closed_at?, reopened_from?
 workstream     id, project, title, blurb, covers[finding_id],
@@ -34,6 +35,23 @@ attachment     id, subject, kind(pr|qa_run|screenshot|link), url, label, interna
 ```
 
 `ⓣ` team-only field · `*` required on every event
+
+**Findings come from the SOP's data.** `tasks-nct.json` is generated from
+`customer-intake-sop/sop.json` with the SOP page's own rules (`sop-findings.mjs`):
+
+| Field | From `sop.json` |
+|---|---|
+| `id` | `nct-` + the ledger item's `id`; for a step fix, `nct-` + its `id` (pinned on every fix today) or, for a fix added without one, `s<nn>-` + the slug of its title capped at 48 characters. Ids are Convex keys: never change one |
+| `rank` | chain items only: 1-based position in `ledger.items` (the fix list's order). Step fixes have `rank: null` |
+| `title`, `detail`, `repair` | `title`, `body` / `why`, `repair`, with markup stripped and curly quotes made straight. The title never carries " new" |
+| `isNew` | chain items: `isNew` when set, otherwise found after the ledger's earliest `firstFound`. Always `false` on step fixes |
+| `severity` | step fixes: `sev` (money · data · blocked · friction); chain items: their optional `sev`, else `null` |
+| `steps` | chain items: `repairs[]` (`k: "b"` → `break-after`); a step fix: its own step. A step fix that repeats a chain item (`sameAs`, or the same normalised title) is folded into that item as one more step |
+| `status`, `fixedAt`, `origin`, `ruleId` | present only when `/zyt-audit` wrote them on the item; passed through unchanged. `status: "fixed"` counts as closed |
+
+`flow-nct.json` comes from the same file: phases from `phases[]` (`letter` → `key`, `name` → `label`),
+each step's `title`/`phase` from `steps[]` (the badge is not part of the title), `role`, `routes` and
+`summary` from `guide[]`.
 
 ## What the client does not see
 
@@ -93,10 +111,11 @@ Automation moves work and records evidence; a person decides what the client rea
 | `seed/flow-nct.json` | 5 phases, 27 steps |
 | `seed/tasks-nct.json` | 48 findings — 18 ranked chain defects, 30 step-local |
 | `seed/client-tasks-nct.json` | 10 workstreams covering all 48 (the file name predates decision 5) |
-| `build-seed.mjs` | Regenerates the flow and findings from `../customer-intake-sop.html` |
+| `build-seed.mjs` | Regenerates the flow and findings from `../customer-intake-sop/sop.json` (`--sop <path>`, `--out-dir <dir>` for tests) |
+| `sop-findings.mjs` | `findingsFromSop` / `flowFromSop`: the page's id and fold rules, shared with `hosting/hub/build-seed.mjs`'s drift check |
 | `build-board.mjs` | Renders `../mocks/board.html`, the unified board with the Team/Client toggle |
 
-Run both from `C:/Project/ZYT-Task`.
+Run `build-board.mjs` from `C:/Project/ZYT-Task`; `build-seed.mjs` runs from anywhere.
 
 ## Open, deliberately
 

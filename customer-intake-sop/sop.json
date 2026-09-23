@@ -994,6 +994,7 @@
       ],
       "fixes": [
         {
+          "id": "s02-duplicate-companies-enter-through-case",
           "sev": "data",
           "title": "Duplicate companies enter through case",
           "why": "The unique index is on the raw name, so \"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" both save. Two records then split one customer's quotations, orders and ageing, and neither shows the true exposure.",
@@ -1094,6 +1095,7 @@
       ],
       "fixes": [
         {
+          "id": "s03-a-contact-nobody-ticked-as-primary-never-reaches",
           "sev": "friction",
           "title": "A contact nobody ticked as Primary never reaches the collections call list",
           "why": "The Add contact dialog defaults Primary to false and nothing promotes the first contact on a company, but the month-end ageing DETAIL sheet joins companyContact strictly on isPrimary = true with no fallback. A company with three recorded contacts and no ticked primary prints empty Contact / Role / Phone / Email columns on the 催收 sheet, so the collections clerk re-looks the number up in the company record — the one job the contacts table was added for.",
@@ -1261,6 +1263,7 @@
       ],
       "fixes": [
         {
+          "id": "s04-the-tariff-gate-is-declared-but-never-enforced",
           "sev": "money",
           "title": "The tariff gate is declared but never enforced",
           "why": "The seeded fee_template flow carries no row for the Reference Template gate, so the server accepts an unapproved rate card. Only the picker's default filter hides one, and Show all templates reveals it — so a draft card can price a real quotation.",
@@ -1389,6 +1392,7 @@
       ],
       "fixes": [
         {
+          "id": "s05-quotation-date-is-the-row-s-save-timestamp-and-n",
           "sev": "data",
           "title": "Quotation date is the row's save timestamp and no screen can set or correct it",
           "why": "quotationHeaderInput accepts quotationDate on both create and update, and update honours the patch, but no field for it exists anywhere in apps/web — create stamps `now` instead. The value is printed as 报价日期 / Quotation date on the customer-facing sheet that quotations.send emails out, it is the ledger's only date column and its From/To filter, and it is the effective date the price-floor check and the tariff hints resolve the fee-template window against. A quote drafted Monday and issued Thursday goes to the customer dated Monday, a quote entered late is floor-checked against the wrong tariff sheet, and the only correction is duplicate — which re-dates to today and burns a new quotation number.",
@@ -1396,6 +1400,7 @@
           "src": "packages/api/src/routers/quotation.ts:1531,3067,3290; apps/web/src/routes/_next/quotations/$quotationId.tsx:993"
         },
         {
+          "id": "s05-quotation-staff-is-auto-stamped-copied-by-duplic",
           "sev": "data",
           "title": "Quotation staff is auto-stamped, copied by duplicate, and editable nowhere — so the printed 业务员 can be the wrong person permanently",
           "why": "create writes quotationStaff from context.session.user.name, duplicate carries the SOURCE's quotationStaff in via `...source` (only createdBy is re-pointed at the duplicator), and quotationHeaderInput exposes the field on create and update but nothing in apps/web renders it. So a coordinator entering a quote for a salesperson, or salesperson B duplicating A's quote — the path the app itself prescribes for re-quoting a decided record — emails the customer a sheet naming the wrong salesperson, and the ledger's Quotation Staff filter hides B's own work from B. There is no in-app correction at all.",
@@ -1521,6 +1526,7 @@
       ],
       "fixes": [
         {
+          "id": "s06-applied-tariff-lines-ignore-the-container-mix",
           "sev": "money",
           "title": "Applied tariff lines ignore the container mix",
           "why": "Every line applied from a template lands at quantity 1 whatever the Containers card says, so a 3x40HQ booking is quoted at a third of the real charge until someone retypes each quantity.",
@@ -1581,6 +1587,7 @@
       ],
       "fixes": [
         {
+          "id": "s07-an-ambiguous-tariff-silently-drops-the-floor",
           "sev": "money",
           "title": "An ambiguous tariff silently drops the floor",
           "why": "When two approved sheets with the same start date disagree, or one charge unit is spelt two ways, the line resolves to no floor at all — and the refusal skips it. The quotation saves below cost with nothing on screen refusing it.",
@@ -1649,6 +1656,7 @@
       ],
       "fixes": [
         {
+          "id": "s08-a-quotation-stays-fully-editable-while-it-is-sit",
           "sev": "money",
           "title": "A quotation stays fully editable while it is sitting in the reviewer's queue",
           "why": "quotations.update guards only two things - decidedAt (a won/lost quote) and assertPostApprovalEditable (an already-passed review). It never calls assertNotUnderReview, the guard gates.ts:130 was written for exactly this and which lading.ts:1474 and company.ts:1343 do call. So after Submit for review the salesperson can reopen /quotations/$quotationId, rewrite every selling line and save; the submission stays under_review with the old submit stamp, and the branch manager's Approved in /approve/quotation signs a price sheet that no longer exists. modules/audit/gates.ts:123 asserts a quotation is already safe 'by its own private route, assertDraft inside loadScopedDraftLine' - that function is routers/quote.ts:78, in the legacy quote router, and never runs on the quotation path, so the claimed protection is not there. quotations.applyTemplate (:3519) has the same hole.",
@@ -1656,6 +1664,7 @@
           "src": "packages/api/src/routers/quotation.ts:3196"
         },
         {
+          "id": "s08-the-seeded-quotation-flow-lets-the-branch-manage",
           "sev": "money",
           "title": "The seeded quotation flow lets the branch manager approve their own quotation",
           "why": "The seeded Quotation review flow's only stage targets role branch-manager with quorum any_pass_all_reject - one approval carries it. roles.ts:102 grants branch-manager the whole `quotation` subtree, i.e. both quotation.update (the submitNode, resources.ts:124) and quotation.review (the reviewNode). Nothing in decide() compares org.membership.id with submission.submittedBy; the only ownership test in the engine is withdraw.ts:48. A branch manager therefore prices a quote, presses Submit for review, opens /approve/quotation and presses Approved on their own row; the convert_order gate then opens and the quote becomes an order with no second pair of eyes. The same seed file rejects this arrangement explicitly for customer (seed.ts:83-89, 'approving their own edit, which is the exact property director exists to provide') and for lading (:160), so quotation is the one trigger that shipped with the pattern the others were fixed to avoid.",
@@ -1663,6 +1672,7 @@
           "src": "packages/api/src/modules/audit/seed.ts:69"
         },
         {
+          "id": "s08-the-legacy-quotations-review-verb-stamps-approve",
           "sev": "data",
           "title": "The legacy quotations.review verb stamps 'approved' with no submission behind it",
           "why": "quotations.review still writes quotation.auditStatus straight through canAuditTransition, filing no audit_submission row. No page in apps/web calls it any more, but it is a live oRPC procedure held by branch-manager and director. Because the gates read audit_submission (gates.ts:90) while the ledger badge and the /approve/quotation audit-status filter read the cache column, the two can be made to disagree permanently: a quotation reads 'Approved' with 'Approve staff' blank in every list, while convertToOrder refuses with '\"Convert order\" requires review approval first' and nothing in the UI explains why or offers a way out.",
@@ -1670,6 +1680,7 @@
           "src": "packages/api/src/routers/quotation.ts:3845"
         },
         {
+          "id": "s08-submit-then-retract-permanently-unlocks-an-appro",
           "sev": "data",
           "title": "Submit-then-retract permanently unlocks an approved, frozen record with no reviewer involved",
           "why": "Every seeded flow sets postApprovalEditable: false (seed.ts:232), so assertPostApprovalEditable freezes an approved quotation against editing. But it only fires when the LATEST submission is `passed` (post-approval.ts:43), and submitForReview happily opens a new attempt on an approved record. retract() then succeeds because that new attempt is under_review (withdraw.ts:51), leaving the latest status `withdrawn` - at which point the freeze is inert forever and, per the first finding, the record was editable throughout. Whoever holds quotation.update can therefore rewrite an approved quotation's prices alone, in three clicks. The same sequence unlocks an approved collective order.",
@@ -1677,6 +1688,7 @@
           "src": "packages/api/src/modules/audit/post-approval.ts:43"
         },
         {
+          "id": "s08-the-export-quotation-gate-is-wired-to-reading-a-",
           "sev": "blocked",
           "title": "The 'Export quotation' gate is wired to reading a quotation, not to exporting or emailing one",
           "why": "assertGateCleared(..., \"export\") sits inside quotations.retrieve, which is the query the whole quotation record page runs ($quotationId.tsx:585) and which the decide, send and reference-template dialogs re-fetch. quotations.exportSheet (:2489) and quotations.send (:2598) - the two verbs that actually put the price in front of the customer - call no gate at all. The moment a tenant ticks 'Export quotation' in the Approval Process Setting page, every un-approved quotation 409s on open, so the author cannot finish drafting it and the reviewer cannot read it before deciding (the review becomes undecidable), while the XLSX/PDF download and the customer email that the checkbox names keep working unchanged.",
@@ -1786,6 +1798,7 @@
       ],
       "fixes": [
         {
+          "id": "s09-there-is-no-outbox-so-a-failed-stamp-costs-a-sec",
           "sev": "data",
           "title": "There is no outbox, so a failed stamp costs a second email",
           "why": "Send mails the customer and then records the stamp. If the stamp fails after the mail is away, the only route forward is pressing Send again, which sends the customer a duplicate quotation.",
@@ -1872,6 +1885,7 @@
       ],
       "fixes": [
         {
+          "id": "s10-a-mis-keyed-decision-cannot-be-corrected",
           "sev": "data",
           "title": "A mis-keyed decision cannot be corrected",
           "why": "Won or Lost freezes the quotation and re-deciding is refused. The code names the gap itself: correcting one today needs a database edit, so a wrong outcome poisons win-rate reporting permanently.",
@@ -2069,6 +2083,7 @@
       ],
       "fixes": [
         {
+          "id": "s13-intake-decisions-are-asymmetrical",
           "sev": "data",
           "title": "Intake decisions are asymmetrical",
           "why": "A received order can never be rejected, but a rejected order can still be received. Rejection is not terminal, so a refused job can be quietly pulled back into operations with no second decision recorded.",
@@ -2242,6 +2257,7 @@
       ],
       "fixes": [
         {
+          "id": "s15-a-collective-order-stays-fully-editable-while-it",
           "sev": "data",
           "title": "A collective order stays fully editable while it is awaiting the reviewer's decision",
           "why": "collectiveOrder.update guards `locked` and assertPostApprovalEditable and never calls assertNotUnderReview - the string does not appear anywhere in routers/collective-order.ts. Step 14's operational detail (vessel, ports, cargo, container counts, client) can therefore be rewritten after the trade-ledger row menu's Submit for review and before accounting presses Approved in /approve/order, and the submission carries no content hash or version to notice. The reviewer approves a shipment they never saw, and the approval stamps land on the edited row as if they covered it. saveChildren (:4756) and assignJobNumber (:2800) have the same gap.",
@@ -2249,6 +2265,7 @@
           "src": "packages/api/src/routers/collective-order.ts:2892"
         },
         {
+          "id": "s15-order-approval-freezes-nothing-downstream-so-app",
           "sev": "data",
           "title": "Order approval freezes nothing downstream, so approving or rejecting an order changes nothing operational",
           "why": "The seeded 'Order review' flow ships enabled with `gates: []`. Nine gate keys are declared for collective_order (modules/collective-order/gates.ts:36) and not one is ticked, so assertGatesCleared returns early at gates.ts:85 for every verb. Raising the bill of lading - step 16 - is not even in the vocabulary: lading.create (routers/lading.ts:1030) resolves the order via resolveLadingOrder and never reads orderAuditStatus or any submission. So an order that is unsubmitted, under review, or explicitly REJECTED can still be locked, ended, exported, have costs booked against it, and have a B/L raised and released on it. Accounting's rejection in /approve/order is a badge on a row and nothing more: no verb anywhere consults it, so a rejected shipment proceeds to the carrier and onto the customer's invoice unimpeded.",
@@ -2256,6 +2273,7 @@
           "src": "packages/api/src/modules/audit/seed.ts:150"
         },
         {
+          "id": "s15-the-legacy-collectiveorder-review-verb-lets-ops-",
           "sev": "data",
           "title": "The legacy collectiveOrder.review verb lets ops stamp their own order approved outside the queue",
           "why": "collectiveOrder.review writes collective_order.order_audit_status directly through canAuditTransition and files no audit_submission. roles.ts grants ops the whole `collectiveOrder` subtree - collectiveOrder.update AND collectiveOrder.review - so an ops member can move their own order draft to pending to approved on this endpoint without ever appearing in /approve/order, whose listing is driven by awaitingMyReview over submissions. The order ledger's Audit status column and its audit-status filter read the column this writes, so the row displays as reviewed, the submissions table holds nothing, and nobody in accounting ever saw it. order-row-actions.tsx:55 records that the last UI caller was removed on 2026-09-09; the procedure itself was left in place.",
@@ -2383,6 +2401,7 @@
       ],
       "fixes": [
         {
+          "id": "s16-a-bill-of-lading-can-be-set-to-released-or-on-ho",
           "sev": "money",
           "title": "A bill of lading can be set to Released or On-hold from a dropdown, skipping the release / detention gates",
           "why": "The workflow verbs are gated: check-out calls assertGateCleared(..., \"release\") and hold calls it with \"detention\" (packages/api/src/routers/lading.ts:633), which is how a tenant makes cargo release require an approval. But `status` is an ordinary writable column on create and update, and both forms offer the gated states directly: STATUS_OPTIONS = [draft, confirmed, released, cancelled, on-hold] (apps/web/src/routes/_next/lading/create.tsx:140, apps/web/src/routes/_next/lading/$id/edit.tsx:165). Picking Released on the edit form writes status='released' straight through (lading.ts:1556-1602) with no gate and no release decision recorded, and checkedOutAt stays NULL, so the list and the record read as released while the detail page still offers Check Out and the configured release approval never ran. Picking On-hold is worse: heldAt stays NULL, so Cancel Hold refuses with 'Not on hold' (lading.ts:585) and the bill is stuck displaying a hold nobody can lift except by another free status edit.",
@@ -2390,6 +2409,7 @@
           "src": "apps/web/src/routes/_next/lading/$id/edit.tsx:165"
         },
         {
+          "id": "s16-a-bill-of-lading-under-review-stays-fully-editab",
           "sev": "data",
           "title": "A bill of lading under review stays fully editable, so the reviewer approves content that changed after they read it",
           "why": "lading.update runs only assertPostApprovalEditable (packages/api/src/routers/lading.ts:1554), which fires after a submission has PASSED. The window while a submission is open is what assertNotUnderReview covers, and this very file imports it (lading.ts:34) and calls it in delete (lading.ts:1474) and bulkDelete (lading.ts:1513). It is absent from update. So a B/L can be submitted for review and then have its bill number, shipper, consignee, containers, weights and status rewritten while it sits in the reviewer's queue; the reviewer approves whatever is there when they click, and the post-approval freeze then locks in the rewritten version. This is the failure the gates module documents as TC-138 (packages/api/src/modules/audit/gates.ts:103-128): 'If it can change in between, they have approved something they never saw.' You cannot delete a B/L under review, but you can rewrite every field of it.",
@@ -2397,6 +2417,7 @@
           "src": "packages/api/src/routers/lading.ts:1554"
         },
         {
+          "id": "s16-ocr-validation-issues-are-computed-returned-and-",
           "sev": "data",
           "title": "OCR validation issues are computed, returned, and thrown away by the create form",
           "why": "uploadOcr returns the extraction engine's ValidationIssue[] alongside the fields (packages/api/src/routers/lading.ts:1965, built in ocrExtractionForForm at lading.ts:2418) - codes container_check_digit, crossfoot_mismatch, missing_required, each with severity 'error' or 'warning' (packages/document-ai/src/registry/types.ts:30-43); the issue COUNT is even written to the audit trail. The client drops them: the ocrResult state type declares only { confidence, rawText, fields, containers } (apps/web/src/routes/_next/lading/create.tsx:293-298) and nothing in the OCR tab renders an issue. Apply to Form (create.tsx:312-349) then writes every extracted value - grossWeight, chargeableWeight, volumeCbm, containerQty and the whole container table - unconditionally, and the button is enabled at any confidence, including 10%. A container number that fails its check digit, or a weight that fails the crossfoot check, lands on a document of title with no signal; the operator sees one aggregate 'Confidence: N%' and a list of values that look verified.",
@@ -2404,6 +2425,7 @@
           "src": "apps/web/src/routes/_next/lading/create.tsx:293"
         },
         {
+          "id": "s16-linking-the-approved-order-carries-only-its-job-",
           "sev": "friction",
           "title": "Linking the approved order carries only its job number; every shipment detail the order already holds is retyped onto the B/L",
           "why": "Picking the linked order sets orderId and copies picked.jobNumber into orderNo, and nothing else (apps/web/src/routes/_next/lading/create.tsx:1243-1252). The order just linked already holds a matching value for most of the bill: vesselName, voyage, portOfShipment, portOfDestination, transitPort, etd, eta, atd, mbl, hbl, soNo, clientName, entrustUnit, tradeTerms, shipCompany (packages/db/src/schema/collective-order.ts:125-220), and lading has a column for each (vessel, voyage, pol, pod, transhipmentPort, etd, eta, atd, mblNo, hblNo, bookingNo, entrustUnit, tradeTerm, shippingCompany - packages/db/src/schema/lading.ts:44-110). All of it is typed again by hand across a five-tab form, on the screen that already knows the order id. Beyond the keystrokes the two records drift: the B/L and the order it documents can name different vessels, ports or ETDs with nothing reconciling them, and the B/L is the one that prints.",
@@ -2585,6 +2607,7 @@
       ],
       "fixes": [
         {
+          "id": "s18-there-is-no-customs-declaration-type",
           "sev": "blocked",
           "title": "There is no customs declaration type",
           "why": "The document vocabulary has no K1 or K2, so the Sepangar filing itself is never held in the system. The declaration that clears the cargo lives in someone's email, and nothing links it to the job.",
@@ -2812,6 +2835,7 @@
       ],
       "fixes": [
         {
+          "id": "s20-unnamed-fee-rows-are-dropped-without-a-word",
           "sev": "data",
           "title": "Unnamed fee rows are dropped without a word",
           "why": "Save filters out any row whose Name of cost is blank. A half-typed line with an amount on it disappears on save, and nothing tells the operator that it went.",
@@ -2934,6 +2958,7 @@
       ],
       "fixes": [
         {
+          "id": "s21-the-fees-must-pass-review-before-billing-gate-is",
           "sev": "money",
           "title": "The 'fees must pass review before billing' gate is silently skipped whenever the operator bills without ticking rows",
           "why": "createBill resolves the selection first - ticks, or the whole filter result set when nothing is ticked - into `costLineIds` (packages/api/src/routers/expense/cost-lines.ts:2448). Every guard afterwards uses the resolved rows, except the review gate, which is handed the RAW input array: assertGatesCleared(context.db, organizationId, \"cost_line\", input.costLineIds, \"create_bill\") (cost-lines.ts:2502-2508). On the unticked path input.costLineIds is [] and assertGatesCleared returns immediately on an empty array (packages/api/src/modules/audit/gates.ts:76). So a tenant that turned on the opt-in rule that every fee must have PASSED review before billing has it enforced when rows are ticked and bypassed when they are not - which is the path the UI actively promotes for large selections ('Create Bill (全选)', apps/web/src/routes/_next/expenses/cost-lines.tsx:2214). Never-submitted fees get billed and invoiced, with no error, because the gate returned clean.",
@@ -2941,6 +2966,7 @@
           "src": "packages/api/src/routers/expense/cost-lines.ts:2506"
         },
         {
+          "id": "s21-an-approved-fee-s-exchange-rate-can-still-be-rew",
           "sev": "money",
           "title": "An approved fee's exchange rate can still be rewritten in bulk, past the post-approval freeze",
           "why": "costLines.update runs postApprovalGate (packages/api/src/routers/expense/cost-lines.ts:137-142, 333-339), so once a review has passed and the flow says post_approval_editable = false (the schema default, packages/db/src/schema/audit.ts:145) an approved fee refuses every edit with 'This record was approved and its content can no longer be edited'. exchangeRateBatch - the fee grid's bulk FX edit - does not use the governed writer and runs no such gate (cost-lines.ts:2063-2166). Its only filter is isClaimed, which looks at billId, invoicedAmount, writtenOffAmount, lockedAt and recPayLockedAt and nothing about review (packages/api/src/routers/expense/batch.ts:116-124). So an approved, unbilled fee has its FX rate - and with it the local-currency value that the bill and every base-currency total read - changed in bulk by any holder of costLine.update, with no re-review and the approved stamp untouched. The single-row path refuses the same edit.",
@@ -2948,6 +2974,7 @@
           "src": "packages/api/src/routers/expense/cost-lines.ts:2115"
         },
         {
+          "id": "s21-an-approved-fee-can-be-deleted-outright-approval",
           "sev": "money",
           "title": "An approved fee can be deleted outright - approval binds its content but not its existence",
           "why": "The delete verb's gates are deleteRefusalsGate, orderUnlockedGate and splitsReleaseGate (packages/api/src/routers/expense/cost-lines.ts:427-431); the batch delete path repeats the same three refusals by hand (cost-lines.ts:1774-1795). Neither consults the review state - the refusals are billed / locked / rec-pay-locked only. So a fee that has been submitted, reviewed and APPROVED, and is therefore cleared for billing, can be deleted before it reaches a bill by any holder of costLine.delete, with no re-review and no signal to the approver. The asymmetry is the tell: the same fee cannot have its amount edited to 0 (postApprovalGate refuses) but can be removed entirely. On the receivable side that is approved revenue that simply never gets billed.",
@@ -2955,6 +2982,7 @@
           "src": "packages/api/src/routers/expense/cost-lines.ts:429"
         },
         {
+          "id": "s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
           "sev": "data",
           "title": "A fee sitting in the review queue is fully editable, so the approval lands on an amount the reviewer never saw",
           "why": "The costLineWriter update gates are postApprovalGate, singleFeeLockGate, recPayLockGate, billedFieldsGate and orderUnlockedGate (packages/api/src/routers/expense/cost-lines.ts:333-339). postApprovalGate only fires once a submission has PASSED. The open window - submitted, awaiting a decision - is what assertNotUnderReview exists for, and the gates module states why it is not optional: 'a reviewer opens a record, reads it, and approves it. If it can change in between, they have approved something they never saw' (packages/api/src/modules/audit/gates.ts:103-128). Across the API it is called only from company.ts (contract), lading.ts (delete/bulkDelete) and quotation.ts (fee_template); cost_line is covered nowhere. So a fee can be submitted at RM 500, edited to RM 5,000 while it sits in /approve/cost, approved on the reviewer's next click, and then frozen at the new number by the post-approval rule. The trail shows an approval and a separate edit, with nothing saying the approval was of the pre-edit figure.",
@@ -3061,6 +3089,7 @@
       ],
       "fixes": [
         {
+          "id": "s22-bills-cannot-be-split-per-order-though-the-serve",
           "sev": "friction",
           "title": "Bills cannot be split per order, though the server can",
           "why": "Lines from several jobs merge into one bill. The server implements groupByOrder and the Chinese UI had it, but no web screen sends it, so per-shipment billing is done by filtering and repeating the whole dialog.",
@@ -3655,6 +3684,7 @@
       ],
       "fixes": [
         {
+          "id": "s27-the-month-end-documents-have-no-menu-entry",
           "sev": "friction",
           "title": "The month-end documents have no menu entry",
           "why": "The customer statement, debit note and per-shipment profit sheet only exist inside an export dialog on two screens. Staff who do not already know that reach month-end with no way to produce them.",

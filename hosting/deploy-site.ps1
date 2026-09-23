@@ -1,7 +1,7 @@
 # Builds the ZYT client-projects site and deploys it to Cloudflare Workers.
 #
 #   /                            dashboard: projects · to-do · task panel   hosting/hub/index.html
-#   /nct/customer-intake-sop/    NCT SOP + 32 screenshots                   customer-intake-sop.html
+#   /nct/customer-intake-sop/    NCT SOP + 32 screenshots (no fix list)     customer-intake-sop/sop.json
 #   /jwa/full-chain-sop/         JWA SOP + its screenshots                  JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json
 #   /harper/guest-concierge-sop/ Harper Suite WhatsApp concierge SOP        OpenWA/sop/guest-concierge/sop.json
 #
@@ -99,14 +99,15 @@ $pwaHead = @'
 $pwaScript = "<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js');});}</script>"
 
 # ── NCT: When a Customer Comes In ─────────────────────────────────────────────
-# Built from data with the zyt-setup template (roles view, fix list kept). The hand-written
+# Built from data with the zyt-setup template (roles view) with --no-ledger: NCT's fix list lives in
+# the dashboard's Findings (tracker/seed/tasks-nct.json, from the same sop.json). The hand-written
 # customer-intake-sop.html is only used if the data file is missing.
 $nctData = Join-Path $root 'customer-intake-sop\sop.json'
 $sopSrcPath = Join-Path $root 'customer-intake-sop.html'
 if (Test-Path $nctData) {
   $sopSrcPath = Join-Path $site 'customer-intake-sop.built.html'
   $eap0 = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
-  $nctOut = & node (Join-Path $env:USERPROFILE '.claude\skills\zyt-setup\scripts\build-page.mjs') --data $nctData --out $sopSrcPath 2>&1
+  $nctOut = & node (Join-Path $env:USERPROFILE '.claude\skills\zyt-setup\scripts\build-page.mjs') --data $nctData --out $sopSrcPath --no-ledger 2>&1
   $nctExit = $LASTEXITCODE; $ErrorActionPreference = $eap0
   if ($nctExit -ne 0) { throw "build-page.mjs failed for NCT:`n$($nctOut -join "`n")" }
   $nctOut | Where-Object { $_ -isnot [Management.Automation.ErrorRecord] } | ForEach-Object { Write-Output "$_" }

@@ -28,7 +28,7 @@
     {
       "n": 1,
       "key": "step-01",
-      "title": "Read the enquiry Email only",
+      "title": "Read the enquiry",
       "phase": "A",
       "role": "Sales · needs thread:read",
       "routes": [

@@ -16,7 +16,7 @@
         "type": "SOP",
         "title": "When a Customer Comes In",
         "href": "/nct/customer-intake-sop/",
-        "source": "customer-intake-sop.html"
+        "source": "customer-intake-sop/sop.json"
       },
       {
         "type": "Runbook",

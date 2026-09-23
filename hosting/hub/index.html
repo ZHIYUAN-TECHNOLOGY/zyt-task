@@ -344,6 +344,33 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 .stat-link { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1.1rem; padding: .55rem .85rem; border: 1px solid var(--border); border-radius: 10px; background: var(--canvas); color: var(--heading); font-weight: 500; font-size: .85rem; }
 .stat-link:hover { border-color: var(--accent); text-decoration: none; }
 .stat-link b { font: 600 .9rem var(--mono); }
+/* Overview: the SOP embedded (?embed=1) under a bar with its title and the full-page link.
+   The frame is sized to the window; below 52rem the page inside grows and the frame scrolls. */
+.ov-bar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .5rem 1rem; margin-bottom: .9rem; }
+.ov-t { min-width: 0; }
+.ov-t h1 { font: 600 clamp(1.35rem, 2.4vw, 1.8rem)/1.15 var(--grotesk); letter-spacing: -.03em; color: var(--heading); margin: 0; }
+.ov-t small { display: block; margin-top: .2rem; color: var(--muted); font-size: .78rem; }
+.ov-open { flex: none; font-weight: 500; font-size: .85rem; padding: .42rem .8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--canvas); color: var(--heading); }
+.ov-open:hover { border-color: var(--accent); text-decoration: none; }
+.ov-frame { display: block; width: 100%; height: calc(100vh - var(--top) - 9rem); min-height: 32rem; border: 1px solid var(--border); border-radius: 16px; background: var(--canvas); }
+#ov-cards .sec-h { margin-top: 1.75rem; }
+/* Findings: audit chips, and the one-time import of the SOP page's old browser ticks */
+.audit-fixed { color: var(--ok); background: rgba(31,157,98,.1); }
+.imp { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: flex-start; margin: 1.25rem 0 0; padding: .9rem 1rem; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; background: var(--canvas); font-size: .85rem; }
+.imp[hidden] { display: none; }
+.imp-text { flex: 1 1 22rem; min-width: 0; }
+.imp-text b { color: var(--heading); font-weight: 600; }
+.imp-text p { margin: .3rem 0 0; color: var(--text); }
+.imp-text p.muted { color: var(--muted); }
+.imp-text ul { margin: .4rem 0 0; padding-left: 1.1rem; }
+.imp-actions { display: flex; gap: .5rem; align-items: center; }
+.imp-actions .ghostbtn { margin-left: 0; }
+#step-wrap { max-width: 100%; }
+#f-step { max-width: 18rem; text-overflow: ellipsis; }
+.progress[hidden] { display: none; }
+.imp-actions button:disabled { opacity: .6; cursor: default; }
+.empty a.primary { display: inline-block; margin-top: 1rem; }
+.empty a.primary:hover { text-decoration: none; }
 
 /* My tasks and Resources: top-level pages, no company column */
 #shell[data-view="mine"], #shell[data-view="zyt"] { grid-template-columns: minmax(0, 1fr); }
@@ -498,6 +525,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   .panel { width: 100%; }
   .ws-text small { white-space: normal; }
   .facts { grid-template-columns: 1fr; }
+  .ov-frame { width: calc(100% + 2 * clamp(1rem, 3vw, 2.5rem)); margin-inline: calc(-1 * clamp(1rem, 3vw, 2.5rem)); border-radius: 0; border-inline: 0; }
   .ghostbtn { margin-left: 0; }
 }
 
@@ -626,7 +654,9 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 
     <div class="view" id="view-tasks" hidden></div>
     <div class="view" id="view-task" hidden></div>
-    <div class="view" id="view-overview" hidden></div>
+    <!-- ov-frames holds each company's SOP frame, created once and never moved: moving an
+         iframe in the DOM reloads it. The head and the cards around it are rebuilt. -->
+    <div class="view" id="view-overview" hidden><div id="ov-head"></div><div id="ov-frames"></div><div id="ov-cards"></div></div>
     <div class="view" id="view-mine" hidden></div>
     <div class="view" id="view-zyt" hidden></div>
 
@@ -637,7 +667,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
       <p class="progress-text" id="progress-text"></p>
     </div>
-    <div class="toolbar">
+    <div class="imp" id="import-banner" role="region" aria-label="Ticks from the old SOP page" hidden></div>
+    <div class="toolbar" id="f-toolbar">
       <div class="seg" role="group" aria-label="Show">
         <button type="button" data-show="all" aria-pressed="true">All</button>
         <button type="button" data-show="open" aria-pressed="false">Open</button>
@@ -651,6 +682,16 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
           <option value="data">Data</option>
           <option value="blocked">Blocked</option>
           <option value="friction">Friction</option>
+        </select>
+      </label>
+      <label class="select" id="step-wrap"><span class="sr">SOP step</span>
+        <select id="f-step" data-fk="f-step"></select>
+      </label>
+      <label class="select"><span class="sr">Group by</span>
+        <select id="f-group" data-fk="f-group">
+          <option value="ws">Group by workstream</option>
+          <option value="rank">Group by rank</option>
+          <option value="step">Group by SOP step</option>
         </select>
       </label>
       <button type="button" class="ghostbtn" id="toggle-all">Collapse all</button>
@@ -740,8 +781,14 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   SEED.pageTitles = {};
   SEED.projects.forEach(function (p) { p.pages.forEach(function (pg) { SEED.pageTitles[pg.href] = pg.type + ': ' + pg.title; }); });
   SEED.projects.forEach(function (p) {
-    // SOP-ledger titles carry a trailing "new" marker; show it as a chip instead
-    p.tasks.forEach(function (t) { t.isNew = / new$/.test(t.title); t.title = t.title.replace(/ new$/, ''); });
+    // "new" is the isNew field; older seeds carried it as a trailing " new" on the title, still
+    // stripped for one release. steps may be bare SOP step numbers or { kind, n } objects.
+    p.tasks.forEach(function (t) {
+      t.isNew = t.isNew === true || / new$/.test(t.title);
+      t.title = t.title.replace(/ new$/, '');
+      t.steps = (t.steps || []).map(function (s) { return typeof s === 'number' ? { kind: 'step', n: s } : s; })
+        .filter(function (s) { return s && isFinite(s.n); });
+    });
     p.byKey = {}; p.tasks.forEach(function (t) { p.byKey[t.id] = t; });
     // Runbook work is grouped into tasks (one per runbook, plus loose ones). A task's
     // checklist is its stages' steps in order, numbered 1…n per task (x.n); a step
@@ -789,7 +836,9 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   // view: 'tasks' | 'task' | 'overview' | 'findings'. taskId/expanded belong to the task view,
   // taskKey to the findings panel; search text and filters are kept per view.
   var S = { companyKey: null, view: 'tasks', taskId: null, expanded: null, outline: null, taskKey: null, chip: 'all', show: 'all', cat: '',
-    qs: { tasks: '', findings: '', mine: '', zyt: '' }, sopStep: null, collapsed: {}, mineDone: {}, live: null, events: [], pending: {}, conn: 'connecting' };
+    // sopStep: the SOP step Overview's frame opens (?view=overview&step=N); fStep: the Findings step
+    // filter (?view=findings&step=N); groupBy: 'ws' (workstream) | 'rank' | 'step'
+    qs: { tasks: '', findings: '', mine: '', zyt: '' }, sopStep: null, fStep: null, groupBy: 'ws', importing: false, collapsed: {}, mineDone: {}, live: null, events: [], pending: {}, conn: 'connecting' };
   // S.live / S.events are the selected company's board; LIVE holds every company's
   // (My tasks, the tab badge and the switcher's counts read the others).
   var LIVE = {}, SUBS = {}, FAILED = {};
@@ -811,6 +860,9 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     return { state: t.state === 'done' ? 'done' : 'open', updatedBy: null, updatedAt: null };
   }
   function isDone(t) { return liveOf(t).state === 'done'; }
+  // a finding an audit recorded as fixed counts as closed (the Open filter, the counts), while
+  // its tick box still shows and sets the Convex state
+  function isClosed(t) { return isDone(t) || t.status === 'fixed'; }
   function author() { return store.get('zyt.author'); }
 
   function ago(ms) {
@@ -876,7 +928,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       var t = p.rbTasks.filter(function (x) { return status(x) !== 'done'; }).length;
       return { n: t, what: t === 1 ? 'open task' : 'open tasks' };
     }
-    var f = p.tasks.filter(function (x) { return !isDone(x); }).length;
+    var f = p.tasks.filter(function (x) { return !isClosed(x); }).length;
     return { n: f, what: f === 1 ? 'open finding' : 'open findings' };
   }
   function placeLine(p) { return [p.place, p.sector].filter(Boolean).join(' · '); }
@@ -1004,7 +1056,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
 
   function renderNav(c) {
     var openTasks = c.rbTasks.filter(function (t) { return status(t) !== 'done'; }).length;
-    var openFindings = c.tasks.filter(function (t) { return !isDone(t); }).length;
+    var openFindings = c.tasks.filter(function (t) { return !isClosed(t); }).length;
     // Overview lists the company's pages (the SOP first); off when it has none
     var pages = c.visPages.length;
     var items = [
@@ -1537,14 +1589,16 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     else if (s.openerFk) focusFk(s.openerFk);
   }
 
-  // ── findings (the SOP ledger and client tasks), grouped by workstream ──
+  // ── findings (the SOP ledger and client tasks), grouped by workstream, rank or SOP step ──
+  function onStep(t, n) { return t.steps.some(function (s) { return String(s.n) === String(n); }); }
   function matches(t) {
-    var done = isDone(t), q = S.qs.findings;
-    if (S.show === 'open' && done) return false;
-    if (S.show === 'done' && !done) return false;
+    var closed = isClosed(t), q = S.qs.findings;
+    if (S.show === 'open' && closed) return false;
+    if (S.show === 'done' && !closed) return false;
     if (S.cat && category(t) !== S.cat) return false;
+    if (S.fStep && !onStep(t, S.fStep)) return false;
     if (q) {
-      var hay = [t.title, t.detail, t.repair || '', t.id, (t.src || []).join(' ')].join(' ').toLowerCase();
+      var hay = [t.title, t.detail, t.repair || '', t.id, (t.src || []).join(' '), t.ruleId || ''].join(' ').toLowerCase();
       if (hay.indexOf(q) === -1) return false;
     }
     return true;
@@ -1552,6 +1606,15 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   function stepsText(t) {
     if (!t.steps.length) return null;
     return t.steps.map(function (s) { return (s.kind === 'break-after' ? 'After step ' : 'Step ') + s.n; }).join(' · ');
+  }
+  function firstStep(t) { return t.steps.length ? Number(t.steps[0].n) : Infinity; }
+
+  // read-only facts an audit wrote into the ledger (tracker/seed): fixed, and which rule it breaks
+  function auditChips(t) {
+    return [
+      t.status === 'fixed' ? h('span', { class: 'chip audit-fixed', title: 'An audit found this fixed in the code', text: 'Fixed (audit)' + (t.fixedAt ? ' · ' + day(t.fixedAt) : '') }) : null,
+      t.origin === 'rule-violation' ? h('span', { class: 'chip cat-blocked', title: 'Breaks a process rule', text: 'Rule' + (t.ruleId ? ' ' + t.ruleId : '') }) : null
+    ];
   }
 
   function taskRow(t) {
@@ -1567,51 +1630,203 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
         h('span', { class: 'task-meta' },
           h('span', { class: 'chip cat-' + category(t), text: catLabel(t) }),
           t.isNew ? h('span', { class: 'chip cat-data', text: 'New' }) : null,
+          auditChips(t),
           stepsText(t) ? h('span', { text: stepsText(t) }) : null,
           done && lv.updatedBy ? h('span', { class: 'by', text: '✓ ' + lv.updatedBy }) : null)));
   }
 
+  // The three groupings. Group ids carry the mode, so each keeps its own collapsed state.
+  function stepTitle(c, n) { var st = c.stepByN[n]; return 'Step ' + n + (st ? ' · ' + st.title : ''); }
   function viewGroups(c) {
+    var items = c.tasks.slice();
+    if (S.groupBy === 'rank') {
+      var chain = items.filter(function (t) { return t.kind === 'chain'; })
+        .sort(function (a, b) { return (a.rank || 999) - (b.rank || 999); });
+      var rest = items.filter(function (t) { return t.kind !== 'chain'; });
+      // a stable sort by first step: Array#sort is not stable in every browser this page supports
+      rest = rest.map(function (t, i) { return { t: t, i: i }; })
+        .sort(function (a, b) { return (firstStep(a.t) - firstStep(b.t)) || (a.i - b.i); })
+        .map(function (r) { return r.t; });
+      return [
+        { id: 'rank:chain', title: 'Chain breaks', blurb: 'Across steps, most important first', items: chain },
+        { id: 'rank:step', title: 'Inside one step', blurb: 'Fixes to a single step, in SOP order', items: rest }
+      ].filter(function (g) { return g.items.length; });
+    }
+    if (S.groupBy === 'step') {
+      var byN = {}, ns = [], loose = [];
+      items.forEach(function (t) {
+        var n = firstStep(t);
+        if (n === Infinity) { loose.push(t); return; }
+        if (!byN[n]) { byN[n] = []; ns.push(n); }
+        byN[n].push(t);
+      });
+      ns.sort(function (a, b) { return a - b; });
+      var out = ns.map(function (n) {
+        var st = c.stepByN[n];
+        return { id: 'step:' + n, title: stepTitle(c, n), blurb: st ? [c.phase[st.phase] || st.phase, st.role].filter(Boolean).join(' · ') : '', items: byN[n] };
+      });
+      if (loose.length) out.push({ id: 'step:none', title: 'Not tied to a step', blurb: '', items: loose });
+      return out;
+    }
     return c.workstreams.map(function (w) {
-      return { id: w.id, title: w.title, blurb: w.blurb, items: w.covers.map(function (k) { return c.byKey[k]; }) };
+      return { id: w.id, title: w.title, blurb: w.blurb, items: w.covers.map(function (k) { return c.byKey[k]; }).filter(Boolean) };
     });
+  }
+
+  // the Step filter: every SOP step a finding points at, with its open count. The options are
+  // only rebuilt when their text changes, so a push does not close an open dropdown.
+  function renderStepFilter(c) {
+    var sel = $('f-step'), counts = {}, ns = [];
+    c.tasks.forEach(function (t) {
+      var seen = {}, open = !isClosed(t);
+      t.steps.forEach(function (s) {
+        var n = Number(s.n);
+        if (seen[n]) return;
+        seen[n] = true;
+        if (!(n in counts)) { counts[n] = 0; ns.push(n); }
+        if (open) counts[n]++;
+      });
+    });
+    ns.sort(function (a, b) { return a - b; });
+    if (S.fStep && !(Number(S.fStep) in counts)) ns.push(Number(S.fStep));        // a linked step with nothing on it
+    var opts = [['', 'All steps']].concat(ns.map(function (n) {
+      var st = c.stepByN[n], title = st ? st.title : '';
+      if (title.length > 34) title = title.slice(0, 33) + '…';
+      return [String(n), 'Step ' + n + (title ? ' · ' + title : '') + ' (' + (counts[n] || 0) + ' open)'];
+    }));
+    var sig = JSON.stringify(opts);
+    if (sel.dataset.sig !== sig) {
+      sel.dataset.sig = sig; sel.textContent = '';
+      opts.forEach(function (o) { sel.appendChild(h('option', { value: o[0], text: o[1] })); });
+    }
+    sel.value = S.fStep ? String(S.fStep) : '';
+    $('step-wrap').hidden = !ns.length;
+  }
+
+  // ── old ticks: the SOP page kept its ticks in this browser before they moved here ──
+  // Two keys (the page built from sop.json, and the hand-written page served until 2026-09-16),
+  // each a JSON array of bare fix ids. Imported once, then renamed to <key>.imported.
+  var OLD_TICK_KEYS = ['sop.customer-intake-sop.fixDone', 'sop.fixDone'];
+  var OLD_TICK_COMPANY = 'nct';
+  function readOldTicks() {
+    var keys = [], ids = {};
+    OLD_TICK_KEYS.forEach(function (k) {
+      try {
+        var raw = localStorage.getItem(k);
+        if (raw == null) return;
+        keys.push(k);
+        var arr = JSON.parse(raw);
+        if (Array.isArray(arr)) arr.forEach(function (id) { if (typeof id === 'string' && id) ids[id] = true; });
+      } catch (e) { /* no storage, or not JSON: nothing to import from this key */ }
+    });
+    return { keys: keys, ids: Object.keys(ids) };
+  }
+  // reopened on purpose: its history has a reopen after a tick, so the old tick is out of date
+  function reopenedSince(key) {
+    var evs = S.events.filter(function (e) { return e.findingKey === key; });
+    return evs.some(function (o) { return o.to === 'open' && evs.some(function (d) { return d.to === 'done' && d.at < o.at; }); });
+  }
+  function oldTicks(c) {
+    if (c.key !== OLD_TICK_COMPANY || !S.live || store.get('zyt.sopTicksDismissed') === '1') return null;
+    var read = readOldTicks();
+    if (!read.keys.length) return null;
+    var apply = [], skipped = [];
+    read.ids.forEach(function (id) {
+      var t = c.byKey[OLD_TICK_COMPANY + '-' + id];
+      if (!t || t.rb || isDone(t)) return;
+      (reopenedSince(t.id) ? skipped : apply).push(t);
+    });
+    return apply.length ? { keys: read.keys, apply: apply, skipped: skipped } : null;
+  }
+  // one tick, as a promise: no toast and no render (the import counts and reports its own)
+  function setStateP(key, state, projectKey) {
+    return client.mutation(convex.anyApi.findings.setState, { projectKey: projectKey || S.companyKey, key: key, state: state, author: author() });
+  }
+  function applyOldTicks() {
+    if (S.importing) return;
+    if (!client || S.conn === 'offline') { toast('Read-only right now — the server can’t be reached, so ticks can’t be saved.'); return; }
+    if (!author()) { askName(function (given) { if (given) applyOldTicks(); }); return; }
+    var imp = oldTicks(company());
+    if (!imp) return;
+    var list = imp.apply, failed = 0, i = 0, projectKey = S.companyKey;
+    S.importing = true;
+    renderAll();
+    (function next() {
+      if (i < list.length) { setStateP(list[i++].id, 'done', projectKey).then(next, function () { failed++; next(); }); return; }
+      S.importing = false;
+      if (failed) toast(failed + ' of ' + list.length + ' not saved — try again');
+      else imp.keys.forEach(function (k) {
+        try { var v = localStorage.getItem(k); if (v != null) localStorage.setItem(k + '.imported', v); localStorage.removeItem(k); } catch (e) {}
+      });
+      renderAll();
+    })();
+  }
+  function renderImport(c) {
+    var slot = $('import-banner'), imp = oldTicks(c);
+    slot.textContent = '';
+    slot.hidden = !imp;
+    if (!imp) return;
+    var n = imp.apply.length, who = author();
+    append(slot, [
+      h('div', { class: 'imp-text' },
+        h('b', { text: 'Ticks from the old SOP page' }),
+        h('p', { text: 'This browser ticked ' + n + (n === 1 ? ' finding' : ' findings') + ' on the SOP page before ticks moved here. Apply saves ' +
+          (n === 1 ? 'it' : 'them') + ' as done under ' + (who ? who : 'your name') + ' and the current time — the old page kept neither.' }),
+        h('ul', null, imp.apply.map(function (t) { return h('li', { text: t.title }); })),
+        imp.skipped.length ? h('p', { class: 'muted' }, 'Reopened since, not applied: ', imp.skipped.map(function (t) { return t.title; }).join('; ')) : null),
+      h('div', { class: 'imp-actions' },
+        h('button', { type: 'button', class: 'primary', fk: 'imp-apply', disabled: S.importing, onclick: applyOldTicks },
+          S.importing ? 'Saving…' : 'Apply ' + n + (n === 1 ? ' tick' : ' ticks')),
+        h('button', { type: 'button', class: 'ghostbtn', fk: 'imp-dismiss', disabled: S.importing,
+          onclick: function () { store.set('zyt.sopTicksDismissed', '1'); renderAll(); } }, 'Dismiss'))
+    ]);
   }
 
   function renderTodo() {
     var c = company(), items = c.tasks;
     var groupsData = viewGroups(c);
     $('company-place').textContent = c.name + ' · ' + c.place;
-    var done = items.filter(isDone).length;
-    $('progress-bar').style.width = (items.length ? Math.round(done * 100 / items.length) : 0) + '%';
-    $('progress-text').textContent = items.length
-      ? done + ' of ' + items.length + ' tasks done · ' + c.workstreams.length + ' workstreams'
-      : 'No tasks yet';
+    var closed = items.filter(isClosed).length;
+    $('progress-bar').style.width = (items.length ? Math.round(closed * 100 / items.length) : 0) + '%';
+    $('progress-text').textContent = items.length ? closed + ' of ' + items.length + ' findings closed · ' + c.workstreams.length + ' workstreams' : '';
+    $('progress-bar').parentNode.hidden = !items.length;
+    renderImport(c);
+    renderStepFilter(c);
+    $('f-group').value = S.groupBy;
 
-    var filtering = !!(S.qs.findings || S.cat || S.show !== 'all');
+    var filtering = !!(S.qs.findings || S.cat || S.fStep || S.show !== 'all');
     var groups = $('groups'); groups.textContent = '';
     var shown = 0;
     groupsData.forEach(function (g) {
       var visible = g.items.filter(matches);
       if (filtering && !visible.length) return;
       shown += visible.length;
-      var gDone = g.items.filter(isDone).length;
+      var gDone = g.items.filter(isClosed).length, total = g.items.length || 1;
       var collapsed = !filtering && !!S.collapsed[g.id];
-      var listId = 'ws-' + g.id;
+      var listId = 'ws-' + g.id.replace(/[^\w-]/g, '-');
       groups.appendChild(h('section', { class: 'ws' + (gDone === g.items.length ? ' complete' : '') },
         h('button', { type: 'button', class: 'ws-head', fk: 'ws:' + g.id, 'aria-expanded': String(!collapsed), 'aria-controls': listId,
           onclick: function () { S.collapsed[g.id] = !S.collapsed[g.id]; renderAll(); } },
           h('span', { class: 'chev', 'aria-hidden': 'true' }),
-          h('span', { class: 'ws-text' }, h('b', { text: g.title }), h('small', { text: g.blurb })),
+          h('span', { class: 'ws-text' }, h('b', { text: g.title }), g.blurb ? h('small', { text: g.blurb }) : null),
           h('span', { class: 'ws-count' },
-            h('span', { class: 'mini', 'aria-hidden': 'true' }, h('i', { style: 'width:' + Math.round(gDone * 100 / g.items.length) + '%' })),
+            h('span', { class: 'mini', 'aria-hidden': 'true' }, h('i', { style: 'width:' + Math.round(gDone * 100 / total) + '%' })),
             h('span', { text: gDone + '/' + g.items.length }))),
         h('ul', { class: 'tasks', id: listId, hidden: collapsed }, visible.map(taskRow))));
     });
-    $('empty').hidden = shown !== 0;
-    // a company with nothing tracked yet is not the same as a search that matched nothing
-    var nothing = items.length === 0;
-    $('empty').querySelector('h3').textContent = nothing ? 'No tasks yet' : 'No tasks match';
-    $('empty').querySelector('p').textContent = nothing ? 'Nothing is tracked for ' + c.name + ' so far.' : 'Clear the search or change the filters.';
+    // a company with nothing tracked here is not the same as a search that matched nothing
+    var nothing = items.length === 0, empty = $('empty');
+    $('f-toolbar').hidden = nothing;
+    empty.hidden = shown !== 0;
+    empty.textContent = '';
+    if (nothing && c.sop) append(empty, [
+      h('h3', { text: 'No findings here' }),
+      h('p', { text: 'This company’s findings are on its SOP page.' }),
+      h('a', { class: 'primary', href: viewHref('overview'), fk: 'empty-overview',
+        onclick: function (e) { if (plainClick(e)) { e.preventDefault(); setView('overview'); } } }, 'Open the Overview')]);
+    else append(empty, [
+      h('h3', { text: nothing ? 'No findings yet' : 'No findings match' }),
+      h('p', { text: nothing ? 'Nothing is tracked for ' + c.name + ' so far.' : 'Clear the search or change the filters.' })]);
     var allCollapsed = groupsData.length && groupsData.every(function (g) { return S.collapsed[g.id]; });
     $('toggle-all').textContent = allCollapsed ? 'Expand all' : 'Collapse all';
     $('toggle-all').hidden = filtering || !groupsData.length;
@@ -1632,18 +1847,93 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       h('span', { class: 'pg-go', 'aria-hidden': 'true', text: '→' })));
   }
 
-  // ── Overview: the company's pages as cards, the SOP first (embedded in a later phase) ──
+  // ── Overview: the company's SOP embedded (?embed=1), then its other pages as cards ──
+  // One frame per company in OVERVIEW_FRAMES, created on the first visit and afterwards only
+  // shown or hidden: renderAll runs on every Convex push, and a rebuilt (or moved) iframe would
+  // reload the SOP and lose the step and role the viewer had open in it.
+  var OVERVIEW_FRAMES = {};
+  function sopPage(c) { return c.sop ? c.visPages.filter(function (pg) { return pg.href === c.sop; })[0] || null : null; }
+  function stampTheme(rec) {
+    try {
+      var d = rec.frame.contentDocument;
+      if (d && d.documentElement) d.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+    } catch (e) { /* not loaded, or not same-origin */ }
+  }
+  // open step n inside a loaded frame: a fragment navigation (no reload), replacing the frame's
+  // history entry so the dashboard's Back is not spent on frame hashes. The same hash twice fires
+  // no hashchange, so an empty one goes first (the page ignores a hash that names no step).
+  function frameToStep(rec, n) {
+    try {
+      var w = rec.frame.contentWindow, base = w.location.pathname + w.location.search;
+      if (w.location.hash === '#step-' + n) w.location.replace(base + '#');
+      w.location.replace(base + '#step-' + n);
+    } catch (e) { rec.frame.src = rec.href + '?embed=1#step-' + n; }
+  }
+  function overviewFrame(c, pg) {
+    var rec = OVERVIEW_FRAMES[c.key];
+    if (rec) return rec;
+    rec = { href: pg.href, step: S.sopStep, loaded: false, pending: null };
+    rec.frame = h('iframe', { class: 'ov-frame', title: 'SOP: ' + pg.title,
+      src: pg.href + '?embed=1' + (S.sopStep ? '#step-' + S.sopStep : '') });
+    rec.frame.addEventListener('load', function () {
+      rec.loaded = true;
+      stampTheme(rec);
+      if (rec.pending) { var n = rec.pending; rec.pending = null; frameToStep(rec, n); }
+    });
+    rec.wrap = h('div', { class: 'ov-sop', 'data-company': c.key }, rec.frame);
+    $('ov-frames').appendChild(rec.wrap);
+    OVERVIEW_FRAMES[c.key] = rec;
+    return rec;
+  }
+  // the "Open full page" link follows the step open in the frame, read when it is used
+  function fullPageHref(c) {
+    var rec = OVERVIEW_FRAMES[c.key], hash = '';
+    try { if (rec && rec.loaded) hash = rec.frame.contentWindow.location.hash; } catch (e) {}
+    if (!/^#step-\d+$/.test(hash)) hash = S.sopStep ? '#step-' + S.sopStep : '';
+    return c.sop + hash;
+  }
   function renderOverview(c) {
-    var root = $('view-overview'), n = c.visPages.length;
-    root.textContent = '';
-    append(root, [
-      h('p', { class: 'kicker', text: c.name + ' · ' + c.place }),
-      h('h1', { id: 'overview-title', text: 'Overview' }),
-      n
-        ? [h('p', { class: 'sub', text: n === 1 ? 'The page written for ' + c.name + '.' : 'The ' + n + ' pages written for ' + c.name + '.' }),
-           h('ul', { class: 'pg-grid', 'aria-label': c.name + ' pages' }, c.visPages.map(function (pg) { return pageCard(pg, c); }))]
-        : h('div', { class: 'empty' }, h('h3', { text: 'No pages yet' }), h('p', { text: c.name + ' has no pages so far.' }))
-    ]);
+    var head = $('ov-head'), cards = $('ov-cards'), pg = sopPage(c);
+    var others = c.visPages.filter(function (x) { return !pg || x !== pg; });
+    head.textContent = ''; cards.textContent = '';
+    Object.keys(OVERVIEW_FRAMES).forEach(function (k) { OVERVIEW_FRAMES[k].wrap.hidden = !pg || k !== c.key; });
+    if (pg) {
+      var rec = overviewFrame(c, pg);
+      if (S.sopStep && rec.step !== S.sopStep) {
+        rec.step = S.sopStep;
+        if (rec.loaded) frameToStep(rec, S.sopStep); else rec.pending = S.sopStep;
+      }
+      var open = h('a', { class: 'ov-open', href: fullPageHref(c), fk: 'ov-open' }, 'Open full page ', h('span', { 'aria-hidden': 'true', text: '↗' }));
+      ['pointerdown', 'focus', 'click'].forEach(function (ev) { open.addEventListener(ev, function () { open.href = fullPageHref(c); }); });
+      append(head, h('div', { class: 'ov-bar' },
+        h('div', { class: 'ov-t' },
+          h('p', { class: 'kicker', text: c.name + ' · ' + c.place }),
+          h('h1', { id: 'overview-title', text: pg.title }),
+          h('small', { text: 'SOP' + (pg.updated ? ' · Updated ' + day(pg.updated) : '') })),
+        open));
+      if (others.length) append(cards, [
+        h('h2', { class: 'sec-h' }, 'Other pages', h('small', { text: String(others.length) })),
+        h('ul', { class: 'pg-grid', 'aria-label': c.name + ' pages' }, others.map(function (x) { return pageCard(x, c); }))]);
+      return;
+    }
+    var n = others.length;
+    append(head, [h('p', { class: 'kicker', text: c.name + ' · ' + c.place }), h('h1', { id: 'overview-title', text: 'Overview' })]);
+    append(cards, n
+      ? [h('p', { class: 'sub', text: n === 1 ? 'The page written for ' + c.name + '.' : 'The ' + n + ' pages written for ' + c.name + '.' }),
+         h('ul', { class: 'pg-grid', 'aria-label': c.name + ' pages' }, others.map(function (x) { return pageCard(x, c); }))]
+      : h('div', { class: 'empty' }, h('h3', { text: 'No pages yet' }), h('p', { text: c.name + ' has no pages so far.' })));
+  }
+  function overviewStepHref(n) {
+    return '?company=' + encodeURIComponent(S.companyKey) + '&view=overview&step=' + encodeURIComponent(n);
+  }
+  // a finding's "Where in the SOP": Overview, with the frame on that step (even the step it is on)
+  function goOverviewStep(n) {
+    var rec = OVERVIEW_FRAMES[S.companyKey];
+    if (rec) rec.step = null;
+    S.view = 'overview'; S.sopStep = String(n); S.taskKey = null; S.expanded = null; S.outline = null;
+    syncUrl(true);
+    renderAll();
+    window.scrollTo(0, 0);
   }
 
   // ── Resources: the internal company's own pages (and findings, if it ever has any) ──
@@ -1653,7 +1943,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     var head = [h('p', { class: 'kicker', text: 'Internal' + (p && p.place ? ' · ' + p.place : '') }), h('h1', { id: 'zyt-title', text: 'Resources' })];
     if (!p) { append(root, [head, h('div', { class: 'empty' }, h('h3', { text: 'Nothing here yet' }), h('p', { text: 'ZYT’s own pages will show here.' }))]); return; }
     var pages = p.visPages.filter(function (pg) { return !q || (pg.title + ' ' + pg.type).toLowerCase().indexOf(q) !== -1; });
-    var open = p.tasks.filter(function (t) { return !isDone(t); }).length;
+    var open = p.tasks.filter(function (t) { return !isClosed(t); }).length;
     append(root, [
       head,
       h('p', { class: 'sub', text: 'Our own pages: how this site and its sessions work. Client work is under Projects.' }),
@@ -1821,7 +2111,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
           : h('span', { class: 'muted', text: done ? '' : 'Tick the circle when it’s fixed.' })),
       h('dl', { class: 'facts' },
         fact('Category', h('span', { class: 'chip cat-' + cat, text: cat === 'chain' ? 'Chain break' : (CAT[cat] || cat) })),
-        fact('Kind', t.kind === 'chain' ? 'Across steps · rank ' + t.rank + ' of 18' : 'Inside one step'),
+        fact('Kind', t.kind === 'chain' ? 'Across steps · rank ' + t.rank + ' of ' + c.tasks.filter(function (x) { return x.kind === 'chain'; }).length : 'Inside one step'),
+        t.status === 'fixed' || t.origin === 'rule-violation' ? fact('Audit', auditChips(t)) : null,
         fact('Owner', t.owner || 'Unassigned'),
         fact('Key', h('code', { text: t.id }))),
       section('Detail', h('p', { text: t.detail })),
@@ -1830,7 +2121,9 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
         var label = (s.kind === 'break-after' ? 'Chain break after step ' : 'Step ') + s.n + (st ? ' · ' + st.title : '');
         var sub = st ? (c.phase[st.phase] || st.phase) + ' · ' + st.role : '';
         var inner = [h('b', { text: label }), sub ? h('small', { text: sub }) : null];
-        return h('li', null, c.sop ? h('a', { href: c.sop + '#step-' + s.n }, inner) : h('span', { class: 'step-static' }, inner));
+        // opens the step in Overview's embedded SOP (a new tab still gets the dashboard URL)
+        return h('li', null, c.sop ? h('a', { href: overviewStepHref(s.n), fk: 'where:' + t.id + ':' + s.n,
+          onclick: function (e) { if (plainClick(e)) { e.preventDefault(); goOverviewStep(s.n); } } }, inner) : h('span', { class: 'step-static' }, inner));
       }))) : null,
       section('Planned repair', t.repair ? h('p', { text: t.repair }) : h('p', { class: 'muted', text: 'No repair written yet.' })),
       section('Source', t.src && t.src.length
@@ -1944,7 +2237,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     else {
       if (S.view !== defaultView(c)) p.set('view', S.view);
       if (S.view === 'findings' && S.taskKey) p.set('task', S.taskKey);
-      if ((S.view === 'findings' || S.view === 'overview') && S.sopStep) p.set('step', S.sopStep);
+      if (S.view === 'findings' && S.fStep) p.set('step', S.fStep);
+      if (S.view === 'overview' && S.sopStep) p.set('step', S.sopStep);
     }
     return location.pathname + '?' + p.toString();
   }
@@ -1968,6 +2262,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   function setView(v) {
     S.view = v; S.expanded = null; S.outline = null;
     if (v !== 'findings') S.taskKey = null;
+    // the menu's Overview shows the frame as the viewer left it; a step comes only from a link
+    S.sopStep = null;
     syncUrl(true);
     renderAll();
     window.scrollTo(0, 0);
@@ -2031,7 +2327,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     if (S.companyKey === key) return false;
     // pending ticks are keyed by company (pk), so they survive the switch: My tasks may
     // have one in flight for another company
-    S.companyKey = key; S.taskKey = null; S.taskId = null; S.expanded = null; S.live = null; S.events = [];
+    S.companyKey = key; S.taskKey = null; S.taskId = null; S.expanded = null; S.live = null; S.events = []; S.fStep = null;
     subscribe();
     return true;
   }
@@ -2046,7 +2342,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     if (page) {
       // keep the company last looked at, so the Projects tab goes back to it
       setCompany(S.companyKey || (ck && ck !== HOME ? ck : CLIENTS[0].key));
-      S.view = page; S.taskKey = null; S.expanded = null; S.outline = null; S.sopStep = null;
+      S.view = page; S.taskKey = null; S.expanded = null; S.outline = null; S.sopStep = null; S.fStep = null;
       renderAll();
       syncUrl(false);
       window.scrollTo(0, 0);
@@ -2057,11 +2353,15 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
     if (v === 'runbook') v = 'tasks';                                                            // the old Runbook view
     if (['tasks', 'overview', 'findings'].indexOf(v) === -1) v = null;
     S.taskKey = null; S.expanded = null; S.outline = null;
-    S.sopStep = /^\d+$/.test(q.get('step') || '') ? q.get('step') : null;
+    var step = /^\d+$/.test(q.get('step') || '') ? q.get('step') : null;
+    S.sopStep = null; S.fStep = null;
     if (r && r.kind === 'task') { S.view = 'task'; S.taskId = r.task.id; }
     else if (r && r.kind === 'step') { S.view = 'task'; S.taskId = r.task.id; S.expanded = r.step.id; }
     else if (r) { S.view = 'findings'; S.taskKey = r.finding.id; }
     else S.view = v || defaultView(c);
+    // ?step=N: the Findings step filter, or the step Overview's frame opens (again, on Back/Forward)
+    if (step && S.view === 'findings') S.fStep = step;
+    if (step && S.view === 'overview') { S.sopStep = step; if (OVERVIEW_FRAMES[S.companyKey]) OVERVIEW_FRAMES[S.companyKey].step = null; }
     renderAll();
     syncUrl(false);                                  // settle old spellings on the current form
     if (S.expanded) revealStep(S.expanded, true); else window.scrollTo(0, 0);
@@ -2163,6 +2463,8 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   // ── controls ──
   $('q').addEventListener('input', function (e) { S.qs[qKey()] = e.target.value.trim().toLowerCase(); renderAll(); });
   $('f-cat').addEventListener('change', function (e) { S.cat = e.target.value; renderAll(); });
+  $('f-step').addEventListener('change', function (e) { S.fStep = e.target.value || null; syncUrl(false); renderAll(); });
+  $('f-group').addEventListener('change', function (e) { S.groupBy = e.target.value; renderAll(); });
   document.querySelectorAll('#view-findings .seg button').forEach(function (b) { b.addEventListener('click', function () { S.show = b.dataset.show; renderAll(); }); });
   $('toggle-all').addEventListener('click', function () {
     var gs = viewGroups(company());
@@ -2191,8 +2493,10 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
   $('theme-btn').addEventListener('click', function () {
     var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    store.set('zyt.theme', next);
+    store.set('zyt.theme', next);                  // the storage event restyles each Overview frame
     applyTheme(next);
+    // and directly, for when localStorage is unavailable (no storage event then)
+    Object.keys(OVERVIEW_FRAMES).forEach(function (k) { if (OVERVIEW_FRAMES[k].loaded) stampTheme(OVERVIEW_FRAMES[k]); });
   });
 
   $('who').addEventListener('click', function () { askName(null); });

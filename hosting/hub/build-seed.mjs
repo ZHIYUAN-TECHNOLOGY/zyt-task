@@ -1,17 +1,20 @@
 // Builds the JSON the dashboard embeds: every project in hosting/hub/projects.json with
 // its tasks, workstreams and flow from tracker/seed. Live tick state comes from Convex;
 // this is the content and the offline fallback.
-//   node hosting/hub/build-seed.mjs <out.json> [--runbook <path>] [--public <dir>] [--report-snippets]
+//   node hosting/hub/build-seed.mjs <out.json> [--runbook <path>] [--public <dir>] [--sop <path>] [--report-snippets]
 // --runbook <path>    use this runbook seed instead of projects.json's seed.runbook (the one project
 //                     that has one). For negative tests on a scratch copy; tracked files stay untouched.
 // --public <dir>      the built site (deploy-site.ps1 passes hosting/site/public): every task's
 //                     download zip must exist there. Without it only the zip's path shape is checked.
 // --report-snippets   print the runbook steps that would fail the "no silent empty snippets" rule,
 //                     then exit 0 without writing anything.
+// --sop <path>        check NCT's findings against this sop.json instead of customer-intake-sop/sop.json
+//                     (the drift check below). For negative tests on a scratch copy.
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Marked } from 'marked';
+import { findingsFromSop } from '../../tracker/sop-findings.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..', '..');
@@ -19,9 +22,10 @@ const argv = process.argv.slice(2);
 const flag = (name) => { const i = argv.indexOf(name); return i === -1 ? null : (argv.splice(i, 2)[1] ?? ''); };
 const runbookOverride = flag('--runbook');
 const publicDir = flag('--public');
+const sopOverride = flag('--sop');
 const reportSnippets = argv.includes('--report-snippets');
 const out = argv.filter((a) => !a.startsWith('--'))[0];
-if (!out && !reportSnippets) throw new Error('usage: node build-seed.mjs <out.json> [--runbook <path>] [--public <dir>] [--report-snippets]');
+if (!out && !reportSnippets) throw new Error('usage: node build-seed.mjs <out.json> [--runbook <path>] [--public <dir>] [--sop <path>] [--report-snippets]');
 
 const read = (rel) => JSON.parse(readFileSync(isAbsolute(rel) ? rel : join(root, rel), 'utf8'));
 const registry = read('hosting/hub/projects.json');
@@ -85,12 +89,58 @@ function snippetsFor(link, sourceByHref) {
   return out;
 }
 
+// ── drift: NCT's findings against the SOP's data (plan §4.8) ──
+// tasks-nct.json is generated from customer-intake-sop/sop.json by tracker/build-seed.mjs, with the
+// page's own id rules (tracker/sop-findings.mjs). Its ids are Convex keys, so a finding added or
+// removed in sop.json must reach the seed and Convex before a deploy. A step that lost one id and
+// gained another is a reworded fix whose id was not pinned: that is reported as a rename, not a reseed.
+function checkSopDrift(tasks, sopPath) {
+  const sop = JSON.parse(readFileSync(sopPath, 'utf8'));
+  const expected = findingsFromSop(sop, { prefix: 'nct-' });
+  const have = new Set(tasks.map((t) => t.id));
+  const want = new Set(expected.map((f) => f.id));
+  const missing = tasks.filter((t) => !want.has(t.id));
+  const extra = expected.filter((f) => !have.has(f.id));
+  if (!missing.length && !extra.length) {
+    // same ids: a reworded fix (pinned id) still needs the seed regenerated, or the dashboard shows old text
+    const byId = new Map(tasks.map((t) => [t.id, t]));
+    const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+    const changed = expected.filter((f) => { const t = byId.get(f.id);
+      return !['title', 'detail', 'isNew', 'severity', 'status', 'fixedAt'].every((k) => same(t[k], f[k])); }).map((f) => f.id);
+    if (changed.length) throw new Error(`tasks-nct.json is stale against customer-intake-sop/sop.json: text changed for [${changed}]. Run node tracker/build-seed.mjs (no Convex step: the ids are unchanged).`);
+    return;
+  }
+  const stepOf = (t) => (t.kind === 'step' && t.steps.length ? t.steps[0].n : null);
+  const lines = [];
+  const renamedOld = new Set(), renamedNew = new Set();
+  for (const f of extra) {
+    const n = stepOf(f);
+    if (n == null) continue;
+    const old = missing.find((t) => stepOf(t) === n && !renamedOld.has(t.id));
+    if (!old) continue;
+    renamedOld.add(old.id);
+    renamedNew.add(f.id);
+    lines.push(`tasks-nct.json: fix "${f.title}" on step ${n} changed id ${old.id} → ${f.id}. Pin the old id: add "id": "${old.id.replace(/^nct-/, '')}" to that fix in customer-intake-sop/sop.json, then run node tracker/build-seed.mjs.`);
+  }
+  const miss = missing.filter((t) => !renamedOld.has(t.id)).map((t) => t.id);
+  const ext = extra.filter((f) => !renamedNew.has(f.id)).map((f) => f.id);
+  if (miss.length || ext.length) {
+    lines.push(`tasks-nct.json is stale against customer-intake-sop/sop.json: missing [${miss}] extra [${ext}]. Run node tracker/build-seed.mjs; put each new id in a workstream in tracker/seed/client-tasks-nct.json (covers); on dev run npx convex dev --once && npx convex run seed:nct. Then ask Wilfred to run npx convex deploy -y && npx convex run --prod seed:nct before any site deploy. Agents must not run the --prod or deploy commands.`);
+  }
+  throw new Error(lines.join('\n'));
+}
+
 // A heading that names a wave (plan D28): "Wave 12 — `wt-step16`", "4. Wave 1: start three sessions".
 const WAVE_HEADING = /^(\d+\.\s*)?Wave\s+\d+/i;
 const emptySnippetSteps = [];
 
 const projects = registry.map((p) => {
   const tasks = read(p.seed.tasks);
+  if (p.key === 'nct') {
+    const sopPath = sopOverride ? resolve(sopOverride) : join(root, 'customer-intake-sop/sop.json');
+    if (sopOverride && !existsSync(sopPath)) throw new Error(`--sop ${sopOverride}: no such file`);
+    if (existsSync(sopPath)) checkSopDrift(tasks, sopPath);
+  }
   const workstreams = read(p.seed.workstreams).map(({ visible, ...w }) => w);
   const flow = read(p.seed.flow);
 

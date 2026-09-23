@@ -11,7 +11,7 @@ files are the spec for those. If something below stops being true, fix this file
 | URL | Source of truth | Managed by |
 |---|---|---|
 | `/` dashboard (companies · Overview · Tasks · Findings; a task view with its runbook's text, checklist and attachments) | `hosting/hub/index.html`; companies and their pages in `hosting/hub/projects.json`; tasks, stages and steps in `tracker/seed/runbook-<key>.json` (optional, `seed.runbook`); finding content in `tracker/seed/{tasks,client-tasks,flow}-<key>.json`; the runbook text's styles in `hosting/hub/runbook-body.css` (shared with the pages) | Hand edits in this repo |
-| `/nct/customer-intake-sop/` | `C:/Project/ZYT-Task/customer-intake-sop/sop.json` + `shots/*.jpg` beside it, built with zyt-setup's `build-page.mjs`. Falls back to the hand-written `customer-intake-sop.html` only if `sop.json` is missing | zyt pipeline since 2026-09-16. Registry id `ZYT-Task/customer-intake-sop` (live, code root `C:/Project/NCT/nct-layout`); 7-role "Show my flow" view; fix list kept public |
+| `/nct/customer-intake-sop/` | `C:/Project/ZYT-Task/customer-intake-sop/sop.json` + `shots/*.jpg` beside it, built with zyt-setup's `build-page.mjs`. Falls back to the hand-written `customer-intake-sop.html` only if `sop.json` is missing | zyt pipeline since 2026-09-16. Registry id `ZYT-Task/customer-intake-sop` (live, code root `C:/Project/NCT/nct-layout`); 7-role "Show my flow" view. Built with `--no-ledger` since Phase 4 (2026-09-23): the page carries no fix list, no step fixes and no browser ticks; "What to fix first" lives in the dashboard's **Findings** (Group by Rank), generated from the same `sop.json`. Browser ticks from the old page (`sop.customer-intake-sop.fixDone`, `sop.fixDone`) can be imported once from the Findings banner and are then kept as `….imported`; the page's comment box is retired, and the claude.ai artifact copy's ticks and comments are abandoned (D12) |
 | `/nct/steps-1-3-runbook/` | `C:/Project/ZYT-Task/steps-1-3-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) since Phase 3 (2026-09-23): the dashboard's task "Steps 1–3" shows its text. The same holds for every NCT runbook and crosscheck below |
 | `/nct/steps-4-10-runbook/` | `C:/Project/ZYT-Task/steps-4-10-runbook.md`, rendered by `hosting/hub/build-runbook.mjs` (marked; the article's rules are in `hub/runbook-body.css`) | Hand edits. Built, hidden from the list (`nav: hidden`) |
 | `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) |
@@ -21,7 +21,7 @@ files are the spec for those. If something below stops being true, fix this file
 | `/nct/steps-16-19-runbook/`, `/nct/steps-20-26-runbook/`, `/nct/step-27-runbook/` | `C:/Project/ZYT-Task/steps-16-19-runbook.md`, `steps-20-26-runbook.md`, `step-27-runbook.md`, same renderer | Hand edits. Written 2026-09-21; every decision settled the same day (recommended options, cross-plan X-items taking precedence); Waves 12–23. Built from the `$nctPages1627` table in `deploy-site.ps1`. Dashboard tasks "Steps 16–19", "Steps 20–26", "Step 27" since 2026-09-23 (56 steps, one per wave heading plus setup, gates and clean-up). Built, hidden from the list (`nav: hidden`) |
 | `/nct/step-16-plan/` … `/nct/step-27-plan/` | `C:/Project/ZYT-Task/plans/step-{16..27}-*.md`, same renderer (kind "Plan") | Hand edits; decisions in each §9 settled 2026-09-21. Published but unlisted, like steps 11–15 |
 | `/nct/steps-16-19-crosscheck/`, `/nct/steps-20-26-crosscheck/` | `C:/Project/ZYT-Task/plans/steps-16-19-crosscheck.md`, `steps-20-26-crosscheck.md` (kind "Crosscheck"). X17–X40 settled 2026-09-21 | Hand edits. Built, hidden from the list (`nav: hidden`); attachments of their tasks. Step 27's collision check is inside its runbook §2 |
-| `/jwa/full-chain-sop/` | `C:/Project/JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json` + `shots/` beside it | zyt pipeline. Registry id `jwa-system/jwa-full-chain` (draft); built with zyt-setup's `build-page.mjs` without `--no-ledger` since 2026-09-16, so its fix list is public like NCT's |
+| `/jwa/full-chain-sop/` | `C:/Project/JWASystemv2/jwa-system/sop/jwa-full-chain/sop.json` + `shots/` beside it | zyt pipeline. Registry id `jwa-system/jwa-full-chain` (draft); built with zyt-setup's `build-page.mjs` without `--no-ledger` since 2026-09-16, so its fix list is public (NCT's moved to the dashboard's Findings in Phase 4) |
 | `/harper/guest-concierge-sop/` | `C:/Project/OpenWA/sop/guest-concierge/sop.json` (no screenshots), built with zyt-setup's `build-page.mjs` | zyt pipeline since 2026-09-21. Company `harper` ("Harper Suite", Harper Boutique Hotel at Sutera Avenue). Documents the live Kapso workflow `harper-concierge` + `harper-ops` + `harper-watch` in `OpenWA/kapso/`; Step 03 lists every question the bot answers. (A first version built from the unrelated `C:/Project/Kapso` prototype was replaced the same day.) Fix list public; empty `tracker/seed/*-harper.json` |
 | `/harper/bot-answers/` | Generated at build time by `hosting/hub/build-bot-answers.mjs` from `C:/Project/OpenWA/kapso/prompt/kb.md` (the bot's knowledge base, one table per question in English, Malay and Chinese) plus `C:/Project/OpenWA/sop/guest-concierge/other-flows.md` (non-question messages), then rendered by `build-runbook.mjs` (kind "Reference") | Edit `kb.md` in OpenWA (that changes the bot too) or `other-flows.md`, then redeploy. A malformed `kb.md` entry fails the build |
 | `/zyt/commands/` (ZYT commands) | `C:/Project/ZYT-Task/docs/zyt-commands.md`, same renderer (kind "Commands", company `zyt` in `projects.json`, empty `tracker/seed/*-zyt.json`) | Hand edits (h2 = table-of-contents entry); verify commands against the zyt skills' scripts |
@@ -50,14 +50,15 @@ belong in layers 1–3, not in the source**.
 
 | Change | Edit | Then |
 |---|---|---|
-| NCT step wording, routes, watch notes, chain breaks, defects | `customer-intake-sop/sop.json` | Redeploy |
+| NCT step wording, routes, watch notes, chain breaks | `customer-intake-sop/sop.json` | Redeploy |
+| NCT defects (the ranked `ledger.items` and each step's `guide[].fixes`) — what the dashboard's Findings list | `customer-intake-sop/sop.json`; keep each fix's `"id"` when rewording it (the ids are pinned so a reword never changes a Convex key; a fix added without one gets `s<nn>-<slug of title>`) | In this order: (1) edit `sop.json`; (2) `node tracker/build-seed.mjs` (rewrites `tracker/seed/tasks-nct.json` and `flow-nct.json` with the page's own id rules, `tracker/sop-findings.mjs`); (3) put each new id in a workstream's `covers` in `tracker/seed/client-tasks-nct.json`; (4) dev: `npx convex dev --once && npx convex run seed:nct` in `hosting/convex-app`; (5) **Wilfred:** `npx convex deploy -y && npx convex run --prod seed:nct`; (6) site deploy. **Agents never run step 5.** `hosting/hub/build-seed.mjs` fails the build while `tasks-nct.json` has other ids than `sop.json` gives: `tasks-nct.json is stale against customer-intake-sop/sop.json: missing […] extra […]`, or, for a reworded fix that lost its id, `fix "…" on step <n> changed id <old> → <new>. Pin the old id …` (`--sop <path>` checks a scratch copy) |
 | NCT runbook text | `steps-4-10-runbook.md` (h2 = table-of-contents entry) | Redeploy |
 | NCT screenshots | `customer-intake-sop/shots/` (names referenced by `sop.json`) | Redeploy |
 | JWA SOP content | `sop.json` via `/zyt-update` in the JWA repo | Redeploy with `deploy-site.ps1` — the zyt skills' own publish step targets a separate Worker (`hosting/<worker-name>/`), not this site |
 | Look or behaviour of every SOP page | `hosting/hub/sop-theme.css`, `sop-layout.css`, `sop-layout.js` | Redeploy |
 | Dashboard UI | `hosting/hub/index.html` | Redeploy |
 | Which pages a company's **Overview** shows as cards, and in what order | `hosting/hub/projects.json` — the company's `pages`, its SOP first, then the rest in file order; `"nav": "hidden"` leaves a page off. The internal company `zyt` is not in the switcher: its pages (ZYT commands) are the cards on the **Resources** header tab (`?page=zyt`). The header's three tabs (Projects · My tasks · Resources) are fixed in `index.html`, not read from `projects.json` (the old `"nav": "header"` flag is gone) | Redeploy |
-| Task titles, detail, repair, source locations, workstreams | `tracker/seed/*-<key>.json` | Redeploy; new task ids also need Convex rows (below) |
+| Task titles, detail, repair, source locations, workstreams | `tracker/seed/*-<key>.json` (NCT's `tasks-nct.json` and `flow-nct.json` are generated from `sop.json`, see NCT defects above; its workstreams stay hand-edited) | Redeploy; new task ids also need Convex rows (below) |
 | Runbook stages and steps (what's next, owner, waits-for, link to a runbook section) | `tracker/seed/runbook-<key>.json` | Redeploy; new step ids need Convex rows — run `seed:nct` (dev and `--prod`) **before** the site deploy, or ticking them fails with "That task does not exist." A real deploy now refuses to ship while any key has no row (the seed-row preflight in `deploy-site.ps1`); a DryRun only warns |
 | A wave heading in a task's runbook (`### Wave 12 — …`, `4. Wave 1: …`) | `tracker/seed/runbook-<key>.json` gets a step, in any task, whose `link` or `prompts` points at it | The build fails with `<source> wave heading #<id> has no step` until one does — a runbook cannot gain a wave without a checklist step. Every `Runbook` page with an `.md` source must be some task's `runbook` (`runbook page <href> is in no task`), so no runbook escapes this rule |
 | The Tasks list: which tasks, their order, runbook, attachments, zip, SOP steps, settled date, migrations | `tasks[]` in `tracker/seed/runbook-<key>.json`. A task groups whole stages in order; each stage is in exactly one task. Task ids (`task-nct-…`) are not Convex keys but must not clash with a step or finding id. `runbook` is a `pages` href with an `.md` source, every `attach[].href` a listed or unlisted page, `download` a `/nct/downloads/<name>.zip` that the bundles build | Redeploy; no Convex rows needed. The build fails with the exact reason (`stage … is in no task`, `… is in two tasks (…)`, `task … attachment … is not a page in projects.json`, `download … is missing from …`) |
@@ -247,11 +248,14 @@ node hosting/runner/server.mjs
   It fails closed, so set the secret before deploying with `main` on. Team-only fields (repairs, code locations) are shown by decision.
 - **NCT page hooks the hosted layout depends on** (`sop-layout.js` / `.css`): `.chain`,
   `#chain-pane` with `.cp-num`, `.masthead`, `nav.index`, `#arrivals`, `#map`, `#baseurl`,
-  `#fixes`, `.fixbrowser`, `#document`, `#doc-body`, `window.SOP.showStep`, `window.chainFocus`,
+  `#fixes`, `.fixbrowser`, `#document`, `#doc-body`, `#doc-toggle`, `window.SOP.showStep`, `window.chainFocus`,
   `.sm-backdrop`. The page's own chart scripts also key on `.cn[data-step]` and `.cb[data-brk]`.
+  `#fixes` and `.fixbrowser` exist only on JWA and Harper now (NCT is built with `--no-ledger`).
+  **Embed mode:** the dashboard's Overview frames an SOP page at `<page>?embed=1`, which adds
+  `html.zyt-embed` (the ZYT top bar hidden, no top offset); `#step-N` in the frame's hash opens that step.
   Renaming any of them in the source breaks the hosted layout.
 - **`#step-N` anchors** are linked from the dashboard's task panel (`/nct/customer-intake-sop/#step-N`).
-- **Task ids and runbook step ids in `tracker/seed` are Convex keys** (one key space, rows in `findings`). Renaming one orphans its tick history. Runbook `link` anchors are the renderer's heading slugs, so renaming a runbook heading breaks the link.
+- **Task ids and runbook step ids in `tracker/seed` are Convex keys** (one key space, rows in `findings`). Renaming one orphans its tick history. NCT's finding ids come from `sop.json` (`nct-` + the ledger item's `id` or the fix's pinned `id`), so never change an `"id"` there either. Runbook `link` anchors are the renderer's heading slugs, so renaming a runbook heading breaks the link.
 - **Dashboard URLs** (query parameters only; shared links depend on them):
 
   | URL | Opens |
@@ -265,12 +269,15 @@ node hosting/runner/server.mjs
   | `?task=rb-nct-b3-merge-wave-1` (a **step** id; `docs/zyt-commands.md` links these) | the owning task, with that step expanded, scrolled into view and outlined |
   | `?task=nct-identity` (a **finding** id) | Findings, with its panel open |
   | `?view=findings&step=8` | Findings filtered to SOP step 8 |
-  | `?view=overview&step=5` | Overview, its SOP card linking to `#step-5` (the SOP is not embedded yet) |
+  | `?view=overview&step=5` | Overview, the embedded SOP opened at step 5 (sets the frame's `#step-5`, no reload) |
 - **Step ids stay Convex keys; display numbers are per task.** Never renumber or rename an id to
   match a display number — the number is computed, the id holds the tick history.
 - **The task view reads `article.rb-body` and `nav.rb-toc` from the served page** (it fetches the
   runbook or plan URL and parses it), so `build-runbook.mjs` must keep emitting both, and the page's
   `.rb-body` rules must stay in `runbook-body.css`, not in the page-only CSS.
+- **Old SOP ticks after a rollback.** The Findings import renames each browser key it applied to
+  `<key>.imported` rather than deleting it. To undo that on one browser, run in the site's console:
+  `['sop.customer-intake-sop.fixDone','sop.fixDone'].forEach(function(k){var v=localStorage.getItem(k+'.imported');if(v!==null){localStorage.setItem(k,v);localStorage.removeItem(k+'.imported');}});localStorage.removeItem('zyt.sopTicksDismissed');`
 - **Every task belongs to exactly one workstream**; `hosting/hub/build-seed.mjs` fails the build
   otherwise.
 - **Every screenshot the page references must exist**; the build fails otherwise.
