@@ -2,33 +2,33 @@
   "job": "jwa-receive-steps-11-14",
   "title": "JWA · SOP steps 11–14 golden path",
   "status": "passed",
-  "startedAt": 1790172047505,
-  "finishedAt": 1790172574251,
+  "startedAt": 1790182441752,
+  "finishedAt": 1790183149445,
   "steps": [
     {
       "title": "Before the journey · an SRF with one line on order and one line sourced from stock",
       "state": "ok",
-      "ms": 103890
+      "ms": 140881
     },
     {
       "title": "Step 11 · An administrator receives the delivery from the SRF Receiving Queue (the warehouse account is refused)",
       "state": "ok",
-      "ms": 16993
+      "ms": 19675
     },
     {
       "title": "Step 12 · Purchasing ticks the delivered line Done",
       "state": "ok",
-      "ms": 11698
+      "ms": 12623
     },
     {
       "title": "Step 13 · The warehouse issues the stock line to site and opens its MTN",
       "state": "ok",
-      "ms": 20869
+      "ms": 20190
     },
     {
       "title": "Step 14 · The Inventory Manager books a delivery that is not on any SRF as a direct receipt",
       "state": "ok",
-      "ms": 19637
+      "ms": 21493
     }
   ],
   "videos": [
@@ -50,5 +50,5 @@
     }
   ],
   "hasVideo": true,
-  "publishedAt": 1790172583802
+  "publishedAt": 1790183161164
 }

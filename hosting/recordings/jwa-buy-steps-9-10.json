@@ -2,23 +2,23 @@
   "job": "jwa-buy-steps-9-10",
   "title": "JWA · SOP steps 9–10 golden path",
   "status": "passed",
-  "startedAt": 1790171559956,
-  "finishedAt": 1790171845700,
+  "startedAt": 1790182181408,
+  "finishedAt": 1790182426546,
   "steps": [
     {
       "title": "Before the journey · an approved SRF for a catalogue item, on a staffed site",
       "state": "ok",
-      "ms": 61207
+      "ms": 43523
     },
     {
       "title": "Step 9 · Purchasing starts processing the SRF and sources the line",
       "state": "ok",
-      "ms": 33509
+      "ms": 32380
     },
     {
       "title": "Step 10 · Purchasing submits the price comparison and the CFO approves it on Price Approvals",
       "state": "ok",
-      "ms": 19841
+      "ms": 18690
     }
   ],
   "videos": [
@@ -32,5 +32,5 @@
     }
   ],
   "hasVideo": true,
-  "publishedAt": 1790172583783
+  "publishedAt": 1790183161112
 }

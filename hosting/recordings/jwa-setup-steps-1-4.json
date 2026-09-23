@@ -2,28 +2,28 @@
   "job": "jwa-setup-steps-1-4",
   "title": "JWA · SOP steps 1–4 golden path",
   "status": "passed",
-  "startedAt": 1790171025995,
-  "finishedAt": 1790171248092,
+  "startedAt": 1790181478977,
+  "finishedAt": 1790181795493,
   "steps": [
     {
-      "title": "Step 1 · The Project Manager creates the project and assigns its Construction Manager",
+      "title": "Step 1 · The Project Manager creates the project with its Construction Manager and Site Supervisor",
       "state": "ok",
-      "ms": 29725
+      "ms": 22977
     },
     {
-      "title": "Step 2 · The Project Manager adds the Site Supervisor as a member",
+      "title": "Step 2 · The project page lists its Construction Manager and Site Supervisor as members",
       "state": "ok",
-      "ms": 6078
+      "ms": 2874
     },
     {
       "title": "Step 3 · The Quantity Surveyor keys the BQ budget and submits it to the CFO",
       "state": "ok",
-      "ms": 20297
+      "ms": 22382
     },
     {
       "title": "Step 4 · The CFO reads the budget and approves it",
       "state": "ok",
-      "ms": 14579
+      "ms": 14736
     }
   ],
   "videos": [
@@ -41,5 +41,5 @@
     }
   ],
   "hasVideo": true,
-  "publishedAt": 1790172583810
+  "publishedAt": 1790183161185
 }
