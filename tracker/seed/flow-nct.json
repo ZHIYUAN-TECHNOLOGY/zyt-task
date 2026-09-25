@@ -152,12 +152,12 @@
         "/quotations/$quotationId",
         "/order/$orderId/edit"
       ],
-      "summary": "You are on /order//edit. Go straight to step 12 and press Assign number."
+      "summary": "You are on /order//edit, with the job number already stamped. Step 12 only matters if the Job Number box is blank."
     },
     {
       "n": 12,
       "key": "step-12",
-      "title": "Stamp the job number by hand",
+      "title": "Check the job number",
       "phase": "C",
       "role": "Sales, immediately after converting · needs collectiveOrder write",
       "routes": [
@@ -267,7 +267,7 @@
       "key": "step-21",
       "title": "Get the fees reviewed",
       "phase": "E",
-      "role": "Submitter: expense:read to see the ledger, plus audit.read and expense.costLine.update to submit. Reviewer: audit.read and expense.costLine.review, and must be a routed reviewer on the open stage (seeded Cost review flow routes to the accounting role, any-pass).",
+      "role": "Submitter: expense:read to see the ledger, plus audit.read and expense.costLine.update to submit. Reviewer: audit.read and expense.costLine.review, must be a routed reviewer on the open stage (seeded Cost review flow routes to the accounting role, any-pass), and must not be the member who submitted the line.",
       "routes": [
         "/expenses/cost-lines",
         "/approve/cost"
@@ -324,7 +324,7 @@
       "key": "step-26",
       "title": "Record the money and settle it",
       "phase": "E",
-      "role": "Cashier / Accounting · the sidebar item needs expense:read, but the lists gate on expense.payment.read and expense.writeOff.read; expense.payment.create to record, expense.writeOff.verify to verify, expense.writeOff.reverse to void, expense.payment.delete to delete an unsettled payment.",
+      "role": "Cashier / Accounting · the sidebar item needs expense:read, but the lists gate on expense.payment.read and expense.writeOff.read; expense.payment.create to record, expense.payment.update to edit, expense.writeOff.verify to verify, expense.writeOff.reverse to void, expense.payment.delete to delete an unsettled payment.",
       "routes": [
         "/expenses/payments",
         "/expenses/write-offs"

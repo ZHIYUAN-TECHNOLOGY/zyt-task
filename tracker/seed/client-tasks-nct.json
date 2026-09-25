@@ -20,7 +20,12 @@
     "blurb": "Settling an invoice means retyping figures outside the system, and a payment in another currency posts a gain or loss that never happened.",
     "state": "planned",
     "visible": false,
-    "covers": ["nct-money-by-hand", "nct-fx-gain-loss", "nct-base-currency"]
+    "covers": [
+      "nct-money-by-hand",
+      "nct-fx-gain-loss",
+      "nct-base-currency",
+      "nct-au-before-8-am-the-payment-date-and-decisio"
+    ]
   },
   {
     "id": "nct-c03-quote-pricing",
@@ -53,7 +58,8 @@
       "nct-s21-the-fees-must-pass-review-before-billing-gate-is",
       "nct-s21-an-approved-fee-s-exchange-rate-can-still-be-rew",
       "nct-s21-an-approved-fee-can-be-deleted-outright-approval",
-      "nct-s21-a-fee-sitting-in-the-review-queue-is-fully-edita"
+      "nct-s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
+      "nct-au-the-accountant-who-submits-a-bill-can-si"
     ]
   },
   {
@@ -128,6 +134,9 @@
     "blurb": "One shipment can report two different profit figures, and the month-end documents are hidden inside an export dialog rather than being where month-end work happens.",
     "state": "planned",
     "visible": false,
-    "covers": ["nct-two-profits", "nct-s27-the-month-end-documents-have-no-menu-entry"]
+    "covers": [
+      "nct-two-profits",
+      "nct-s27-the-month-end-documents-have-no-menu-entry"
+    ]
   }
 ]

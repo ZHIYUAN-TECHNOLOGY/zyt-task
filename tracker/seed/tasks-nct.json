@@ -39,7 +39,9 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-never-overdue",
@@ -85,7 +87,9 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-two-profits",
@@ -131,7 +135,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-base-currency",
@@ -154,7 +159,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-unnumbered",
@@ -177,7 +183,9 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-never-closed",
@@ -200,7 +208,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-paperwork",
@@ -223,7 +232,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-island",
@@ -246,7 +256,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-dead-queues",
@@ -269,7 +280,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-channels",
@@ -292,7 +304,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-money-by-hand",
@@ -334,7 +347,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-credit",
@@ -357,7 +371,9 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-tax-invoice",
@@ -402,6 +418,38 @@
     "src": []
   },
   {
+    "id": "nct-au-the-accountant-who-submits-a-bill-can-si",
+    "kind": "chain",
+    "rank": 19,
+    "title": "The accountant who submits a bill can sign its first review stage themselves",
+    "isNew": false,
+    "detail": "Step 21 stops the person who submitted a fee from approving it. Step 23 does not do the same for the bill built from those fees. The bill resource has separationOfDuties set to false, so decide.ts never checks whether the reviewer is the submitter, and the queue filter does not hide the reviewer's own submissions. The seeded Bill review flow puts the accounting role on stage 1 ('all must pass'). The accounting role holds the whole expense subtree, so the same accountant has expense.bill.update to submit and expense.bill.review to decide. In an org with one accountant, that person groups the fees, submits the bill and passes stage 1 alone, which defeats the 'two sets of eyes on the figures' the flow promises. The bill then goes to invoicing and write-off with only the director's stage 2 behind it. The project's own concurrency test says it outright: an owner may review a bill they submitted.",
+    "severity": "money",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "open",
+    "origin": "defect"
+  },
+  {
+    "id": "nct-au-before-8-am-the-payment-date-and-decisio",
+    "kind": "chain",
+    "rank": 20,
+    "title": "Before 8 am the payment date and decision date default to yesterday",
+    "isNew": false,
+    "detail": "The Add Payment dialog (step 26) pre-fills Pay and Receive Date, and the Decide dialog (step 10) pre-fills Decision date, with new Date().toISOString().slice(0, 10). That is the UTC calendar date. In Malaysia (UTC+8), anything recorded between 00:00 and 07:59 local time silently gets the previous day. A receipt keyed by the cashier early on the 1st of the month is dated the last day of the prior month, so it lands in the wrong month in Financial Stat and the month-end pack. A Won/Lost entered early in the morning gets the wrong decision date. The field looks correctly filled, so it is rarely checked.",
+    "severity": "data",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "open",
+    "origin": "defect"
+  },
+  {
     "id": "nct-s02-duplicate-companies-enter-through-case",
     "kind": "step",
     "rank": null,
@@ -440,7 +488,7 @@
     "owner": null,
     "repair": "Either auto-promote in companyContacts.create (before the insert, if the company has no existing is_primary row, force isPrimary = true), or make report.ts fall back to the oldest contact when none is primary (DISTINCT ON / lateral ordered by is_primary desc, created_at asc instead of the flat eq(isPrimary, true) predicate).",
     "src": [
-      "packages/api/src/routers/report.ts:922; packages/api/src/routers/company-contact.ts:175"
+      "packages/api/src/routers/report.ts:1071; packages/api/src/routers/company-contact.ts:175"
     ]
   },
   {
@@ -461,8 +509,10 @@
     "owner": null,
     "repair": "Seed the gate row on the fee_template flow, or enforce approved-only inside applyTemplate rather than leaving it to the picker's filter.",
     "src": [
-      "packages/api/src/modules/audit/seed.ts:135"
-    ]
+      "packages/api/src/modules/audit/seed.ts:156"
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s05-quotation-date-is-the-row-s-save-timestamp-and-n",
@@ -483,7 +533,9 @@
     "repair": "Add a Quotation Date input to the brief disclosure in $quotationId.tsx (beside Validity Start/End at :1891), seed it from loaded?.quotationDate in defaultValues (:993), and include it in the submit payload (:1076) so both create and the existing update patch path receive it.",
     "src": [
       "packages/api/src/routers/quotation.ts:1531,3067,3290; apps/web/src/routes/_next/quotations/$quotationId.tsx:993"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s05-quotation-staff-is-auto-stamped-copied-by-duplic",
@@ -504,7 +556,9 @@
     "repair": "Add a Quotation Staff field (member picker, defaulted to the session user) to the brief in $quotationId.tsx and send it in the payload; and in quotations.duplicate set quotationStaff to the duplicating member alongside createdBy at quotation.ts:3453 rather than letting it ride in on the spread.",
     "src": [
       "packages/api/src/routers/quotation.ts:3069,3451; packages/api/src/modules/quotation/sheet.ts:356"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s06-applied-tariff-lines-ignore-the-container-mix",
@@ -525,7 +579,9 @@
     "repair": "Seed the applied line's quantity from the quotation's container rows for the matching billing unit, instead of defaulting to 1.",
     "src": [
       "apps/web/src/components/reference-template-dialog.tsx:190"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s07-an-ambiguous-tariff-silently-drops-the-floor",
@@ -546,7 +602,8 @@
     "repair": "Treat an ambiguous resolution as a refusal (or an explicit override with a reason) rather than as an absent floor.",
     "src": [
       "packages/api/src/quotation/tariff-check.ts:457"
-    ]
+    ],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-s08-a-quotation-stays-fully-editable-while-it-is-sit",
@@ -567,7 +624,9 @@
     "repair": "Call assertNotUnderReview(tx, organizationId, \"quotation\", id) in quotations.update immediately after the scoped load, beside the existing assertPostApprovalEditable at :3196, and in applyTemplate beside the one at :3575. Correct the stale claim in modules/audit/gates.ts:123.",
     "src": [
       "packages/api/src/routers/quotation.ts:3196"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s08-the-seeded-quotation-flow-lets-the-branch-manage",
@@ -587,8 +646,10 @@
     "owner": null,
     "repair": "Refuse self-decision in decide(): after loading the submission, throw FORBIDDEN when submission.submittedBy === org.membership.id, the same shape as withdraw.ts:48. Or point the seeded quotation stage at `director`, as the customer/supplier/agent/lading flows do.",
     "src": [
-      "packages/api/src/modules/audit/seed.ts:69"
-    ]
+      "packages/api/src/modules/audit/seed.ts:90"
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s08-the-legacy-quotations-review-verb-stamps-approve",
@@ -609,7 +670,9 @@
     "repair": "Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.",
     "src": [
       "packages/api/src/routers/quotation.ts:3845"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s08-submit-then-retract-permanently-unlocks-an-appro",
@@ -630,7 +693,9 @@
     "repair": "Either refuse submitForReview when the latest submission is `passed` and the flow's postApprovalEditable is false (force an explicit unlock), or key assertPostApprovalEditable on 'this resource has a passed submission not superseded by a later passed one' rather than on the latest attempt's status alone.",
     "src": [
       "packages/api/src/modules/audit/post-approval.ts:43"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s08-the-export-quotation-gate-is-wired-to-reading-a-",
@@ -651,7 +716,9 @@
     "repair": "Move the assertGateCleared(..., \"export\") call out of quotations.retrieve and into quotations.exportSheet and quotations.send, after each handler's scoped load.",
     "src": [
       "packages/api/src/routers/quotation.ts:2355"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s09-there-is-no-outbox-so-a-failed-stamp-costs-a-sec",
@@ -672,7 +739,9 @@
     "repair": "Record the send intent before dispatch and reconcile after, so a retry resumes the stamp instead of re-sending the document.",
     "src": [
       "packages/api/src/routers/quotation.ts:2633"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s10-a-mis-keyed-decision-cannot-be-corrected",
@@ -693,7 +762,9 @@
     "repair": "Add a reviewed correction path that supersedes the decision and keeps both stamps, rather than making the first answer final.",
     "src": [
       "packages/api/src/routers/quotation.ts:2855"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s13-intake-decisions-are-asymmetrical",
@@ -714,7 +785,9 @@
     "repair": "Make the two verbs symmetrical: either let a received order be rejected with a reason, or refuse receiving a rejected one without an explicit re-open.",
     "src": [
       "packages/api/src/routers/collective-order.ts:3335"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s15-a-collective-order-stays-fully-editable-while-it",
@@ -734,8 +807,10 @@
     "owner": null,
     "repair": "Call assertNotUnderReview(tx, organizationId, \"collective_order\", orderId) in collectiveOrder.update, saveChildren and assignJobNumber, right beside each existing assertPostApprovalEditable call.",
     "src": [
-      "packages/api/src/routers/collective-order.ts:2892"
-    ]
+      "packages/api/src/routers/collective-order.ts:3111"
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s15-order-approval-freezes-nothing-downstream-so-app",
@@ -755,8 +830,9 @@
     "owner": null,
     "repair": "Tick the gate keys the flow is meant to enforce in SEEDED_FLOWS' collective_order entry (at minimum expense_entry and end_order), and declare plus wire a `create_lading` gate: defineGates it in modules/collective-order/gates.ts and call assertGateCleared(db, organizationId, \"collective_order\", orderId, \"create_lading\") in lading.create once resolveLadingOrder has produced an order id.",
     "src": [
-      "packages/api/src/modules/audit/seed.ts:150"
-    ]
+      "packages/api/src/modules/audit/seed.ts:171"
+    ],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-s15-the-legacy-collectiveorder-review-verb-lets-ops-",
@@ -777,7 +853,9 @@
     "repair": "Delete collectiveOrder.review (apps/web/src/architecture.test.ts already forbids a UI caller), or reduce it to a wrapper over submitForReview/decide so audit_submission remains the only writer of order_audit_status.",
     "src": [
       "packages/api/src/routers/collective-order.ts:3380"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s16-a-bill-of-lading-can-be-set-to-released-or-on-ho",
@@ -798,7 +876,9 @@
     "repair": "Make status non-free-set for the workflow-owned states: narrow the create/update zod field to z.enum([\"draft\",\"confirmed\",\"cancelled\"]) and refuse released/on-hold/amended with a message naming the workflow verb, and drop those three from STATUS_OPTIONS in both forms, so the only way into them is checkOut / hold / amend, which carry the gates and the stamps.",
     "src": [
       "apps/web/src/routes/_next/lading/$id/edit.tsx:165"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s16-a-bill-of-lading-under-review-stays-fully-editab",
@@ -819,7 +899,9 @@
     "repair": "Add `await assertNotUnderReview(context.db, organizationId, \"lading\", ladingId);` beside the assertPostApprovalEditable call in lading.update, matching delete/bulkDelete.",
     "src": [
       "packages/api/src/routers/lading.ts:1554"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s16-ocr-validation-issues-are-computed-returned-and-",
@@ -840,7 +922,9 @@
     "repair": "Add `issues: ValidationIssue[]` to the ocrResult state type, render them against their fields in the extracted-fields grid (error / warning styling), and disable Apply to Form - or require an explicit 'apply anyway' acknowledgement - while any issue has severity 'error'.",
     "src": [
       "apps/web/src/routes/_next/lading/create.tsx:293"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s16-linking-the-approved-order-carries-only-its-job-",
@@ -860,8 +944,10 @@
     "owner": null,
     "repair": "On order select, fetch collectiveOrder.get for the picked id and prefill the still-empty B/L fields from it (vessel/voyage/pol/pod/etd/eta/mblNo/hblNo/bookingNo/entrustUnit/tradeTerm/shippingCompany), leaving anything already typed alone, and mark which values came from the order so they can be overridden knowingly.",
     "src": [
-      "apps/web/src/routes/_next/lading/create.tsx:1243"
-    ]
+      "apps/web/src/routes/_next/lading/create.tsx:1371"
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s18-there-is-no-customs-declaration-type",
@@ -903,7 +989,8 @@
     "repair": "Refuse the save and name the offending row, the way the quotation grid names a line below tariff.",
     "src": [
       "apps/web/src/routes/_next/order.$orderId.expenses.tsx:629"
-    ]
+    ],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-s21-the-fees-must-pass-review-before-billing-gate-is",
@@ -924,7 +1011,9 @@
     "repair": "Pass the resolved selection: assertGatesCleared(context.db, organizationId, \"cost_line\", costLineIds, \"create_bill\").",
     "src": [
       "packages/api/src/routers/expense/cost-lines.ts:2506"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s21-an-approved-fee-s-exchange-rate-can-still-be-rew",
@@ -945,7 +1034,9 @@
     "repair": "Run the post-approval gate over the selection in exchangeRateBatch (assertPostApprovalEditable per row, or route the write through costLineWriter's `update` verb), and put approved-frozen rows into the existing `skipped` report so the operator sees which lines were left behind and why.",
     "src": [
       "packages/api/src/routers/expense/cost-lines.ts:2115"
-    ]
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s21-an-approved-fee-can-be-deleted-outright-approval",
@@ -965,8 +1056,9 @@
     "owner": null,
     "repair": "Add postApprovalGate to the writer's `delete` verb and an equivalent assertPostApprovalEditable sweep to the batch delete branch, so an approved fee must be taken back out of approval before it can be removed - the contract update already enforces.",
     "src": [
-      "packages/api/src/routers/expense/cost-lines.ts:429"
-    ]
+      "packages/api/src/routers/expense/cost-lines.ts:407"
+    ],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
@@ -986,8 +1078,10 @@
     "owner": null,
     "repair": "Add an assertNotUnderReview gate to the costLineWriter `update` verb (and to exchangeRateBatch and delete once those are gated per the findings above), so a fee under review refuses edits with the existing 'retract the submission first' message.",
     "src": [
-      "packages/api/src/routers/expense/cost-lines.ts:333"
-    ]
+      "packages/api/src/routers/expense/cost-lines.ts:340"
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s22-bills-cannot-be-split-per-order-though-the-serve",
@@ -1007,8 +1101,10 @@
     "owner": null,
     "repair": "Wire the existing groupByOrder flag into the Create Bill dialog as a second tick beside the tax-rate split.",
     "src": [
-      "packages/api/src/routers/expense/cost-lines.ts:2434"
-    ]
+      "packages/api/src/routers/expense/cost-lines.ts:2314"
+    ],
+    "status": "fixed",
+    "fixedAt": "2026-09-25"
   },
   {
     "id": "nct-s27-the-month-end-documents-have-no-menu-entry",
@@ -1028,7 +1124,7 @@
     "owner": null,
     "repair": "Give the three documents a Reports entry that opens the same export with the period pre-filled.",
     "src": [
-      "apps/web/src/routes/_next/expenses/cost-lines.tsx:1944"
+      "apps/web/src/routes/_next/expenses/cost-lines.tsx:1979"
     ]
   }
 ]

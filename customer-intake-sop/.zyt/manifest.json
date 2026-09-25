@@ -1,417 +1,417 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-09-24T13:43:41.756Z",
-  "sopSha": "d557681fd1e246356df03e43854728317cf4b167b6d6d6fabec48ca67699498f",
-  "codeRoot": "C:\\Project\\NCT\\nct-layout",
+  "at": "2026-09-25T11:52:45.776Z",
+  "sopSha": "bd8b70b1feb38641b5faa6bfd2295fda81b720ff51c59f9a44495820f8430ff7",
+  "codeRoot": "C:\\Project\\NCT\\wt-release-r1",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
       "sha": "a16e9d1f6932fb98fbb9ed65864061f423e8cadad72b04f4895f7e4c1e4f808f",
-      "mtimeMs": 1787817410747,
+      "mtimeMs": 1790163135559,
       "size": 9623
     },
     "apps/web/src/components/company/company-contacts.tsx": {
       "sha": "a9d77a797a57b8b0a0b9b982afdd243170d42f537da5cb271d6310697ddb55a5",
-      "mtimeMs": 1790141218186,
+      "mtimeMs": 1790163144767,
       "size": 21641
     },
     "apps/web/src/components/customs-tracking/bl-job-record.tsx": {
-      "sha": "f1d899c0dc4bc818b3e86857a5509aa5823227775099a9acdfb84fa529f6adb9",
-      "mtimeMs": 1788345175049,
-      "size": 33065
+      "sha": "184dd1f340382b33fd3b7a68c83dd6e4d267e61084d2d1f3ae0c791840a0a500",
+      "mtimeMs": 1790247408209,
+      "size": 36407
     },
     "apps/web/src/components/document-upload.tsx": {
       "sha": "ad531cfd2432b5672d55da39415a2c59d0e9f6036dfe171b052c3354093e946d",
-      "mtimeMs": 1787817412320,
+      "mtimeMs": 1790163135827,
       "size": 5649
     },
     "apps/web/src/components/expense/cost-line-batch-menu.tsx": {
-      "sha": "ecb637ade74e0ebb2c88cc7477072dac4301d1bd07ed3df8939b0d7a27c402c8",
-      "mtimeMs": 1787817412316,
-      "size": 18242
+      "sha": "0befc64ba22e9b368dc72ead7af804c90729ae1b38e3324d49d2eba31a87cffb",
+      "mtimeMs": 1790250671544,
+      "size": 19109
     },
     "apps/web/src/components/export-table-dialog.tsx": {
-      "sha": "e7c83bc2fa16f5d9e496747c206bfdcfedde74628a089587c7aa4edc1a747674",
-      "mtimeMs": 1788430857759,
-      "size": 23108
+      "sha": "014cc6b171bdc18a8472b264d5c0e3072ad618e819c34c1f3d8b0103ec544de7",
+      "mtimeMs": 1790250671544,
+      "size": 28745
     },
     "apps/web/src/components/inbox/composer-logic.ts": {
       "sha": "7aeab5a4cbfcbbf36bd957bd3c245c1e3708f65e351c7488af02a5a9aba7c34b",
-      "mtimeMs": 1787817412293,
+      "mtimeMs": 1790163135856,
       "size": 8300
     },
     "apps/web/src/components/inbox/filters.ts": {
       "sha": "8214b3820bca5f26704e1a9805511c808c57327c4ecc76f6e9d1de71d5cd5eb8",
-      "mtimeMs": 1787817412292,
+      "mtimeMs": 1790163135860,
       "size": 6478
     },
     "apps/web/src/components/inbox/left-rail.tsx": {
       "sha": "dc0f9c271ff076ef6456f59253f940432db2b6ac06124e79daf56a3cc83bb65a",
-      "mtimeMs": 1787719061470,
+      "mtimeMs": 1790163135861,
       "size": 7448
     },
     "apps/web/src/components/inbox/link-picker.tsx": {
       "sha": "ee6357dab5c3d6458bcbc1c31afad3f2aed060d2cb547eae30a21d54f690e0e6",
-      "mtimeMs": 1790141218188,
+      "mtimeMs": 1790163144776,
       "size": 8338
     },
     "apps/web/src/components/inbox/notes-panel.tsx": {
       "sha": "87f420735a4d36fa943b6d318fd82b605b1a119565dcd4b3a2db91b8deab7c7f",
-      "mtimeMs": 1787817412290,
+      "mtimeMs": 1790163135867,
       "size": 5781
     },
     "apps/web/src/components/inbox/reading-pane.tsx": {
       "sha": "599cedc4a772acb7a1f2f5df3f08e5e6255efde0ae89b00122705f7a6852d655",
-      "mtimeMs": 1790141218189,
+      "mtimeMs": 1790163144777,
       "size": 23801
     },
     "apps/web/src/components/inbox/sla-tiles.tsx": {
       "sha": "7ff69a04732fd70c31595e6ccc169b1e325105c541cab52179c95be55607f2e6",
-      "mtimeMs": 1787817412287,
+      "mtimeMs": 1790163135876,
       "size": 2098
     },
     "apps/web/src/components/inbox/triage-bar.tsx": {
       "sha": "1df25a38a95a7b1f9775f046de55edede962f361f12d6d43e72e6b46e61c5f02",
-      "mtimeMs": 1787817412286,
+      "mtimeMs": 1790163135880,
       "size": 4957
     },
     "apps/web/src/components/lading/lading-record.tsx": {
       "sha": "a8cd04938f1c89927a1c7e34e32eb6346b8021e497ffe3bf7c2a22a136d090fd",
-      "mtimeMs": 1789144928903,
+      "mtimeMs": 1790163135887,
       "size": 19568
     },
-    "apps/web/src/components/order-detail-pane.tsx": {
-      "sha": "90a4e7e6da61fa4cc0ff98a4d7021db86ab747661e8226ee63b34032956b44f1",
-      "mtimeMs": 1788338840283,
-      "size": 7593
-    },
     "apps/web/src/components/order-form.tsx": {
-      "sha": "5da409b064c5bcc328258e81dc22aeeb61f8c903a64b6d37ad3d8fed8480e333",
-      "mtimeMs": 1789144490762,
-      "size": 126087
+      "sha": "a4a58d4ff0d0e3e166e9e3a890e1db4d7656f1733200db03534ced159b989fa0",
+      "mtimeMs": 1790247408212,
+      "size": 138783
     },
     "apps/web/src/components/order-ledger/assign-job-number-button.tsx": {
-      "sha": "9c13a93d8939aa808f2d2b7701c243cc1bd3c949700d8fa39035d5798b8d507b",
-      "mtimeMs": 1790141218191,
-      "size": 13123
+      "sha": "b1e6a6407dcbd8a1497f80c203c13a895eafcea75d8fed17f122ba0b78eb5699",
+      "mtimeMs": 1790250671549,
+      "size": 13183
     },
     "apps/web/src/components/order-ledger/order-record-page.tsx": {
-      "sha": "a2c5abf185bf3d886008138d870d903df481bf7b876387b901a4af71f151beb0",
-      "mtimeMs": 1789144483908,
-      "size": 6440
+      "sha": "b15482b2441def334c111ab1210f97b9f6c602265546ebc20407dccec721b32e",
+      "mtimeMs": 1790247408213,
+      "size": 8750
     },
     "apps/web/src/components/order-ledger/order-row-actions.tsx": {
-      "sha": "cd459459e0530b7cf462407c29ac66a95c51ca6451f78b628e3c08fb9c0b4c3a",
-      "mtimeMs": 1789016816882,
-      "size": 8605
+      "sha": "9ec9bdfd1b311a905dec0ac5a7c1a91c868f5750511a924dec4857b59694d7f3",
+      "mtimeMs": 1790250671552,
+      "size": 17090
     },
     "apps/web/src/components/quotation/decide-quotation-dialog.tsx": {
       "sha": "69cf9ae6a10eba8ea8b18549d95f72a920e5e15502b18585ae93f13f2f200a93",
-      "mtimeMs": 1789128399966,
+      "mtimeMs": 1790163136491,
       "size": 6520
     },
     "apps/web/src/components/quotation/send-quotation-dialog.tsx": {
       "sha": "b9c6af11d4c384ea877cc30a9778d1adc8e07832b7e7cf8d96242d177c321a0d",
-      "mtimeMs": 1790141218194,
+      "mtimeMs": 1790163144781,
       "size": 21356
     },
     "apps/web/src/components/reference-template-dialog.tsx": {
       "sha": "447ff2932034db5d79d5306352e961df360475ac4d7bf4aec93b2d9759a182f8",
-      "mtimeMs": 1790141218195,
+      "mtimeMs": 1790163144784,
       "size": 34859
     },
     "apps/web/src/components/reject-dialog.tsx": {
       "sha": "a8f22bbf3402b7ddb33479d87ef464efc68f5cd340527dbb9511526c7731bdf5",
-      "mtimeMs": 1788319464781,
+      "mtimeMs": 1790163136512,
       "size": 4416
     },
     "apps/web/src/components/reject-reason-dialog.tsx": {
-      "sha": "acd8e78fc2c753fdc39b3cf7fce27d6bb608171a110af77c8ae9c4a74728479b",
-      "mtimeMs": 1787817412310,
-      "size": 4459
+      "sha": "20afc122b08ca7e7fc23f22b0319a974b853149197225f55dfdeb52a328772bf",
+      "mtimeMs": 1790247408214,
+      "size": 5177
     },
     "apps/web/src/components/review-menu.tsx": {
       "sha": "5779b88a09c5035d3067bf16de115cb81146b974d88e680e6edd12232a98d129",
-      "mtimeMs": 1788322617330,
+      "mtimeMs": 1790163136515,
       "size": 7539
     },
     "apps/web/src/components/review-queue.tsx": {
       "sha": "9475b9b70d15278aa6afc992b01fb90cd96dc2b08e15a0ab87ccfd73903409cb",
-      "mtimeMs": 1787782019444,
+      "mtimeMs": 1790163136516,
       "size": 12987
     },
     "apps/web/src/components/shell-next/nav.ts": {
       "sha": "f75928a722e9d124c58cd76d816fdc843d5e1e42831829bcfbec140368f6de46",
-      "mtimeMs": 1789210910026,
+      "mtimeMs": 1790163136530,
       "size": 15295
     },
     "apps/web/src/components/supersede-template-dialog.tsx": {
       "sha": "f9b56b60e16b5f997a0928d6ebcb6bf63e82333773050829ddb239987411872d",
-      "mtimeMs": 1790141218199,
+      "mtimeMs": 1790163144791,
       "size": 10664
     },
     "apps/web/src/lib/quotation.ts": {
       "sha": "6d5c9ce7007da430887b445498d82e16cfbff1b19a4d593642ca2e0e5bd9bc7f",
-      "mtimeMs": 1790141218206,
+      "mtimeMs": 1790163144800,
       "size": 23682
     },
     "apps/web/src/routes/_next/approve/bill.tsx": {
       "sha": "8e813ceee1bc6151187b6d4706e4101db3ed0a653bde834c6524999e711ccbdc",
-      "mtimeMs": 1787721208092,
+      "mtimeMs": 1790163137067,
       "size": 936
     },
     "apps/web/src/routes/_next/approve/cost.tsx": {
       "sha": "6088d4e5a25ce2293b6f41cf6b0a7b4e05679785267b2430423d0f4ded9abd8f",
-      "mtimeMs": 1787721208091,
+      "mtimeMs": 1790163137070,
       "size": 3094
     },
     "apps/web/src/routes/_next/approve/order.tsx": {
       "sha": "eafa43563b9c183edcf6bc993e2c4d2a3a8f11925744780e338be51e6e63715d",
-      "mtimeMs": 1787894125265,
+      "mtimeMs": 1790163137079,
       "size": 1425
     },
     "apps/web/src/routes/_next/approve/quotation.tsx": {
       "sha": "0ed57c81c56d44b9a8c31554dfc75a88b962b9fda2489962fc23bdc035411fb0",
-      "mtimeMs": 1787721208092,
+      "mtimeMs": 1790163137081,
       "size": 2112
     },
     "apps/web/src/routes/_next/approve/template.tsx": {
       "sha": "a48584406eafb4b6bd7ef7bd918b0e90884e9efd7a1016cfd623165e1379ed52",
-      "mtimeMs": 1787721208093,
+      "mtimeMs": 1790163137087,
       "size": 1840
     },
     "apps/web/src/routes/_next/companies.tsx": {
       "sha": "5334b4dd5110280ba0c8e66dd764d629f7766db2accf4ef4d03589afd51dbf0e",
-      "mtimeMs": 1790141218209,
+      "mtimeMs": 1790163144805,
       "size": 37654
     },
     "apps/web/src/routes/_next/companies_.$companyId.tsx": {
       "sha": "ce47cf16053cc611c019a4a8dc181beef36047063979dcaff925b0b194cf538f",
-      "mtimeMs": 1789120851415,
+      "mtimeMs": 1790163137115,
       "size": 9498
     },
     "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx": {
       "sha": "3f1118227529dad06817742cf38379df09f18bfe1596a05873e433aea8873211",
-      "mtimeMs": 1789125362240,
+      "mtimeMs": 1790163137118,
       "size": 45783
     },
     "apps/web/src/routes/_next/customs-tracking.tsx": {
-      "sha": "52e5f2696ae92abb1ae8f795e44020b1c0e3215894ad5df1f8e6cd0eb8aba8a6",
-      "mtimeMs": 1788343210123,
-      "size": 15230
+      "sha": "3ac364ce323924c1fe3d02f01a9601e45c5c5ec107ee495faf815c862b95a943",
+      "mtimeMs": 1790247408224,
+      "size": 16356
     },
     "apps/web/src/routes/_next/documents.$documentId.tsx": {
-      "sha": "1b35f0e2e20eb220800c87b6ef4021212960fabb7c205a8a71764c7eef2fe108",
-      "mtimeMs": 1788514730546,
-      "size": 39392
+      "sha": "3f16fe23253174cd090afce1b75cb5a2d5fd1d665a82fd0265501fb8aa7c6db2",
+      "mtimeMs": 1790247408225,
+      "size": 52733
     },
     "apps/web/src/routes/_next/documents.index.tsx": {
       "sha": "a1929012a4ceb85d8189a9bcac770b53f101f4d651017eda5ce1d8e10e86406d",
-      "mtimeMs": 1788514730545,
+      "mtimeMs": 1790163137128,
       "size": 17819
     },
+    "apps/web/src/routes/_next/expenses/-bill-group-key.ts": {
+      "sha": "e011721fbc694d6d6ea5bbe779a10e0addce8d590e2e3a4accf163abbe262920",
+      "mtimeMs": 1790247408226,
+      "size": 3380
+    },
     "apps/web/src/routes/_next/expenses/-bills.columns.tsx": {
-      "sha": "3d1bd1b1aad389c80ac079eab63ac949663060b1ba21691dde2e4240a2628934",
-      "mtimeMs": 1789143396274,
-      "size": 35988
+      "sha": "d293d009c6d6e103e56d3eb802b3d2922bee69a7faf71d25c008fc43d171a92a",
+      "mtimeMs": 1790247408227,
+      "size": 36349
     },
     "apps/web/src/routes/_next/expenses/bills.tsx": {
-      "sha": "7e821cc8d8728d4310b474cfc673a7253cb109cb4dfb446f84ef9ce3988b0e57",
-      "mtimeMs": 1790141218211,
-      "size": 81350
+      "sha": "c1e37bfd056851d88a25d7fa949a5e34608e089ccf3c5d240ca9572dc0a02be1",
+      "mtimeMs": 1790247408231,
+      "size": 83705
     },
     "apps/web/src/routes/_next/expenses/cost-lines.tsx": {
-      "sha": "88fcc95a477be164f65d168eabedc275f0e42c44ae186a5bc3375e8c7aebaebc",
-      "mtimeMs": 1788439750724,
-      "size": 128914
+      "sha": "be6f901673ebf7e53d6bfba5407c6783cc9c68abd0c88c88bc3a39520a9668ca",
+      "mtimeMs": 1790250671557,
+      "size": 131154
     },
     "apps/web/src/routes/_next/expenses/invoices.tsx": {
-      "sha": "9059550920dc0a8f61dfe97e9865b2886fa778bc536519e8334e6c5b6025f657",
-      "mtimeMs": 1789040126028,
-      "size": 48106
+      "sha": "bb082d3c882f7eacab62b92ae7fc46c26dbcec6fa4ccb55f63f5ecd68a159e6f",
+      "mtimeMs": 1790250671557,
+      "size": 52035
     },
     "apps/web/src/routes/_next/expenses/payments.tsx": {
-      "sha": "0fd12698d6a3c561c9abcce1419cb07054e1f7be82d93234d47d483c6ab6a569",
-      "mtimeMs": 1788422006058,
-      "size": 56577
+      "sha": "05852910a09272014da3932eaf33184f7f2501e356165ba909915b6c68b8de6b",
+      "mtimeMs": 1790247408236,
+      "size": 67848
     },
     "apps/web/src/routes/_next/expenses/write-offs.tsx": {
-      "sha": "14b943648415db279095948cb2af56e305605c9a19f2ab770bbd35a7843c6ad2",
-      "mtimeMs": 1788422006030,
-      "size": 30015
+      "sha": "4606893eff2ba1700a0a9b20024ece9b7b44adefaeef18071a09dc9b2b1559d3",
+      "mtimeMs": 1790247408238,
+      "size": 32761
     },
     "apps/web/src/routes/_next/fee-templates/$templateId.tsx": {
       "sha": "6ba81d91e3e18eb960963060a782d281e48c9929c7399bfb9eeab0e4f370a0a4",
-      "mtimeMs": 1789045413991,
+      "mtimeMs": 1790163137187,
       "size": 62242
     },
     "apps/web/src/routes/_next/fee-templates/index.tsx": {
       "sha": "d6b193a21dcb8baa82f571ca7eb562142fd1ef9243490fd4c44a9913f40323b8",
-      "mtimeMs": 1788763831019,
+      "mtimeMs": 1790163137195,
       "size": 25046
     },
     "apps/web/src/routes/_next/inbox.$threadId.tsx": {
       "sha": "323bfdcd6a5f681880366462a30cdbbac279292c7b3ba3641777810b0e55fa35",
-      "mtimeMs": 1790141218213,
+      "mtimeMs": 1790163144810,
       "size": 9223
     },
     "apps/web/src/routes/_next/inbox.index.tsx": {
       "sha": "cb1c290616c03896a457d80a54257a6029dbadd6eefa5bdbd49c724bc3ab105f",
-      "mtimeMs": 1787719061467,
+      "mtimeMs": 1790163137199,
       "size": 910
     },
     "apps/web/src/routes/_next/lading/$id/edit.tsx": {
-      "sha": "eb06a1ee61eb4ee93da2f52158ba6caccba553bec97feec461acbcffd989142d",
-      "mtimeMs": 1788672210978,
-      "size": 72875
+      "sha": "0bf04e82bc7e3fce2af6ac8e581829860af814f49bdb103bf0903e9856c6aafa",
+      "mtimeMs": 1790247408238,
+      "size": 74557
     },
     "apps/web/src/routes/_next/lading/$id/index.tsx": {
-      "sha": "6ad3dd387b8d216afd192f989fe0f17e2e38cd83f3adc252f5c00b938f153bd7",
-      "mtimeMs": 1789139742633,
-      "size": 28728
+      "sha": "b5f815b4a9fdd942862496f9d27bc31b5efafdc88b79c7a26a5b8e4ef7f0748d",
+      "mtimeMs": 1790247408240,
+      "size": 30828
     },
     "apps/web/src/routes/_next/lading/create.tsx": {
-      "sha": "05aba3075756f8b9ef5e23a6a71f18a37963500793f6186394fd2c241eb63e49",
-      "mtimeMs": 1788613807594,
-      "size": 66008
+      "sha": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+      "mtimeMs": 1790247408243,
+      "size": 77476
     },
     "apps/web/src/routes/_next/lading/index.tsx": {
-      "sha": "199a0bcb02e9d0abc0895d96a329344741a3325128cc7d10a3174531b08f6518",
-      "mtimeMs": 1789139750064,
-      "size": 47095
+      "sha": "451371a7629c56c2a1d2662d5e27aab7483002f78ac093785f805ddc7d7b01e1",
+      "mtimeMs": 1790247408244,
+      "size": 48538
     },
     "apps/web/src/routes/_next/order.$orderId.edit.tsx": {
       "sha": "390667639e8e4895b955e6162a7e28109cecd939da90f859c9c390780b7d5aaa",
-      "mtimeMs": 1788338982762,
+      "mtimeMs": 1790163137253,
       "size": 857
     },
     "apps/web/src/routes/_next/order.$orderId.expenses.tsx": {
-      "sha": "babbee781260e549c20a712ec8904774b4b1754ebf0eb770dca9751f39ed6908",
-      "mtimeMs": 1788510589800,
-      "size": 41458
+      "sha": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
+      "mtimeMs": 1790250671557,
+      "size": 48548
     },
     "apps/web/src/routes/_next/order.air-export_.$orderId.tsx": {
       "sha": "1556951ea54a112369115c4b959211b918bde40b78a05dcc83b7de6febb089bf",
-      "mtimeMs": 1788338927470,
+      "mtimeMs": 1790163137255,
       "size": 2007
     },
     "apps/web/src/routes/_next/order.new.tsx": {
       "sha": "29ace78fe13c498a6d51435d385dced3fcc7b6780ef6748240b5e24d95478088",
-      "mtimeMs": 1788434560482,
+      "mtimeMs": 1790163137267,
       "size": 9242
     },
     "apps/web/src/routes/_next/order.sea-export.tsx": {
       "sha": "57d39cba4482567daacad2ca05b7f3559759abea26aa7a9d1ca6e6a2a0dfe0a6",
-      "mtimeMs": 1787894119434,
+      "mtimeMs": 1790163137279,
       "size": 2140
     },
     "apps/web/src/routes/_next/order.to-receive.tsx": {
-      "sha": "dfff10f3eda863eaa4ab08e136609526726088215a500c1124ddc82cb77d8f3d",
-      "mtimeMs": 1788322047761,
-      "size": 67009
+      "sha": "dceff6d5aff69c5039c2af7a4f9e5528cac966f6f22da27cd9283a4afd5478ba",
+      "mtimeMs": 1790174942394,
+      "size": 82017
     },
     "apps/web/src/routes/_next/overview.tsx": {
       "sha": "9cb43bda1b2f7aab8af882ca3a5298ca3967cf6b133591415873ed4b30a26149",
-      "mtimeMs": 1788425620013,
+      "mtimeMs": 1790163137309,
       "size": 3601
     },
     "apps/web/src/routes/_next/quotations/$quotationId.tsx": {
       "sha": "d7d3ce89e9859fd9a41d0af82f7c9eb0f29300ca877fbfd3fb480b655701b9a7",
-      "mtimeMs": 1790141218216,
+      "mtimeMs": 1790174942396,
       "size": 189833
     },
     "apps/web/src/routes/_next/quotations/index.tsx": {
       "sha": "aac6f185da5ffcd768a4b20608c1cec26d6fdf67d5d345a5e6c0c87de5630fc2",
-      "mtimeMs": 1790141218219,
+      "mtimeMs": 1790163144817,
       "size": 31670
     },
     "apps/web/src/routes/_next/report/financial/index.tsx": {
-      "sha": "070bc053f8f18974aecc5c7fe207641cf547f4a96035fa9f61335acbf289cb8c",
-      "mtimeMs": 1789140048165,
-      "size": 103676
+      "sha": "efaf0fc38bcd491103412c1a846db66dcc004e625095923cc77d440795abc636",
+      "mtimeMs": 1790250671564,
+      "size": 107785
     },
     "apps/web/src/routes/_next/tracking.tsx": {
       "sha": "f2c56f039734d8a2dc5e425afff8e4e1bc9bddd2a4267498e1e92ecdbc0f7524",
-      "mtimeMs": 1788930180367,
+      "mtimeMs": 1790163137352,
       "size": 15635
     },
     "packages/api/src/modules/audit/post-approval.ts": {
-      "sha": "b25d6571b2fc8902d4b1a341ed2103c6d16fd13a3638bb0a284da4af83c132bd",
-      "mtimeMs": 1790141218233,
-      "size": 2370
+      "sha": "0fcc27570b24ee1cf944783ed2f70699bbb92011a9299d8f6ab693e4bcd3d9a4",
+      "mtimeMs": 1790174942415,
+      "size": 4273
     },
     "packages/api/src/modules/audit/seed.ts": {
-      "sha": "fa40ad7a88aa34d67256f5d63e409424d5c700624d5ab6242c5977b4b1afc034",
-      "mtimeMs": 1790141218237,
-      "size": 12038
+      "sha": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+      "mtimeMs": 1790247408255,
+      "size": 14619
     },
     "packages/api/src/modules/document/permissions.ts": {
       "sha": "959ce81f36306d5e5e1e41260523e650bb5c27ad9622d6e67bfc4edbad7bf04e",
-      "mtimeMs": 1787817414179,
+      "mtimeMs": 1790163139999,
       "size": 3375
     },
     "packages/api/src/modules/document/register-hooks.ts": {
-      "sha": "aa80401ed7d166c6d155973a672f9bfeb3cb45fbf682b28cbe919ee896ed4619",
-      "mtimeMs": 1787817414175,
-      "size": 1742
+      "sha": "7f2bd97848df96eab6a416381e9f29e831c336229e680d2d4ad2950122d7e024",
+      "mtimeMs": 1790247408260,
+      "size": 4003
     },
     "packages/api/src/modules/quotation/sheet.ts": {
       "sha": "9c06239711416e095fcf0fabcca26c4af0b2bd9e2f15ea4bee8e0f11f2b9f0d1",
-      "mtimeMs": 1788693177278,
+      "mtimeMs": 1790163140271,
       "size": 20789
     },
     "packages/api/src/quotation/tariff-check.ts": {
       "sha": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
-      "mtimeMs": 1790141218255,
+      "mtimeMs": 1790163144868,
       "size": 31116
     },
     "packages/api/src/quotation/values.ts": {
-      "sha": "7b4ecdf27d4b84ec82611c998b2a2513c4013e187bd5b96c5e1394b20584fdce",
-      "mtimeMs": 1790141218257,
-      "size": 20170
+      "sha": "60f4fed3b3f0b2294acc7f11e0f56e8f3169d96f89423ec065b4dd2b8a7b08a6",
+      "mtimeMs": 1790250671587,
+      "size": 19305
     },
     "packages/api/src/routers/collective-order.ts": {
-      "sha": "5dc4819ac205e3a6062e92d7dbde4866b6fcbdedf8a87548fddf9396e90b7ccf",
-      "mtimeMs": 1790141218264,
-      "size": 225657
+      "sha": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+      "mtimeMs": 1790250671589,
+      "size": 259536
     },
     "packages/api/src/routers/company-contact.ts": {
       "sha": "541b2c69e7f01d6f5a21bcb83c97c9e7631409787ec266632c773e44bc30e381",
-      "mtimeMs": 1789125362238,
+      "mtimeMs": 1790163140447,
       "size": 13250
     },
     "packages/api/src/routers/company.ts": {
       "sha": "4a8f7d47351273f3546ffa5801d7a718f33b8df0a9a5dabb07e63d9b40aab968",
-      "mtimeMs": 1789123583201,
+      "mtimeMs": 1790163140464,
       "size": 57411
     },
     "packages/api/src/routers/expense/cost-lines.ts": {
-      "sha": "c32f401b2595aa62e90761347d75a3ac6338d3ae5668558671cad5ca9e79294e",
-      "mtimeMs": 1790141218270,
-      "size": 129031
+      "sha": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
+      "mtimeMs": 1790250671600,
+      "size": 131945
     },
     "packages/api/src/routers/lading.ts": {
-      "sha": "a1b77b881574429b9dee26f813ea1f600cd0e98dd7d24a22a0d06a4ec0ae9c0e",
-      "mtimeMs": 1789143879090,
-      "size": 101749
+      "sha": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+      "mtimeMs": 1790247408317,
+      "size": 115071
     },
     "packages/api/src/routers/quotation.ts": {
       "sha": "8c753239b534febbb85bc9acd25f602246a640a1b902528cdb9674d8918b5df1",
-      "mtimeMs": 1790141218284,
+      "mtimeMs": 1790174942467,
       "size": 253450
     },
     "packages/api/src/routers/report.ts": {
-      "sha": "02adc53968b2a8ac9e315494345908033c8025b2ba156a1ef6db64415a06fbc6",
-      "mtimeMs": 1790141218289,
-      "size": 162953
+      "sha": "5c1163bf314dcfb2c8818f3f016ae3119f6a66e22000d7eb024a040701269ec6",
+      "mtimeMs": 1790250671607,
+      "size": 173049
     },
     "packages/db/src/schema/company.ts": {
       "sha": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
-      "mtimeMs": 1789120598042,
+      "mtimeMs": 1790163141515,
       "size": 13677
     },
     "packages/port-tracking/src/transitions.ts": {
       "sha": "f0f3e4bf490c2bc223474afe67c3b402cec6c5d7661547b4b4dba506c10f76ae",
-      "mtimeMs": 1787817412260,
+      "mtimeMs": 1790163142616,
       "size": 6804
     }
   },
@@ -818,7 +818,7 @@
     },
     {
       "file": "packages/api/src/routers/report.ts",
-      "line": 922,
+      "line": 1071,
       "anchor": [
         "      // non-null `contactName` is the signal \"there is somebody here\"; the rest",
         "      // are nullable on the table and stay nullable on the row.",
@@ -1026,7 +1026,7 @@
     },
     {
       "file": "packages/api/src/modules/audit/seed.ts",
-      "line": 135,
+      "line": 156,
       "anchor": [
         "    // reasoning the bill's second stage uses, and the reason `contract.review`",
         "    // is granted to director rather than to branch-manager.",
@@ -1170,7 +1170,7 @@
     },
     {
       "file": "packages/api/src/quotation/values.ts",
-      "line": 433,
+      "line": 415,
       "anchor": [
         "      if (openStageOtherDecided === \"approve\") return \"withdrawal_approved_by_other_reviewer\";",
         "      return \"withdrawal_under_review\";",
@@ -1602,7 +1602,7 @@
     },
     {
       "file": "packages/api/src/modules/audit/seed.ts",
-      "line": 69,
+      "line": 90,
       "anchor": [
         "    withdrawalMode: \"direct\",",
         "    // The manager knows the lane rates; nobody above needs to see a quote.",
@@ -1852,7 +1852,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 327,
+      "line": 347,
       "anchor": [
         "const TEXT_FIELDS = {",
         "  business: [",
@@ -1868,7 +1868,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2404,
+      "line": 2673,
       "anchor": [
         "                    />",
         "                    {isEdit && orderId && needsJobNumber(savedJobNumber) ? (",
@@ -1884,7 +1884,7 @@
     },
     {
       "file": "apps/web/src/components/order-ledger/assign-job-number-button.tsx",
-      "line": 181,
+      "line": 182,
       "anchor": [
         "      /* Fee lines the same transaction re-pointed at the new number (step 11",
         "         D7-A). Named only when there were any: \"and 0 fee line(s) updated\" on",
@@ -1900,7 +1900,7 @@
     },
     {
       "file": "apps/web/src/components/order-ledger/assign-job-number-button.tsx",
-      "line": 194,
+      "line": 195,
       "anchor": [
         "           ever reached, saying \"assigned\" without naming the number is honest,",
         "           where asserting a string that is not there would print \"undefined\". */",
@@ -1916,7 +1916,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.to-receive.tsx",
-      "line": 144,
+      "line": 155,
       "anchor": [
         "",
         "const ACCEPT_STATUS_OPTIONS: Array<{ value: string; label: string }> = [",
@@ -1932,7 +1932,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.to-receive.tsx",
-      "line": 1541,
+      "line": 1788,
       "anchor": [
         "            id=\"order-to-receive-grid\"",
         "            table={table}",
@@ -1948,13 +1948,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.to-receive.tsx",
-      "line": 395,
+      "line": 438,
       "anchor": [
-        "                <Button",
-        "                  size=\"icon-xs\"",
-        "                  aria-label={`Receive ${order.orderNumber}`}",
-        "                  disabled={meta?.acting || settled}",
-        "                  onClick={() => meta?.onReceive(order.id)}"
+        "                    <Button",
+        "                      size=\"icon-xs\"",
+        "                      aria-label={`Receive ${order.orderNumber}`}",
+        "                      disabled={meta?.acting || settled}",
+        "                      onClick={() => meta?.onReceive(order.id)}"
       ],
       "jsonPath": "/guide/12/golden/2/src",
       "step": 13,
@@ -1980,13 +1980,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.to-receive.tsx",
-      "line": 764,
+      "line": 875,
       "anchor": [
-        "      const verb = mode === \"receive\" ? \"received\" : \"rejected\";",
-        "      if (failed === 0) {",
-        "        toast.success(`${done} order${done > 1 ? \"s\" : \"\"} ${verb}`);",
-        "      } else {",
-        "        const first = results.find((r) => r.status === \"rejected\") as"
+        "          mode === \"reopen\"",
+        "            ? `${done} order${done > 1 ? \"s\" : \"\"} reopened, back in Unaccepted`",
+        "            : `${done} order${done > 1 ? \"s\" : \"\"} ${verb}`,",
+        "        );",
+        "      } else {"
       ],
       "jsonPath": "/guide/12/golden/4/src",
       "step": 13,
@@ -1995,24 +1995,30 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/components/order-detail-pane.tsx",
-      "line": null,
-      "anchor": [],
+      "file": "apps/web/src/routes/_next/order.to-receive.tsx",
+      "line": 496,
+      "anchor": [
+        "                  onClick={() => meta?.onOpenFullPage(order.id, order.businessTypeRaw)}",
+        "                >",
+        "                  Open full page",
+        "                </DropdownMenuItem>",
+        "              ) : null}"
+      ],
       "jsonPath": "/guide/12/golden/5/src",
       "step": 13,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": null
+      "lineIdx": 0
     },
     {
       "file": "packages/api/src/routers/collective-order.ts",
       "line": 3335,
       "anchor": [
-        "                  orderAuditStatus: input.to,",
-        "                  orderAuditedAt: new Date(),",
-        "                  orderAuditedBy: context.org.membership.id,",
-        "                  // Separate column from the INTAKE rejectReason on purpose — the",
-        "                  // two workflows must never overwrite each other's reason."
+        "          targetType: \"collectiveOrder\",",
+        "          targetId: input.orderId,",
+        "          // The row is gone — the audit trail is the only remaining record of it.",
+        "          before: {",
+        "            jobNumber: existing.jobNumber,"
       ],
       "jsonPath": "/guide/12/fixes/0/src",
       "step": 13,
@@ -2022,10 +2028,10 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 1289,
+      "line": 1553,
       "anchor": [
         "   * restated. A hand-written second list is what let 46 router keys drift out of",
-        "   * this form once already (see the note on `keys` in `buildPayload`). */",
+        "   * this form once already (see the note on `PAYLOAD_KEYS`). */",
         "  const SECTIONS = useMemo(() => {",
         "    const modeText = (mode: string) =>",
         "      MODE_FIELDS.filter(([, , , modes]) => modes.includes(mode)).map(([k]) => k);"
@@ -2038,7 +2044,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 327,
+      "line": 347,
       "anchor": [
         "const TEXT_FIELDS = {",
         "  business: [",
@@ -2054,7 +2060,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 216,
+      "line": 236,
       "anchor": [
         "  ],",
         "  shipping: [",
@@ -2070,7 +2076,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 297,
+      "line": 317,
       "anchor": [
         "  shipping: [[\"vehicleVolume\", \"Vehicle volume\"]],",
         "  lading: [",
@@ -2086,11 +2092,11 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2590,
+      "line": 2859,
       "anchor": [
         "              which covers only the Query Set/gear rollout (Part A) and the",
         "              vessel/MBL/port field exclusion just above (Part B). */}",
-        "            {lineEditor(\"Containers (case type &amp; TEU)\", containers, setContainers, [",
+        "            {lineEditor(\"Containers (case type & TEU)\", containers, setContainers, [",
         "              [\"caseType\", \"Case type\", containerTypeOptions],",
         "              [\"teu\", \"TEU\"],"
       ],
@@ -2102,13 +2108,13 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2699,
+      "line": 2969,
       "anchor": [
-        "            Cancel",
         "          </Button>",
-        "          <Button onClick={onSave} disabled={saving || (isEdit && !existing.data)}>",
-        "            {saving ? \"Saving…\" : \"Save\"}",
-        "          </Button>"
+        "          <Button",
+        "            onClick={onSave}",
+        "            disabled={saving || (isEdit && !existing.data) || underReview}",
+        "            // The disabled button says why on hover, in the notice's own words."
       ],
       "jsonPath": "/guide/13/golden/6/src",
       "step": 14,
@@ -2118,7 +2124,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2154,
+      "line": 2404,
       "anchor": [
         "            <Button",
         "              variant=\"outline\"",
@@ -2134,13 +2140,13 @@
     },
     {
       "file": "apps/web/src/components/order-ledger/order-row-actions.tsx",
-      "line": 135,
+      "line": 188,
       "anchor": [
         "      role=\"presentation\"",
         "    >",
         "      {isReview ? null : <ReviewMenu iconOnly selectedIds={[orderId]} onReview={reviewOrder} />}",
-        "      {/* Tooltip triggers on the wrapping span, not the Button: a disabled",
-        "          Button swallows pointer events, so a duplication already in flight"
+        "      {/* Ledger only, like the review menu: on /approve/order the queue decides",
+        "          approval, not whether a job is finished. */}"
       ],
       "jsonPath": "/guide/14/golden/0/src",
       "step": 15,
@@ -2198,13 +2204,13 @@
     },
     {
       "file": "apps/web/src/components/reject-reason-dialog.tsx",
-      "line": 78,
+      "line": 51,
       "anchor": [
-        "        <DialogContent>",
-        "          <DialogHeader>",
-        "            <DialogTitle>Reason for rejection</DialogTitle>",
-        "            <DialogDescription>",
-        "              Recorded against the decision and shown on the record&rsquo;s review trail. The"
+        "",
+        "const REJECT_COPY: ReasonPromptCopy = {",
+        "  title: \"Reason for rejection\",",
+        "  description:",
+        "    \"Recorded against the decision and shown on the record’s review trail. The submitter reads this.\","
       ],
       "jsonPath": "/guide/14/golden/4/src",
       "step": 15,
@@ -2214,7 +2220,7 @@
     },
     {
       "file": "packages/api/src/routers/collective-order.ts",
-      "line": 2892,
+      "line": 3111,
       "anchor": [
         "   * two auditable acts rather than one silent one.",
         "   *",
@@ -2230,7 +2236,7 @@
     },
     {
       "file": "packages/api/src/modules/audit/seed.ts",
-      "line": 150,
+      "line": 171,
       "anchor": [
         "    // a card still under review must not be priced from (modules/quotation/gates.ts).",
         "    gates: [\"reference_fee_template\"],",
@@ -2248,11 +2254,11 @@
       "file": "packages/api/src/routers/collective-order.ts",
       "line": 3380,
       "anchor": [
-        "        return maskRow(updated!, context.org, \"collectiveOrder\");",
-        "      });",
-        "    }),",
-        "",
-        "  // Single-order lifecycle transition — Process (Not shut out → Shut out →"
+        "        assertUnlocked(existing, \"received\");",
+        "        // An intake decision is FINAL at intake (D1-A).",
+        "        //",
+        "        // Receiving an already-received order used to re-stamp `acceptedAt` and",
+        "        // destroy the real receiving time; that no-op has been refused for a"
       ],
       "jsonPath": "/guide/14/fixes/2/src",
       "step": 15,
@@ -2262,7 +2268,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 644,
+      "line": 758,
       "anchor": [
         "                  <Label htmlFor=\"hblNo\">HBL No</Label>",
         "                  <Input",
@@ -2278,7 +2284,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1600,
+      "line": 1811,
       "anchor": [
         "                    </li>",
         "                  </ul>",
@@ -2295,23 +2301,28 @@
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
       "line": 1678,
-      "anchor": [],
+      "anchor": [
+        "                        disabled={!canApplyOcr(ocrIssues, ocrAcknowledged, ocrUpload.isPending)}",
+        "                      >",
+        "                        Apply to Form",
+        "                      </Button>",
+        "                    </div>"
+      ],
       "jsonPath": "/guide/15/golden/2/src",
       "step": 16,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
       "line": 676,
       "anchor": [
-        "                  />",
-        "                </div>",
         "",
         "                <div className=\"space-y-2\">",
-        "                  <Label htmlFor=\"voyage\">Voyage</Label>"
+        "                  <Label htmlFor=\"billNo\">Bill No *</Label>",
+        "                  <Input",
+        "                    id=\"billNo\""
       ],
       "jsonPath": "/guide/15/golden/3/src",
       "step": 16,
@@ -2321,7 +2332,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 825,
+      "line": 948,
       "anchor": [
         "              <div className=\"grid gap-4 md:grid-cols-2 lg:grid-cols-3\">",
         "                <div className=\"space-y-2 md:col-span-2 lg:col-span-3\">",
@@ -2337,7 +2348,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 871,
+      "line": 994,
       "anchor": [
         "                    value={form.packageQty ?? \"\"}",
         "                    onChange={(e) =>",
@@ -2353,7 +2364,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 945,
+      "line": 1069,
       "anchor": [
         "                  <Input",
         "                    id=\"chargeableWeight\"",
@@ -2369,7 +2380,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1505,
+      "line": 1630,
       "anchor": [
         "                        const rawType = file.type || \"application/octet-stream\";",
         "                        const validTypes = [",
@@ -2385,7 +2396,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1370,
+      "line": 1485,
       "anchor": [
         "                    <Plus className=\"mr-2 h-4 w-4\" />",
         "                    Add Container",
@@ -2401,7 +2412,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1203,
+      "line": 1213,
       "anchor": [
         "                    <SelectContent>",
         "                      <SelectItem value=\"\">None</SelectItem>",
@@ -2417,7 +2428,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1456,
+      "line": 1571,
       "anchor": [
         "                                  e.target.value ? Number(e.target.value) : undefined,",
         "                                )",
@@ -2435,11 +2446,11 @@
       "file": "apps/web/src/routes/_next/lading/$id/edit.tsx",
       "line": 165,
       "anchor": [
-        "};",
         "",
-        "const STATUS_OPTIONS = [\"draft\", \"confirmed\", \"released\", \"cancelled\", \"on-hold\"];",
-        "const FREIGHT_TERM_OPTIONS = [\"Prepaid\", \"Collect\", \"Third Party\"];",
-        "const RELEASE_TYPE_OPTIONS = [\"Original\", \"Telex\", \"Sea Waybill\", \"Express\"];"
+        "const EMPTY_CONTAINER: ContainerInput = {",
+        "  containerNo: \"\",",
+        "  sealNo: \"\",",
+        "  containerType: \"\","
       ],
       "jsonPath": "/guide/15/fixes/0/src",
       "step": 16,
@@ -2451,11 +2462,11 @@
       "file": "packages/api/src/routers/lading.ts",
       "line": 1554,
       "anchor": [
-        "      // eyun \"Can I edit the approved content after approval\": when the flow",
-        "      // says no, an APPROVED record is frozen against ordinary editing.",
-        "      await assertPostApprovalEditable(context.db, organizationId, \"lading\", ladingId);",
         "",
-        "      const values: Record<string, unknown> = {};"
+        "  delete: orgProcedure",
+        "    .use(requireNode(LADING.delete))",
+        "    .input(z.object({ ladingId: z.string() }))",
+        "    .handler(async ({ context, input }) => {"
       ],
       "jsonPath": "/guide/15/fixes/1/src",
       "step": 16,
@@ -2467,11 +2478,11 @@
       "file": "apps/web/src/routes/_next/lading/create.tsx",
       "line": 293,
       "anchor": [
-        "  const [touched, setTouched] = useState(false);",
-        "",
-        "  const [ocrResult, setOcrResult] = useState<{",
-        "    confidence: number;",
-        "    rawText: string;"
+        "    associatedPersonnelId: \"\",",
+        "    documentPersonId: \"\",",
+        "    commercialPersonId: \"\",",
+        "    relatedSecondPersonId: \"\",",
+        "    agentId: \"\","
       ],
       "jsonPath": "/guide/15/fixes/2/src",
       "step": 16,
@@ -2481,7 +2492,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1243,
+      "line": 1371,
       "anchor": [
         "                <div className=\"space-y-2\">",
         "                  <Label htmlFor=\"orderId\">Linked order</Label>",
@@ -2497,7 +2508,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 175,
+      "line": 189,
       "anchor": [
         "    onSuccess: () => {",
         "      toast.success(\"Check in cancelled\");",
@@ -2513,7 +2524,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 389,
+      "line": 410,
       "anchor": [
         "              active={Boolean(data.amendedAt)}",
         "              label=\"Amend\"",
@@ -2529,7 +2540,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 209,
+      "line": 223,
       "anchor": [
         "    ...orpc.lading.hold.mutationOptions(),",
         "    onSuccess: () => {",
@@ -2545,13 +2556,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 399,
+      "line": 400,
       "anchor": [
-        "              active={Boolean(data.heldAt)}",
-        "              label=\"Hold\"",
-        "              onAct={() => hold.mutate({ ladingId: id })}",
-        "              onCancel={() => cancelHold.mutate({ ladingId: id })}",
-        "              pending={hold.isPending || cancelHold.isPending}"
+        "              active={Boolean(data.checkedOutAt)}",
+        "              label=\"Check Out\"",
+        "              onAct={() => checkOut.mutate({ ladingId: id })}",
+        "              onCancel={() => cancelCheckOut.mutate({ ladingId: id })}",
+        "              pending={checkOut.isPending || cancelCheckOut.isPending}"
       ],
       "jsonPath": "/guide/16/golden/3/src",
       "step": 17,
@@ -2561,7 +2572,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 223,
+      "line": 244,
       "anchor": [
         "  const exportFile = useMutation({",
         "    ...orpc.lading.export.mutationOptions(),",
@@ -2577,7 +2588,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 488,
+      "line": 520,
       "anchor": [
         "                        {formatBytes(a.size)}",
         "                      </span>",
@@ -2593,7 +2604,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 246,
+      "line": 267,
       "anchor": [
         "    // 10MB, matching the server. Checked here too so an oversized file fails",
         "    // before it is read into memory and base64-inflated by a third.",
@@ -2609,7 +2620,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1426,
+      "line": 1541,
       "anchor": [
         "                              }",
         "                            />",
@@ -2625,7 +2636,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 453,
+      "line": 485,
       "anchor": [
         "          <OrderDocumentsCard rollup={orderDocuments} />",
         "",
@@ -2673,7 +2684,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 668,
+      "line": 782,
       "anchor": [
         "                          flagged",
         "                            ? \"border-warning/50 bg-warning/5\"",
@@ -2691,11 +2702,11 @@
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
       "line": 373,
       "anchor": [
-        "    }",
-        "    const corrections = { ...built.corrections, ...tableEdits };",
-        "    if (isApproved) {",
-        "      amend.mutate(corrections);",
-        "    } else {"
+        "        }",
+        "      } else {",
+        "        toast.success(\"Amendment saved\");",
+        "      }",
+        "    },"
       ],
       "jsonPath": "/guide/17/golden/3/src",
       "step": 18,
@@ -2705,7 +2716,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 612,
+      "line": 697,
       "anchor": [
         "                </p>",
         "                {canLink ? (",
@@ -2722,17 +2733,22 @@
     {
       "file": "packages/api/src/modules/document/register-hooks.ts",
       "line": 66,
-      "anchor": [],
+      "anchor": [
+        "      {",
+        "        kind: \"bl_job_already_tracked\",",
+        "        message: `${outcome.duplicateOf.blNumber} is already being tracked from an earlier document, so no second tracking job was created. The existing job continues.`,",
+        "        detail: outcome.duplicateOf,",
+        "      },"
+      ],
       "jsonPath": "/guide/17/golden/5/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 530,
+      "line": 615,
       "anchor": [
         "              </Button>",
         "            ) : null}",
@@ -2749,24 +2765,34 @@
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
       "line": 969,
-      "anchor": [],
+      "anchor": [
+        "          <DialogContent>",
+        "            <DialogHeader>",
+        "              <DialogTitle>Reject this document</DialogTitle>",
+        "              <DialogDescription>",
+        "                It leaves the review queue but is kept, along with your reason and name. If this"
+      ],
       "jsonPath": "/guide/17/golden/7/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
       "line": 936,
-      "anchor": [],
+      "anchor": [
+        "            )}",
+        "            <div className=\"mt-6 border-t pt-4\">",
+        "              <h2 className=\"text-sm font-medium\">Linked records</h2>",
+        "              {payload.links.length > 0 ? (",
+        "                <ul className=\"mt-2 space-y-1\">"
+      ],
       "jsonPath": "/guide/17/golden/8/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "packages/api/src/modules/document/register-hooks.ts",
@@ -2775,8 +2801,8 @@
         null,
         null,
         "import { ingestApprovedDocument } from \"@nct-ai/port-tracking/intake\";",
-        "",
-        "import { APPROVAL_HOOKS, type ApprovalHook } from \"./hooks\";"
+        "import { sql } from \"drizzle-orm\";",
+        ""
       ],
       "jsonPath": "/guide/17/fixes/0/src",
       "step": 18,
@@ -2786,7 +2812,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/customs-tracking.tsx",
-      "line": 217,
+      "line": 241,
       "anchor": [
         "                    <TableRow",
         "                      key={job.id}",
@@ -2850,7 +2876,7 @@
     },
     {
       "file": "apps/web/src/components/customs-tracking/bl-job-record.tsx",
-      "line": 267,
+      "line": 342,
       "anchor": [
         "          // The label only. `customsCell` also returns a RUNNING time, and it",
         "          // must not come in here: `detailGroups` is memoised on the row, so a",
@@ -2866,7 +2892,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/customs-tracking.tsx",
-      "line": 132,
+      "line": 145,
       "anchor": [
         "            <EmptyTitle>You don't have access to customs tracking</EmptyTitle>",
         "            <EmptyDescription>",
@@ -2883,28 +2909,38 @@
     {
       "file": "apps/web/src/components/order-ledger/order-record-page.tsx",
       "line": 156,
-      "anchor": [],
+      "anchor": [
+        "            </Link>",
+        "          ) : null}",
+        "          <Link to=\"/order/$orderId/expenses\" params={{ orderId }}>",
+        "            <Button variant=\"outline\" size=\"sm\">",
+        "              Expenses"
+      ],
       "jsonPath": "/guide/19/golden/0/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
       "line": 939,
-      "anchor": [],
+      "anchor": [
+        "              <Button onClick={save} disabled={locked || !loaded || saveMutation.isPending}>",
+        "                <Save data-icon=\"inline-start\" />",
+        "                {saveMutation.isPending ? \"Saving…\" : !loaded ? \"Loading…\" : \"Save\"}",
+        "              </Button>",
+        "            </div>"
+      ],
       "jsonPath": "/guide/19/golden/1/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 386,
+      "line": 472,
       "anchor": [
         "                            ))}",
         "                          </SelectContent>",
@@ -2920,7 +2956,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 261,
+      "line": 330,
       "anchor": [
         "        <div className=\"flex items-center gap-2\">",
         "          <Button",
@@ -2936,7 +2972,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 830,
+      "line": 968,
       "anchor": [
         "        ) : null}",
         "",
@@ -2953,39 +2989,54 @@
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
       "line": 1004,
-      "anchor": [],
+      "anchor": [
+        "          disabled={locked}",
+        "          // Payable side: no client default — see the new-row comment.",
+        "          defaultSettlementUnit=\"\"",
+        "          hiddenColumns={hiddenColumns}",
+        "          invalidRows={invalidPay}"
+      ],
       "jsonPath": "/guide/19/golden/5/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
       "line": 1012,
-      "anchor": [],
+      "anchor": [
+        "        <section className=\"border\">",
+        "          <h2 className=\"border-b bg-muted/50 px-3 py-1.5 font-medium text-xs uppercase tracking-wide\">",
+        "            Single bill total",
+        "          </h2>",
+        "          <dl className=\"grid grid-cols-2 gap-x-6 gap-y-1 p-3 text-xs md:grid-cols-3\">"
+      ],
       "jsonPath": "/guide/19/golden/6/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
       "line": 960,
-      "anchor": [],
+      "anchor": [
+        "              D11-A): the currencies whose new fees found no rate for the",
+        "              shipment's dates and were saved at 1. */}",
+        "            No exchange rate on file for {lastUnrated.join(\", \")}. These fees count at rate 1 until",
+        "            one is set.{\" \"}",
+        "            <Link to=\"/expenses/exchange-rates\" className=\"underline\">"
+      ],
       "jsonPath": "/guide/19/golden/7/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 707,
+      "line": 849,
       "anchor": [
         "  const local = (rows: FeeRow[], taxInclusive: boolean) =>",
         "    rows.reduce((s, r) => s + feeLocalAmount(r, taxInclusive), 0);",
@@ -3001,7 +3052,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 932,
+      "line": 1083,
       "anchor": [
         "          </Link>",
         "          , where a selection splits into one bill per settlement unit, attribute and currency.",
@@ -3019,11 +3070,11 @@
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
       "line": 629,
       "anchor": [
-        "    // saved. Dropped silently rather than refused — a half-typed row is a row",
-        "    // the operator has not finished, not an error they need told about.",
-        "    const named = all.filter((r) => r.costName.trim() !== \"\");",
-        "    saveMutation.mutate({",
-        "      orderId,"
+        "   * bulk manual entry that is the worst possible failure.",
+        "   *",
+        "   * So the reset is gated on `dirty`. A save clears it — at that moment the",
+        "   * server's answer IS what was typed, and replacing local state with the",
+        "   * canonical rows (now carrying their ids) is exactly right."
       ],
       "jsonPath": "/guide/19/fixes/0/src",
       "step": 20,
@@ -3049,7 +3100,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1984,
+      "line": 2019,
       "anchor": [
         "      setSelected({});",
         "      queryClient.invalidateQueries({ queryKey: orpc.costLines.list.queryKey() });",
@@ -3065,7 +3116,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 2257,
+      "line": 2293,
       "anchor": [
         "                always the literal selection.",
         "",
@@ -3145,13 +3196,13 @@
     },
     {
       "file": "apps/web/src/components/reject-reason-dialog.tsx",
-      "line": 54,
+      "line": 51,
       "anchor": [
-        "    setReason(\"\");",
-        "  }, []);",
         "",
-        "  const ask = React.useCallback<Ask>(() => {",
-        "    // A previous prompt still open is cancelled rather than replaced: its caller"
+        "const REJECT_COPY: ReasonPromptCopy = {",
+        "  title: \"Reason for rejection\",",
+        "  description:",
+        "    \"Recorded against the decision and shown on the record’s review trail. The submitter reads this.\","
       ],
       "jsonPath": "/guide/20/golden/7/src",
       "step": 21,
@@ -3179,11 +3230,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2506,
       "anchor": [
-        "      // would instead make every existing line unbillable overnight.",
-        "      const unapproved = lines.filter(",
-        "        (l) => l.auditStatus === \"pending\" || l.auditStatus === \"rejected\",",
-        "      );",
-        "      if (unapproved.length) {"
+        "              continue;",
+        "            }",
+        "            const unit = head.settlementUnit?.trim();",
+        "            const [match] = unit",
+        "              ? await tx"
       ],
       "jsonPath": "/guide/20/fixes/0/src",
       "step": 21,
@@ -3195,11 +3246,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2115,
       "anchor": [
-        "          organizationId,",
-        "          rows.map((r) => r.orderId),",
-        "        );",
-        "",
-        "        const targets = rows.filter((r) => !isClaimed(r));"
+        "      //  2. Any fee line ADDED to the quotation after conversion is in the same",
+        "      //     position — new id, no cost line, no conflict.",
+        "      //",
+        "      // ── WHY NOT `q.status === \"converted\"` ─────────────────────────────────",
+        "      //"
       ],
       "jsonPath": "/guide/20/fixes/1/src",
       "step": 21,
@@ -3209,7 +3260,7 @@
     },
     {
       "file": "packages/api/src/routers/expense/cost-lines.ts",
-      "line": 429,
+      "line": 407,
       "anchor": [
         "      derive: (merged) => ({ status: deriveStatus(merged as never) }),",
         "      audit: {",
@@ -3225,7 +3276,7 @@
     },
     {
       "file": "packages/api/src/routers/expense/cost-lines.ts",
-      "line": 333,
+      "line": 340,
       "anchor": [
         "        costName: row.costName,",
         "        attribute: row.attribute,",
@@ -3257,7 +3308,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 2251,
+      "line": 2287,
       "anchor": [
         "              selectedIds={selectedLines.map((l) => l.id)}",
         "              onDone={() => setSelected({})}",
@@ -3273,7 +3324,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1167,
+      "line": 1178,
       "anchor": [
         "          <FilterScopeNotice state={scope} noun=\"billed\" />",
         "",
@@ -3289,13 +3340,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1191,
+      "line": 1192,
       "anchor": [
-        "                    key={`${g.settlementUnit}|${g.attribute}|${g.currency}|${groupByTaxRate ? g.taxRate : \"\"}`}",
-        "                    className=\"flex items-baseline justify-between gap-3 text-xs\"",
-        "                  >",
-        "                    <span className=\"truncate\">",
-        "                      {g.settlementUnit || \"—\"} ·{\" \"}"
+        "              {groups.length === 1",
+        "                ? \"1 bill will be created\"",
+        "                : `${groups.length} bills will be created`}",
+        "            </Label>",
+        "            <div className=\"flex max-h-44 flex-col gap-1 overflow-y-auto border p-2\">"
       ],
       "jsonPath": "/guide/21/golden/3/src",
       "step": 22,
@@ -3305,7 +3356,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1228,
+      "line": 1255,
       "anchor": [
         "              the preview can be TRUSTED to know that.",
         "",
@@ -3321,7 +3372,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1240,
+      "line": 1267,
       "anchor": [
         "              Each bill takes its own settlement unit as its invoice title.",
         "            </p>",
@@ -3337,7 +3388,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1278,
+      "line": 1305,
       "anchor": [
         "              : `${selectedLines.length} cost line(s) selected.`}",
         "          </p>",
@@ -3355,11 +3406,11 @@
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
       "line": 1293,
       "anchor": [
-        "                  ? { filterScope: { filter, confirmedCount: scope.count ?? -1 } }",
-        "                  : { costLineIds: selectedLines.map((l) => l.id) }),",
-        "                groupByTaxRate,",
-        "                // NOT SENT on a split. `invoiceTitle` is one scalar the server",
-        "                // applies to EVERY bill it creates, so on a split selection it"
+        "          )}",
+        "          <div className=\"space-y-1.5\">",
+        "            <Label htmlFor=\"create-bill-remark\">Remark</Label>",
+        "            <Textarea",
+        "              id=\"create-bill-remark\""
       ],
       "jsonPath": "/guide/21/golden/7/src",
       "step": 22,
@@ -3369,7 +3420,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1342,
+      "line": 1370,
       "anchor": [
         " * total — `cost_line` has no CHECK against it, so a minus typed here would be",
         " * stored happily and detonate somewhere downstream. The same reasoning as",
@@ -3385,7 +3436,7 @@
     },
     {
       "file": "packages/api/src/routers/expense/cost-lines.ts",
-      "line": 2434,
+      "line": 2314,
       "anchor": [
         "        // line, so no grouping key could have been exercised either way.",
         "        //",
@@ -3419,11 +3470,11 @@
       "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
       "line": 812,
       "anchor": [
+        "              controls for one intent. */}",
+        "          {actions.isReview ? null : (",
+        "            <ReviewMenu iconOnly selectedIds={[row.original.id]} onReview={reviewBill} />",
         "          )}",
-        "          {/* Bill details are editable at ANY status: these are metadata",
-        "              (courier, voucher refs, tags, service fee), never money. The",
-        "              amount, currency and attribute stay derived from the cost lines. */}",
-        "          <Button"
+        "          {/* Bill details open at any status, but the server decides what"
       ],
       "jsonPath": "/guide/22/golden/1/src",
       "step": 23,
@@ -3433,7 +3484,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1519,
+      "line": 1575,
       "anchor": [
         "           * `Record` on screen in the queue: it arrives seeded with an audit",
         "           * status.",
@@ -3449,7 +3500,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1526,
+      "line": 1582,
       "anchor": [
         "           * 6 · 7 · 20. */",
         "          groups: [",
@@ -3465,7 +3516,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1545,
+      "line": 1601,
       "anchor": [
         "                <SelectFilter",
         "                  value={draft.status}",
@@ -3481,7 +3532,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1481,
+      "line": 1537,
       "anchor": [
         "                  onApply={(patch) =>",
         "                    searchWith({",
@@ -3513,7 +3564,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1513,
+      "line": 1569,
       "anchor": [
         "           * grouping — fields reached THROUGH the bill's cost lines to their",
         "           * owning order — because sibling lists share section names and an",
@@ -3529,7 +3580,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
-      "line": 831,
+      "line": 837,
       "anchor": [
         "            <FileCheck2 />",
         "          </Button>",
@@ -3545,7 +3596,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 656,
+      "line": 711,
       "anchor": [
         "          <div className=\"space-y-1.5\">",
         "            <Label htmlFor=\"invoicing-title\">Invoice Title</Label>",
@@ -3561,7 +3612,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 682,
+      "line": 737,
       "anchor": [
         "          </div>",
         "        </div>",
@@ -3577,7 +3628,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 701,
+      "line": 756,
       "anchor": [
         "                // A list since migration 0038 — one document may cover several",
         "                // bills. This dialog is opened from a single bill ROW, so it",
@@ -3593,7 +3644,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 710,
+      "line": 765,
       "anchor": [
         "                billIds: [bill.id],",
         "                // Omitted = the whole outstanding balance, which is what the",
@@ -3609,7 +3660,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 718,
+      "line": 773,
       "anchor": [
         "                // Sent only while the dialog itself is showing the notice — an",
         "                // under-limit invoice never carries this field at all, which",
@@ -3625,7 +3676,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 644,
+      "line": 699,
       "anchor": [
         "              </Select>",
         "            </div>",
@@ -3641,7 +3692,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 778,
+      "line": 833,
       "anchor": [
         "  value,",
         "  onChange,",
@@ -3673,7 +3724,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 359,
+      "line": 363,
       "anchor": [
         "        onClick={() => {",
         "          setRefusal(null);",
@@ -3689,7 +3740,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 403,
+      "line": 407,
       "anchor": [
         "            <p className=\"text-sm text-destructive\">",
         "              {documentQuery.error instanceof Error",
@@ -3705,7 +3756,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 441,
+      "line": 485,
       "anchor": [
         "/**",
         " * The document, drawn from the model the two files are laid out from.",
@@ -3721,7 +3772,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 389,
+      "line": 393,
       "anchor": [
         "              <p className=\"mt-1 text-sm whitespace-pre-wrap text-destructive\">{refusal.message}</p>",
         "              {refusal.format === \"pdf\" ? (",
@@ -3739,11 +3790,11 @@
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
       "line": 419,
       "anchor": [
-        "            <Button",
-        "              variant=\"outline\"",
-        "              disabled={saving !== null || !documentQuery.data}",
-        "              onClick={() => void save(\"xlsx\")}",
-        "            >"
+        "          <DialogFooter>",
+        "            <Button variant=\"outline\" onClick={close}>",
+        "              取消",
+        "            </Button>",
+        "            {/* Both sinks stay clickable while a document is on screen. XLSX is"
       ],
       "jsonPath": "/guide/24/golden/5/src",
       "step": 25,
@@ -3753,7 +3804,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 783,
+      "line": 863,
       "anchor": [
         "      seller: applied.seller,",
         "      buyer: applied.buyer,",
@@ -3769,7 +3820,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 794,
+      "line": 874,
       "anchor": [
         "   * over the whole filtered set — see the `manualPagination` table below. */",
         "  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 20 });",
@@ -3786,17 +3837,22 @@
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
       "line": 1453,
-      "anchor": [],
+      "anchor": [
+        "          />",
+        "        }",
+        "        action={{ label: \"Add\", onClick: () => setFormOpen(true) }}",
+        "        filters={{",
+        "          fields: filterFields,"
+      ],
       "jsonPath": "/guide/25/golden/0/src",
       "step": 26,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0,
-      "outOfRangeAtSnapshot": true
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 416,
+      "line": 600,
       "anchor": [
         "          <div className=\"grid grid-cols-2 gap-3\">",
         "            <form.Field name=\"bankSlipNumber\">",
@@ -3812,7 +3868,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 454,
+      "line": 638,
       "anchor": [
         "            )}",
         "          </form.Field>",
@@ -3828,7 +3884,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 476,
+      "line": 660,
       "anchor": [
         "}",
         "",
@@ -3844,7 +3900,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 578,
+      "line": 789,
       "anchor": [
         "        queryClient.invalidateQueries({ queryKey: orpc.bills.list.queryKey() });",
         "        queryClient.invalidateQueries({ queryKey: orpc.bills.totals.queryKey() });",
@@ -3860,7 +3916,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 650,
+      "line": 861,
       "anchor": [
         "              <Input",
         "                id=\"verify-method\"",
@@ -3876,7 +3932,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1122,
+      "line": 1352,
       "anchor": [
         "    chip(\"postedRange\", \"Posted\", [\"postFrom\", \"postTo\"]),",
         "    chip(\"createdBy\", \"Creator\"),",
@@ -3892,7 +3948,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 804,
+      "line": 1016,
       "anchor": [
         "      ),",
         "    },",
@@ -3908,7 +3964,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 849,
+      "line": 1061,
       "anchor": [
         "      cell: ({ row }) => labelFor(PAYMENT_WAY_LABELS, row.original.paymentWay),",
         "    },",
@@ -3924,7 +3980,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 894,
+      "line": 1106,
       "anchor": [
         "          onClick={(e) => e.stopPropagation()}",
         "          onKeyDown={(e) => e.stopPropagation()}",
@@ -3942,11 +3998,11 @@
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
       "line": 947,
       "anchor": [
-        "  const [formOpen, setFormOpen] = useState(false);",
-        "  const [verifying, setVerifying] = useState<Payment | null>(null);",
-        "",
-        "  const filters = useUrlFilters<PaymentFilterValues>({",
-        "    search: urlSearch,"
+        "            }",
+        "          >",
+        "            {verifyMutation.isPending ? \"Verifying…\" : \"Verify\"}",
+        "          </Button>",
+        "        </DialogFooter>"
       ],
       "jsonPath": "/guide/25/golden/10/src",
       "step": 26,
@@ -3956,7 +4012,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/write-offs.tsx",
-      "line": 202,
+      "line": 293,
       "anchor": [
         "    },",
         "    { accessorKey: \"remark\", header: \"Remark\", cell: ({ row }) => row.original.remark || \"—\" },",
@@ -3988,7 +4044,7 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 343,
+      "line": 442,
       "anchor": [
         "                <Label htmlFor=\"export-account\">选择账户</Label>",
         "                <Select",
@@ -4004,7 +4060,7 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 370,
+      "line": 469,
       "anchor": [
         "                    ))}",
         "                  </SelectContent>",
@@ -4020,7 +4076,7 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 392,
+      "line": 491,
       "anchor": [
         "                <SelectContent>",
         "                  {FORMATS.map((f) => (",
@@ -4036,7 +4092,7 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 422,
+      "line": 534,
       "anchor": [
         "      </Dialog>",
         "    </>",
@@ -4052,7 +4108,7 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 484,
+      "line": 596,
       "anchor": [
         "                  ))}",
         "                </tr>",
@@ -4068,7 +4124,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 932,
+      "line": 1083,
       "anchor": [
         "          </Link>",
         "          , where a selection splits into one bill per settlement unit, attribute and currency.",
@@ -4084,7 +4140,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/report/financial/index.tsx",
-      "line": 993,
+      "line": 1048,
       "anchor": [
         "                  }}",
         "                  onApply={(state) => {",
@@ -4100,7 +4156,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/report/financial/index.tsx",
-      "line": 950,
+      "line": 1005,
       "anchor": [
         "                    ? \"border-primary text-primary\"",
         "                    : \"border-transparent text-muted-foreground hover:text-foreground\"",
@@ -4116,7 +4172,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/report/financial/index.tsx",
-      "line": 981,
+      "line": 1036,
       "anchor": [
         "              groups={FINANCIAL_FILTER_GROUPS}",
         "              // No columns: this bar is shared by all five tabs, while the",
@@ -4132,7 +4188,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
-      "line": 849,
+      "line": 855,
       "anchor": [
         "            disabled={actions.financeSyncPending}",
         "            onClick={() => actions.onToggleFinanceSynced(row.original)}",
@@ -4148,7 +4204,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1944,
+      "line": 1979,
       "anchor": [
         "   * `filterScopeCount`) is what covers a set too large to tick, and it works off",
         "   * the FILTER, which paging does not move. */",
@@ -4527,10 +4583,10 @@
       "step": 2,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/order.to-receive.tsx",
+        "apps/web/src/components/order-ledger/order-row-actions.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx",
-        "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
+        "apps/web/src/routes/_next/lading/$id/edit.tsx"
       ]
     },
     {
@@ -4712,10 +4768,10 @@
       "step": 3,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/order.to-receive.tsx",
+        "apps/web/src/components/order-ledger/order-row-actions.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx",
-        "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
+        "apps/web/src/routes/_next/lading/$id/edit.tsx"
       ]
     },
     {
@@ -4791,10 +4847,10 @@
       "step": 4,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/order.to-receive.tsx",
+        "apps/web/src/components/order-ledger/order-row-actions.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx",
-        "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
+        "apps/web/src/routes/_next/lading/$id/edit.tsx"
       ]
     },
     {
@@ -4966,10 +5022,10 @@
       "step": 5,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/order.to-receive.tsx",
+        "apps/web/src/components/order-ledger/order-row-actions.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx",
-        "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
+        "apps/web/src/routes/_next/lading/$id/edit.tsx"
       ]
     },
     {
@@ -5311,8 +5367,7 @@
       "foundIn": [
         "apps/web/src/components/company/company-contacts.tsx",
         "apps/web/src/components/reference-template-dialog.tsx",
-        "apps/web/src/routes/_next/order.to-receive.tsx",
-        "apps/web/src/components/order-detail-pane.tsx"
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
@@ -5395,7 +5450,7 @@
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "apps/web/src/routes/_next/expenses/-bills.columns.tsx"
+        "packages/api/src/routers/expense/cost-lines.ts"
       ]
     },
     {
@@ -5577,22 +5632,22 @@
       "text": "Format",
       "step": 9,
       "foundIn": [
+        "packages/api/src/routers/report.ts",
         "apps/web/src/lib/quotation.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx",
         "apps/web/src/components/order-form.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/server/src/bl-tracking-worker.ts"
+        "apps/web/src/routes/_next/lading/create.tsx"
       ]
     },
     {
       "text": "PDF",
       "step": 9,
       "foundIn": [
+        "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/components/quotation/send-quotation-dialog.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx"
+        "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
     },
     {
@@ -5829,6 +5884,13 @@
       "foundIn": []
     },
     {
+      "text": "Open full page",
+      "step": 13,
+      "foundIn": [
+        "apps/web/src/routes/_next/order.to-receive.tsx"
+      ]
+    },
+    {
       "text": "Business information",
       "step": 14,
       "foundIn": [
@@ -6048,7 +6110,7 @@
       ]
     },
     {
-      "text": "Containers (case type &amp; TEU)",
+      "text": "Containers (case type & TEU)",
       "step": 14,
       "foundIn": [
         "apps/web/src/components/order-form.tsx"
@@ -6119,7 +6181,7 @@
         "apps/web/src/routes/_next/overview.tsx",
         "packages/api/src/modules/audit/seed.ts",
         "packages/api/src/quotation/values.ts",
-        "packages/api/src/routers/collective-order.ts"
+        "apps/web/src/routes/_next/approve/order.tsx"
       ]
     },
     {
@@ -6610,7 +6672,8 @@
       "step": 16,
       "foundIn": [
         "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/routes/_next/lading/$id/edit.tsx",
+        "apps/web/src/routes/_next/lading/index.tsx"
       ]
     },
     {
@@ -6618,10 +6681,10 @@
       "step": 16,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/order.to-receive.tsx",
+        "apps/web/src/components/order-ledger/order-row-actions.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx",
-        "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
+        "apps/web/src/routes/_next/lading/$id/edit.tsx"
       ]
     },
     {
@@ -6737,17 +6800,18 @@
       "text": "Amend",
       "step": 17,
       "foundIn": [
+        "apps/web/src/routes/_next/lading/create.tsx",
+        "apps/web/src/routes/_next/lading/$id/edit.tsx",
         "packages/api/src/routers/lading.ts",
         "apps/web/src/routes/_next/lading/$id/index.tsx",
-        "apps/web/src/routes/_next/documents.$documentId.tsx",
-        "apps/web/src/components/customs-tracking/bl-job-record.tsx",
-        "apps/web/src/routes/_next/lading/index.tsx"
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
       ]
     },
     {
       "text": "Check Out",
       "step": 17,
       "foundIn": [
+        "apps/web/src/routes/_next/lading/create.tsx",
         "packages/api/src/routers/lading.ts",
         "apps/web/src/routes/_next/lading/$id/index.tsx"
       ]
@@ -6756,9 +6820,11 @@
       "text": "Hold",
       "step": 17,
       "foundIn": [
+        "apps/web/src/components/reject-reason-dialog.tsx",
+        "apps/web/src/routes/_next/lading/create.tsx",
+        "apps/web/src/routes/_next/lading/$id/edit.tsx",
         "packages/api/src/routers/lading.ts",
-        "apps/web/src/routes/_next/lading/$id/index.tsx",
-        "apps/web/src/routes/_next/lading/index.tsx"
+        "apps/web/src/routes/_next/lading/$id/index.tsx"
       ]
     },
     {
@@ -6775,11 +6841,11 @@
       "text": "PDF",
       "step": 17,
       "foundIn": [
+        "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/components/quotation/send-quotation-dialog.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx"
+        "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
     },
     {
@@ -6825,8 +6891,8 @@
         "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/components/order-form.tsx",
         "apps/web/src/routes/_next/order.to-receive.tsx",
-        "apps/web/src/routes/_next/lading/$id/index.tsx",
-        "apps/web/src/routes/_next/documents.index.tsx"
+        "packages/api/src/routers/collective-order.ts",
+        "apps/web/src/routes/_next/lading/$id/index.tsx"
       ]
     },
     {
@@ -6876,7 +6942,8 @@
       "foundIn": [
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/link-picker.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
       ]
     },
     {
@@ -6895,6 +6962,7 @@
       "step": 18,
       "foundIn": [
         "packages/api/src/modules/audit/seed.ts",
+        "apps/web/src/routes/_next/documents.$documentId.tsx",
         "apps/web/src/routes/_next/lading/index.tsx"
       ]
     },
@@ -7041,7 +7109,8 @@
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
         "apps/web/src/components/shell-next/nav.ts",
         "apps/web/src/components/expense/cost-line-batch-menu.tsx",
-        "packages/api/src/routers/expense/cost-lines.ts"
+        "packages/api/src/routers/expense/cost-lines.ts",
+        "apps/web/src/routes/_next/expenses/payments.tsx"
       ]
     },
     {
@@ -7050,7 +7119,8 @@
       "foundIn": [
         "packages/api/src/modules/quotation/sheet.ts",
         "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
+        "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
+        "apps/web/src/routes/_next/expenses/invoices.tsx"
       ]
     },
     {
@@ -7114,7 +7184,11 @@
     {
       "text": "Money > Cost lines",
       "step": 21,
-      "foundIn": []
+      "foundIn": [
+        "apps/web/src/components/order-form.tsx",
+        "packages/api/src/routers/collective-order.ts",
+        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
+      ]
     },
     {
       "text": "Search all columns",
@@ -7174,8 +7248,8 @@
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "apps/web/src/components/expense/cost-line-batch-menu.tsx"
+        "apps/web/src/components/order-ledger/order-row-actions.tsx",
+        "packages/api/src/modules/document/register-hooks.ts"
       ]
     },
     {
@@ -7296,7 +7370,11 @@
     {
       "text": "Money > Cost lines",
       "step": 22,
-      "foundIn": []
+      "foundIn": [
+        "apps/web/src/components/order-form.tsx",
+        "packages/api/src/routers/collective-order.ts",
+        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
+      ]
     },
     {
       "text": "Create Bill",
@@ -7310,7 +7388,7 @@
       "text": "N bills will be created",
       "step": 22,
       "foundIn": [
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
+        "apps/web/src/routes/_next/expenses/-bill-group-key.ts"
       ]
     },
     {
@@ -7323,7 +7401,9 @@
     {
       "text": "Also split by order",
       "step": 22,
-      "foundIn": []
+      "foundIn": [
+        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
+      ]
     },
     {
       "text": "Invoice Title",
@@ -7685,7 +7765,7 @@
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "apps/web/src/routes/_next/expenses/-bills.columns.tsx"
+        "packages/api/src/routers/expense/cost-lines.ts"
       ]
     },
     {
@@ -7850,7 +7930,7 @@
         "packages/api/src/routers/company-contact.ts",
         "packages/api/src/routers/report.ts",
         "packages/api/src/modules/audit/seed.ts",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
+        "apps/web/src/components/order-ledger/order-row-actions.tsx"
       ]
     },
     {
@@ -7904,7 +7984,11 @@
     {
       "text": "Money > Cost lines",
       "step": 27,
-      "foundIn": []
+      "foundIn": [
+        "apps/web/src/components/order-form.tsx",
+        "packages/api/src/routers/collective-order.ts",
+        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
+      ]
     },
     {
       "text": "导出单证 · Export documents (全选)",
@@ -7916,7 +8000,9 @@
       "step": 27,
       "foundIn": [
         "apps/web/src/lib/quotation.ts",
-        "apps/web/src/components/order-form.tsx"
+        "apps/web/src/components/order-form.tsx",
+        "packages/api/src/routers/lading.ts",
+        "apps/web/src/routes/_next/lading/index.tsx"
       ]
     },
     {
@@ -7932,14 +8018,16 @@
       "foundIn": [
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "apps/web/src/components/export-table-dialog.tsx"
+        "apps/web/src/components/export-table-dialog.tsx",
+        "apps/web/src/routes/_next/report/financial/index.tsx"
       ]
     },
     {
       "text": "DEBIT_NOTE",
       "step": 27,
       "foundIn": [
-        "apps/web/src/components/export-table-dialog.tsx"
+        "apps/web/src/components/export-table-dialog.tsx",
+        "apps/web/src/routes/_next/report/financial/index.tsx"
       ]
     },
     {
@@ -7947,13 +8035,16 @@
       "step": 27,
       "foundIn": [
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-        "apps/web/src/components/export-table-dialog.tsx"
+        "apps/web/src/components/export-table-dialog.tsx",
+        "apps/web/src/routes/_next/report/financial/index.tsx"
       ]
     },
     {
       "text": "结算单位 · Settlement unit",
       "step": 27,
-      "foundIn": []
+      "foundIn": [
+        "apps/web/src/components/export-table-dialog.tsx"
+      ]
     },
     {
       "text": "文件名",
@@ -8013,6 +8104,8 @@
       "text": "Expense Entry",
       "step": 27,
       "foundIn": [
+        "apps/web/src/components/order-form.tsx",
+        "packages/api/src/routers/collective-order.ts",
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
       ]
     },
@@ -8025,6 +8118,7 @@
       "text": "Month-end pack",
       "step": 27,
       "foundIn": [
+        "packages/api/src/routers/report.ts",
         "apps/web/src/routes/_next/report/financial/index.tsx"
       ]
     },
@@ -8042,11 +8136,11 @@
       "text": "PDF",
       "step": 27,
       "foundIn": [
+        "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/components/quotation/send-quotation-dialog.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx"
+        "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
     },
     {
@@ -8076,7 +8170,6 @@
         "apps/web/src/routes/_next/documents.$documentId.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
         "apps/web/src/routes/_next/approve/cost.tsx",
-        "packages/api/src/routers/expense/cost-lines.ts",
         "apps/web/src/routes/_next/expenses/bills.tsx",
         "apps/web/src/routes/_next/approve/template.tsx",
         "apps/web/src/routes/_next/approve/quotation.tsx",
@@ -8123,7 +8216,8 @@
         "packages/api/src/quotation/values.ts",
         "packages/api/src/routers/collective-order.ts",
         "apps/web/src/components/review-menu.tsx",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
+        "apps/web/src/routes/_next/expenses/cost-lines.tsx",
+        "packages/api/src/routers/expense/cost-lines.ts"
       ]
     },
     {
@@ -8136,6 +8230,13 @@
       ]
     },
     {
+      "literal": "create_lading",
+      "foundIn": [
+        "packages/api/src/modules/audit/seed.ts",
+        "packages/api/src/routers/lading.ts"
+      ]
+    },
+    {
       "literal": "skipped",
       "foundIn": [
         "packages/api/src/routers/expense/cost-lines.ts"
@@ -8145,6 +8246,8 @@
       "literal": "written_off",
       "foundIn": [
         "packages/api/src/routers/lading.ts",
+        "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
+        "apps/web/src/routes/_next/expenses/payments.tsx",
         "apps/web/src/routes/_next/lading/index.tsx"
       ]
     }
@@ -8288,32 +8391,32 @@
     },
     {
       "file": "customer-intake-sop/shots/step-14.jpg",
-      "sha": "8cfad534979c3ff01a24b4ecc6201d01e5e4ef13fda5253688d442baf9822c4e",
-      "mtimeMs": 1789291889028,
+      "sha": "a56b4375814b323dca47fa1841d7b6569935c44d6bc9903deb95357b4f9a2e68",
+      "mtimeMs": 1790330683952,
       "step": 12,
       "path": "/order/new",
       "routeFile": "apps/web/src/routes/_next/order.new.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-13.jpg",
-      "sha": "5a1b45d3366cd8d42fa42402806d23705cc601fc0ca092eef9036c7ad2d25942",
-      "mtimeMs": 1789291881965,
+      "sha": "7353c52745e903d60adbaa713897f72fe6a08a7b94d583808670b39a2762799f",
+      "mtimeMs": 1790330683852,
       "step": 13,
       "path": "/order/to-receive",
       "routeFile": "apps/web/src/routes/_next/order.to-receive.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-14.jpg",
-      "sha": "8cfad534979c3ff01a24b4ecc6201d01e5e4ef13fda5253688d442baf9822c4e",
-      "mtimeMs": 1789291889028,
+      "sha": "a56b4375814b323dca47fa1841d7b6569935c44d6bc9903deb95357b4f9a2e68",
+      "mtimeMs": 1790330683952,
       "step": 14,
       "path": "/order/new",
       "routeFile": "apps/web/src/routes/_next/order.new.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-12.jpg",
-      "sha": "24fbf589e7f726c7be5a4a58c05aa3dba8e50f12a97207e5ed620afd07a96b5e",
-      "mtimeMs": 1789291876463,
+      "sha": "2f701cd9cbdf94141ea13f949e4dcf8865876fe1c3b3981f076e44f7794bbc18",
+      "mtimeMs": 1790330683768,
       "step": 14,
       "path": "/order/sea-export",
       "routeFile": "apps/web/src/routes/_next/order.sea-export.tsx"
@@ -8328,16 +8431,16 @@
     },
     {
       "file": "customer-intake-sop/shots/step-16.jpg",
-      "sha": "79611f4b745bcb829d74a2ce0a5370c3cc5db64f7a3865481ea8940bac9016a2",
-      "mtimeMs": 1789291901795,
+      "sha": "743be2bce8fac694c1bfef40d2cb5a53932aa05002baa883e3882941c68537a4",
+      "mtimeMs": 1790330684042,
       "step": 16,
       "path": "/lading/create",
       "routeFile": "apps/web/src/routes/_next/lading/create.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-17.jpg",
-      "sha": "2497c9a2885b4b6d616b696fb4d50de7f68feadbf4a19fb1f0e351e52c9c34c4",
-      "mtimeMs": 1789291908380,
+      "sha": "7ed76df3dccb84577ebd33a8e98d4fccc13723652b87550410b7938d84e7f8ae",
+      "mtimeMs": 1790330684133,
       "step": 17,
       "path": "/lading",
       "routeFile": "apps/web/src/routes/_next/lading/index.tsx"
@@ -8352,8 +8455,8 @@
     },
     {
       "file": "customer-intake-sop/shots/step-19.jpg",
-      "sha": "c13222f751ce7b7d24a7eda16284ac25f97296f1bdb4a85663ff89f92871b89c",
-      "mtimeMs": 1789291919780,
+      "sha": "db89b778ec2a4874f2c910d95f02c308b2b0ae7504600573e36eb3eaf0705c1e",
+      "mtimeMs": 1790330684222,
       "step": 19,
       "path": "/customs-tracking",
       "routeFile": "apps/web/src/routes/_next/customs-tracking.tsx"
@@ -8376,72 +8479,72 @@
     },
     {
       "file": "customer-intake-sop/shots/step-21.jpg",
-      "sha": "b8689ba021cb05033818888a7b4d335f0bfaae2d695d517ef6ab70d31aeb8a29",
-      "mtimeMs": 1789291934541,
+      "sha": "d60f98d578ac5da16a97264a963585fd3104600d686ff106bd41f504884b5783",
+      "mtimeMs": 1790330684317,
       "step": 21,
       "path": "/approve/cost",
       "routeFile": "apps/web/src/routes/_next/approve/cost.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-22.jpg",
-      "sha": "02b9013419f202a5ce8e36c0257fb8250612f92cc2b9dd14d27340fef2d229f4",
-      "mtimeMs": 1789291940851,
+      "sha": "9dfa658f86059c1398318c04cdaed7c4f5081f0581f44b00094f0f958b709062",
+      "mtimeMs": 1790330684403,
       "step": 22,
       "path": "/expenses/cost-lines",
       "routeFile": "apps/web/src/routes/_next/expenses/cost-lines.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-23.jpg",
-      "sha": "86a27ee7ae5be8f1d227239a929d70007c18a9666e73659ed47a86db2b666299",
-      "mtimeMs": 1789291955019,
+      "sha": "05cacb19ad3005aec618207f67793c3017f957a1cf50195c0ade63a2b349dc6f",
+      "mtimeMs": 1790330684504,
       "step": 23,
       "path": "/approve/bill",
       "routeFile": "apps/web/src/routes/_next/approve/bill.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-24.jpg",
-      "sha": "bc5664a7b54490db9ab05300483b729f08223671b38c4e52b6a6dd89ccc244e2",
-      "mtimeMs": 1789291961506,
+      "sha": "8abb843e7fb68d901da6fc30a585a577583ac9ebce2ca585a80e2ed0aac6755b",
+      "mtimeMs": 1790330684593,
       "step": 24,
       "path": "/expenses/bills",
       "routeFile": "apps/web/src/routes/_next/expenses/bills.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-25.jpg",
-      "sha": "b3a6c785267578b751d358f2432b7b7bf9f6d77c013452abf7fc277848e9ccd8",
-      "mtimeMs": 1789291969194,
+      "sha": "523210aa5d2c2cd8b0f4a2e99f2397ccc54a2e33e04fde0f99373589aa478ac2",
+      "mtimeMs": 1790330684685,
       "step": 25,
       "path": "/expenses/invoices",
       "routeFile": "apps/web/src/routes/_next/expenses/invoices.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-26.jpg",
-      "sha": "428a2d089c8bef7f77fd062649f68cf8523583f464f09924a97cb171545a9a2b",
-      "mtimeMs": 1789291980096,
+      "sha": "7d1e6583cd140222e5456a937b5ec156dfddb7d142ad3805378b0c636ee48aee",
+      "mtimeMs": 1790330684868,
       "step": 26,
       "path": "/expenses/payments",
       "routeFile": "apps/web/src/routes/_next/expenses/payments.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-26-writeoffs.jpg",
-      "sha": "3e29f081235422d958992eaf6bd0e56a134669f0c6e334b812e30db04b080db3",
-      "mtimeMs": 1789291992078,
+      "sha": "b9dbe14c51462dda4907e664f2896d4be4998b29b237ac798da49ae90dd67207",
+      "mtimeMs": 1790330684773,
       "step": 26,
       "path": "/expenses/write-offs",
       "routeFile": "apps/web/src/routes/_next/expenses/write-offs.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-27.jpg",
-      "sha": "920dcf510069997ed14f84852d6824151b46ff88e23b317448461a15459849b7",
-      "mtimeMs": 1789292013556,
+      "sha": "ded4d96695f8faebf6b3409d82f9c4882618eb49fe28882fd91d356f3a1b40cb",
+      "mtimeMs": 1790330685049,
       "step": 27,
       "path": "/report/financial",
       "routeFile": "apps/web/src/routes/_next/report/financial/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-27-business.jpg",
-      "sha": "5b6d904414f471ded5663072463032930a6f0527378bcb9e9ba33aa3923a6f0e",
-      "mtimeMs": 1789292027472,
+      "sha": "8b1414841d8a2d19ac4bb5f38f9c80520c02cebee74f5579b5c64ef4667848f0",
+      "mtimeMs": 1790330684954,
       "step": 27,
       "path": "/report/business",
       "routeFile": "apps/web/src/routes/_next/report/business/index.tsx"
