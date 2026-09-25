@@ -314,11 +314,7 @@
       "phase": "D",
       "title": "Move the B/L through its states",
       "where": "/lading → /lading/$id",
-      "what": "Check In (endorsement), Amend, Check Out (release) and Hold (detention), each with a cancel twin and each behind its own gate. Per row, or from the detail page — the list’s tick-boxes drive review only. Scanned paperwork files as attachments on the bill itself.",
-      "watch": {
-        "tag": "Watch",
-        "html": "The review half is missing: no shipped screen can submit a lading for review, so the Shipment review queue can only ever decide submissions that cannot be created."
-      },
+      "what": "Check In (endorsement), Amend, Check Out (release) and Hold (detention), each with a cancel twin and each behind its own gate. Per row, or from the detail page — the list’s tick-boxes drive review only. Send the bill for review from <strong>Review</strong> on its page; while under review it is frozen. Scanned paperwork files as attachments on the bill itself.",
       "actors": [
         {
           "role": "documentation",
@@ -351,7 +347,7 @@
       "what": "Two schedulers poll MYCIEDS and SBCP — customs three times a day, the port hourly — issuing three kinds of check. Customs clearance, vessel berthing and container gate-out arrive on their own, and <strong>the 72-hour countdown starts itself at berth.</strong> The board sorts by urgency and emails the owning branch on threshold and structural failures. A job the automation can never finish is voided with a written reason.",
       "watch": {
         "tag": "Watch",
-        "html": "Tracking jobs are anchored to the <em>document</em> only — no order, no lading — and the board cannot reach that job's fees. The server does match jobs to orders by B/L number, but leaves the deadline out of that payload, and the card meant to show it never renders — so the countdown is still invisible from the order it belongs to."
+        "html": "Tracking jobs still store no order: a job finds its order, and an order its job, by B/L number. When two open jobs share one B/L number the order's card shows <strong>Match not certain</strong> and no clock, and where no portal login is saved the board says checks are off — nothing is being checked."
       },
       "actors": [
         {
@@ -378,7 +374,7 @@
       "phase": "E",
       "title": "Get the fees reviewed",
       "where": "/approve/cost",
-      "what": "Submit from the fee ledger’s Review menu; decide here, on a toolbar of Approved / Rejected / Refresh Page. The fee ledger’s own toolbar — not this one — carries reconcile, lock, archive, tag, and an exchange-rate dialog that applies a rate you type by hand.",
+      "what": "Submit from the fee ledger’s Review menu; someone else decides here, on a toolbar of Approved / Rejected / Refresh Page — nobody decides their own fee. The fee ledger’s own toolbar — not this one — carries reconcile, lock, archive, tag, and an exchange-rate dialog that applies a rate you type by hand.",
       "actors": [
         {
           "role": "operations",
@@ -408,7 +404,7 @@
       "phase": "E",
       "title": "Get the bill approved",
       "where": "/approve/bill",
-      "what": "<strong>This gate has teeth — for invoicing and write-off.</strong> Invoicing is frozen until the bill's latest review passes, and unlike the template gate at step 4 this one ships switched on. It does not protect the bill’s own total: a line can still be removed, and the re-total that follows is not frozen.",
+      "what": "<strong>This gate has teeth — for invoicing and write-off.</strong> Invoicing is frozen until the bill's latest review passes, and unlike the template gate at step 4 this one ships switched on. It also guards the bill itself: nothing on it saves while under review, and after approval only the paperwork (courier, voucher numbers, remark, tags) can change — removing a line is refused until the bill is dissolved and billed again.",
       "actors": [
         {
           "role": "accounting",
@@ -425,10 +421,10 @@
       "phase": "E",
       "title": "Issue the invoice",
       "where": "/expenses/bills → Invoicing",
-      "what": "Pick invoice category and type, optionally type the real tax-authority number, and accept or edit the amount — pre-filled with the outstanding balance, so <strong>partial invoicing works.</strong> The bill flips to invoiced once fully covered.",
+      "what": "Pick invoice category and type, optionally type the real tax-authority number, and accept or edit the amount — pre-filled with the outstanding balance, so <strong>partial invoicing works.</strong> The bill flips to invoiced once fully covered; a written-off bill with a balance left can be invoiced too and goes to Done.",
       "watch": {
         "tag": "Watch",
-        "html": "No credit check happens here. Scope, gate, currency, branch, attribute and status are all checked; the counterparty's outstanding exposure never is."
+        "html": "Over-limit invoicing needs a reason. When a covered bill's company is over its credit limit, the dialog names it and <strong>Issue Invoice</strong> stays disabled until a reason of at least 10 characters is typed; the reason goes to the audit log. A bill with no company, or a company with no limit, is never checked."
       },
       "actors": [
         {
@@ -442,7 +438,7 @@
       "phase": "E",
       "title": "Produce and hand over the document",
       "where": "/expenses/invoices",
-      "what": "Preview the real document — seller (name, address, phone, contact — never a tax ID) and buyer (name, address, tax ID), fee lines with tax rate, two totals, payment terms derived from the company's days-payable — then save it as PDF or XLSX, which marks it downloaded. A void reverses the whole allocation atomically and makes the bill re-invoiceable.",
+      "what": "Preview the real document — seller (name, address, phone, contact — never a tax ID) and buyer (name, address, tax ID), fee lines with tax rate, two totals, payment terms from the bill's own term (the customer's current term only when no covered bill has one) — then save it as PDF or XLSX; the server records it as downloaded. A void reverses the whole allocation atomically and makes the bill re-invoiceable.",
       "watch": {
         "tag": "Watch",
         "html": "The buyer block usually prints only a name — no address, tax ID or payment terms; see the break at step 20. There is also <strong>no send-by-email anywhere</strong>, although the quotation at step 9 has one, and no SST or GST: this is a commercial invoice, not a Malaysian tax invoice."
@@ -459,7 +455,7 @@
       "phase": "E",
       "title": "Record the money and settle it",
       "where": "/expenses/payments → /expenses/write-offs",
-      "what": "Record the receipt — direction, settlement party, account, payment way, currency, amount, bank slip, date — then verify it against a bill, or, from the same dialog, a single billed cost line. There is no exchange-rate field. The amount spreads forward across that bill's cost lines in creation order. A wrong write-off is reversed, not edited.",
+      "what": "Record the receipt — direction, settlement party, account, payment way, currency, amount, an exchange rate when the currency differs from the reporting one, bank slip, date — then verify it against a bill on its own side (a receipt settles receivables, a payment payables), or, from the same dialog, a single billed cost line. The amount spreads forward across that bill's cost lines in creation order. A payment can be edited while nothing live is settled against it; a wrong write-off is voided with a reason, not edited.",
       "watch": {
         "tag": "Watch",
         "html": "Settlement attaches to the <em>bill</em>, never the invoice. With partial invoicing in use one bill legitimately carries several invoices — so “is this invoice paid?” has no answer on any screen, though both per-line splits exist to compute it."
@@ -480,7 +476,7 @@
       "phase": "E",
       "title": "Close the month",
       "where": "/expenses/cost-lines → Export table · /report/financial",
-      "what": "Tick cost lines and export the customer statement, the debit note or the per-shipment profit sheet. Then work the five Financial Stat tabs: profit analysis, profit statement, receipts and payments, billing records, and ageing with days overdue (credit limit appears only in the ageing export).",
+      "what": "Tick cost lines and export the customer statement or debit note (one settlement unit each) or the per-shipment profit sheet. Then work the five Financial Stat tabs, whose months follow the branch's time zone: profit analysis, profit statement, receipts and payments, billing records, and ageing with days overdue plus a separate line for bills with no due date (credit limit appears only in the ageing export).",
       "watch": {
         "tag": "Watch",
         "html": "The three month-end documents have no menu entry of their own — they open from an export dialog on two screens: the fee ledger (no ticks means the whole filtered set) and the order’s own expense page."
@@ -2295,61 +2291,62 @@
           "label": "Shipment — the B/L ledger (left rail → Shipment)"
         }
       ],
-      "navigate": "Left rail, **You** block → **Shipment** → **Add**; the form is at /lading/create",
+      "navigate": "From the received order's own page press **Raise bill of lading** (it opens the form pointed at that order), or left rail, **You** block → **Shipment** → **Add**; the form is at /lading/create",
       "before": [
-        "The order exists and is received (steps 13–15). Note its order number: there is no route from the job to its B/L.",
+        "The order exists and is received (steps 13–15). Only a received, not-archived order shows **Raise bill of lading** and appears in the form's order list.",
         "Have the carrier's B/L PDF or image ready if you want OCR to pre-fill."
       ],
       "golden": [
         {
           "action": "Open **Shipment** and press **Add**, or go straight to /lading/create",
           "detail": "The form is tabbed: **Basic**, **Route & Parties**, **Cargo & Terms**, **Containers**, **Administration** and the OCR import tab.",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:535"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:644"
         },
         {
           "action": "Optional: in **OCR Document Import**, upload the carrier's file (PNG, JPG or PDF)",
           "detail": "It extracts Bill No, Vessel, Voyage, POL, POD, Shipper, Consignee, Cargo Desc and container details. A toast reads **OCR extraction complete**.",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:1519"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1600"
         },
         {
           "action": "Press **Apply to Form** to push the extracted values into the fields",
-          "detail": "Toast: **Extracted fields applied to form**. Check every field against the scan.",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:349"
+          "detail": "Toast: **Extracted fields applied to form**. If OCR's own checks flag an error, **Apply to Form** stays disabled until you tick **Apply anyway: I have checked the flagged values against the scan**; warnings alone do not block it. Check every field against the scan.",
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1678"
         },
         {
           "action": "On **Basic**, fill **Bill No *** (the only required B/L field besides the branch), plus **Lading Name**, **Booking No**, **Status**, **Lading Type**, **Bill Form**, **Business Type**, **MBL No**, **HBL No**, **Vessel**, **Voyage**, **Carrier** and **Shipping Company**",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:564"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:676",
+          "detail": "**Status** offers only Draft, Confirmed or Cancelled. On hold, Amended and Released are set by the actions on the bill's page (step 17)."
         },
         {
           "action": "On **Route & Parties**, fill **Port of Loading (POL)**, **Port of Discharge (POD)**, **Delivery Place**, **Place of Receipt** and **Transhipment Port**",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:669"
-        },
-        {
-          "action": "Pick **Shipper**, **Consignee** and **Notify Party** from the directory (\"Search the directory by name, code, or alias…\"), with free-text **Shipper Info** / **Consignee Info** / **Notifier Info** beneath",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:750"
-        },
-        {
-          "action": "On **Cargo & Terms**, fill **Cargo Description**, **English Goods Name**, **Marks & Numbers**, **Package Type**, **Container Qty**, **Container Type**, **Gross Weight**, **Chargeable Weight**, **Volume (CBM)**, **Freight Term**, **Original B/L Count** and **Release Type**",
           "src": "apps/web/src/routes/_next/lading/create.tsx:825"
         },
         {
+          "action": "Pick **Shipper**, **Consignee** and **Notify Party** from the directory (\"Search the directory by name, code, or alias…\"), with free-text **Shipper Info** / **Consignee Info** / **Notifier Info** beneath",
+          "src": "apps/web/src/routes/_next/lading/create.tsx:871"
+        },
+        {
+          "action": "On **Cargo & Terms**, fill **Cargo Description**, **English Goods Name**, **Marks & Numbers**, **Package Type**, **Container Qty**, **Container Type**, **Gross Weight**, **Chargeable Weight**, **Volume (CBM)**, **Freight Term**, **Original B/L Count** and **Release Type**",
+          "src": "apps/web/src/routes/_next/lading/create.tsx:945"
+        },
+        {
           "action": "Add container rows: **Container No *** plus **Seal No**, **Container Type**, **Gross Weight (kg)**, **Volume (CBM)**, **Package Type**, **Package Qty**, **Cargo Desc**",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:1390"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1505"
         },
         {
           "action": "On **Administration**, point the bill at the job with **Linked order**",
-          "detail": "A dropdown of every order in scope — there is no row limit on it. There is also a free-text **Order No** field, matched as an exact string.",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:1242"
+          "detail": "Only received, not-archived orders are listed. Picking one fills the blank fields from the order, each marked **from order**, including **Order No** (free text, matched as an exact string).",
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1370"
         },
         {
           "action": "Assign the desk roles: **Sales**, **Operator**, **Service Personnel**, **Associated Personnel**, **Document Person**, **Commercial Person** and **Related Second Person** are member pickers; **Agent** is free text",
           "detail": "Unlike the order's typed names, the member pickers link real members. **ETA**, **ETD**, **Issue Place** and **Issue Date** are on this tab too.",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:1076"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1203"
         },
         {
           "action": "Set **Owning Branch *** and press **Create Bill of Lading**",
           "detail": "Toast: **Bill of Lading created**.",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:1341"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1456"
         }
       ],
       "fields": [
@@ -2371,7 +2368,7 @@
         {
           "label": "Linked order",
           "required": false,
-          "note": "Dropdown of every order in scope"
+          "note": "Received, not-archived orders only; a pick fills blank fields from the order"
         },
         {
           "label": "Order No",
@@ -2389,7 +2386,7 @@
       ],
       "result": "The B/L exists. Move it through its states — **step 17**.",
       "pitfalls": [
-        "There is no route from the job to its B/L: the bill has to re-find its order in one flat dropdown of every order in scope, or match a job number typed as free text.",
+        "**Raise bill of lading** appears only on a received, not-archived order. Opened for any other order, the form says a bill of lading cannot be raised from it and leaves the bill unlinked.",
         "OCR pre-fills; it does not verify. Check every field against the scan."
       ],
       "shots": [
@@ -2455,41 +2452,46 @@
         {
           "action": "Open the bill from **Shipment**",
           "detail": "The toolbar shows one button per state, reading the action available right now — a checked-in bill offers **Cancel Check In** and nothing else.",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:159"
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:175"
         },
         {
           "action": "Press **Check In** when the bill is endorsed",
           "detail": "Toast: **Checked in**. Reverse with **Cancel Check In** (**Check in cancelled**).",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:368"
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:389"
         },
         {
           "action": "Press **Amend** to record a correction",
           "detail": "Toast: **Amended**; reverse with **Cancel Amend** (**Amendment cancelled**).",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:191"
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:209"
         },
         {
           "action": "Press **Check Out** on release",
-          "detail": "Toast: **Checked out**; reverse with **Cancel Check Out**.",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:378"
+          "detail": "Toast: **Checked out**; reverse with **Cancel Check Out**. A bill on hold is refused (**On hold — release the hold before checking out**): press **Cancel Hold** first.",
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:399"
         },
         {
           "action": "Press **Hold** for a detention",
-          "detail": "Toast: **Put on hold**; release it with **Cancel Hold** (**Hold released**).",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:207"
+          "detail": "The **Put on hold** dialog asks for a **Reason (optional)**, shown on the bill beside the hold. Toast: **Put on hold**; release it with **Cancel Hold** (**Hold released**).",
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:223"
         },
         {
           "action": "Record the paperwork as attachments on the bill",
-          "detail": "Scans upload against the lading record itself.",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:233"
+          "detail": "Scans upload against the lading record itself. While the bill is under review you can still upload, but not remove one.",
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:488"
         },
         {
           "action": "Use **Excel** or **PDF** in the toolbar to export the bill",
           "detail": "Toast: **Exported <filename>**.",
-          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:219"
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:246"
         },
         {
           "action": "Add per-state notes in **Checked-In Remark** and **Checked-Out Remark** on the record",
-          "src": "apps/web/src/routes/_next/lading/create.tsx:1311"
+          "src": "apps/web/src/routes/_next/lading/create.tsx:1426"
+        },
+        {
+          "action": "When the bill is ready for sign-off, open **Review** and choose **Submit for review**",
+          "detail": "While it is under review the page reads **Under review. Request withdrawal from the Review menu to make changes.** and **Save Changes** on the edit form is disabled. To change it, choose **Request withdrawal** first.",
+          "src": "apps/web/src/routes/_next/lading/$id/index.tsx:453"
         }
       ],
       "fields": [
@@ -2497,20 +2499,16 @@
           "label": "Checked-In Remark / Checked-Out Remark",
           "required": false,
           "note": "Free text"
-        },
-        {
-          "label": "Audit Status",
-          "required": false,
-          "note": "Editable on the create and edit forms and persisted, but it is a cache column: no screen can queue a lading for review"
         }
       ],
       "writes": [
-        "The bill's state and its cancel twin, each stamped; attachments on the record"
+        "The bill's state and its cancel twin, each stamped (a hold with its optional reason); attachments on the record; a review submission when sent for review"
       ],
       "result": "The bill is moving. In parallel, the carrier's MBL/HBL goes through **step 18**.",
       "pitfalls": [
-        "The review half is missing: no shipment screen can submit a lading for review, so **Approvals → Shipment review** can only ever decide submissions that cannot be created.",
-        "The ledger's tick-boxes drive review only; the state verbs are per row or on the detail page."
+        "A bill under review is frozen: **Save Changes** is disabled and attachments cannot be removed. Choose **Request withdrawal** from **Review** before changing it.",
+        "The ledger's tick-boxes drive review only; the state verbs are per row or on the detail page.",
+        "**Check Out** on a held bill is refused. Press **Cancel Hold** first."
       ],
       "shots": [
         {
@@ -2540,8 +2538,8 @@
       "golden": [
         {
           "action": "Open **Documents** and press **Upload document**",
-          "detail": "The pipeline classifies the file, extracts its fields and validates them, then either auto-approves it or parks it as **needs review**.",
-          "src": "apps/web/src/routes/_next/documents.index.tsx:102"
+          "detail": "The pipeline classifies the file, extracts its fields and validates them, then either auto-approves it or parks it as **Needs review**.",
+          "src": "apps/web/src/routes/_next/documents.index.tsx:337"
         },
         {
           "action": "Find it with **Search documents by filename…** or the status Select",
@@ -2550,32 +2548,37 @@
         {
           "action": "Open the document. Check each extracted field against the scan beside it",
           "detail": "Use **Download original** to read the source file.",
-          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:583"
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:668"
         },
         {
           "action": "Correct any wrong value in place, then save the amendment",
           "detail": "Toast: **Amendment saved**. A correction the automation has already acted on can be refused, and the refusal says which field and why.",
-          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:320"
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:373"
         },
         {
           "action": "Press **Approve** (or ⌘⏎)",
           "detail": "**This approval is what starts automated customs and port tracking** — nothing else does.",
-          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:527"
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:612"
         },
         {
           "action": "Read any notice on the toast",
           "detail": "If that B/L is already tracked from an earlier document, it says so: no second tracking job is created and the existing one continues.",
-          "src": "packages/api/src/modules/document/register-hooks.ts:22"
+          "src": "packages/api/src/modules/document/register-hooks.ts:66"
         },
         {
-          "action": "Misclassified? Press **Reclassify** to send it back through classification",
-          "detail": "Toast: **Sent back through classification**.",
-          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:249"
+          "action": "Wrong type? Pick the right one in the type select beside the filename and press **Save & approve**",
+          "detail": "Re-typing a document to **MBL/HBL** starts its tracking job on approval. After approval the type is fixed. A document set aside as not freight offers **This is a freight document — reprocess** instead (toast **Sent back through classification**).",
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:530"
         },
         {
-          "action": "Not freight at all? Press **Reject** and give a reason",
+          "action": "Not freight at all? Press **Not freight** and give a reason",
           "detail": "The dialog is **Reject this document** (e.g. \"Anthropic subscription receipt — not freight\"). Toast: **Rejected — removed from the review queue**.",
-          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:839"
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:969"
+        },
+        {
+          "action": "Under **Linked records**, choose **Order** or **Bill of lading**, search, pick it and press **Link**",
+          "detail": "Toast: **Linked to order …** or **Linked to bill of lading …**. **Unlink** removes a link (**Link removed**).",
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:936"
         }
       ],
       "fields": [
@@ -2591,12 +2594,11 @@
         }
       ],
       "writes": [
-        "Document status (approved / needs review / rejected), the field corrections, and — on approval — a BL tracking job"
+        "Document status (approved / needs review / rejected), the field corrections, any order or bill of lading links, and — on approval — a BL tracking job"
       ],
       "result": "Approval starts the tracking clock. Watch it at **step 19**.",
       "pitfalls": [
-        "There is no K1 or K2 customs-declaration type in the vocabulary, so the Sepangar filing lives outside this system.",
-        "Paperwork cannot be filed against the order it belongs to — the only screen that links anything sends the type `quote`, so the per-order Documents card never renders."
+        "There is no K1 or K2 customs-declaration type in the vocabulary, so the Sepangar filing lives outside this system."
       ],
       "shots": [
         {
@@ -2641,7 +2643,7 @@
         {
           "action": "Open **Operations → Customs Tracking**",
           "detail": "Columns: **Stage · BL Number · Vessel · Containers · Received (MYT) · Customs · 72h Countdown**. The board sorts by urgency.",
-          "src": "apps/web/src/routes/_next/customs-tracking.tsx:193"
+          "src": "apps/web/src/routes/_next/customs-tracking.tsx:217"
         },
         {
           "action": "Let the schedulers work: customs runs three times a day, the port hourly",
@@ -2659,13 +2661,14 @@
           "src": "apps/server/src/bl-tracking-worker.ts:98"
         },
         {
-          "action": "Open a job to see its stages and containers",
-          "detail": "The detail page is /customs-tracking/<jobId>."
+          "action": "Click a **BL Number** to open its job",
+          "detail": "The job page shows its stages and containers, its **Order** (found by B/L number), and **Fees** → **Open the order's fees** when exactly one order carries the B/L.",
+          "src": "apps/web/src/components/customs-tracking/bl-job-record.tsx:267"
         },
         {
           "action": "If a job can never finish, press **Void** and write the reason",
           "detail": "e.g. \"Container table never extracted — shipment cancelled at origin\". Toast: **Job voided — it will stop being checked and alerted on**.",
-          "src": "apps/web/src/routes/_next/customs-tracking.tsx:119"
+          "src": "apps/web/src/routes/_next/customs-tracking.tsx:132"
         }
       ],
       "fields": [
@@ -2680,8 +2683,8 @@
       ],
       "result": "Demurrage is under watch. The money side starts at **step 20**.",
       "pitfalls": [
-        "Tracking jobs anchor to the document only — no order, no lading — so the board cannot reach that job's fees.",
-        "The server does match tracking jobs to orders by B/L number but leaves the countdown deadline out of that payload, so the order's own documents card renders without its countdown chip — the clock stays invisible from the job it belongs to."
+        "Where no MYCIEDS or SBCP login is saved, the board, the job page and the Overview card say checks are off: nothing is checked and no 72-hour clock can start. An admin adds the login in **Settings → Tracking portal credentials**.",
+        "The order's reading pane and the B/L page show a **Documents & customs** card with the job's stage and 72h countdown; its B/L number opens the job. If two open jobs share the B/L number it shows **Match not certain** and no countdown."
       ],
       "shots": [
         {
@@ -2710,70 +2713,71 @@
         "The order is SAVED (the Expense entry button only renders on an existing order).",
         "The order is not locked (a locked order disables Save and shows a banner).",
         "If the order's review flow ticks the Expense entry gate, the order is not frozen by an unapproved review.",
-        "An exchange rate exists for the current month for every non-branch currency used, or the FX banner will warn."
+        "An exchange rate is on file for every foreign currency used, for the shipment's dates. Otherwise new fees in that currency save at rate 1 and a banner says so after Save.",
+        "No fee you are changing is under review. A fee under review is frozen; withdraw its submission first on **Money > Cost lines**."
       ],
       "golden": [
         {
           "action": "Open the order and press **Expenses** (record page) or **Expense entry** (edit form).",
           "detail": "Navigates to /order/$orderId/expenses; page title **Expense Entry** with a **Basic info** panel (Job Number, Client, Business type, MB/L No., Vessel / Voyage, ports, Carrier, ETD...).",
-          "src": "apps/web/src/components/order-ledger/order-record-page.tsx:115"
+          "src": "apps/web/src/components/order-ledger/order-record-page.tsx:156"
         },
         {
           "action": "Wait until the **Save** button stops reading **Loading…**.",
           "detail": "Save is disabled until the order's fees load; saving an empty grid would delete every unbilled fee.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:800"
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:939"
         },
         {
           "action": "In **Receivable detail**, press **Costs name** to add a row.",
-          "detail": "New row defaults: Quantity 1, Currency USD, Exchange rate 1, Unit price/Total price/Tax rate 0; **Settlement unit** auto-fills with the order's Client (receivable side only).",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:264"
+          "detail": "New row defaults: Quantity 1, Currency USD, Unit price/Total price/Tax rate 0; **Exchange rate** is left blank (**From rate table**) and the server fills it on Save; **Settlement unit** auto-fills with the order's Client (receivable side only).",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:386"
         },
         {
           "action": "Fill **Name of cost**, **Billing unit**, **Quantity**, **Currency**, **Exchange rate**, **Unit price**, **Tax rate (%)**.",
-          "detail": "Total price recomputes as Quantity x Unit price when either changes; Taxes and No tax unit price are derived. Enter moves down a cell, Shift+Enter moves up.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:220"
+          "detail": "Total price recomputes as Quantity x Unit price when either changes; typing a different Total clears Unit price, so the fee saves as a lump sum. Taxes and No tax unit price are derived. Enter moves down a cell, Shift+Enter moves up.",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:261"
         },
         {
           "action": "Press **Copy to payable** to mirror the receivable rows into **Payable details**.",
-          "detail": "Copies only rows with a name, as new rows; **Settlement unit** is blanked on the payable copies so you must type the vendor.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:666"
+          "detail": "Copies only rows with a name, as new rows; **Settlement unit** is blanked on the payable copies so you must type the vendor, and **Exchange rate** is blanked so the server prices each copy on its own side.",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:830"
         },
         {
           "action": "In **Payable details**, type the vendor into **Settlement unit** for every row and add any extra payables with **Costs name**.",
-          "detail": "Payable new rows have no Settlement unit default.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:865"
+          "detail": "Payable new rows have no Settlement unit default. A payable with no Settlement unit shows a warning above the grid (**Payable row n has no Settlement unit, so no vendor is named. It saves as it is; …**); it still saves.",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:1004"
         },
         {
           "action": "Read the **SINGLE BILL TOTAL** panel under the two grids.",
           "detail": "It shows Local currency receivable/payable, Gross profit and Gross profit rate, each tax incl. and tax excl.; Interest shows a dash. The only checkboxes on this page are **Special receivables** and **Special payable**.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:871"
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:1012"
         },
         {
-          "action": "If the banner **The exchange rate for <period> has not been set for <currencies>.** appears, follow **Please go to set it**.",
-          "detail": "Links to /expenses/exchange-rates; checks each currency pair against the owning branch's currency.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:815"
+          "action": "If the banner **No exchange rate on file for <currencies>.** appears after Save, follow **Please go to set it**.",
+          "detail": "Links to /expenses/exchange-rates. It is the server's answer from the last Save: new fees in those currencies found no rate for the shipment's dates and count at rate 1 until one is set.",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:960"
         },
         {
           "action": "Press **Save** in the page header.",
-          "detail": "One Save submits BOTH grids; toast **Fees saved**. Rows with an empty Name of cost are silently dropped.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:613"
+          "detail": "One Save submits BOTH grids; toast **Fees saved** (it adds a note when fees added elsewhere since you opened the page were kept). An untouched blank row is dropped; a nameless row with anything typed in it refuses the Save by row number.",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:707"
         },
         {
           "action": "Optionally press **导出单证 · Export documents** to export this order's saved fees.",
           "detail": "Disabled while there are unsaved edits or no saved fees.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:796"
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:932"
         }
       ],
       "fields": [
         {
           "label": "Name of cost",
           "required": true,
-          "note": "Free text; placeholder 'Must fill in, otherwise it won't be saved'. Blank rows are dropped on save."
+          "note": "Free text; placeholder 'Must fill in, otherwise it won't be saved'. An untouched blank row is dropped; a nameless row with content, or a saved fee whose name you cleared, refuses the Save."
         },
         {
           "label": "Settlement unit",
           "required": false,
-          "note": "Free text counterparty name (no company picker, no company id saved). Auto-filled with Client on receivable rows. Hidden if the role is field-masked."
+          "note": "Free text counterparty name (no company picker). Auto-filled with Client on receivable rows; a receivable naming the Client is linked to the client's company record. Hidden if the role is field-masked."
         },
         {
           "label": "Billing unit",
@@ -2793,7 +2797,7 @@
         {
           "label": "Exchange rate",
           "required": false,
-          "note": "Default 1."
+          "note": "Blank on a new row (**From rate table**); the server fills it from the rate table on Save. Clearing it on a saved row means 1."
         },
         {
           "label": "Unit price",
@@ -2803,7 +2807,7 @@
         {
           "label": "Total price",
           "required": false,
-          "note": "Auto = Quantity x Unit price (rounded to 6 dp); can be typed when quantity is blank."
+          "note": "Auto = Quantity x Unit price (rounded to 6 dp). Typing a different total clears Unit price and saves the fee as a lump sum."
         },
         {
           "label": "Tax rate (%)",
@@ -2812,19 +2816,22 @@
         }
       ],
       "writes": [
-        "cost_line rows (attribute receivable/payable) via collectiveOrder.saveChildren, reconciled by id: new rows inserted, edited rows updated, rows removed from the grid deleted.",
-        "Settlement unit stored as a plain string; settlementCurrency/settlementExchangeRate are never sent from this page.",
-        "Cost lines inherit the order's branch, job number and business type."
+        "cost_line rows (attribute receivable/payable) via collectiveOrder.saveChildren, reconciled by id: new rows inserted, edited rows updated, rows you removed deleted. Only fees loaded when the page opened can be deleted; fees added elsewhere since are kept, and a fee deleted elsewhere refuses the Save.",
+        "Settlement unit stored as a string; a receivable naming the order's Client also gets the client's company record. settlementCurrency/settlementExchangeRate are never sent from this page.",
+        "Cost lines inherit the order's branch, job number and business type.",
+        "A new fee's exchange rate is filled by the server from the rate table for the shipment's dates; with no rate on file it saves at 1 (refused if the org forbids unrated fees)."
       ],
       "result": "Stay on Expense Entry with saved rows. Next: step 21, submit the fees for Cost review from Money > Cost lines.",
       "pitfalls": [
         "There is one Save in the page header, not one per grid; it always sends both grids.",
-        "A row whose Name of cost is blank is silently not saved (no error).",
-        "Rows already billed, invoiced or written off are read-only and cannot be removed here.",
+        "An untouched blank row is dropped without a word; a nameless row with anything typed in it, or a saved fee whose name you cleared, refuses the Save and names the row.",
+        "Rows already billed, invoiced, written off or locked are read-only and cannot be removed here; unlock a locked fee on Money > Cost lines.",
         "Leaving the page with unsaved edits triggers the unsaved-changes guard.",
         "Save is refused with 'Order is locked' on a locked order, and by the Expense entry review gate when the order's flow ticks it.",
         "Copy to receivables (payable to receivable) keeps the Settlement unit; only Copy to payable blanks it.",
-        "Default currency is USD on every new row; change it before saving."
+        "Default currency is USD on every new row; change it before saving.",
+        "A fee under review is frozen: changing or removing it refuses the Save with **… are under review and cannot be changed here. Withdraw the submission first**. A fee approved under a flow that locks approved content cannot be changed either; add a correcting fee line.",
+        "If someone deleted one of these fees after you opened the page, Save is refused; reload to see the current fees."
       ],
       "shots": [
         {
@@ -2857,11 +2864,12 @@
         }
       ],
       "navigate": "Submit: Sidebar Money > Cost lines. Decide: Sidebar Approvals > Cost review (also reachable from the dashboard approvals card).",
-      "role": "Submitter: expense:read to see the ledger, plus audit.read and expense.costLine.update to submit. Reviewer: audit.read and expense.costLine.review, and must be a routed reviewer on the open stage (seeded Cost review flow routes to the accounting role, any-pass).",
+      "role": "Submitter: expense:read to see the ledger, plus audit.read and expense.costLine.update to submit. Reviewer: audit.read and expense.costLine.review, must be a routed reviewer on the open stage (seeded Cost review flow routes to the accounting role, any-pass), and must not be the member who submitted the line.",
       "before": [
         "Cost lines exist (step 20).",
         "An enabled review flow exists for cost_line (seeded as 'Cost review'); otherwise submit fails with 'No enabled review flow for cost_line'.",
-        "Lines are not already under review."
+        "Lines are not already under review.",
+        "Someone other than you can review the fee. If you are the only routed reviewer, submit is refused: **Nobody but you can approve this record. Ask an administrator to add a reviewer under Approval Process Setting.**"
       ],
       "golden": [
         {
@@ -2872,21 +2880,21 @@
         {
           "action": "Tick the checkbox of each fee line to submit.",
           "detail": "Ticks are page-local and clear on filter or page change.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1944"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1984"
         },
         {
           "action": "Open **Review (n)** and choose **Submit for review**.",
           "detail": "The Review menu only appears once rows are ticked. Each row is submitted separately; a mixed selection can half-succeed and the toast names the first refusal.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2221"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2257"
         },
         {
           "action": "(Optional, before submitting) use **BatchOperation (n)** > **Modify exchange rate…** / **Tag…** / **Mark reconciled** / **Lock** / **Archiving**, or **Mark as… (n)** > **对账 · Reconciled** / **锁定 · Locked**.",
-          "detail": "Selection-only fee toolbar verbs. Modify exchange rate skips billed, invoiced, written-off or locked lines and lists them back.",
+          "detail": "Selection-only fee toolbar verbs. Modify exchange rate skips lines that are billed, invoiced, written off or locked, under review, or approved and locked, and lists them back with the reason.",
           "src": "apps/web/src/components/expense/cost-line-batch-menu.tsx:152"
         },
         {
           "action": "Reviewer: go to **Approvals > Cost review**.",
-          "detail": "Mounts the same ledger in review mode, titled Cost review, restricted to submissions whose open stage routes to you; no Add, no Create Bill.",
+          "detail": "Mounts the same ledger in review mode, titled Cost review, restricted to submissions whose open stage routes to you and that you did not submit yourself; no Add, no Create Bill.",
           "src": "apps/web/src/routes/_next/approve/cost.tsx:18"
         },
         {
@@ -2902,7 +2910,7 @@
         {
           "action": "To refuse, tick the lines and press **Rejected**, type a **Reason** in **Reason for rejection**, then press **Reject**.",
           "detail": "Cancel/Escape aborts; an empty reason is allowed. The reason is shown on the review trail.",
-          "src": "apps/web/src/components/reject-reason-dialog.tsx:78"
+          "src": "apps/web/src/components/reject-reason-dialog.tsx:54"
         },
         {
           "action": "Press **Refresh Page** to reload the queue.",
@@ -2943,11 +2951,13 @@
       ],
       "result": "Approved lines drop out of the reviewer's queue. Next: step 22, bill them from Money > Cost lines > Create Bill.",
       "pitfalls": [
-        "Create Bill refuses any line whose audit status is pending or rejected ('N selected line(s) are awaiting or failed cost review'); lines never submitted (null/draft) still bill.",
+        "Create Bill refuses any line whose review is pending, awaiting a withdrawal decision, or rejected ('N selected line(s) are awaiting or failed cost review'); lines never submitted (null/draft), withdrawn or approved still bill.",
         "The Review menu on the ledger submits row by row (partial success possible); the queue's Approved/Rejected is one all-or-nothing transaction.",
-        "The Cost review queue shows only lines whose OPEN stage routes to you; a submitter who is not a reviewer sees an empty queue.",
+        "The Cost review queue shows only lines whose OPEN stage routes to you, and never lines you submitted, so **My submissions** and **My withdrawals** stay empty there. A submitter who is not a reviewer sees an empty queue.",
         "A rejected attempt is closed; there is no Return to draft. Edit the line and submit again.",
-        "BatchOperation and Mark as only render when at least one row is ticked."
+        "BatchOperation and Mark as only render when at least one row is ticked.",
+        "A fee under review is frozen: it cannot be edited, removed or re-rated. Use **Review (n) > Request withdrawal**; it unfreezes once the withdrawal is approved.",
+        "Nobody decides their own fee: **Approve** or **Reject** from the ledger's Review menu on a line you submitted is refused with **You submitted this record. Another reviewer must decide it.**"
       ],
       "shots": [
         {
@@ -3003,7 +3013,7 @@
       "role": "expense:read to open; expense.bill.create to create bills.",
       "before": [
         "Lines are not already billed (status bill_not_established, no bill).",
-        "Lines are not pending or rejected in cost review (step 21).",
+        "Lines are not pending, awaiting withdrawal, or rejected in cost review (step 21).",
         "If a tenant ticked the cost-line Create bill gate, every selected line must have passed review.",
         "A bill exchange rate exists for the currency pair, or a warning toast is raised (bill still created)."
       ],
@@ -3016,37 +3026,42 @@
         {
           "action": "Tick specific lines, or tick nothing to bill the whole filtered set.",
           "detail": "Button reads **Create Bill (n)** with ticks or **Create Bill (全选)** with none; unticked scope is capped at 2000 lines.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2214"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2251"
         },
         {
           "action": "Press **Create Bill**.",
           "detail": "Opens the **Create Bill** dialog. With nothing ticked it first counts the filtered set and names it.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1156"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1167"
         },
         {
           "action": "Read the preview **N bills will be created**.",
           "detail": "One row per bill: settlement unit · attribute · currency (and tax rate), with total and line count. Hidden on the unticked path.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1177"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1191"
         },
         {
           "action": "Tick **Also split by tax rate** if each tax rate needs its own bill.",
           "detail": "Settlement unit, attribute and currency (and owning branch) always split.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1212"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1228"
+        },
+        {
+          "action": "Tick **Also split by order** if each order needs its own bill.",
+          "detail": "Off by default, so one bill can cover several orders to the same settlement unit (a month-end statement). Works on the unticked (全选) path too.",
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1240"
         },
         {
           "action": "If the ticked selection yields exactly one bill, adjust **Invoice Title** (prefilled with the settlement unit).",
           "detail": "The field only shows for a single-bill TICKED selection with an unmasked settlement unit. It is absent on a split, on the whole unticked (全选) path, and whenever a selected line's settlement unit is masked — and in every hidden case no title is sent, so each bill takes its own settlement unit.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1249"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1278"
         },
         {
           "action": "Optionally type a **Remark**.",
           "detail": "Applied to every bill created.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1266"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1293"
         },
         {
           "action": "Press **Create Bill** / **Create N Bills** / **Create Bills from N Lines**.",
           "detail": "Toast 'Bill B… created' or 'N bills created: …'; lines are claimed by the new bill(s) in one transaction.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1309"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1342"
         }
       ],
       "fields": [
@@ -3054,6 +3069,11 @@
           "label": "Also split by tax rate",
           "required": false,
           "note": "Checkbox, default off."
+        },
+        {
+          "label": "Also split by order",
+          "required": false,
+          "note": "Checkbox, default off. Also honoured when nothing is ticked."
         },
         {
           "label": "Invoice Title",
@@ -3067,18 +3087,19 @@
         }
       ],
       "writes": [
-        "One bill per group key (settlement unit, attribute, currency, owning branch, optional tax rate) with consecutive bill numbers, status open, totalAmount, settlement unit and settlementCompanyId copied from the first line, invoice title, remark.",
+        "One bill per group key (settlement unit, attribute, currency, owning branch, optional tax rate, optional order) with consecutive bill numbers, status open, totalAmount, settlement unit from the first line, invoice title, remark. settlementCompanyId comes from any line that names a company, else the company whose name exactly matches the settlement unit, else empty.",
+        "Due date: the bill copies its company's payment terms (days payable, counted after invoicing) and is due on its created date plus those days. A bill with no company, or a company with no terms, has no due date.",
         "Bill exchange rate resolved from the org rate table (rate type bill) as of creation; null when missing.",
         "Each cost line's billId set (claim)."
       ],
       "result": "Bills appear under Money > Bills (Bill Management). Next: step 23, submit each bill for Bill review.",
       "pitfalls": [
         "Any already-billed line in the selection blocks the whole request ('One or more selected lines are already billed').",
-        "Any line pending or rejected in cost review blocks the whole request.",
+        "Any line pending, awaiting withdrawal or rejected in cost review blocks the whole request ('N selected line(s) are awaiting or failed cost review').",
         "A missing bill exchange rate only warns: local-currency figures read as rate 1.",
-        "Lines from different orders to the same settlement unit merge into one bill; the dialog has no per-order split.",
-        "On the unticked path the opt-in Create bill review gate is checked against the (empty) tick list, so it does not apply there (cost-lines.ts:2502-2508 passes input.costLineIds).",
-        "The group key includes owning branch but the preview row text does not show it."
+        "Lines from different orders to the same settlement unit merge into one bill unless **Also split by order** is ticked.",
+        "If the lines of one bill name two different companies for one settlement unit, nothing is created ('… points at two different companies on the selected lines'). Correct the lines' Settlement Unit, then bill again.",
+        "The group key includes owning branch; the preview row names the branch only when two rows differ by branch alone."
       ],
       "shots": [
         {
@@ -3125,27 +3146,27 @@
         {
           "action": "On the bill's row, press the clipboard icon (tooltip **Review**) and choose **Submit for review**.",
           "detail": "Submits that one bill; bill review is submitted one row at a time.",
-          "src": "apps/web/src/routes/_next/expenses/-bills.columns.tsx:809"
+          "src": "apps/web/src/routes/_next/expenses/-bills.columns.tsx:812"
         },
         {
           "action": "Reviewer: go to **Approvals > Bill review**.",
           "detail": "Same bills list in review mode, titled Bill review, opened with Audit status pre-set to pending and restricted to bills awaiting you.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:806"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1519"
         },
         {
           "action": "Optionally press **My submissions**, **My withdrawals** or **All pending**.",
           "detail": "Applies the queue filters in one step.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1375"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1526"
         },
         {
           "action": "Tick the bills and press **Approved**.",
           "detail": "All-or-nothing batch; toast 'N bill(s) approved'. With the seeded flow the bill stays pending until the director stage also passes.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1392"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1545"
         },
         {
           "action": "To refuse, press **Rejected**, enter **Reason**, press **Reject**.",
           "detail": "Reason recorded on the review trail.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1328"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1481"
         },
         {
           "action": "Press **Refresh Page** to confirm the bills have left your queue.",
@@ -3173,7 +3194,8 @@
         "Invoicing is refused with '\"Input invoice no.\" requires review approval first' until the bill's NEWEST submission is approved; re-submitting after approval re-freezes it.",
         "Gates only bite when the org has an enabled bill flow that ticks them; an org without one invoices freely (gates.ts:78-85).",
         "The row Review icon is hidden inside the Bill review queue; submitting is done from Money > Bills.",
-        "Seeded flow needs BOTH accounting reviewers, then a director: one approval is not enough."
+        "Seeded flow needs BOTH accounting reviewers, then a director: one approval is not enough.",
+        "While a bill is under review nothing on it can be saved ('This record is under review and cannot be edited. Retract the submission first.'). After approval only **Courier**, **Courier No.**, **Financial Voucher No.**, **Exported Voucher Name**, **Remark** and **Bill Tag** still save; **Invoice Title**, **Service Fee**, **Service Fee Currency** and the exchange rate are refused, and removing a line asks you to dissolve the bill and bill the lines again."
       ],
       "shots": [
         {
@@ -3194,7 +3216,7 @@
       "navigate": "Sidebar Money > Bills.",
       "role": "expense:read to open; expense.invoice.create to issue.",
       "before": [
-        "Bill status is open (partially invoiced bills stay open).",
+        "Bill status is open, or written off with a balance left (a partially invoiced bill keeps its status).",
         "Bill review approved where the Input invoice no. gate is on (step 23).",
         "Bill has cost lines and an outstanding balance."
       ],
@@ -3202,42 +3224,47 @@
         {
           "action": "Go to **Money > Bills** and find the bill (search **Search all columns**).",
           "detail": "Footer totals show Receivable, Have-been received, Unwritten-off, Payable etc. for the filter.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1362"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:1513"
         },
         {
           "action": "On the row press the document-check icon titled **Invoicing**.",
-          "detail": "Disabled unless the bill status is open. Opens **Invoicing — <bill no>**.",
-          "src": "apps/web/src/routes/_next/expenses/-bills.columns.tsx:825"
+          "detail": "Enabled while the bill is open, or written off with a balance left. Opens **Invoicing — <bill no>**.",
+          "src": "apps/web/src/routes/_next/expenses/-bills.columns.tsx:831"
         },
         {
           "action": "Choose **Invoice Category**.",
           "detail": "Options: VAT general invoice, VAT special invoice, Digital electronic Ordinary invoice, Digital electronic Special Invoice, Proforma invoice.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:526"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:656"
         },
         {
           "action": "Choose **Invoice Type**.",
           "detail": "Options: Paper, Electronic.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:544"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:682"
         },
         {
           "action": "Optionally type **Invoice Number**.",
-          "detail": "Placeholder 'Auto-generated if left blank'.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:563"
+          "detail": "Placeholder 'Auto-generated if left blank'. A number in the system's own NCT-INV-… shape, or one already used, is refused and the dialog stays open.",
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:701"
         },
         {
           "action": "Check **Invoice Title** (prefilled from the bill).",
-          "detail": "Editable.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:572"
+          "detail": "Editable. What you type becomes this invoice's buyer; the bill's own title is not changed.",
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:710"
         },
         {
           "action": "Check **Amount**; lower it to invoice part of the bill.",
           "detail": "Prefilled with total minus already invoiced; shows 'X of Y already invoiced — Z outstanding' when partly invoiced.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:580"
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:718"
+        },
+        {
+          "action": "If a notice says the company is over its credit limit, type a **Reason for invoicing over the limit**.",
+          "detail": "At least 10 characters; kept in the audit log. Figures in another currency and bills with no company are listed as not counted.",
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:644"
         },
         {
           "action": "Press **Issue Invoice**.",
-          "detail": "Disabled until Category and Type are chosen. Toast 'Invoice <no> issued'. A full amount flips the bill to invoiced; a partial one leaves it open.",
-          "src": "apps/web/src/routes/_next/expenses/bills.tsx:603"
+          "detail": "Disabled until Category and Type are chosen (and, over a credit limit, until a reason is typed). Toast 'Invoice <no> issued'. A full amount flips an open bill to invoiced and a written-off bill to done; a partial one leaves the status as it was.",
+          "src": "apps/web/src/routes/_next/expenses/bills.tsx:778"
         }
       ],
       "fields": [
@@ -3259,25 +3286,31 @@
         {
           "label": "Invoice Title",
           "required": false,
-          "note": "Defaults to bill invoice title."
+          "note": "Defaults to the bill invoice title; becomes the invoice's buyer, the bill is not changed."
         },
         {
           "label": "Amount",
           "required": false,
           "note": "Positive decimal, at most the outstanding balance; blank = whole outstanding."
+        },
+        {
+          "label": "Reason for invoicing over the limit",
+          "required": false,
+          "note": "Shown and required (10+ characters) only when a covered company is over its credit limit."
         }
       ],
       "writes": [
         "invoice row (state issued) plus invoice_bill link and per-bill allocation.",
-        "bill.invoicedAmount increased; bill.status invoiced when fully covered.",
-        "Cost lines' invoicedAmount filled and their status re-derived."
+        "bill.invoicedAmount increased; when fully covered bill.status becomes invoiced (or done, if it was written off).",
+        "Cost lines' invoicedAmount filled and their status re-derived.",
+        "An over-limit override writes a bill.invoice.credit_override audit row on the company, with the reason."
       ],
       "result": "Invoice appears under Money > Invoices (Invoice Record). Next: step 25, preview and download it.",
       "pitfalls": [
         "Amount above the outstanding balance is refused ('Invoice amount exceeds the bill's outstanding balance').",
-        "A bill that is invoiced or written off cannot be invoiced again ('is not invoiceable'); the Invoicing icon is greyed.",
+        "A bill that is invoiced or done cannot be invoiced again ('is not invoiceable'); the Invoicing icon is greyed. A written-off bill with nothing left to invoice is greyed too.",
         "Frozen by the Input invoice no. review gate until the latest bill review passes.",
-        "No credit-limit or customer credit check exists on this path.",
+        "Over a company's credit limit the server refuses without a reason ('… is over its credit limit … Give a reason to invoice anyway.'). Bills with no company are not checked.",
         "Invoicing several bills on one invoice exists in the API but has no UI entry point; the dialog always sends one bill."
       ],
       "shots": [
@@ -3305,43 +3338,43 @@
       "golden": [
         {
           "action": "Go to **Money > Invoices** and find the invoice.",
-          "detail": "Stats tiles, all page-scoped: **Total Invoices**, **Active (this page)**, **Cancelled (this page)**, **Downloaded (this page)**.",
+          "detail": "Stats tiles, all page-scoped except the first: **Total Invoices**, **Issued (this page)**, **Cancelled (this page)**, **Downloaded (this page)**.",
           "src": "apps/web/src/components/shell-next/nav.ts:232"
         },
         {
           "action": "On the row press the download icon titled **Preview & download invoice document**.",
           "detail": "Opens **发票预览 · Invoice <number>** and builds the document on request.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:355"
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:359"
         },
         {
           "action": "Review the on-screen preview.",
           "detail": "Rendered from the same model as the files; 'Building the document…' while loading.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:399"
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:403"
         },
         {
           "action": "Press **下载 PDF** (Download PDF).",
-          "detail": "Saves the file, toast 'Saved <filename>', and marks the invoice Downloaded the first time.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:430"
+          "detail": "Saves the file, toast 'Saved <filename>'. The server marks the invoice Downloaded in the same request, the first time only, and only for staff with expense.invoice.update.",
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:441"
         },
         {
           "action": "If a **PDF refused** box appears, press **下载 XLSX** (Download XLSX) instead.",
           "detail": "PDF is refused when text cannot be drawn in the Latin-only font; the message names the cell.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:382"
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:389"
         },
         {
           "action": "Close with **取消** (Cancel) and hand the file to the customer outside the system.",
           "detail": "No send-email control exists.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:411"
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:419"
         },
         {
           "action": "After printing a paper copy, press the printer icon **Mark printed**.",
           "detail": "Disabled once printed; toast 'Marked as printed'.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:703"
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:783"
         },
         {
           "action": "To void a wrong invoice press the icon **Cancel invoice**, optionally fill **Reason (optional)**, press **Cancel Invoice**.",
-          "detail": "Bill reverts to Open and its cost lines become uninvoiced so it can be re-invoiced.",
-          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:714"
+          "detail": "The bill goes back to Open (or stays written off if its lines were already fully settled) and its cost lines become uninvoiced, so it can be invoiced again.",
+          "src": "apps/web/src/routes/_next/expenses/invoices.tsx:794"
         }
       ],
       "fields": [
@@ -3352,17 +3385,20 @@
         }
       ],
       "writes": [
-        "invoice.isDownloaded set true on first successful save (not re-stamped).",
+        "invoice.isDownloaded set true by the server in the request that produces the file — first time only (not re-stamped), and only for holders of expense.invoice.update.",
         "invoice.isPrinted set true on Mark printed.",
         "Cancel: invoice state cancelled with reason; bill.invoicedAmount reduced and status re-derived (open, or written_off if fully written); cost line invoiced amounts rolled back.",
-        "Nothing is stored for the document itself; it is rebuilt on each request."
+        "Nothing is stored for the document itself; it is rebuilt on each request.",
+        "An audit row (expense.invoice.exportDocument) for every file produced, naming who took it and the format."
       ],
       "result": "Customer has the invoice document. Next: step 26, record the receipt under Money > Payments.",
       "pitfalls": [
         "Labels in the preview dialog are Chinese: 下载 PDF, 下载 XLSX, 取消.",
         "Downloaded is only recorded after an actual file save, not on preview.",
         "Cancelling an already-cancelled invoice is a no-op; the icon is disabled for cancelled rows.",
-        "There is no email send; delivery is manual."
+        "There is no email send; delivery is manual.",
+        "A red notice above the document warns when the covered bills carry different payment terms (the shortest is printed) or none (the customer's current terms are printed). These warnings are for the screen only; they never go into the file.",
+        "If the buyer's details are hidden from you, **下载 XLSX** and **下载 PDF** are disabled; ask a colleague who can see the buyer."
       ],
       "shots": [
         {
@@ -3385,7 +3421,7 @@
         }
       ],
       "navigate": "Sidebar Money > Payments, then Sidebar Money > Write-offs.",
-      "role": "Cashier / Accounting · the sidebar item needs expense:read, but the lists gate on expense.payment.read and expense.writeOff.read; expense.payment.create to record, expense.writeOff.verify to verify, expense.writeOff.reverse to void, expense.payment.delete to delete an unsettled payment.",
+      "role": "Cashier / Accounting · the sidebar item needs expense:read, but the lists gate on expense.payment.read and expense.writeOff.read; expense.payment.create to record, expense.payment.update to edit, expense.writeOff.verify to verify, expense.writeOff.reverse to void, expense.payment.delete to delete an unsettled payment.",
       "before": [
         "Target bill exists (billed lines only can be written off).",
         "Bill review approved where the Write-off gate is on.",
@@ -3395,57 +3431,62 @@
         {
           "action": "Go to **Money > Payments** and press **Add**.",
           "detail": "Opens the sheet **Add Payment / Receipt**.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1222"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1453"
         },
         {
           "action": "Set **Attribute** to **Receipt** (money in) or **Payment** (money out) and **Pay and Receive Date**.",
           "detail": "Attribute defaults to Receipt; date defaults to today.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:257"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:416"
         },
         {
           "action": "Type **Settlement Unit** exactly as on the bill.",
           "detail": "Required free text (placeholder 'Counterparty name'); the Verify dialog lists only bills and lines whose settlement unit matches it.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:294"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:454"
         },
         {
           "action": "Fill **Our Account**, **Other Account**, **Financial Voucher No.**, **Receipts and Payment Way**, **Currency**, **Price**, **Bank Slip Number**, **Post Time**, **Note**.",
           "detail": "Currency and Price are required by validation even though unstarred.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:316"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:476"
+        },
+        {
+          "action": "If an **Exchange Rate** row appears, correct the prefilled write-off rate to the bank's rate, or leave it blank.",
+          "detail": "Shown only when the currency differs from the reporting currency. Blank means no rate, so no exchange gain or loss is booked when it is settled.",
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:578"
         },
         {
           "action": "Press **Add Payment**.",
           "detail": "Toast 'Payment <no> recorded'.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:466"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:650"
         },
         {
           "action": "On the payment row press the icon titled **Verify**.",
-          "detail": "Opens **Verify — <payment no>**.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:899"
+          "detail": "Opens **Verify — <payment no>**. Disabled once the payment is fully written off.",
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1122"
         },
         {
           "action": "Choose **Target** = **Bill** (or **Cost Line**) and pick the bill/line.",
-          "detail": "Options show number and currency; only billed cost lines are offered.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:593"
+          "detail": "Options show number and currency. Only this payment's own side is offered (receivables for a Receipt, payables for a Payment), only billed cost lines, and nothing already fully settled.",
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:804"
         },
         {
           "action": "Check **Write-off Amount** (prefilled with the payment's unwritten balance) and fill **Method**, **Account**, **Person**.",
           "detail": "Amount is in the payment currency.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:637"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:849"
         },
         {
           "action": "If the currencies differ, fill **Write-off Exchange Rate — 核销汇率** or leave it empty to use the org write-off rate.",
           "detail": "Shows the converted amount before confirming; refused if no rate is typed or on file.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:680"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:894"
         },
         {
           "action": "Press **Verify**.",
           "detail": "Toast 'Write-off <no> recorded'; the amount is spread across the bill's cost lines oldest-created first.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:736"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:947"
         },
         {
-          "action": "To undo, go to **Money > Write-offs**, press **Void write-off** on the row, then **Void Write-off**.",
+          "action": "To undo, go to **Money > Write-offs**, press **Void write-off** on the row, type a **Reason**, then press **Void Write-off**.",
           "detail": "Payment balance and each cost line get back exactly what was taken, bill status reverts; record kept, marked voided.",
-          "src": "apps/web/src/routes/_next/expenses/write-offs.tsx:296"
+          "src": "apps/web/src/routes/_next/expenses/write-offs.tsx:202"
         }
       ],
       "fields": [
@@ -3495,6 +3536,11 @@
           "note": "Payment amount, positive decimal."
         },
         {
+          "label": "Exchange Rate",
+          "required": false,
+          "note": "Shown only when the currency differs from the reporting currency; prefilled from the write-off rate on file. Blank = no rate."
+        },
+        {
           "label": "Bank Slip Number",
           "required": false,
           "note": "Text reference only; no file upload."
@@ -3528,13 +3574,18 @@
           "label": "Write-off Exchange Rate — 核销汇率",
           "required": false,
           "note": "Only shown when payment and target currencies differ; blank uses org write-off rate."
+        },
+        {
+          "label": "Reason",
+          "required": true,
+          "note": "Void write-off dialog; max 500 chars."
         }
       ],
       "writes": [
-        "payment row (paymentNo, direction, settlement unit, accounts, way, currency, amount, slip number, dates, note).",
+        "payment row (paymentNo, direction, settlement unit, accounts, way, currency, amount, exchange rate, slip number, dates, note).",
         "write_off row with writeOffNo, method, account, person and exchange rate; payment.writtenOffAmount increased.",
         "Per-cost-line split recorded (writtenOffAmount), filled in cost line creation order; once the bill is fully covered it becomes **done** if it was already invoiced, or **written_off** if it never was.",
-        "Void: split returned to payment and lines, bill status reverted, write-off marked voided.",
+        "Void: split returned to payment and lines, bill status reverted, write-off marked voided with its reason.",
         "Any FX gain or loss on a cross-currency settlement, written to the bill."
       ],
       "result": "The bill is settled — **done** on the normal path, since step 24 invoiced it. Next: step 27, the month-end exports.",
@@ -3543,8 +3594,10 @@
         "Write-off amount above the payment's unwritten balance is refused.",
         "Write-off is frozen by the bill's Write-off review gate; voiding by the Cancel the verification gate, where ticked.",
         "Settlement Unit is matched as text when listing targets: a spelling difference hides the bill from the Verify picker.",
-        "A payment that has been written off cannot be deleted; void the write-off first.",
-        "Write-offs are voided, never edited."
+        "A payment that has ever been written off cannot be deleted, even after the write-off is voided; correct it with **Edit** instead.",
+        "Write-offs are voided, never edited.",
+        "A receipt settles receivable bills only and a payment payable bills only; the other side is refused.",
+        "**Edit** on a payment is disabled while anything live is settled against it; void its write-off on **Money > Write-offs** first."
       ],
       "shots": [
         {
@@ -3587,47 +3640,52 @@
         {
           "action": "Press **导出单证 · Export documents (全选)** (or tick lines first for **(n)**).",
           "detail": "Opens **导出表格 · Export table** and confirms the count for the unticked path.",
-          "src": "apps/web/src/components/export-table-dialog.tsx:280"
+          "src": "apps/web/src/components/export-table-dialog.tsx:343"
         },
         {
           "action": "Choose **文件类型** (file type): **对账单** (Statement), **DEBIT_NOTE** (Debit note) or **单票利润单** (Per-shipment profit sheet).",
           "detail": "Changing type clears the preview.",
-          "src": "apps/web/src/components/export-table-dialog.tsx:307"
+          "src": "apps/web/src/components/export-table-dialog.tsx:370"
+        },
+        {
+          "action": "For **对账单** or **DEBIT_NOTE** over ticked lines from several parties, pick **结算单位 · Settlement unit**.",
+          "detail": "One document goes to one settlement unit; only that unit's lines are sent. With nothing ticked, filter to one settlement unit first or the export is refused.",
+          "src": "apps/web/src/components/export-table-dialog.tsx:392"
         },
         {
           "action": "Optionally set **文件名** (file name) and, for DEBIT_NOTE, **选择账户** (bank account).",
           "detail": "Blank name uses the default '<type>-YYYY-MM-DD'; blank account uses the account flagged as default export.",
-          "src": "apps/web/src/components/export-table-dialog.tsx:323"
+          "src": "apps/web/src/components/export-table-dialog.tsx:422"
         },
         {
           "action": "Leave **导出格式** (format) as **XLSX (.xlsx)**, press **预览** (Preview), then **导出** (Export).",
           "detail": "Toast 'Exported <file>'; file built on request, stored nowhere.",
-          "src": "apps/web/src/components/export-table-dialog.tsx:412"
+          "src": "apps/web/src/components/export-table-dialog.tsx:484"
         },
         {
           "action": "For one shipment's statement or profit sheet, use **导出单证 · Export documents** on the order's **Expense Entry** page instead.",
-          "detail": "Exports that order's saved fees.",
-          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:796"
+          "detail": "Exports that order's saved fees. For a statement or DEBIT_NOTE over fees of several parties, pick **结算单位 · Settlement unit** first.",
+          "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:932"
         },
         {
           "action": "Go to **Reports > Financial Stat**.",
-          "detail": "Tabs: **Profit analysis statement**, **Profit statement**, **Actual receipt and payment report**, **Billing records**, **Ageing report**.",
-          "src": "apps/web/src/routes/_next/report/financial/index.tsx:937"
+          "detail": "Tabs: **Profit analysis statement**, **Profit statement**, **Actual receipt and payment report**, **Billing records**, **Ageing report**. Months are read in the branch's time zone; profit figures are labelled **At each bill's rate · billed fees only**.",
+          "src": "apps/web/src/routes/_next/report/financial/index.tsx:993"
         },
         {
           "action": "Pick the month in the month picker and press **Month-end pack**.",
           "detail": "Downloads one workbook with sheets Invoices Issued, Receipts, Settlements & FX, Bills Outstanding; label reads 'Building pack…' meanwhile.",
-          "src": "apps/web/src/routes/_next/report/financial/index.tsx:908"
+          "src": "apps/web/src/routes/_next/report/financial/index.tsx:950"
         },
         {
           "action": "Optionally press **Excel** or **PDF** to export the current Financial Stat view.",
           "detail": "Uses the page filters.",
-          "src": "apps/web/src/routes/_next/report/financial/index.tsx:925"
+          "src": "apps/web/src/routes/_next/report/financial/index.tsx:981"
         },
         {
           "action": "On **Money > Bills**, press **Mark synced to finance** on each bill handed to the bookkeeper.",
           "detail": "Toggle; the month-end pack only reports this flag and never sets it.",
-          "src": "apps/web/src/routes/_next/expenses/-bills.columns.tsx:843"
+          "src": "apps/web/src/routes/_next/expenses/-bills.columns.tsx:849"
         }
       ],
       "fields": [
@@ -3655,6 +3713,11 @@
           "label": "Month-end pack month",
           "required": true,
           "note": "type=month, cannot be later than the current month; defaults to current month."
+        },
+        {
+          "label": "结算单位 · Settlement unit",
+          "required": false,
+          "note": "Shown for 对账单 / DEBIT_NOTE only when the ticked lines span several units; then required."
         }
       ],
       "writes": [
@@ -3663,12 +3726,16 @@
       ],
       "result": "Statement / debit note / profit sheets and the month-end workbook are downloaded for the customer and bookkeeper. End of the intake SOP.",
       "pitfalls": [
-        "There is no period close or month lock in NCT; the month-end pack is an export only (packages/api/src/routers/report.ts:2683).",
+        "There is no period close or month lock in NCT; the month-end pack is an export only (packages/api/src/routers/report.ts:2978). Locking is per job: **Lock job** on an order's **Lifecycle** menu stops its fees being added or changed.",
         "Export button labels are bilingual/Chinese: 导出单证 · Export documents; dialog buttons 取消 / 预览 / 导出.",
         "Month-end pack and Excel/PDF are hidden without report:export.",
         "The order-page export is disabled while that page has unsaved edits.",
         "No email send exists in the export dialog (omitted by design).",
-        "A DEBIT_NOTE with no configured bank accounts carries no remittance details (warning shown)."
+        "A DEBIT_NOTE with no configured bank accounts carries no remittance details (warning shown).",
+        "The Financial Stat **PDF** prints one line per currency, with no cross-currency sum. A converted total prints only when every bill converts into one named currency (the base currency, or a single branch currency).",
+        "Open bills with no due date sit outside the Ageing buckets, on a separate line: '<n> open bills (…) have no due date and cannot show days overdue.'",
+        "**Statements & debit notes for <month>** on Financial Stat opens Cost lines filtered by Fee Time in whole UTC days, while the pack and tabs use bill and payment days in the branch's time zone, so a fee entered near midnight can fall in another month.",
+        "Ending or locking a job (**End job**, **Cancel end**, **Lock job**, **Unlock job** on the order ledger row's **Lifecycle** menu) is not an accounting action: accounting does not see the menu. Ask ops or a branch manager."
       ],
       "shots": [
         {

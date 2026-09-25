@@ -1,7 +1,7 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-09-16T13:20:17.452Z",
-  "sopSha": "6bd1ef196dce69513f2855e28e4dc5942dc73d18d11dad55066167ec7e2b00b0",
+  "at": "2026-09-24T13:43:41.756Z",
+  "sopSha": "d557681fd1e246356df03e43854728317cf4b167b6d6d6fabec48ca67699498f",
   "codeRoot": "C:\\Project\\NCT\\nct-layout",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
@@ -10,9 +10,14 @@
       "size": 9623
     },
     "apps/web/src/components/company/company-contacts.tsx": {
-      "sha": "9f7c753ae2e8abf628b532743e61ea7bca8da3779297711f62dd5cedaa57c1dc",
-      "mtimeMs": 1789125362240,
-      "size": 19831
+      "sha": "a9d77a797a57b8b0a0b9b982afdd243170d42f537da5cb271d6310697ddb55a5",
+      "mtimeMs": 1790141218186,
+      "size": 21641
+    },
+    "apps/web/src/components/customs-tracking/bl-job-record.tsx": {
+      "sha": "f1d899c0dc4bc818b3e86857a5509aa5823227775099a9acdfb84fa529f6adb9",
+      "mtimeMs": 1788345175049,
+      "size": 33065
     },
     "apps/web/src/components/document-upload.tsx": {
       "sha": "ad531cfd2432b5672d55da39415a2c59d0e9f6036dfe171b052c3354093e946d",
@@ -45,9 +50,9 @@
       "size": 7448
     },
     "apps/web/src/components/inbox/link-picker.tsx": {
-      "sha": "c948b7df720563d7ed66b32c53043d81f74871d9a2cae6782e32ab5677834ddd",
-      "mtimeMs": 1787817412291,
-      "size": 6033
+      "sha": "ee6357dab5c3d6458bcbc1c31afad3f2aed060d2cb547eae30a21d54f690e0e6",
+      "mtimeMs": 1790141218188,
+      "size": 8338
     },
     "apps/web/src/components/inbox/notes-panel.tsx": {
       "sha": "87f420735a4d36fa943b6d318fd82b605b1a119565dcd4b3a2db91b8deab7c7f",
@@ -55,9 +60,9 @@
       "size": 5781
     },
     "apps/web/src/components/inbox/reading-pane.tsx": {
-      "sha": "fc0d61430abb908c206ed70401a440409bf8853df56b7f160384c1e5451a2ea4",
-      "mtimeMs": 1788514766431,
-      "size": 17935
+      "sha": "599cedc4a772acb7a1f2f5df3f08e5e6255efde0ae89b00122705f7a6852d655",
+      "mtimeMs": 1790141218189,
+      "size": 23801
     },
     "apps/web/src/components/inbox/sla-tiles.tsx": {
       "sha": "7ff69a04732fd70c31595e6ccc169b1e325105c541cab52179c95be55607f2e6",
@@ -85,9 +90,9 @@
       "size": 126087
     },
     "apps/web/src/components/order-ledger/assign-job-number-button.tsx": {
-      "sha": "db152adc0d3fa683090705e5c43996ff0279f4d4d1fcae7cf586dcea89d7e448",
-      "mtimeMs": 1789146604929,
-      "size": 12634
+      "sha": "9c13a93d8939aa808f2d2b7701c243cc1bd3c949700d8fa39035d5798b8d507b",
+      "mtimeMs": 1790141218191,
+      "size": 13123
     },
     "apps/web/src/components/order-ledger/order-record-page.tsx": {
       "sha": "a2c5abf185bf3d886008138d870d903df481bf7b876387b901a4af71f151beb0",
@@ -105,14 +110,14 @@
       "size": 6520
     },
     "apps/web/src/components/quotation/send-quotation-dialog.tsx": {
-      "sha": "6f4ee7e3f5f7c946644dbd6c055862f1560c44962cc7f45c8f8204992af7f858",
-      "mtimeMs": 1789139423732,
-      "size": 16553
+      "sha": "b9c6af11d4c384ea877cc30a9778d1adc8e07832b7e7cf8d96242d177c321a0d",
+      "mtimeMs": 1790141218194,
+      "size": 21356
     },
     "apps/web/src/components/reference-template-dialog.tsx": {
-      "sha": "b6c7d34837d8c1380ee99fa6b189d84c28f447fa6a12d9d115fc2e15fed3cda1",
-      "mtimeMs": 1788694649077,
-      "size": 30960
+      "sha": "447ff2932034db5d79d5306352e961df360475ac4d7bf4aec93b2d9759a182f8",
+      "mtimeMs": 1790141218195,
+      "size": 34859
     },
     "apps/web/src/components/reject-dialog.tsx": {
       "sha": "a8f22bbf3402b7ddb33479d87ef464efc68f5cd340527dbb9511526c7731bdf5",
@@ -140,14 +145,14 @@
       "size": 15295
     },
     "apps/web/src/components/supersede-template-dialog.tsx": {
-      "sha": "510418b19d623d93d73edf2c432efaea9ecbc91eaf98f37d837a9a36036a91b6",
-      "mtimeMs": 1788763759528,
-      "size": 10644
+      "sha": "f9b56b60e16b5f997a0928d6ebcb6bf63e82333773050829ddb239987411872d",
+      "mtimeMs": 1790141218199,
+      "size": 10664
     },
     "apps/web/src/lib/quotation.ts": {
-      "sha": "3e6875234f6839d7402da1208b3d02b3cfdac4e7f692be7ee52bf12c8e41b26b",
-      "mtimeMs": 1789135510721,
-      "size": 21934
+      "sha": "6d5c9ce7007da430887b445498d82e16cfbff1b19a4d593642ca2e0e5bd9bc7f",
+      "mtimeMs": 1790141218206,
+      "size": 23682
     },
     "apps/web/src/routes/_next/approve/bill.tsx": {
       "sha": "8e813ceee1bc6151187b6d4706e4101db3ed0a653bde834c6524999e711ccbdc",
@@ -175,9 +180,9 @@
       "size": 1840
     },
     "apps/web/src/routes/_next/companies.tsx": {
-      "sha": "eb7cdaa566f10204b1699b921429242aecb55c79c43275547c53f9ada2cf21a8",
-      "mtimeMs": 1789123572546,
-      "size": 35788
+      "sha": "5334b4dd5110280ba0c8e66dd764d629f7766db2accf4ef4d03589afd51dbf0e",
+      "mtimeMs": 1790141218209,
+      "size": 37654
     },
     "apps/web/src/routes/_next/companies_.$companyId.tsx": {
       "sha": "ce47cf16053cc611c019a4a8dc181beef36047063979dcaff925b0b194cf538f",
@@ -210,9 +215,9 @@
       "size": 35988
     },
     "apps/web/src/routes/_next/expenses/bills.tsx": {
-      "sha": "39223dd8c74a0c1ad3e37b5b7d6d2ca6148bec4247ba62eec45c4e1c8ae5e5f5",
-      "mtimeMs": 1789140031982,
-      "size": 76706
+      "sha": "7e821cc8d8728d4310b474cfc673a7253cb109cb4dfb446f84ef9ce3988b0e57",
+      "mtimeMs": 1790141218211,
+      "size": 81350
     },
     "apps/web/src/routes/_next/expenses/cost-lines.tsx": {
       "sha": "88fcc95a477be164f65d168eabedc275f0e42c44ae186a5bc3375e8c7aebaebc",
@@ -245,9 +250,9 @@
       "size": 25046
     },
     "apps/web/src/routes/_next/inbox.$threadId.tsx": {
-      "sha": "bd84ca44f8c6e7fc4b4bb7fe8e3b99802da4dde6d405f457eeac535975fd9439",
-      "mtimeMs": 1788496781887,
-      "size": 6766
+      "sha": "323bfdcd6a5f681880366462a30cdbbac279292c7b3ba3641777810b0e55fa35",
+      "mtimeMs": 1790141218213,
+      "size": 9223
     },
     "apps/web/src/routes/_next/inbox.index.tsx": {
       "sha": "cb1c290616c03896a457d80a54257a6029dbadd6eefa5bdbd49c724bc3ab105f",
@@ -310,14 +315,14 @@
       "size": 3601
     },
     "apps/web/src/routes/_next/quotations/$quotationId.tsx": {
-      "sha": "eec9a0990b66863826c58976ddf5396c17aee89ef8bb29c94d10ff0499a1e6a3",
-      "mtimeMs": 1789139757057,
-      "size": 165583
+      "sha": "d7d3ce89e9859fd9a41d0af82f7c9eb0f29300ca877fbfd3fb480b655701b9a7",
+      "mtimeMs": 1790141218216,
+      "size": 189833
     },
     "apps/web/src/routes/_next/quotations/index.tsx": {
-      "sha": "ec62e0b040d215101f7bf165298a3d9d2e29ff269e931b85157124ebc945ebdd",
-      "mtimeMs": 1789139423729,
-      "size": 30424
+      "sha": "aac6f185da5ffcd768a4b20608c1cec26d6fdf67d5d345a5e6c0c87de5630fc2",
+      "mtimeMs": 1790141218219,
+      "size": 31670
     },
     "apps/web/src/routes/_next/report/financial/index.tsx": {
       "sha": "070bc053f8f18974aecc5c7fe207641cf547f4a96035fa9f61335acbf289cb8c",
@@ -330,14 +335,14 @@
       "size": 15635
     },
     "packages/api/src/modules/audit/post-approval.ts": {
-      "sha": "d971fdfe768dc7101334d7477e20aea71171e3c5b658c77b917da4cade71563b",
-      "mtimeMs": 1787817415217,
-      "size": 2308
+      "sha": "b25d6571b2fc8902d4b1a341ed2103c6d16fd13a3638bb0a284da4af83c132bd",
+      "mtimeMs": 1790141218233,
+      "size": 2370
     },
     "packages/api/src/modules/audit/seed.ts": {
-      "sha": "a18fb025eb695f9c9770e9bc6369032d52dc3d9d79e83095654cf4f0279fe123",
-      "mtimeMs": 1787817415212,
-      "size": 10733
+      "sha": "fa40ad7a88aa34d67256f5d63e409424d5c700624d5ab6242c5977b4b1afc034",
+      "mtimeMs": 1790141218237,
+      "size": 12038
     },
     "packages/api/src/modules/document/permissions.ts": {
       "sha": "959ce81f36306d5e5e1e41260523e650bb5c27ad9622d6e67bfc4edbad7bf04e",
@@ -355,19 +360,19 @@
       "size": 20789
     },
     "packages/api/src/quotation/tariff-check.ts": {
-      "sha": "036bfe0a31c9280d17ab0945973660462f56d32239e47f1c1d5e1d6051f3d606",
-      "mtimeMs": 1788756496094,
-      "size": 20647
+      "sha": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
+      "mtimeMs": 1790141218255,
+      "size": 31116
     },
     "packages/api/src/quotation/values.ts": {
-      "sha": "d207ea549483d95c5161d04078ed8b92ff2a7b6f5ad89d33523e6e036fd604ac",
-      "mtimeMs": 1788336619668,
-      "size": 19136
+      "sha": "7b4ecdf27d4b84ec82611c998b2a2513c4013e187bd5b96c5e1394b20584fdce",
+      "mtimeMs": 1790141218257,
+      "size": 20170
     },
     "packages/api/src/routers/collective-order.ts": {
-      "sha": "a9553736c71273b2713564c9b7c9c40012d05ae45b5da45522d775a4eb6dd70e",
-      "mtimeMs": 1789105090815,
-      "size": 229378
+      "sha": "5dc4819ac205e3a6062e92d7dbde4866b6fcbdedf8a87548fddf9396e90b7ccf",
+      "mtimeMs": 1790141218264,
+      "size": 225657
     },
     "packages/api/src/routers/company-contact.ts": {
       "sha": "541b2c69e7f01d6f5a21bcb83c97c9e7631409787ec266632c773e44bc30e381",
@@ -380,9 +385,9 @@
       "size": 57411
     },
     "packages/api/src/routers/expense/cost-lines.ts": {
-      "sha": "a53897c0cd2f6c01acba3d1cc1ce7b78b68e892603a9674ce16521bc23454540",
-      "mtimeMs": 1788693098544,
-      "size": 128105
+      "sha": "c32f401b2595aa62e90761347d75a3ac6338d3ae5668558671cad5ca9e79294e",
+      "mtimeMs": 1790141218270,
+      "size": 129031
     },
     "packages/api/src/routers/lading.ts": {
       "sha": "a1b77b881574429b9dee26f813ea1f600cd0e98dd7d24a22a0d06a4ec0ae9c0e",
@@ -390,14 +395,14 @@
       "size": 101749
     },
     "packages/api/src/routers/quotation.ts": {
-      "sha": "cae4779b40bd1fe5dda51f471f6a8b69ff911e50037804fe5cf0d05e0caf9e7d",
-      "mtimeMs": 1789139423742,
-      "size": 194913
+      "sha": "8c753239b534febbb85bc9acd25f602246a640a1b902528cdb9674d8918b5df1",
+      "mtimeMs": 1790141218284,
+      "size": 253450
     },
     "packages/api/src/routers/report.ts": {
-      "sha": "315cd079cd56f7a9f036e2b8d73d82953a962637c8c049a6ac435d5979b4d026",
-      "mtimeMs": 1789143906141,
-      "size": 158876
+      "sha": "02adc53968b2a8ac9e315494345908033c8025b2ba156a1ef6db64415a06fbc6",
+      "mtimeMs": 1790141218289,
+      "size": 162953
     },
     "packages/db/src/schema/company.ts": {
       "sha": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
@@ -447,11 +452,11 @@
       "file": "apps/web/src/components/inbox/reading-pane.tsx",
       "line": 309,
       "anchor": [
-        "              >",
-        "                <Sparkles className=\"size-3.5 text-muted-foreground\" aria-hidden />",
-        "                <span className=\"text-xs font-medium text-foreground\">AI Summary</span>",
-        "                {summaryOpen ? (",
-        "                  <ChevronDown className=\"ml-auto size-3.5 text-muted-foreground\" aria-hidden />"
+        "  links: ThreadLink[];",
+        "  documents: BridgedDocument[];",
+        "  mailbox: Mailbox | null;",
+        "  members: AssigneeOption[];",
+        "  currentUserId: string | null;"
       ],
       "jsonPath": "/guide/0/golden/2/src",
       "step": 1,
@@ -543,11 +548,11 @@
       "file": "apps/web/src/components/inbox/link-picker.tsx",
       "line": 111,
       "anchor": [
-        "          value={query}",
-        "          onChange={(event) => onQueryChange(event.target.value)}",
-        "          placeholder=\"Link a quotation…\"",
-        "          aria-label=\"Search quotations to link\"",
-        "          className=\"h-8 rounded-full pl-8\""
+        "                      <Link",
+        "                        to=\"/companies/$companyId\"",
+        "                        params={{ companyId: link.entityId }}",
+        "                        className=\"max-w-40 truncate font-mono text-[11px] text-foreground hover:underline\"",
+        "                        title={link.entityLabel ?? link.entityRef ?? undefined}"
       ],
       "jsonPath": "/guide/0/golden/8/src",
       "step": 1,
@@ -575,11 +580,11 @@
       "file": "apps/web/src/routes/_next/companies.tsx",
       "line": 360,
       "anchor": [
-        "",
-        "/** The role segments, in eyun's own order. Labels are the ones the select had. */",
-        "const ROLE_OPTIONS: readonly { value: CompanyRole; label: string }[] = [",
-        "  { value: \"customer\", label: \"Customers\" },",
-        "  { value: \"supplier\", label: \"Suppliers\" },"
+        "                ))}",
+        "              </div>",
+        "              <p className=\"text-xs text-muted-foreground\">",
+        "                At least one. A company can be more than one — the same row serves every list it",
+        "                belongs to."
       ],
       "jsonPath": "/guide/1/golden/0/src",
       "step": 2,
@@ -591,11 +596,11 @@
       "file": "apps/web/src/routes/_next/companies.tsx",
       "line": 734,
       "anchor": [
-        "           * which undersold two of them; the fix is a truer placeholder, never",
-        "           * a wider server field. */",
-        "          placeholder: \"Search name, EN name, code, customer code\",",
-        "          ariaLabel: \"Search company name, English name, code or customer code\",",
-        "        }}"
+        "    getSortedRowModel: getSortedRowModel(),",
+        "    getRowId: (row) => row.id,",
+        "  });",
+        "",
+        "  const hasFilters = Object.keys(applied).length > 0;"
       ],
       "jsonPath": "/guide/1/golden/1/src",
       "step": 2,
@@ -607,11 +612,11 @@
       "file": "apps/web/src/routes/_next/companies.tsx",
       "line": 801,
       "anchor": [
-        "            ? undefined",
-        "            : {",
-        "                label: \"Add\",",
-        "                onClick: () => setDialogOpen(true),",
-        "              }"
+        "                    <SelectItem key={option.value} value={option.value}>",
+        "                      {option.label}",
+        "                    </SelectItem>",
+        "                  ))}",
+        "                </SelectContent>"
       ],
       "jsonPath": "/guide/1/golden/2/src",
       "step": 2,
@@ -623,11 +628,11 @@
       "file": "apps/web/src/routes/_next/companies.tsx",
       "line": 254,
       "anchor": [
-        "              {(field) => (",
-        "                <div className=\"space-y-1.5\">",
-        "                  <Label htmlFor={field.name}>Company title</Label>",
-        "                  <Input",
-        "                    id={field.name}"
+        "    if (open) {",
+        "      form.reset({",
+        "        name: defaults?.name ?? \"\",",
+        "        code: \"\",",
+        "        customerCode: \"\","
       ],
       "jsonPath": "/guide/1/golden/3/src",
       "step": 2,
@@ -639,11 +644,11 @@
       "file": "apps/web/src/routes/_next/companies.tsx",
       "line": 274,
       "anchor": [
-        "              {(",
-        "                [",
-        "                  [\"code\", \"Code\"],",
-        "                  [\"customerCode\", \"Customer code\"],",
-        "                ] as const"
+        "  const dirty = useStore(form.store, (s) => s.isDirty);",
+        "  const { requestClose, confirmDialog } = useUnsavedDialogClose(dirty, () => onOpenChange(false));",
+        "",
+        "  return (",
+        "    <>"
       ],
       "jsonPath": "/guide/1/golden/4/src",
       "step": 2,
@@ -671,11 +676,11 @@
       "file": "apps/web/src/routes/_next/companies.tsx",
       "line": 165,
       "anchor": [
-        "    orpc.company.create.mutationOptions({",
-        "      onSuccess: (created) => {",
-        "        toast.success(\"Company created — add the rest of its details\");",
-        "        queryClient.invalidateQueries({ queryKey: orpc.company.list.queryKey() });",
-        "        onOpenChange(false);"
+        "}: {",
+        "  open: boolean;",
+        "  onOpenChange: (open: boolean) => void;",
+        "  /**",
+        "   * Prefill for a caller that already knows something about the company being"
       ],
       "jsonPath": "/guide/1/golden/6/src",
       "step": 2,
@@ -735,11 +740,11 @@
       "file": "apps/web/src/components/company/company-contacts.tsx",
       "line": 151,
       "anchor": [
-        "            }}",
-        "          >",
-        "            <Plus /> Add contact",
-        "          </Button>",
-        "        ) : null}"
+        "    const lastPage = Math.max(0, Math.ceil(total / PAGE_SIZE) - 1);",
+        "    if (page > lastPage) setPage(lastPage);",
+        "  }, [page, total]);",
+        "",
+        "  return ("
       ],
       "jsonPath": "/guide/2/golden/1/src",
       "step": 3,
@@ -767,11 +772,11 @@
       "file": "apps/web/src/components/company/company-contacts.tsx",
       "line": 414,
       "anchor": [
-        "                {(field) => (",
-        "                  <div className=\"space-y-1.5\">",
-        "                    <Label htmlFor={field.name}>Role</Label>",
-        "                    <Input",
-        "                      id={field.name}"
+        "  return (",
+        "    <>",
+        "      <Dialog open={open} onOpenChange={requestClose}>",
+        "        <DialogContent>",
+        "          <DialogHeader>"
       ],
       "jsonPath": "/guide/2/golden/3/src",
       "step": 3,
@@ -799,11 +804,11 @@
       "file": "apps/web/src/components/company/company-contacts.tsx",
       "line": 478,
       "anchor": [
-        "              </Button>",
-        "              <Button type=\"submit\" disabled={isPending}>",
-        "                {isPending ? \"Saving…\" : editing ? \"Save changes\" : \"Add contact\"}",
-        "              </Button>",
-        "            </DialogFooter>"
+        "                    {/* NOT type=\"email\": the browser would apply its own",
+        "                        format validation, which is the same refusal the schema",
+        "                        above deliberately does not make. */}",
+        "                    <Input",
+        "                      id={field.name}"
       ],
       "jsonPath": "/guide/2/golden/5/src",
       "step": 3,
@@ -815,11 +820,11 @@
       "file": "packages/api/src/routers/report.ts",
       "line": 922,
       "anchor": [
-        "    .from(bill)",
-        "    .leftJoin(company, eq(company.id, bill.settlementCompanyId))",
-        "    .leftJoin(",
-        "      companyContact,",
-        "      and("
+        "      // non-null `contactName` is the signal \"there is somebody here\"; the rest",
+        "      // are nullable on the table and stay nullable on the row.",
+        "      //",
+        "      // `role` earns its place beside the phone number rather than being",
+        "      // decoration: \"Finance\" and \"Operations\" are different conversations, and"
       ],
       "jsonPath": "/guide/2/fixes/0/src",
       "step": 3,
@@ -879,11 +884,11 @@
       "file": "apps/web/src/lib/quotation.ts",
       "line": 35,
       "anchor": [
-        "};",
         "",
-        "export const FEE_SIDE_LABELS: Record<string, string> = {",
-        "  selling: \"Selling Price\",",
-        "  cost: \"Cost\","
+        "export const SHIPPING_TYPE_LABELS: Record<string, string> = {",
+        "  fcl: \"FCL\",",
+        "  lcl: \"LCL\",",
+        "  bulk: \"Bulk\","
       ],
       "jsonPath": "/guide/3/golden/2/src",
       "step": 4,
@@ -943,11 +948,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 582,
       "anchor": [
-        "      const label = line.destination ? `${line.costName} — ${line.destination}` : line.costName;",
-        "      throw new ORPCError(\"BAD_REQUEST\", {",
-        "        message: `Row \"${label}\" has no price — a selling template's row needs an amount in at least one 计费单位 column.`,",
-        "      });",
-        "    }"
+        "  // key: two rows for the same charge that differ only by billing unit belong",
+        "  // in ONE row's columns, not two rows.",
+        "  if (feeType === \"selling\") {",
+        "    const seenRows = new Map<string, number>();",
+        "    lines.forEach((line, index) => {"
       ],
       "jsonPath": "/guide/3/golden/6/src",
       "step": 4,
@@ -1023,11 +1028,11 @@
       "file": "packages/api/src/modules/audit/seed.ts",
       "line": 135,
       "anchor": [
-        "  },",
-        "  {",
-        "    trigger: \"fee_template\",",
-        "    name: \"Expense template review\",",
-        "    withdrawalMode: \"direct\","
+        "    // reasoning the bill's second stage uses, and the reason `contract.review`",
+        "    // is granted to director rather than to branch-manager.",
+        "    stages: [{ roles: [\"director\"], quorum: \"any_pass_all_reject\" }],",
+        "    // No gates: `reference_contract` has no verb yet (see modules/company/gates.ts).",
+        "    gates: [],"
       ],
       "jsonPath": "/guide/3/fixes/0/src",
       "step": 4,
@@ -1039,11 +1044,11 @@
       "file": "apps/web/src/routes/_next/quotations/index.tsx",
       "line": 713,
       "anchor": [
-        "          ? undefined",
-        "          : {",
-        "              label: \"Add\",",
-        "              onClick: () =>",
-        "                routerNavigate({"
+        "                </SelectTrigger>",
+        "                <SelectContent>",
+        "                  <SelectItem value=\"all\">All</SelectItem>",
+        "                  <SelectItem value=\"expiring\">Expiring soon</SelectItem>",
+        "                  <SelectItem value=\"expired\">Expired</SelectItem>"
       ],
       "jsonPath": "/guide/4/golden/0/src",
       "step": 5,
@@ -1055,11 +1060,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1641,
       "anchor": [
-        "                className=\"ml-auto flex items-center gap-1.5 self-stretch border-l bg-muted px-3 text-[11.5px] font-semibold text-muted-foreground hover:bg-accent hover:text-primary\"",
-        "              >",
-        "                All 27 fields + 16 services",
-        "                <ChevronDown",
-        "                  className={`size-3.5 transition-transform ${briefOpen ? \"rotate-180\" : \"\"}`}"
+        "                                  }",
+        "                                >",
+        "                                  It did not go out",
+        "                                </Button>",
+        "                                <Button"
       ],
       "jsonPath": "/guide/4/golden/1/src",
       "step": 5,
@@ -1071,11 +1076,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1660,
       "anchor": [
-        "                  {(field) => (",
-        "                    <div className=\"space-y-1.5\">",
-        "                      <Label htmlFor={field.name}>Business Type *</Label>",
-        "                      <Select",
-        "                        value={field.state.value}"
+        "                          </div>",
+        "                        )}",
+        "                      </div>",
+        "                    );",
+        "                  }}"
       ],
       "jsonPath": "/guide/4/golden/2/src",
       "step": 5,
@@ -1087,11 +1092,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 285,
       "anchor": [
-        "  // not enforce and the server accepted the empty value. Trimmed, because a",
-        "  // single space is what gets typed to dismiss a required field.",
-        "  clientName: z.string().trim().min(1, \"Entrust unit is required\"),",
-        "  /**",
-        "   * The company-master reference, beside the name and never instead of it"
+        "  /** Which template this price came from — template-level, because cell ids re-mint (P0-10). */",
+        "  listTemplateId: z.string().nullable().optional(),",
+        "});",
+        "",
+        "const quoteFormSchema = z.object({"
       ],
       "jsonPath": "/guide/4/golden/3/src",
       "step": 5,
@@ -1103,11 +1108,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1757,
       "anchor": [
-        "                  {(field) => (",
-        "                    <div className=\"space-y-1.5\">",
-        "                      <Label htmlFor={field.name}>Incoterms</Label>",
-        "                      <Select",
-        "                        value={field.state.value}"
+        "              the authority, and a stale tab that presses anyway gets the Lost",
+        "              sentence as a toast. Shared predicate rather than a second copy",
+        "              of the rule, so the button and the handler cannot drift.",
+        "            */}",
+        "              {!isNew &&"
       ],
       "jsonPath": "/guide/4/golden/4/src",
       "step": 5,
@@ -1119,11 +1124,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1855,
       "anchor": [
-        "                  {(field) => (",
-        "                    <div className=\"space-y-1.5\">",
-        "                      <Label htmlFor={field.name}>Shipment Schedule</Label>",
-        "                      <Input",
-        "                        id={field.name}"
+        "            <div className=\"flex flex-wrap items-stretch\">",
+        "              <form.Subscribe",
+        "                selector={(state) => ({",
+        "                  businessType: state.values.businessType,",
+        "                  clientName: state.values.clientName,"
       ],
       "jsonPath": "/guide/4/golden/5/src",
       "step": 5,
@@ -1135,11 +1140,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1939,
       "anchor": [
+        "            >",
+        "              <CardContent className=\"grid grid-cols-1 gap-3 py-4 sm:grid-cols-2 lg:grid-cols-4\">",
+        "                <form.Field name=\"businessType\">",
         "                  {(field) => (",
-        "                    <div className=\"space-y-1.5\">",
-        "                      <Label htmlFor={field.name}>Cargo Value</Label>",
-        "                      <Input",
-        "                        id={field.name}"
+        "                    <div className=\"space-y-1.5\">"
       ],
       "jsonPath": "/guide/4/golden/6/src",
       "step": 5,
@@ -1151,11 +1156,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2076,
       "anchor": [
-        "                  {(field) => (",
-        "                    <div className=\"space-y-1.5 sm:col-span-2 lg:col-span-4\">",
-        "                      <Label htmlFor={field.name}>Annotation (shown to the customer)</Label>",
-        "                      <Textarea",
-        "                        id={field.name}"
+        "                          {INCOTERMS.map((t) => (",
+        "                            <SelectItem key={t} value={t}>",
+        "                              {t}",
+        "                            </SelectItem>",
+        "                          ))}"
       ],
       "jsonPath": "/guide/4/golden/7/src",
       "step": 5,
@@ -1167,11 +1172,11 @@
       "file": "packages/api/src/quotation/values.ts",
       "line": 433,
       "anchor": [
-        "",
-        "/**",
-        " * Server-generated quotation number: NCT-Q-YYYYMM-<zero-padded seq>.",
-        " * `seq` should be a per-organization running count (e.g. count of existing quotes + 1).",
-        " */"
+        "      if (openStageOtherDecided === \"approve\") return \"withdrawal_approved_by_other_reviewer\";",
+        "      return \"withdrawal_under_review\";",
+        "    case \"approved\":",
+        "      return actedByOther ? \"approved_by_other_reviewer\" : \"passed\";",
+        "    case \"rejected\":"
       ],
       "jsonPath": "/guide/4/golden/8/src",
       "step": 5,
@@ -1183,11 +1188,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 1531,
       "anchor": [
-        "  validFrom: z.coerce.date().optional(),",
-        "  validTo: z.coerce.date().optional(),",
-        "  quotationDate: z.coerce.date().optional(),",
-        "  quotationStaff: z.string().optional(),",
-        "  whetherBooking: z.boolean().optional(),"
+        " *   *     → converted   `quotations.convertToOrder` (mints the order)",
+        " *                       …and `costLines.importFromQuote`, which has written",
+        " *                       `converted` without an order since long before this —",
+        " *                       see convertToOrder's comment. Out of scope here; named",
+        " *                       so the next reader does not think this list is complete."
       ],
       "jsonPath": "/guide/4/fixes/0/src",
       "step": 5,
@@ -1199,11 +1204,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 3067,
       "anchor": [
-        "        validFrom: header.validFrom,",
-        "        validTo: header.validTo,",
-        "        quotationDate: header.quotationDate ?? now,",
-        "        // Auto-capture the creating member as the quotation staff (eyun records the creator).",
-        "        quotationStaff: header.quotationStaff ?? context.session.user.name ?? membership.id,"
+        "          size: sheetFile.sizeBytes,",
+        "          stagedKey: null as string | null,",
+        "        };",
+        "        let freshIntent: QuotationSendRow | null = null;",
+        "        if (failedRetryIntent) {"
       ],
       "jsonPath": "/guide/4/fixes/0/src",
       "step": 5,
@@ -1215,11 +1220,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 3290,
       "anchor": [
-        "            organizationId,",
-        "            patch.clientCompanyId !== undefined ? patch.clientCompanyId : existing.clientCompanyId,",
-        "            patch.quotationDate !== undefined ? patch.quotationDate : existing.quotationDate,",
-        "            feeLineRows,",
-        "          );"
+        "        throw new ORPCError(\"INTERNAL_SERVER_ERROR\", { message: \"Failed to resolve the send\" });",
+        "      }",
+        "",
+        "      // ── STEP 7 (§4): RECORD — THE RESUME ENTRY POINT ─────────────────────",
+        "      //"
       ],
       "jsonPath": "/guide/4/fixes/0/src",
       "step": 5,
@@ -1231,11 +1236,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 993,
       "anchor": [
-        "      totalGrossWeightKg: loaded?.totalGrossWeightKg ?? \"\",",
-        "      totalVolumeCbm: loaded?.totalVolumeCbm ?? \"\",",
-        "      validFrom: formatDateInput(loaded?.validFrom),",
-        "      validTo: formatDateInput(loaded?.validTo),",
-        "      whetherBooking: loaded?.whetherBooking ?? false,"
+        "   * permanently un-hinted, which is exactly the row Journey 3 step 5 checks.",
+        "   *",
+        "   * So the join goes through the id, on the SERVER's rows, and lands on the",
+        "   * RESOLVER KEY (A15) — the very thing the tariff resolves on. Two rows sharing",
+        "   * a key resolve against the same cell, so which of them a key lookup returns"
       ],
       "jsonPath": "/guide/4/fixes/0/src",
       "step": 5,
@@ -1247,11 +1252,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 3069,
       "anchor": [
-        "        quotationDate: header.quotationDate ?? now,",
-        "        // Auto-capture the creating member as the quotation staff (eyun records the creator).",
-        "        quotationStaff: header.quotationStaff ?? context.session.user.name ?? membership.id,",
-        "        whetherBooking: header.whetherBooking ?? false,",
-        "        recordCost: header.recordCost ?? false,"
+        "        };",
+        "        let freshIntent: QuotationSendRow | null = null;",
+        "        if (failedRetryIntent) {",
+        "          // Reuse the SAME row (same id ⇒ same X-NCT-Send-Key), refreshed with",
+        "          // this retry's freshly-rendered snapshot."
       ],
       "jsonPath": "/guide/4/fixes/1/src",
       "step": 5,
@@ -1263,11 +1268,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 3451,
       "anchor": [
-        "      // and make the duplicator the creator.",
-        "      const baseHeader = {",
-        "        ...source,",
-        "        id,",
-        "        createdBy: membership.id,"
+        "          });",
+        "",
+        "          return {",
+        "            threadId: composed.threadId,",
+        "            messageId: composed.messageId,"
       ],
       "jsonPath": "/guide/4/fixes/1/src",
       "step": 5,
@@ -1295,11 +1300,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2193,
       "anchor": [
-        "                        >",
-        "                          <Plus data-icon=\"inline-start\" />",
-        "                          Add Container",
-        "                        </Button>",
-        "                      </div>"
+        "                        id={field.name}",
+        "                        value={field.state.value}",
+        "                        onChange={(e) => field.handleChange(e.target.value)}",
+        "                      />",
+        "                    </div>"
       ],
       "jsonPath": "/guide/5/golden/0/src",
       "step": 6,
@@ -1311,11 +1316,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2286,
       "anchor": [
-        "                        >",
-        "                          <Plus data-icon=\"inline-start\" />",
-        "                          Add Batch",
-        "                        </Button>",
-        "                      </div>"
+        "                  {(field) => (",
+        "                    <div className=\"space-y-1.5\">",
+        "                      <Label htmlFor={field.name}>Premium</Label>",
+        "                      <Input",
+        "                        id={field.name}"
       ],
       "jsonPath": "/guide/5/golden/1/src",
       "step": 6,
@@ -1327,11 +1332,11 @@
       "file": "apps/web/src/components/reference-template-dialog.tsx",
       "line": 556,
       "anchor": [
-        "      <DialogContent className={step === 2 ? \"sm:max-w-4xl\" : undefined}>",
-        "        <DialogHeader>",
-        "          <DialogTitle>Apply a Fee Template</DialogTitle>",
-        "          <DialogDescription>",
-        "            {step === 1"
+        "      return;",
+        "    }",
+        "    // New quote (no server id yet) → apply client-side, from the SAME grid the",
+        "    // picker was drawn from, narrowed by the same picks the server would get",
+        "    // (A10). Both paths therefore choose the same cells in the same order."
       ],
       "jsonPath": "/guide/5/golden/2/src",
       "step": 6,
@@ -1343,11 +1348,11 @@
       "file": "apps/web/src/components/reference-template-dialog.tsx",
       "line": 675,
       "anchor": [
-        "",
-        "          <div className=\"space-y-1.5\">",
-        "            <Label>Apply lines as</Label>",
-        "            <RadioGroup",
-        "              className=\"grid-flow-col justify-start gap-4\""
+        "                                  />",
+        "                                }",
+        "                              >",
+        "                                <Info className=\"size-3.5\" />",
+        "                              </TooltipTrigger>"
       ],
       "jsonPath": "/guide/5/golden/3/src",
       "step": 6,
@@ -1359,11 +1364,11 @@
       "file": "apps/web/src/components/reference-template-dialog.tsx",
       "line": 516,
       "anchor": [
-        "      const chosenCells = columnless ? cells : filterPicks(cells, picks);",
-        "      onApplyLines?.(chosenCells.map((cell, i) => toDraftLine(cell, i, side, templateId)));",
-        "      toast.success(\"Template lines applied\");",
-        "      closeDialog();",
-        "    } catch {"
+        "   * arriving, or the toast would be followed by cells ticking themselves.",
+        "   *",
+        "   * Back → Next is a new visit and does re-seed, which is the one place an",
+        "   * operator can ask for the defaults again.",
+        "   */"
       ],
       "jsonPath": "/guide/5/golden/4/src",
       "step": 6,
@@ -1375,11 +1380,11 @@
       "file": "apps/web/src/components/reference-template-dialog.tsx",
       "line": 190,
       "anchor": [
-        "    currency: line.currency,",
-        "    chargeUnit,",
-        "    quantity: amounts.quantity,",
-        "    unitPrice: amounts.unitPrice,",
-        "    commissionRate: \"0\","
+        "const NO_KEYS: ReadonlySet<string> = new Set();",
+        "",
+        "/**",
+        " * The server's refusal when a pick names a cell the template no longer has",
+        " * (P0-10), matched on its PREFIX: `quotations.applyTemplate` appends the cell it"
       ],
       "jsonPath": "/guide/5/golden/5/src",
       "step": 6,
@@ -1391,11 +1396,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 3129,
       "anchor": [
-        "                        >",
-        "                          <Plus data-icon=\"inline-start\" />",
-        "                          Add Line",
-        "                        </Button>",
-        ""
+        "                                    {(f) => (",
+        "                                      <Select",
+        "                                        value={f.state.value}",
+        "                                        onValueChange={(v) => f.handleChange(v as never)}",
+        "                                      >"
       ],
       "jsonPath": "/guide/5/golden/6/src",
       "step": 6,
@@ -1407,11 +1412,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2403,
       "anchor": [
-        "                        onCheckedChange={(c) => field.handleChange(c === true)}",
-        "                      />",
-        "                      <Label htmlFor={field.name}>Record cost</Label>",
-        "                    </div>",
-        "                  )}"
+        "",
+        "                {/*",
+        "              注释 — CUSTOMER-FACING. Manual p030 callout ④:",
+        "              「报价注释：体现在报价单中，给到客户查看」. It prints. Its internal",
+        "              twin 报价备注 lives below Estimated Profit and does not."
       ],
       "jsonPath": "/guide/5/golden/7/src",
       "step": 6,
@@ -1423,11 +1428,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2321,
       "anchor": [
-        "                <form.Subscribe selector={(state) => state.values.feeLines}>",
-        "                  {(lines) => {",
-        "                    const badge = tariffBadgeText(tariffResult?.counts);",
-        "                    const orphaned = assignRefusals(saveErrorMessage, lines).unmatched;",
-        "                    return ("
+        "                  )}",
+        "                </form.Field>",
+        "",
+        "                <form.Field name=\"wharf\">",
+        "                  {(field) => ("
       ],
       "jsonPath": "/guide/5/golden/8/src",
       "step": 6,
@@ -1439,11 +1444,11 @@
       "file": "apps/web/src/components/reference-template-dialog.tsx",
       "line": 190,
       "anchor": [
-        "    currency: line.currency,",
-        "    chargeUnit,",
-        "    quantity: amounts.quantity,",
-        "    unitPrice: amounts.unitPrice,",
-        "    commissionRate: \"0\","
+        "const NO_KEYS: ReadonlySet<string> = new Set();",
+        "",
+        "/**",
+        " * The server's refusal when a pick names a cell the template no longer has",
+        " * (P0-10), matched on its PREFIX: `quotations.applyTemplate` appends the cell it"
       ],
       "jsonPath": "/guide/5/fixes/0/src",
       "step": 6,
@@ -1455,11 +1460,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 725,
       "anchor": [
-        "        variables: { feeLines?: Array<Record<string, unknown>> },",
-        "      ) => {",
-        "        toast.success(\"Quote saved\");",
-        "        queryClient.invalidateQueries({ queryKey: orpc.quotations.list.queryKey() });",
-        "        queryClient.invalidateQueries({"
+        "   *",
+        "   * `retry:false` + `meta:{suppressErrorToast:true}` + the muted header line",
+        "   * below, exactly as `orgChargeUnitsQuery` above and `ContractsCard` do: this is",
+        "   * a READING AID over a quotation the operator can still finish. A failed check",
+        "   * must never look like \"no tariff\" — every row would silently read as though it"
       ],
       "jsonPath": "/guide/6/golden/0/src",
       "step": 7,
@@ -1471,11 +1476,11 @@
       "file": "packages/api/src/quotation/tariff-check.ts",
       "line": 457,
       "anchor": [
-        "  const unit = line.chargeUnit?.trim();",
-        "  const label = unit ? `${name} · ${unit}` : name;",
-        "  return `Line \"${label}\" is below tariff: ${toDecimalString(toNumber(unitPrice, 0))} < ${toDecimalString(toNumber(tariffAmount, 0))}`;",
-        "}",
-        ""
+        "      push(standardCells, lineKey(cell), cell);",
+        "      addUnit(standardNameDest, nameDestKey(cell), cell.chargeUnit);",
+        "    } else if (client !== null && owner === client) {",
+        "      push(dealCells, lineKey(cell), cell);",
+        "      addUnit(dealNameDest, nameDestKey(cell), cell.chargeUnit);"
       ],
       "jsonPath": "/guide/6/golden/1/src",
       "step": 7,
@@ -1487,11 +1492,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2354,
       "anchor": [
-        "                                </TooltipTrigger>",
-        "                                <TooltipContent>",
-        "                                  NCT-own — not an eyun behaviour. Every selling line is compared",
-        "                                  with the approved tariff for this quotation's date. A price ABOVE",
-        "                                  it is allowed and shown as a delta; a price BELOW it is refused at"
+        "                      <Input",
+        "                        id={field.name}",
+        "                        type=\"number\"",
+        "                        min={0}",
+        "                        value={field.state.value ?? 0}"
       ],
       "jsonPath": "/guide/6/golden/2/src",
       "step": 7,
@@ -1503,11 +1508,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 2567,
       "anchor": [
-        "                            {floor.enforced === 0",
-        "                              ? \"The tariff price floor is not enforcing anything on this quotation.\"",
-        "                              : `The tariff price floor is off on ${floorGaps} of ${floor.selling} selling ${lineWord(floor.selling)}.`}",
-        "                          </p>",
-        "                          <ul className=\"mt-1 list-disc space-y-0.5 pl-4\">"
+        "                                <div className=\"space-y-1.5\">",
+        "                                  <Label>Unpacking Address</Label>",
+        "                                  <Input",
+        "                                    value={f.state.value}",
+        "                                    onChange={(e) => f.handleChange(e.target.value)}"
       ],
       "jsonPath": "/guide/6/golden/3/src",
       "step": 7,
@@ -1519,11 +1524,11 @@
       "file": "packages/api/src/quotation/tariff-check.ts",
       "line": 457,
       "anchor": [
-        "  const unit = line.chargeUnit?.trim();",
-        "  const label = unit ? `${name} · ${unit}` : name;",
-        "  return `Line \"${label}\" is below tariff: ${toDecimalString(toNumber(unitPrice, 0))} < ${toDecimalString(toNumber(tariffAmount, 0))}`;",
-        "}",
-        ""
+        "      push(standardCells, lineKey(cell), cell);",
+        "      addUnit(standardNameDest, nameDestKey(cell), cell.chargeUnit);",
+        "    } else if (client !== null && owner === client) {",
+        "      push(dealCells, lineKey(cell), cell);",
+        "      addUnit(dealNameDest, nameDestKey(cell), cell.chargeUnit);"
       ],
       "jsonPath": "/guide/6/fixes/0/src",
       "step": 7,
@@ -1535,11 +1540,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1266,
       "anchor": [
-        "                      onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}",
-        "                    >",
-        "                      Submit for Review",
-        "                    </Button>",
-        "                  )}"
+        "    const token = (rateTokens.current[i] ?? 0) + 1;",
+        "    rateTokens.current[i] = token;",
+        "    try {",
+        "      const { rate } = (await queryClient.fetchQuery(",
+        "        orpc.exchangeRates.suggest.queryOptions({"
       ],
       "jsonPath": "/guide/7/golden/0/src",
       "step": 8,
@@ -1567,11 +1572,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1314,
       "anchor": [
-        "                      onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}",
-        "                    >",
-        "                      Resubmit",
-        "                    </Button>",
-        "                  )}"
+        "      // ── OURS ── (0060, A4.) The tariff's floor holds on EVERY qty/price edit,",
+        "      // not only at apply time: without it a line that arrived at its floor",
+        "      // silently drops below it the moment the operator retypes the quantity, and",
+        "      // the number on screen stops agreeing with the one the server will store.",
+        "      // `\"\"` (no floor) reads as 0 through `toNumber`, so a hand-typed line is"
       ],
       "jsonPath": "/guide/7/golden/4/src",
       "step": 8,
@@ -1583,11 +1588,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 3196,
       "anchor": [
-        "        // eyun \"Can I edit the approved content after approval\": when the flow",
-        "        // says no, an APPROVED record is frozen against ordinary editing.",
-        "        await assertPostApprovalEditable(tx, context.org.organizationId, \"quotation\", id);",
-        "",
-        "        // 汇率 seeds, same rule as create: only lines that omitted a rate get"
+        "              userId: context.session.user.id,",
+        "              readableBranchIds,",
+        "            }),",
+        "            buildPort: (connection: typeof mailboxConnection.$inferSelect) =>",
+        "              Promise.resolve(currentReplyPortFactory()(context.db, connection)),"
       ],
       "jsonPath": "/guide/7/fixes/0/src",
       "step": 8,
@@ -1615,11 +1620,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 3845,
       "anchor": [
-        "",
-        "  // Audit/review workflow: move a quotation through draft → pending → approved|rejected.",
-        "  review: orgProcedure",
-        "    .use(requireNode(QUOTATION.review))",
-        "    .input(z.object({ id: z.string(), to: auditStatusSchema }))"
+        "              eq(quotationDecision.quotationId, existing.id),",
+        "              eq(quotationDecision.organizationId, organizationId),",
+        "              isNull(quotationDecision.supersededAt),",
+        "              sql`${quotationDecision.appliedAt} is not null`,",
+        "            ),"
       ],
       "jsonPath": "/guide/7/fixes/2/src",
       "step": 8,
@@ -1631,11 +1636,11 @@
       "file": "packages/api/src/modules/audit/post-approval.ts",
       "line": 43,
       "anchor": [
+        "  const latest = (",
         "    await latestSubmissionByResource(db, organizationId, resourceType, [resourceId])",
         "  ).get(resourceId);",
         "  if (!latest || latest.status !== \"passed\") return;",
-        "",
-        "  const [flow] = await db"
+        ""
       ],
       "jsonPath": "/guide/7/fixes/3/src",
       "step": 8,
@@ -1647,11 +1652,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 2355,
       "anchor": [
-        "      // eyun 报价 gate \"Export quotation\" — unticked in the seed, so this only",
-        "      // bites once a tenant ticks it (wave 2 config).",
-        "      await assertGateCleared(",
-        "        context.db,",
-        "        context.org.organizationId,"
+        "  // ── THE LETTERHEAD IS ONE OF THE CELLS THIS CAN CATCH ──────────────────────",
+        "  //",
+        "  // Since migration 0043 the first row is the organisation's own name. On an EN",
+        "  // export `letterheadName` asks for 公司英文名称 FIRST — which is exactly what",
+        "  // eyun does (「*公司英文名称将被带入相关英文单证，如DEBIT NOTE 等」,"
       ],
       "jsonPath": "/guide/7/fixes/4/src",
       "step": 8,
@@ -1663,11 +1668,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1431,
       "anchor": [
-        "                  >",
-        "                    <Printer data-icon=\"inline-start\" />",
-        "                    Export",
-        "                  </DropdownMenuTrigger>",
-        "                  <DropdownMenuContent align=\"end\">"
+        "                        reviewMutation.mutate({ id: loaded.id, to: \"withdraw_pending\" })",
+        "                      }",
+        "                    >",
+        "                      Retract",
+        "                    </Button>"
       ],
       "jsonPath": "/guide/8/golden/0/src",
       "step": 9,
@@ -1679,11 +1684,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1372,
       "anchor": [
-        "                          >",
-        "                            <Mail data-icon=\"inline-start\" />",
-        "                            Send",
-        "                          </Button>",
-        "                        )}"
+        "            <>",
+        "              {!isNew && loaded && (",
+        "                <div className=\"flex items-center gap-2\" data-testid=\"audit-controls\">",
+        "                  <AuditStatusBadge status={loaded.auditStatus} />",
+        "                  {loaded.auditStatus === \"draft\" && ("
       ],
       "jsonPath": "/guide/8/golden/1/src",
       "step": 9,
@@ -1695,11 +1700,11 @@
       "file": "apps/web/src/components/quotation/send-quotation-dialog.tsx",
       "line": 257,
       "anchor": [
-        "          <form className=\"flex flex-col gap-3\" onSubmit={handleSubmit}>",
-        "            <div className=\"space-y-1.5\">",
-        "              <Label htmlFor=\"send-from\">From</Label>",
-        "              <Select",
-        "                value={connectionId}"
+        "    }),",
+        "  );",
+        "",
+        "  /**",
+        "   * One text box in, an ARRAY out — `quotations.send` takes `cc?: string[]`."
       ],
       "jsonPath": "/guide/8/golden/2/src",
       "step": 9,
@@ -1711,11 +1716,11 @@
       "file": "apps/web/src/components/quotation/send-quotation-dialog.tsx",
       "line": 394,
       "anchor": [
-        "              </Button>",
-        "              <Button type=\"submit\" disabled={sendMutation.isPending}>",
-        "                {sendMutation.isPending ? \"Sending…\" : \"Send\"}",
-        "              </Button>",
-        "            </DialogFooter>"
+        "                    <SelectItem value=\"pdf\">PDF</SelectItem>",
+        "                    <SelectItem value=\"xlsx\">XLSX</SelectItem>",
+        "                  </SelectContent>",
+        "                </Select>",
+        "              </div>"
       ],
       "jsonPath": "/guide/8/golden/6/src",
       "step": 9,
@@ -1727,11 +1732,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 2633,
       "anchor": [
-        "      if (header.status === \"won\" || header.status === \"lost\" || header.status === \"converted\") {",
-        "        throw new ORPCError(\"CONFLICT\", {",
-        "          message: `This quotation is ${header.status} and can no longer be sent. Duplicate it to quote again.`,",
-        "        });",
-        "      }"
+        "        decisionCorrected: current?.kind === \"correction\",",
+        "      };",
+        "    }),",
+        "",
+        "  /**"
       ],
       "jsonPath": "/guide/8/fixes/0/src",
       "step": 9,
@@ -1743,11 +1748,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 531,
       "anchor": [
-        "    <Card className=\"print:hidden\" data-testid=\"linked-threads\">",
-        "      <CardHeader>",
-        "        <CardTitle>Threads</CardTitle>",
-        "      </CardHeader>",
-        "      <CardContent>"
+        "      out.enforced += 1;",
+        "      continue;",
+        "    }",
+        "    if (check.status === \"not_available\") out.notAvailable += 1;",
+        "    else out.noCell += 1;"
       ],
       "jsonPath": "/guide/9/golden/0/src",
       "step": 10,
@@ -1785,11 +1790,11 @@
       "file": "packages/api/src/routers/quotation.ts",
       "line": 2855,
       "anchor": [
-        "   *    status was typed into the old dropdown carries no stamp, and letting it",
-        "   *    be \"decided\" would build a conversion report on a send that never",
-        "   *    happened.)",
-        "   *  - an already-decided quotation is not re-decidable. The decision is the end",
-        "   *    of this document's life and the record page renders it read-only; a"
+        "   *",
+        "   * `quotation_send` has no `owningBranchId`/`createdBy` (schema comment) —",
+        "   * every access here goes through THIS handler's own `applyScope` on the",
+        "   * parent quotation first, never scoped on its own.",
+        "   */"
       ],
       "jsonPath": "/guide/9/fixes/0/src",
       "step": 10,
@@ -1801,11 +1806,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 1505,
       "anchor": [
-        "                    onClick={() => convertMutation.mutate({ id: loaded.id })}",
-        "                  >",
-        "                    {convertMutation.isPending ? \"Converting…\" : \"Convert to order\"}",
-        "                  </Button>",
-        "                )}"
+        "                            )}",
+        "                          {/* Task 1.8 — the small \"Corrected\" tag (Journey 2",
+        "                              step 3, Journey 3): true once the CURRENT decision",
+        "                              row's kind is \"correction\" rather than the",
+        "                              original \"decision\" (`quotations.retrieve`,"
       ],
       "jsonPath": "/guide/10/golden/1/src",
       "step": 11,
@@ -1817,11 +1822,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 817,
       "anchor": [
-        "      onSuccess: (result) => {",
-        "        const { carriedFeeLines, attachedFeeLines, attachedBilledFeeLines, orderId } = result;",
-        "        const parts = [`Order created with ${carriedFeeLines} receivable fee line(s)`];",
-        "        if (attachedFeeLines > 0) {",
-        "          // Fees that already existed in the ledger and were pulled onto the new"
+        "        // The ids are stamped into that copy rather than left to arrive with the",
+        "        // refetch. They DID arrive that way — `reset` clears every field's meta,",
+        "        // `isTouched` goes false, and form-core re-seeds from the server — but",
+        "        // that is a race, not a mechanism: one keystroke between this handler and",
+        "        // the refetch landing sets `isTouched` again and blocks the re-seed for"
       ],
       "jsonPath": "/guide/10/golden/2/src",
       "step": 11,
@@ -1833,11 +1838,11 @@
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 834,
       "anchor": [
-        "        queryClient.invalidateQueries({ queryKey: orpc.costLines.list.queryKey() });",
-        "        // Same landing the order toolbar uses after it creates an order.",
-        "        navigate({ to: \"/order/$orderId/edit\", params: { orderId } });",
-        "      },",
-        "      onError: (error) => toast.error(error.message),"
+        "  // without freezing anything, while the engine's decision is what",
+        "  // assertPostApprovalEditable reads — so the page's buttons and the",
+        "  // reviewer queues now mean the same thing. The legacy `quotations.review`",
+        "  // endpoint is unreachable from the web app already (architecture test) and",
+        "  // is deleted outright in step 08 Phase 3 — nothing here calls it."
       ],
       "jsonPath": "/guide/10/golden/3/src",
       "step": 11,
@@ -1881,11 +1886,11 @@
       "file": "apps/web/src/components/order-ledger/assign-job-number-button.tsx",
       "line": 181,
       "anchor": [
-        "      if (assigned) {",
-        "        onAssigned?.(assigned);",
-        "        toast.success(`Job number ${assigned} assigned`);",
-        "      } else {",
-        "        /* Defensive, and deliberately not `as`-cast away: the handler returns"
+        "      /* Fee lines the same transaction re-pointed at the new number (step 11",
+        "         D7-A). Named only when there were any: \"and 0 fee line(s) updated\" on",
+        "         an order with nothing to update is noise, and on the common case —",
+        "         every line already carrying a reference somebody typed — it would read",
+        "         as a failure rather than as nothing needing doing. */"
       ],
       "jsonPath": "/guide/11/golden/2/src",
       "step": 12,
@@ -1897,11 +1902,11 @@
       "file": "apps/web/src/components/order-ledger/assign-job-number-button.tsx",
       "line": 194,
       "anchor": [
-        "      const message =",
-        "        error instanceof Error && error.message ? error.message : \"Could not assign a job number\";",
-        "      if (message === MISSING_SEQUENCE_MESSAGE) {",
-        "        /* The one refusal with a repair the operator can perform themselves, so",
-        "           it gets the reason AND the way in. Told only \"conflict\", they would"
+        "           ever reached, saying \"assigned\" without naming the number is honest,",
+        "           where asserting a string that is not there would print \"undefined\". */",
+        "        toast.success(\"Job number assigned\");",
+        "      }",
+        "    },"
       ],
       "jsonPath": "/guide/11/golden/3/src",
       "step": 12,
@@ -2003,11 +2008,11 @@
       "file": "packages/api/src/routers/collective-order.ts",
       "line": 3335,
       "anchor": [
-        "        // may already carry cost lines; retiring it is a lifecycle operation",
-        "        // (end / archive / delete), not an intake one.",
-        "        if (existing.acceptStatus !== \"unaccepted\") {",
-        "          throw new ORPCError(\"CONFLICT\", {",
-        "            message: `Cannot reject an order that is already ${existing.acceptStatus}`,"
+        "                  orderAuditStatus: input.to,",
+        "                  orderAuditedAt: new Date(),",
+        "                  orderAuditedBy: context.org.membership.id,",
+        "                  // Separate column from the INTAKE rejectReason on purpose — the",
+        "                  // two workflows must never overwrite each other's reason."
       ],
       "jsonPath": "/guide/12/fixes/0/src",
       "step": 13,
@@ -2211,11 +2216,11 @@
       "file": "packages/api/src/routers/collective-order.ts",
       "line": 2892,
       "anchor": [
-        "        // eyun \"Can I edit the approved content after approval\": when the flow",
-        "        // says no, an APPROVED record is frozen against ordinary editing.",
-        "        await assertPostApprovalEditable(",
-        "          tx,",
-        "          context.org.organizationId,"
+        "   * two auditable acts rather than one silent one.",
+        "   *",
+        "   * ── ALL-OR-NOTHING, LIKE `batch` ───────────────────────────────────────────",
+        "   *",
+        "   * An unresolvable id or a locked order refuses the WHOLE request. A partial"
       ],
       "jsonPath": "/guide/14/fixes/0/src",
       "step": 15,
@@ -2227,11 +2232,11 @@
       "file": "packages/api/src/modules/audit/seed.ts",
       "line": 150,
       "anchor": [
-        "    // High volume: a second round here would jam daily operations.",
-        "    stages: [{ roles: [\"accounting\"], quorum: \"any_pass_all_reject\" }],",
-        "    gates: [],",
-        "    note: \"Orders are reviewed for operational correctness, not for money.\",",
-        "  },"
+        "    // a card still under review must not be priced from (modules/quotation/gates.ts).",
+        "    gates: [\"reference_fee_template\"],",
+        "    note: \"A fee template is reused across quotations, so a mistake in one repeats.\",",
+        "  },",
+        "  {"
       ],
       "jsonPath": "/guide/14/fixes/1/src",
       "step": 15,
@@ -2243,11 +2248,11 @@
       "file": "packages/api/src/routers/collective-order.ts",
       "line": 3380,
       "anchor": [
-        "   * would silently widen every mutation's row lookup too.",
-        "   */",
-        "  review: orgProcedure",
-        "    .use(requireNode(COLLECTIVE_ORDER.review))",
-        "    .input("
+        "        return maskRow(updated!, context.org, \"collectiveOrder\");",
+        "      });",
+        "    }),",
+        "",
+        "  // Single-order lifecycle transition — Process (Not shut out → Shut out →"
       ],
       "jsonPath": "/guide/14/fixes/2/src",
       "step": 15,
@@ -2257,13 +2262,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 535,
+      "line": 644,
       "anchor": [
-        "              <TabsTrigger value=\"basic\">",
-        "                <Ship className=\"mr-2 h-4 w-4\" />",
-        "                Basic",
-        "              </TabsTrigger>",
-        "              <TabsTrigger value=\"route\">Route &amp; Parties</TabsTrigger>"
+        "                  <Label htmlFor=\"hblNo\">HBL No</Label>",
+        "                  <Input",
+        "                    id=\"hblNo\"",
+        "                    value={form.hblNo}",
+        "                    onChange={(e) => updateField(\"hblNo\", e.target.value)}"
       ],
       "jsonPath": "/guide/15/golden/0/src",
       "step": 16,
@@ -2273,13 +2278,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1519,
+      "line": 1600,
       "anchor": [
-        "                  />",
-        "                  {ocrUpload.isPending && (",
-        "                    <p className=\"text-xs text-muted-foreground mt-2\">Processing OCR…</p>",
-        "                  )}",
-        "                </div>"
+        "                    </li>",
+        "                  </ul>",
+        "                </div>",
+        "              </div>",
+        "            </TabsContent>"
       ],
       "jsonPath": "/guide/15/golden/1/src",
       "step": 16,
@@ -2289,63 +2294,26 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 349,
-      "anchor": [
-        "        })) || prev.containers,",
-        "    }));",
-        "    toast.success(\"Extracted fields applied to form\");",
-        "  };",
-        ""
-      ],
+      "line": 1678,
+      "anchor": [],
       "jsonPath": "/guide/15/golden/2/src",
       "step": 16,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 564,
+      "line": 676,
       "anchor": [
+        "                  />",
+        "                </div>",
         "",
         "                <div className=\"space-y-2\">",
-        "                  <Label htmlFor=\"billNo\">Bill No *</Label>",
-        "                  <Input",
-        "                    id=\"billNo\""
+        "                  <Label htmlFor=\"voyage\">Voyage</Label>"
       ],
       "jsonPath": "/guide/15/golden/3/src",
-      "step": 16,
-      "kind": "golden",
-      "seg": 0,
-      "lineIdx": 0
-    },
-    {
-      "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 669,
-      "anchor": [
-        "",
-        "                <div className=\"space-y-2\">",
-        "                  <Label htmlFor=\"vessel\">Vessel</Label>",
-        "                  <Input",
-        "                    id=\"vessel\""
-      ],
-      "jsonPath": "/guide/15/golden/4/src",
-      "step": 16,
-      "kind": "golden",
-      "seg": 0,
-      "lineIdx": 0
-    },
-    {
-      "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 750,
-      "anchor": [
-        "                </div>",
-        "                <div className=\"space-y-2\">",
-        "                  <Label htmlFor=\"shipper\">Shipper</Label>",
-        "                  <CompanyPicker",
-        "                    id=\"shipper\""
-      ],
-      "jsonPath": "/guide/15/golden/5/src",
       "step": 16,
       "kind": "golden",
       "seg": 0,
@@ -2361,6 +2329,38 @@
         "                  <Textarea",
         "                    id=\"cargoDesc\""
       ],
+      "jsonPath": "/guide/15/golden/4/src",
+      "step": 16,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/lading/create.tsx",
+      "line": 871,
+      "anchor": [
+        "                    value={form.packageQty ?? \"\"}",
+        "                    onChange={(e) =>",
+        "                      updateField(\"packageQty\", e.target.value ? Number(e.target.value) : undefined)",
+        "                    }",
+        "                  />"
+      ],
+      "jsonPath": "/guide/15/golden/5/src",
+      "step": 16,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/lading/create.tsx",
+      "line": 945,
+      "anchor": [
+        "                  <Input",
+        "                    id=\"chargeableWeight\"",
+        "                    value={form.chargeableWeight}",
+        "                    onChange={(e) => updateField(\"chargeableWeight\", e.target.value)}",
+        "                    placeholder=\"kg\""
+      ],
       "jsonPath": "/guide/15/golden/6/src",
       "step": 16,
       "kind": "golden",
@@ -2369,13 +2369,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1390,
+      "line": 1505,
       "anchor": [
-        "                        <CardContent className=\"grid gap-3 md:grid-cols-3 py-3\">",
-        "                          <div className=\"space-y-2\">",
-        "                            <Label>Container No *</Label>",
-        "                            <Input",
-        "                              data-testid={`container-${idx}-containerNo`}"
+        "                        const rawType = file.type || \"application/octet-stream\";",
+        "                        const validTypes = [",
+        "                          \"image/png\",",
+        "                          \"image/jpeg\",",
+        "                          \"image/jpg\","
       ],
       "jsonPath": "/guide/15/golden/7/src",
       "step": 16,
@@ -2385,13 +2385,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1242,
+      "line": 1370,
       "anchor": [
-        "",
-        "                <div className=\"space-y-2\">",
-        "                  <Label htmlFor=\"orderId\">Linked order</Label>",
-        "                  <Select",
-        "                    value={form.orderId}"
+        "                    <Plus className=\"mr-2 h-4 w-4\" />",
+        "                    Add Container",
+        "                  </Button>",
+        "                </div>",
+        ""
       ],
       "jsonPath": "/guide/15/golden/8/src",
       "step": 16,
@@ -2401,13 +2401,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1076,
+      "line": 1203,
       "anchor": [
-        "",
-        "                <div className=\"space-y-2\">",
-        "                  <Label htmlFor=\"salesId\">Sales</Label>",
-        "                  <Select",
-        "                    value={form.salesId ?? \"\"}"
+        "                    <SelectContent>",
+        "                      <SelectItem value=\"\">None</SelectItem>",
+        "                      {memberOptions.map((m) => (",
+        "                        <SelectItem key={m.id} value={m.id}>",
+        "                          {m.label}"
       ],
       "jsonPath": "/guide/15/golden/9/src",
       "step": 16,
@@ -2417,13 +2417,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1341,
+      "line": 1456,
       "anchor": [
-        "",
-        "                <div className=\"space-y-2 md:col-span-2\">",
-        "                  <Label htmlFor=\"owningBranchId\">Owning Branch *</Label>",
-        "                  <Select",
-        "                    value={form.owningBranchId}"
+        "                                  e.target.value ? Number(e.target.value) : undefined,",
+        "                                )",
+        "                              }",
+        "                            />",
+        "                          </div>"
       ],
       "jsonPath": "/guide/15/golden/10/src",
       "step": 16,
@@ -2497,13 +2497,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 159,
+      "line": 175,
       "anchor": [
-        "    detail.refetch();",
-        "  };",
-        "",
-        "  // 提单流转 — every state pairs with its 取消 (HGJ manual ch.10). One button per",
-        "  // state, reading the action it can perform right now: a bill that is checked"
+        "    onSuccess: () => {",
+        "      toast.success(\"Check in cancelled\");",
+        "      invalidate();",
+        "    },",
+        "  });"
       ],
       "jsonPath": "/guide/16/golden/0/src",
       "step": 17,
@@ -2513,13 +2513,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 368,
+      "line": 389,
       "anchor": [
-        "              icon={PackageCheck}",
-        "              active={Boolean(data.checkedInAt)}",
-        "              label=\"Check In\"",
-        "              onAct={() => checkIn.mutate({ ladingId: id })}",
-        "              onCancel={() => cancelCheckIn.mutate({ ladingId: id })}"
+        "              active={Boolean(data.amendedAt)}",
+        "              label=\"Amend\"",
+        "              onAct={() => amend.mutate({ ladingId: id })}",
+        "              onCancel={() => cancelAmend.mutate({ ladingId: id })}",
+        "              pending={amend.isPending || cancelAmend.isPending}"
       ],
       "jsonPath": "/guide/16/golden/1/src",
       "step": 17,
@@ -2529,13 +2529,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 191,
+      "line": 209,
       "anchor": [
+        "    ...orpc.lading.hold.mutationOptions(),",
+        "    onSuccess: () => {",
+        "      toast.success(\"Put on hold\");",
         "      invalidate();",
-        "    },",
-        "  });",
-        "  const amend = useMutation({",
-        "    ...orpc.lading.amend.mutationOptions(),"
+        "    },"
       ],
       "jsonPath": "/guide/16/golden/2/src",
       "step": 17,
@@ -2545,13 +2545,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 378,
+      "line": 399,
       "anchor": [
-        "              icon={PackageOpen}",
-        "              active={Boolean(data.checkedOutAt)}",
-        "              label=\"Check Out\"",
-        "              onAct={() => checkOut.mutate({ ladingId: id })}",
-        "              onCancel={() => cancelCheckOut.mutate({ ladingId: id })}"
+        "              active={Boolean(data.heldAt)}",
+        "              label=\"Hold\"",
+        "              onAct={() => hold.mutate({ ladingId: id })}",
+        "              onCancel={() => cancelHold.mutate({ ladingId: id })}",
+        "              pending={hold.isPending || cancelHold.isPending}"
       ],
       "jsonPath": "/guide/16/golden/3/src",
       "step": 17,
@@ -2561,13 +2561,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 207,
+      "line": 223,
       "anchor": [
-        "  });",
-        "  const hold = useMutation({",
-        "    ...orpc.lading.hold.mutationOptions(),",
-        "    onSuccess: () => {",
-        "      toast.success(\"Put on hold\");"
+        "  const exportFile = useMutation({",
+        "    ...orpc.lading.export.mutationOptions(),",
+        "    onSuccess: (res) => {",
+        "      downloadBase64File(res.data, res.mimeType, res.filename);",
+        "      toast.success(`Exported ${res.filename}`);"
       ],
       "jsonPath": "/guide/16/golden/4/src",
       "step": 17,
@@ -2577,13 +2577,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 233,
+      "line": 488,
       "anchor": [
-        "",
-        "  // ── Attachments ───────────────────────────────────────────────────────────",
-        "  const uploadAttachment = useMutation({ ...orpc.lading.uploadAttachment.mutationOptions() });",
-        "  const downloadAttachment = useMutation({ ...orpc.lading.downloadAttachment.mutationOptions() });",
-        "  const deleteAttachment = useMutation({ ...orpc.lading.deleteAttachment.mutationOptions() });"
+        "                        {formatBytes(a.size)}",
+        "                      </span>",
+        "                      <Button",
+        "                        variant=\"ghost\"",
+        "                        size=\"sm\""
       ],
       "jsonPath": "/guide/16/golden/5/src",
       "step": 17,
@@ -2593,13 +2593,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
-      "line": 219,
+      "line": 246,
       "anchor": [
-        "      invalidate();",
-        "    },",
-        "  });",
-        "",
-        "  const exportFile = useMutation({"
+        "    // 10MB, matching the server. Checked here too so an oversized file fails",
+        "    // before it is read into memory and base64-inflated by a third.",
+        "    if (file.size > 10 * 1024 * 1024) {",
+        "      toast.error(\"Attachment exceeds 10MB\");",
+        "      return;"
       ],
       "jsonPath": "/guide/16/golden/6/src",
       "step": 17,
@@ -2609,13 +2609,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/lading/create.tsx",
-      "line": 1311,
+      "line": 1426,
       "anchor": [
-        "",
-        "                <div className=\"space-y-2 md:col-span-2\">",
-        "                  <Label htmlFor=\"checkedInRemark\">Checked-In Remark</Label>",
-        "                  <Textarea",
-        "                    id=\"checkedInRemark\""
+        "                              }",
+        "                            />",
+        "                          </div>",
+        "                          <div className=\"space-y-2\">",
+        "                            <Label>Volume (CBM)</Label>"
       ],
       "jsonPath": "/guide/16/golden/7/src",
       "step": 17,
@@ -2624,14 +2624,30 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/documents.index.tsx",
-      "line": 102,
+      "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
+      "line": 453,
       "anchor": [
-        "  return (",
-        "    <Badge variant=\"secondary\" className=\"text-xs\">",
-        "      {status === \"processing\" ? \"Processing\" : \"Uploaded\"}",
-        "    </Badge>",
-        "  );"
+        "          <OrderDocumentsCard rollup={orderDocuments} />",
+        "",
+        "          {/* Attachments — eyun's last grid column. */}",
+        "          <div className=\"card\">",
+        "            <div className=\"ch\">"
+      ],
+      "jsonPath": "/guide/16/golden/8/src",
+      "step": 17,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/documents.index.tsx",
+      "line": 337,
+      "anchor": [
+        "                  </Button>",
+        "                ) : null}",
+        "                {canUpload ? <DocumentUploadDialog /> : null}",
+        "              </div>",
+        "            }"
       ],
       "jsonPath": "/guide/17/golden/0/src",
       "step": 18,
@@ -2657,13 +2673,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 583,
+      "line": 668,
       "anchor": [
-        "                      >",
-        "                        <Download className=\"size-4\" aria-hidden />",
-        "                        Download original",
-        "                      </a>",
-        "                    </EmptyContent>"
+        "                          flagged",
+        "                            ? \"border-warning/50 bg-warning/5\"",
+        "                            : missingRequired",
+        "                              ? \"border-destructive/40\"",
+        "                              : \"\""
       ],
       "jsonPath": "/guide/17/golden/2/src",
       "step": 18,
@@ -2673,13 +2689,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 320,
+      "line": 373,
       "anchor": [
-        "        }",
-        "      } else {",
-        "        toast.success(\"Amendment saved\");",
-        "      }",
-        "    },"
+        "    }",
+        "    const corrections = { ...built.corrections, ...tableEdits };",
+        "    if (isApproved) {",
+        "      amend.mutate(corrections);",
+        "    } else {"
       ],
       "jsonPath": "/guide/17/golden/3/src",
       "step": 18,
@@ -2689,13 +2705,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 527,
+      "line": 612,
       "anchor": [
-        "                      : approve.isPending",
-        "                        ? \"Approving…\"",
-        "                        : \"Approve (⌘⏎)\"}",
-        "              </Button>",
-        "            ) : null}"
+        "                </p>",
+        "                {canLink ? (",
+        "                  <Button",
+        "                    variant=\"outline\"",
+        "                    size=\"sm\""
       ],
       "jsonPath": "/guide/17/golden/4/src",
       "step": 18,
@@ -2705,29 +2721,24 @@
     },
     {
       "file": "packages/api/src/modules/document/register-hooks.ts",
-      "line": 22,
-      "anchor": [
-        "  }",
-        "  // Approved, but this bill of lading was already being tracked from another",
-        "  // document. No second job was created — say so, or the approver is left",
-        "  // believing this document started its own tracking.",
-        "  if (outcome?.duplicateOf) {"
-      ],
+      "line": 66,
+      "anchor": [],
       "jsonPath": "/guide/17/golden/5/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 249,
+      "line": 530,
       "anchor": [
-        "    onSuccess: async () => {",
-        "      await queryClient.invalidateQueries();",
-        "      toast.success(\"Sent back through classification\");",
-        "    },",
-        "    onError: (error) => toast.error(error.message || \"Could not reprocess\"),"
+        "              </Button>",
+        "            ) : null}",
+        "          </div>",
+        "        </div>",
+        ""
       ],
       "jsonPath": "/guide/17/golden/6/src",
       "step": 18,
@@ -2737,19 +2748,25 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 839,
-      "anchor": [
-        "          <DialogContent>",
-        "            <DialogHeader>",
-        "              <DialogTitle>Reject this document</DialogTitle>",
-        "              <DialogDescription>",
-        "                It leaves the review queue but is kept, along with your reason and name. If this"
-      ],
+      "line": 969,
+      "anchor": [],
       "jsonPath": "/guide/17/golden/7/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
+    },
+    {
+      "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
+      "line": 936,
+      "anchor": [],
+      "jsonPath": "/guide/17/golden/8/src",
+      "step": 18,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "packages/api/src/modules/document/register-hooks.ts",
@@ -2769,13 +2786,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/customs-tracking.tsx",
-      "line": 193,
+      "line": 217,
       "anchor": [
-        "              <TableHeader>",
-        "                <TableRow>",
-        "                  <TableHead>Stage</TableHead>",
-        "                  <TableHead>BL Number</TableHead>",
-        "                  <TableHead>Vessel</TableHead>"
+        "                    <TableRow",
+        "                      key={job.id}",
+        "                      data-urgent={chip.urgent || undefined}",
+        "                      // A voided job stays on the board (it is still a real BL",
+        "                      // someone may need to look up) but reads as closed."
       ],
       "jsonPath": "/guide/18/golden/0/src",
       "step": 19,
@@ -2832,14 +2849,30 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/customs-tracking.tsx",
-      "line": 119,
+      "file": "apps/web/src/components/customs-tracking/bl-job-record.tsx",
+      "line": 267,
       "anchor": [
-        "      setVoidReason(\"\");",
-        "      await queryClient.invalidateQueries();",
-        "      toast.success(\"Job voided — it will stop being checked and alerted on\");",
-        "    },",
-        "    onError: (error) => toast.error(error.message || \"Could not void this job\"),"
+        "          // The label only. `customsCell` also returns a RUNNING time, and it",
+        "          // must not come in here: `detailGroups` is memoised on the row, so a",
+        "          // duration put in a field would freeze at first render while the same",
+        "          // clock advanced on the spine beside it.",
+        "          label: \"Customs\","
+      ],
+      "jsonPath": "/guide/18/golden/4/src",
+      "step": 19,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/customs-tracking.tsx",
+      "line": 132,
+      "anchor": [
+        "            <EmptyTitle>You don't have access to customs tracking</EmptyTitle>",
+        "            <EmptyDescription>",
+        "              Viewing BL tracking jobs requires a role with bl-job read permission.",
+        "            </EmptyDescription>",
+        "          </EmptyHeader>"
       ],
       "jsonPath": "/guide/18/golden/5/src",
       "step": 19,
@@ -2849,45 +2882,35 @@
     },
     {
       "file": "apps/web/src/components/order-ledger/order-record-page.tsx",
-      "line": 115,
-      "anchor": [
-        "            <AssignJobNumberButton orderId={orderId} />",
-        "          ) : null}",
-        "          <Link to=\"/order/$orderId/expenses\" params={{ orderId }}>",
-        "            <Button variant=\"outline\" size=\"sm\">",
-        "              Expenses"
-      ],
+      "line": 156,
+      "anchor": [],
       "jsonPath": "/guide/19/golden/0/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 800,
-      "anchor": [
-        "                disabled={!loaded || dirty || costs.length === 0}",
-        "              />",
-        "              <Button onClick={save} disabled={locked || !loaded || saveMutation.isPending}>",
-        "                <Save data-icon=\"inline-start\" />",
-        "                {saveMutation.isPending ? \"Saving…\" : !loaded ? \"Loading…\" : \"Save\"}"
-      ],
+      "line": 939,
+      "anchor": [],
       "jsonPath": "/guide/19/golden/1/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 264,
+      "line": 386,
       "anchor": [
-        "            size=\"sm\"",
-        "            disabled={disabled}",
-        "            onClick={() =>",
-        "              onChange([",
-        "                ...rows,"
+        "                            ))}",
+        "                          </SelectContent>",
+        "                        </Select>",
+        "                      ) : c.key === \"billingUnit\" ? (",
+        "                        <Input"
       ],
       "jsonPath": "/guide/19/golden/2/src",
       "step": 20,
@@ -2897,13 +2920,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 220,
+      "line": 261,
       "anchor": [
-        "    // a row with no quantity is not overwritten the next time anything else on",
-        "    // the row changes.",
-        "    if (key === \"quantity\" || key === \"unitPrice\") {",
-        "      const r = next[index]!;",
-        "      if (r.quantity.trim() !== \"\" && r.unitPrice.trim() !== \"\") {"
+        "        <div className=\"flex items-center gap-2\">",
+        "          <Button",
+        "            variant=\"outline\"",
+        "            size=\"sm\"",
+        "            disabled={disabled}"
       ],
       "jsonPath": "/guide/19/golden/3/src",
       "step": 20,
@@ -2913,13 +2936,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 666,
+      "line": 830,
       "anchor": [
+        "        ) : null}",
         "",
-        "  /** `Copy to payable` / `Copy to receivables` — the mirrored toolbar action. */",
-        "  const copyAcross = (",
-        "    from: FeeRow[],",
-        "    setTo: (updater: (prev: FeeRow[]) => FeeRow[]) => void,"
+        "        <section className=\"border\">",
+        "          <h2 className=\"border-b bg-muted/50 px-3 py-1.5 font-medium text-xs uppercase tracking-wide\">",
+        "            Basic info"
       ],
       "jsonPath": "/guide/19/golden/4/src",
       "step": 20,
@@ -2929,61 +2952,46 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 865,
-      "anchor": [
-        "          disabled={locked}",
-        "          // Payable side: no client default — see the new-row comment.",
-        "          defaultSettlementUnit=\"\"",
-        "          hiddenColumns={hiddenColumns}",
-        "        />"
-      ],
+      "line": 1004,
+      "anchor": [],
       "jsonPath": "/guide/19/golden/5/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 871,
-      "anchor": [
-        "        <section className=\"border\">",
-        "          <h2 className=\"border-b bg-muted/50 px-3 py-1.5 font-medium text-xs uppercase tracking-wide\">",
-        "            Single bill total",
-        "          </h2>",
-        "          <dl className=\"grid grid-cols-2 gap-x-6 gap-y-1 p-3 text-xs md:grid-cols-3\">"
-      ],
+      "line": 1012,
+      "anchor": [],
       "jsonPath": "/guide/19/golden/6/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 815,
-      "anchor": [
-        "        ) : null}",
-        "",
-        "        {unrated.length > 0 ? (",
-        "          <p className=\"flex items-center gap-2 border bg-muted/40 px-3 py-2 text-xs\">",
-        "            <TriangleAlert className=\"size-3.5\" />"
-      ],
+      "line": 960,
+      "anchor": [],
       "jsonPath": "/guide/19/golden/7/src",
       "step": 20,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 613,
+      "line": 707,
       "anchor": [
-        "  );",
+        "  const local = (rows: FeeRow[], taxInclusive: boolean) =>",
+        "    rows.reduce((s, r) => s + feeLocalAmount(r, taxInclusive), 0);",
         "",
-        "  const save = () => {",
-        "    // Refuse before the fee query has answered. Until then both grids hold [],",
-        "    // and `saveChildren` reads an empty array as \"delete every fee on this"
+        "  const recInc = local(receivable, true);",
+        "  const payInc = local(payable, true);"
       ],
       "jsonPath": "/guide/19/golden/8/src",
       "step": 20,
@@ -2993,13 +3001,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 796,
+      "line": 932,
       "anchor": [
-        "                disagrees with the screen. Disabled while dirty, for that reason",
-        "                and not for a technical one. */}",
-        "              <ExportTableDialog",
-        "                selectedIds={costs.map((c) => c.id).filter((id): id is string => Boolean(id))}",
-        "                disabled={!loaded || dirty || costs.length === 0}"
+        "          </Link>",
+        "          , where a selection splits into one bill per settlement unit, attribute and currency.",
+        "        </p>",
+        "      </div>",
+        "    </main>"
       ],
       "jsonPath": "/guide/19/golden/9/src",
       "step": 20,
@@ -3041,13 +3049,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1944,
+      "line": 1984,
       "anchor": [
-        "   * `filterScopeCount`) is what covers a set too large to tick, and it works off",
-        "   * the FILTER, which paging does not move. */",
-        "  React.useEffect(() => {",
-        "    setPagination((p) => (p.pageIndex === 0 ? p : { ...p, pageIndex: 0 }));",
-        "    setSelected({});"
+        "      setSelected({});",
+        "      queryClient.invalidateQueries({ queryKey: orpc.costLines.list.queryKey() });",
+        "    },",
+        "    [queryClient, selectedLines],",
+        "  );"
       ],
       "jsonPath": "/guide/20/golden/1/src",
       "step": 21,
@@ -3057,13 +3065,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 2221,
+      "line": 2257,
       "anchor": [
-        "                awaiting or failed review, so this is the control that clears",
-        "                the way for it. */}",
-        "          {selectedCount > 0 && (",
-        "            <ReviewMenu",
-        "              selectedIds={selectedLines.map((l) => l.id)}"
+        "                always the literal selection.",
+        "",
+        "                D8 has been discharged and 「不勾选=全选」 IS built — on Create Bill",
+        "                and 导出单证 above, the two controls whose tooltips were captured",
+        "                (2026-08-04). This menu's actions are 标记对账 / 锁定 / 归档 /"
       ],
       "jsonPath": "/guide/20/golden/2/src",
       "step": 21,
@@ -3137,13 +3145,13 @@
     },
     {
       "file": "apps/web/src/components/reject-reason-dialog.tsx",
-      "line": 78,
+      "line": 54,
       "anchor": [
-        "        <DialogContent>",
-        "          <DialogHeader>",
-        "            <DialogTitle>Reason for rejection</DialogTitle>",
-        "            <DialogDescription>",
-        "              Recorded against the decision and shown on the record&rsquo;s review trail. The"
+        "    setReason(\"\");",
+        "  }, []);",
+        "",
+        "  const ask = React.useCallback<Ask>(() => {",
+        "    // A previous prompt still open is cancelled rather than replaced: its caller"
       ],
       "jsonPath": "/guide/20/golden/7/src",
       "step": 21,
@@ -3171,11 +3179,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2506,
       "anchor": [
-        "        organizationId,",
-        "        \"cost_line\",",
-        "        input.costLineIds,",
-        "        \"create_bill\",",
-        "      );"
+        "      // would instead make every existing line unbillable overnight.",
+        "      const unapproved = lines.filter(",
+        "        (l) => l.auditStatus === \"pending\" || l.auditStatus === \"rejected\",",
+        "      );",
+        "      if (unapproved.length) {"
       ],
       "jsonPath": "/guide/20/fixes/0/src",
       "step": 21,
@@ -3187,11 +3195,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2115,
       "anchor": [
-        "        // NOT an error when everything is claimed. A selection of ten settled",
-        "        // lines is the commonest month-close case, and the honest answer is the",
-        "        // report, not a refusal that says nothing about which lines they were.",
-        "        const applied =",
-        "          targets.length === 0"
+        "          organizationId,",
+        "          rows.map((r) => r.orderId),",
+        "        );",
+        "",
+        "        const targets = rows.filter((r) => !isClaimed(r));"
       ],
       "jsonPath": "/guide/20/fixes/1/src",
       "step": 21,
@@ -3203,11 +3211,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 429,
       "anchor": [
-        "    },",
-        "    delete: {",
-        "      node: EXPENSE.costLineDelete,",
-        "      kind: \"delete\",",
-        "      gates: [deleteRefusalsGate, orderUnlockedGate, splitsReleaseGate],"
+        "      derive: (merged) => ({ status: deriveStatus(merged as never) }),",
+        "      audit: {",
+        "        before: (row, meta) => ({ billId: row.billId, billTotalAmount: meta.billTotalBefore }),",
+        "        after: (row, meta) => ({ billId: row.billId, billTotalAmount: meta.billTotalAfter }),",
+        "      },"
       ],
       "jsonPath": "/guide/20/fixes/2/src",
       "step": 21,
@@ -3219,11 +3227,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 333,
       "anchor": [
-        "      }),",
-        "    },",
-        "    update: {",
-        "      node: EXPENSE.costLineUpdate,",
-        "      kind: \"update\","
+        "        costName: row.costName,",
+        "        attribute: row.attribute,",
+        "        currency: row.currency,",
+        "        amount: row.amount,",
+        "        owningBranchId: row.owningBranchId,"
       ],
       "jsonPath": "/guide/20/fixes/3/src",
       "step": 21,
@@ -3249,13 +3257,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 2214,
+      "line": 2251,
       "anchor": [
-        "              primary's 32 — a 4px step that reads as misalignment rather than",
-        "              hierarchy. Same rule `secondaryActions` states for the other side. */}",
-        "          <Button size=\"sm\" variant=\"outline\" onClick={() => setCreateBillOpen(true)}>",
-        "            <FileStack data-icon=\"inline-start\" />",
-        "            Create Bill {selectedCount > 0 ? `(${selectedCount})` : \"(全选)\"}"
+        "              selectedIds={selectedLines.map((l) => l.id)}",
+        "              onDone={() => setSelected({})}",
+        "            />",
+        "          )}",
+        "          {/* 费用明细-批量操作 (manual:403). STILL EXPLICIT SELECTION ONLY —"
       ],
       "jsonPath": "/guide/21/golden/1/src",
       "step": 22,
@@ -3265,13 +3273,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1156,
+      "line": 1167,
       "anchor": [
-        "      <DialogContent>",
-        "        <DialogHeader>",
-        "          <DialogTitle>Create Bill</DialogTitle>",
-        "        </DialogHeader>",
-        "        <div className=\"flex flex-col gap-3\">"
+        "          <FilterScopeNotice state={scope} noun=\"billed\" />",
+        "",
+        "          {/* The split, before it happens. A selection spanning two settlement",
+        "              units used to be a refusal; showing what it will become is the",
+        "              whole of decision 3.1 made visible."
       ],
       "jsonPath": "/guide/21/golden/2/src",
       "step": 22,
@@ -3281,13 +3289,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1177,
+      "line": 1191,
       "anchor": [
-        "              claim \"2 bills will be created\" over a set of 900 lines. The count",
-        "              in the notice above is the honest thing this screen can say. */}",
-        "          <div className={`space-y-1.5 ${implicit ? \"hidden\" : \"\"}`}>",
-        "            <Label>",
-        "              {groups.length === 1"
+        "                    key={`${g.settlementUnit}|${g.attribute}|${g.currency}|${groupByTaxRate ? g.taxRate : \"\"}`}",
+        "                    className=\"flex items-baseline justify-between gap-3 text-xs\"",
+        "                  >",
+        "                    <span className=\"truncate\">",
+        "                      {g.settlementUnit || \"—\"} ·{\" \"}"
       ],
       "jsonPath": "/guide/21/golden/3/src",
       "step": 22,
@@ -3297,13 +3305,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1212,
+      "line": 1228,
       "anchor": [
-        "              onCheckedChange={(checked) => setGroupByTaxRate(checked === true)}",
-        "            />",
-        "            <Label htmlFor=\"create-bill-group-tax\" className=\"font-normal\">",
-        "              Also split by tax rate",
-        "            </Label>"
+        "              the preview can be TRUSTED to know that.",
+        "",
+        "              `settlementUnit` is a maskable column: a field-denied role reads",
+        "              every line with the key removed, so every line hashes to the same",
+        "              bucket and the preview says \"1 bill\" for a selection that really"
       ],
       "jsonPath": "/guide/21/golden/4/src",
       "step": 22,
@@ -3313,13 +3321,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1249,
+      "line": 1240,
       "anchor": [
-        "              bucket. Hidden rather than disabled: an input that silently does",
-        "              nothing is worse than one that is not there. */}",
-        "          {groups.length === 1 && !maskedSelection ? (",
-        "            <div className=\"space-y-1.5\">",
-        "              <Label htmlFor=\"create-bill-invoice-title\">Invoice Title</Label>"
+        "              Each bill takes its own settlement unit as its invoice title.",
+        "            </p>",
+        "          ) : null}",
+        "          {/* Only offered when the selection produces ONE bill.",
+        "              `invoiceTitle` is a single scalar on the request and the server"
       ],
       "jsonPath": "/guide/21/golden/5/src",
       "step": 22,
@@ -3329,13 +3337,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1266,
+      "line": 1278,
       "anchor": [
-        "          )}",
-        "          <div className=\"space-y-1.5\">",
-        "            <Label htmlFor=\"create-bill-remark\">Remark</Label>",
-        "            <Textarea",
-        "              id=\"create-bill-remark\""
+        "              : `${selectedLines.length} cost line(s) selected.`}",
+        "          </p>",
+        "        </div>",
+        "        <DialogFooter>",
+        "          <Button variant=\"outline\" onClick={() => onOpenChange(false)}>"
       ],
       "jsonPath": "/guide/21/golden/6/src",
       "step": 22,
@@ -3345,15 +3353,31 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1309,
+      "line": 1293,
       "anchor": [
-        "            }",
-        "          >",
-        "            {createBillMutation.isPending",
-        "              ? \"Creating…\"",
-        "              : implicit"
+        "                  ? { filterScope: { filter, confirmedCount: scope.count ?? -1 } }",
+        "                  : { costLineIds: selectedLines.map((l) => l.id) }),",
+        "                groupByTaxRate,",
+        "                // NOT SENT on a split. `invoiceTitle` is one scalar the server",
+        "                // applies to EVERY bill it creates, so on a split selection it"
       ],
       "jsonPath": "/guide/21/golden/7/src",
+      "step": 22,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
+      "line": 1342,
+      "anchor": [
+        " * total — `cost_line` has no CHECK against it, so a minus typed here would be",
+        " * stored happily and detonate somewhere downstream. The same reasoning as",
+        " * `templateLineInput.taxRate`, which is `nonNegativeDecimalString` for exactly",
+        " * this class of delayed failure.",
+        " *"
+      ],
+      "jsonPath": "/guide/21/golden/8/src",
       "step": 22,
       "kind": "golden",
       "seg": 0,
@@ -3363,11 +3387,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2434,
       "anchor": [
-        "         * the block comment above, and the capture-trip question it names.",
-        "         */",
-        "        groupByOrder: z.boolean().optional(),",
-        "        invoiceTitle: z.string().optional(),",
-        "        remark: z.string().optional(),"
+        "        // line, so no grouping key could have been exercised either way.",
+        "        //",
+        "        // Two wrong provenance claims have stood here already: first that the",
+        "        // boxes \"were observed unticked\", then that the dialog \"was opened, not",
+        "        // submitted\". Neither is in any capture, and the second is contradicted"
       ],
       "jsonPath": "/guide/21/fixes/0/src",
       "step": 22,
@@ -3393,13 +3417,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
-      "line": 809,
+      "line": 812,
       "anchor": [
-        "              controls for one intent. */}",
-        "          {actions.isReview ? null : (",
-        "            <ReviewMenu iconOnly selectedIds={[row.original.id]} onReview={reviewBill} />",
         "          )}",
-        "          {/* Bill details are editable at ANY status: these are metadata"
+        "          {/* Bill details are editable at ANY status: these are metadata",
+        "              (courier, voucher refs, tags, service fee), never money. The",
+        "              amount, currency and attribute stay derived from the cost lines. */}",
+        "          <Button"
       ],
       "jsonPath": "/guide/22/golden/1/src",
       "step": 23,
@@ -3409,13 +3433,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 806,
+      "line": 1519,
       "anchor": [
-        "   * is visible in the panel and in the chip row, not a hidden pin an operator",
-        "   * cannot see or undo. Unconditional because a hook cannot be. */",
-        "  const detached = useDetachedFilterState(",
-        "    isReview ? { auditStatus: REVIEW_QUEUE_DEFAULT_STATUS as BillAuditStatus } : {},",
-        "  );"
+        "           * `Record` on screen in the queue: it arrives seeded with an audit",
+        "           * status.",
+        "           *",
+        "           * `Record` exists so `Audit Status` is not a section of one — who made",
+        "           * this bill, when, from what, tagged how, and how far through review it"
       ],
       "jsonPath": "/guide/22/golden/2/src",
       "step": 23,
@@ -3425,13 +3449,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1375,
+      "line": 1526,
       "anchor": [
-        "            {isReview ? (",
-        "              <div className=\"flex flex-col items-end gap-2\">",
-        "                <ReviewQueuePresets",
-        "                  myMemberId={meQuery.data?.id ?? null}",
-        "                  /* A preset is an APPLIED gesture — nobody picks \"Waiting on me\""
+        "           * 6 · 7 · 20. */",
+        "          groups: [",
+        "            { name: \"Bill\", defaultOpen: true },",
+        "            { name: \"Record\" },",
+        "            { name: \"Invoicing\" },"
       ],
       "jsonPath": "/guide/22/golden/3/src",
       "step": 23,
@@ -3441,13 +3465,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1392,
+      "line": 1545,
       "anchor": [
-        "                  }",
-        "                />",
-        "                <ReviewQueueToolbar",
-        "                  selectedCount={selectedBillIds.length}",
-        "                  onApprove={() => reviewSelection(\"approved\")}"
+        "                <SelectFilter",
+        "                  value={draft.status}",
+        "                  onChange={(v) => setField(\"status\", v as BillStatus | undefined)}",
+        "                  options={BILL_STATUSES}",
+        "                  labels={BILL_STATUS_LABELS}"
       ],
       "jsonPath": "/guide/22/golden/4/src",
       "step": 23,
@@ -3457,13 +3481,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1328,
+      "line": 1481,
       "anchor": [
-        "      const ids = selectedBillIds;",
-        "      if (ids.length === 0) return;",
-        "      let reason: string | undefined;",
-        "      if (to === \"rejected\") {",
-        "        const entered = await askRejectReason();"
+        "                  onApply={(patch) =>",
+        "                    searchWith({",
+        "                      auditStatus: patch.auditStatus as BillAuditStatus | undefined,",
+        "                      submittedBy: patch.submittedBy,",
+        "                      auditedBy: patch.auditedBy,"
       ],
       "jsonPath": "/guide/22/golden/5/src",
       "step": 23,
@@ -3489,13 +3513,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 1362,
+      "line": 1513,
       "anchor": [
-        "          /* One step, so the applied search goes and the draft goes with it. */",
-        "          onClear: () => filters.searchWith({ q: undefined }),",
-        "          placeholder: \"Search all columns\",",
-        "          ariaLabel: \"Search every bill column\",",
-        "        }}"
+        "           * grouping — fields reached THROUGH the bill's cost lines to their",
+        "           * owning order — because sibling lists share section names and an",
+        "           * operator moving between the two should not learn a second vocabulary.",
+        "           *",
+        "           * Only `Bill` opens by default. A section holding an active filter pins"
       ],
       "jsonPath": "/guide/23/golden/0/src",
       "step": 24,
@@ -3505,13 +3529,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
-      "line": 825,
+      "line": 831,
       "anchor": [
-        "            variant=\"ghost\"",
-        "            size=\"icon-sm\"",
-        "            title=\"Invoicing\"",
-        "            disabled={row.original.status !== \"open\"}",
-        "            onClick={() => actions.onInvoice(row.original)}"
+        "            <FileCheck2 />",
+        "          </Button>",
+        "          {/* Finance Synced's writer (task 7.9). A toggle, not a one-shot",
+        "              stamp: the column and its `!== undefined` filter chip both read",
+        "              true/false, and a mistaken mark needs the same reachable action"
       ],
       "jsonPath": "/guide/23/golden/1/src",
       "step": 24,
@@ -3521,13 +3545,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 526,
+      "line": 656,
       "anchor": [
-        "          <div className=\"grid grid-cols-2 gap-3\">",
-        "            <div className=\"space-y-1.5\">",
-        "              <Label htmlFor=\"invoicing-category\">Invoice Category</Label>",
-        "              <Select",
-        "                value={category || undefined}"
+        "          <div className=\"space-y-1.5\">",
+        "            <Label htmlFor=\"invoicing-title\">Invoice Title</Label>",
+        "            <Input",
+        "              id=\"invoicing-title\"",
+        "              value={invoiceTitle}"
       ],
       "jsonPath": "/guide/23/golden/2/src",
       "step": 24,
@@ -3537,13 +3561,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 544,
+      "line": 682,
       "anchor": [
-        "            </div>",
-        "            <div className=\"space-y-1.5\">",
-        "              <Label htmlFor=\"invoicing-type\">Invoice Type</Label>",
-        "              <Select",
-        "                value={type || undefined}"
+        "          </div>",
+        "        </div>",
+        "        <DialogFooter>",
+        "          <Button variant=\"outline\" onClick={() => onOpenChange(false)}>",
+        "            Cancel"
       ],
       "jsonPath": "/guide/23/golden/3/src",
       "step": 24,
@@ -3553,13 +3577,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 563,
+      "line": 701,
       "anchor": [
-        "          </div>",
-        "          <div className=\"space-y-1.5\">",
-        "            <Label htmlFor=\"invoicing-number\">Invoice Number</Label>",
-        "            <Input",
-        "              id=\"invoicing-number\""
+        "                // A list since migration 0038 — one document may cover several",
+        "                // bills. This dialog is opened from a single bill ROW, so it",
+        "                // always sends exactly one.",
+        "                //",
+        "                // The multi-bill caller — 录入发票号 over this page's existing"
       ],
       "jsonPath": "/guide/23/golden/4/src",
       "step": 24,
@@ -3569,13 +3593,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 572,
+      "line": 710,
       "anchor": [
-        "          </div>",
-        "          <div className=\"space-y-1.5\">",
-        "            <Label htmlFor=\"invoicing-title\">Invoice Title</Label>",
-        "            <Input",
-        "              id=\"invoicing-title\""
+        "                billIds: [bill.id],",
+        "                // Omitted = the whole outstanding balance, which is what the",
+        "                // field is pre-filled with.",
+        "                amount: emptyToUndefined(amount),",
+        "                category: category || undefined,"
       ],
       "jsonPath": "/guide/23/golden/5/src",
       "step": 24,
@@ -3585,13 +3609,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 580,
+      "line": 718,
       "anchor": [
-        "          </div>",
-        "          <div className=\"space-y-1.5\">",
-        "            <Label htmlFor=\"invoicing-amount\">Amount</Label>",
-        "            {/* Editable: a bill can be invoiced in parts. Defaults to the whole",
-        "                outstanding balance, so leaving it alone reproduces the old"
+        "                // Sent only while the dialog itself is showing the notice — an",
+        "                // under-limit invoice never carries this field at all, which",
+        "                // is what keeps it silent (Journey 1 step 2).",
+        "                creditOverrideReason: needsReason ? creditOverrideReason.trim() : undefined,",
+        "              })"
       ],
       "jsonPath": "/guide/23/golden/6/src",
       "step": 24,
@@ -3601,15 +3625,31 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/bills.tsx",
-      "line": 603,
+      "line": 644,
       "anchor": [
-        "            Cancel",
-        "          </Button>",
-        "          <Button",
-        "            disabled={!bill || !category || !type || invoiceMutation.isPending}",
-        "            onClick={() =>"
+        "              </Select>",
+        "            </div>",
+        "          </div>",
+        "          <div className=\"space-y-1.5\">",
+        "            <Label htmlFor=\"invoicing-number\">Invoice Number</Label>"
       ],
       "jsonPath": "/guide/23/golden/7/src",
+      "step": 24,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/expenses/bills.tsx",
+      "line": 778,
+      "anchor": [
+        "  value,",
+        "  onChange,",
+        "  options,",
+        "  labels,",
+        "}: {"
+      ],
+      "jsonPath": "/guide/23/golden/8/src",
       "step": 24,
       "kind": "golden",
       "seg": 0,
@@ -3633,13 +3673,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 355,
+      "line": 359,
       "anchor": [
-        "           ordinary thing to want. The Downloaded column still records that it",
-        "           happened at least once. */",
-        "        title=\"Preview & download invoice document\"",
-        "        disabled={disabled}",
-        "        onClick={() => {"
+        "        onClick={() => {",
+        "          setRefusal(null);",
+        "          setOpen(true);",
+        "        }}",
+        "      >"
       ],
       "jsonPath": "/guide/24/golden/1/src",
       "step": 25,
@@ -3649,13 +3689,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 399,
+      "line": 403,
       "anchor": [
-        "",
-        "          {documentQuery.isLoading ? (",
-        "            <p className=\"text-sm text-muted-foreground\">Building the document…</p>",
-        "          ) : documentQuery.isError ? (",
-        "            <p className=\"text-sm text-destructive\">"
+        "            <p className=\"text-sm text-destructive\">",
+        "              {documentQuery.error instanceof Error",
+        "                ? documentQuery.error.message",
+        "                : `The document for invoice ${label} could not be built.`}",
+        "            </p>"
       ],
       "jsonPath": "/guide/24/golden/2/src",
       "step": 25,
@@ -3665,13 +3705,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 430,
+      "line": 441,
       "anchor": [
-        "            >",
-        "              <Download data-icon=\"inline-start\" />",
-        "              下载 PDF",
-        "            </Button>",
-        "          </DialogFooter>"
+        "/**",
+        " * The document, drawn from the model the two files are laid out from.",
+        " *",
+        " * Deliberately not an embedded render of the PDF: an `<iframe>` over a",
+        " * generated file would be a second code path that can disagree with the first,"
       ],
       "jsonPath": "/guide/24/golden/3/src",
       "step": 25,
@@ -3681,13 +3721,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 382,
+      "line": 389,
       "anchor": [
-        "          {/* The refusal, verbatim and above the document, because the cell it",
-        "              names is somewhere in the document below. */}",
-        "          {refusal ? (",
-        "            <div className=\"rounded-md border border-destructive/40 bg-destructive/5 p-3\">",
-        "              <p className=\"text-sm font-medium text-destructive\">"
+        "              <p className=\"mt-1 text-sm whitespace-pre-wrap text-destructive\">{refusal.message}</p>",
+        "              {refusal.format === \"pdf\" ? (",
+        "                <p className=\"mt-2 text-xs text-muted-foreground\">",
+        "                  XLSX carries the same figures and has no font restriction, so 下载 XLSX below will",
+        "                  produce a file now. The PDF will keep failing until the named text is given a"
       ],
       "jsonPath": "/guide/24/golden/4/src",
       "step": 25,
@@ -3697,13 +3737,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 411,
+      "line": 419,
       "anchor": [
-        "",
-        "          <DialogFooter>",
-        "            <Button variant=\"outline\" onClick={close}>",
-        "              取消",
-        "            </Button>"
+        "            <Button",
+        "              variant=\"outline\"",
+        "              disabled={saving !== null || !documentQuery.data}",
+        "              onClick={() => void save(\"xlsx\")}",
+        "            >"
       ],
       "jsonPath": "/guide/24/golden/5/src",
       "step": 25,
@@ -3713,13 +3753,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 703,
+      "line": 783,
       "anchor": [
-        "            variant=\"ghost\"",
-        "            size=\"icon-sm\"",
-        "            title=\"Mark printed\"",
-        "            disabled={row.original.isPrinted || actions.busy}",
-        "            onClick={() => actions.onPrint(row.original.id)}"
+        "      seller: applied.seller,",
+        "      buyer: applied.buyer,",
+        "      viState: applied.viState,",
+        "      settlementUnit: applied.settlementUnit,",
+        "      billNo: applied.billNo,"
       ],
       "jsonPath": "/guide/24/golden/6/src",
       "step": 25,
@@ -3729,13 +3769,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/invoices.tsx",
-      "line": 714,
+      "line": 794,
       "anchor": [
-        "                variant=\"ghost\"",
-        "                size=\"icon-sm\"",
-        "                title=\"Cancel invoice\"",
-        "                disabled={row.original.state === \"cancelled\"}",
-        "              >"
+        "   * over the whole filtered set — see the `manualPagination` table below. */",
+        "  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 20 });",
+        "",
+        "  /* A new filter matches a different set, and an offset counted against the old",
+        "   * one points past its end — the grid then reads as empty for a filter that"
       ],
       "jsonPath": "/guide/24/golden/7/src",
       "step": 25,
@@ -3745,29 +3785,24 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1222,
-      "anchor": [
-        "            }))}",
-        "          />",
-        "        }",
-        "        action={{ label: \"Add\", onClick: () => setFormOpen(true) }}",
-        "        filters={{"
-      ],
+      "line": 1453,
+      "anchor": [],
       "jsonPath": "/guide/25/golden/0/src",
       "step": 26,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": 0
+      "lineIdx": 0,
+      "outOfRangeAtSnapshot": true
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 257,
+      "line": 416,
       "anchor": [
+        "          <div className=\"grid grid-cols-2 gap-3\">",
+        "            <form.Field name=\"bankSlipNumber\">",
         "              {(field) => (",
         "                <div className=\"space-y-1.5\">",
-        "                  <Label htmlFor={field.name}>Attribute</Label>",
-        "                  <Select",
-        "                    value={field.state.value}"
+        "                  <Label htmlFor={field.name}>Bank Slip Number</Label>"
       ],
       "jsonPath": "/guide/25/golden/1/src",
       "step": 26,
@@ -3777,13 +3812,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 294,
+      "line": 454,
       "anchor": [
-        "            {(field) => (",
-        "              <div className=\"space-y-1.5\">",
-        "                <Label htmlFor={field.name}>",
-        "                  Settlement Unit <span className=\"text-destructive\">*</span>",
-        "                </Label>"
+        "            )}",
+        "          </form.Field>",
+        "        </form>",
+        "        <SheetFooter className=\"flex-row justify-end gap-2 border-t border-border\">",
+        "          <Button type=\"button\" variant=\"outline\" onClick={() => onOpenChange(false)}>"
       ],
       "jsonPath": "/guide/25/golden/2/src",
       "step": 26,
@@ -3793,13 +3828,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 316,
+      "line": 476,
       "anchor": [
-        "              {(field) => (",
-        "                <div className=\"space-y-1.5\">",
-        "                  <Label htmlFor={field.name}>Our Account</Label>",
-        "                  <Input",
-        "                    id={field.name}"
+        "}",
+        "",
+        "// ── Verify dialog (calls writeOffs.verify) ──────────────────────────────────",
+        "",
+        "function VerifyDialog({"
       ],
       "jsonPath": "/guide/25/golden/3/src",
       "step": 26,
@@ -3809,13 +3844,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 466,
+      "line": 578,
       "anchor": [
-        "                onClick={() => form.handleSubmit()}",
-        "              >",
-        "                {createMutation.isPending ? \"Saving…\" : \"Add Payment\"}",
-        "              </Button>",
-        "            )}"
+        "        queryClient.invalidateQueries({ queryKey: orpc.bills.list.queryKey() });",
+        "        queryClient.invalidateQueries({ queryKey: orpc.bills.totals.queryKey() });",
+        "        queryClient.invalidateQueries({ queryKey: orpc.costLines.list.queryKey() });",
+        "        onOpenChange(false);",
+        "      },"
       ],
       "jsonPath": "/guide/25/golden/4/src",
       "step": 26,
@@ -3825,13 +3860,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 899,
+      "line": 650,
       "anchor": [
-        "            variant=\"ghost\"",
-        "            size=\"icon-sm\"",
-        "            title=\"Verify\"",
-        "            onClick={() => actions.onVerify(row.original)}",
-        "          >"
+        "              <Input",
+        "                id=\"verify-method\"",
+        "                value={method}",
+        "                onChange={(e) => setMethod(e.target.value)}",
+        "              />"
       ],
       "jsonPath": "/guide/25/golden/5/src",
       "step": 26,
@@ -3841,13 +3876,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 593,
+      "line": 1122,
       "anchor": [
-        "          <div className=\"grid grid-cols-2 gap-3\">",
-        "            <div className=\"space-y-1.5\">",
-        "              <Label htmlFor=\"verify-target-type\">Target</Label>",
-        "              <Select",
-        "                value={targetType}"
+        "    chip(\"postedRange\", \"Posted\", [\"postFrom\", \"postTo\"]),",
+        "    chip(\"createdBy\", \"Creator\"),",
+        "  ];",
+        "",
+        "  const [sorting, setSorting] = useState<SortingState>([]);"
       ],
       "jsonPath": "/guide/25/golden/6/src",
       "step": 26,
@@ -3857,13 +3892,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 637,
+      "line": 804,
       "anchor": [
-        "          <div className=\"grid grid-cols-3 gap-3\">",
-        "            <div className=\"space-y-1.5\">",
-        "              <Label htmlFor=\"verify-amount\">",
-        "                Write-off Amount{payment ? ` (${payment.currency})` : \"\"}",
-        "              </Label>"
+        "      ),",
+        "    },",
+        "    {",
+        "      id: \"unverified\",",
+        "      header: \"Unverified\","
       ],
       "jsonPath": "/guide/25/golden/7/src",
       "step": 26,
@@ -3873,13 +3908,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 680,
+      "line": 849,
       "anchor": [
-        "            overrides it.",
-        "          */}",
-        "          {crossCurrency && payment ? (",
-        "            <div className=\"space-y-1.5 rounded-md border border-border bg-muted/40 p-3\">",
-        "              <Label htmlFor=\"verify-exchange-rate\">"
+        "      cell: ({ row }) => labelFor(PAYMENT_WAY_LABELS, row.original.paymentWay),",
+        "    },",
+        "    {",
+        "      accessorKey: \"bankSlipNumber\",",
+        "      header: \"Bank Serial No\","
       ],
       "jsonPath": "/guide/25/golden/8/src",
       "step": 26,
@@ -3889,13 +3924,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 736,
+      "line": 894,
       "anchor": [
-        "            }",
-        "          >",
-        "            {verifyMutation.isPending ? \"Verifying…\" : \"Verify\"}",
-        "          </Button>",
-        "        </DialogFooter>"
+        "          onClick={(e) => e.stopPropagation()}",
+        "          onKeyDown={(e) => e.stopPropagation()}",
+        "          role=\"presentation\"",
+        "        >",
+        "          <Button"
       ],
       "jsonPath": "/guide/25/golden/9/src",
       "step": 26,
@@ -3904,16 +3939,32 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/expenses/write-offs.tsx",
-      "line": 296,
+      "file": "apps/web/src/routes/_next/expenses/payments.tsx",
+      "line": 947,
       "anchor": [
-        "                variant=\"ghost\"",
-        "                size=\"icon-sm\"",
-        "                title=\"Void write-off\"",
-        "                disabled={!!row.original.voidedAt}",
-        "              >"
+        "  const [formOpen, setFormOpen] = useState(false);",
+        "  const [verifying, setVerifying] = useState<Payment | null>(null);",
+        "",
+        "  const filters = useUrlFilters<PaymentFilterValues>({",
+        "    search: urlSearch,"
       ],
       "jsonPath": "/guide/25/golden/10/src",
+      "step": 26,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/expenses/write-offs.tsx",
+      "line": 202,
+      "anchor": [
+        "    },",
+        "    { accessorKey: \"remark\", header: \"Remark\", cell: ({ row }) => row.original.remark || \"—\" },",
+        "    // ── hidden by default ──",
+        "    {",
+        "      accessorKey: \"account\","
+      ],
+      "jsonPath": "/guide/25/golden/11/src",
       "step": 26,
       "kind": "golden",
       "seg": 0,
@@ -3937,13 +3988,13 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 280,
+      "line": 343,
       "anchor": [
-        "            opens and asks — so the label says which scope applies, not a",
-        "            number it does not have. */}",
-        "        导出单证 · Export documents {implicit ? \"(全选)\" : `(${count})`}",
-        "      </Button>",
-        ""
+        "                <Label htmlFor=\"export-account\">选择账户</Label>",
+        "                <Select",
+        "                  value={bankAccountId}",
+        "                  onValueChange={(v) => {",
+        "                    setBankAccountId(v ?? \"\");"
       ],
       "jsonPath": "/guide/26/golden/1/src",
       "step": 27,
@@ -3953,13 +4004,13 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 307,
+      "line": 370,
       "anchor": [
-        "          <div className=\"grid gap-3\">",
-        "            <div className=\"grid gap-1.5\">",
-        "              <Label htmlFor=\"export-type\">文件类型</Label>",
-        "              <Select value={type} onValueChange={(v) => changeType((v ?? type) as ArtifactType)}>",
-        "                <SelectTrigger id=\"export-type\" className=\"w-full\">"
+        "                    ))}",
+        "                  </SelectContent>",
+        "                </Select>",
+        "                {accounts.length === 0 ? (",
+        "                  // Said out loud, because the consequence is invisible in the"
       ],
       "jsonPath": "/guide/26/golden/2/src",
       "step": 27,
@@ -3969,13 +4020,13 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 323,
+      "line": 392,
       "anchor": [
-        "",
-        "            <div className=\"grid gap-1.5\">",
-        "              <Label htmlFor=\"export-name\">文件名</Label>",
-        "              <Input",
-        "                id=\"export-name\""
+        "                <SelectContent>",
+        "                  {FORMATS.map((f) => (",
+        "                    <SelectItem key={f.value} value={f.value}>",
+        "                      {f.label}",
+        "                    </SelectItem>"
       ],
       "jsonPath": "/guide/26/golden/3/src",
       "step": 27,
@@ -3985,13 +4036,13 @@
     },
     {
       "file": "apps/web/src/components/export-table-dialog.tsx",
-      "line": 412,
+      "line": 422,
       "anchor": [
-        "                optimistic: the server would refuse, and offering the click",
-        "                anyway is the dead affordance this branch keeps deleting. */}",
-        "            <Button variant=\"outline\" disabled={busy || !canRun} onClick={runPreview}>",
-        "              预览",
-        "            </Button>"
+        "      </Dialog>",
+        "    </>",
+        "  );",
+        "}",
+        ""
       ],
       "jsonPath": "/guide/26/golden/4/src",
       "step": 27,
@@ -4000,14 +4051,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-      "line": 796,
+      "file": "apps/web/src/components/export-table-dialog.tsx",
+      "line": 484,
       "anchor": [
-        "                disagrees with the screen. Disabled while dirty, for that reason",
-        "                and not for a technical one. */}",
-        "              <ExportTableDialog",
-        "                selectedIds={costs.map((c) => c.id).filter((id): id is string => Boolean(id))}",
-        "                disabled={!loaded || dirty || costs.length === 0}"
+        "                  ))}",
+        "                </tr>",
+        "              ))}",
+        "              {section.totals.map((total) => (",
+        "                <tr key={total.label} className=\"border-t border-border font-medium\">"
       ],
       "jsonPath": "/guide/26/golden/5/src",
       "step": 27,
@@ -4016,14 +4067,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/report/financial/index.tsx",
-      "line": 937,
+      "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
+      "line": 932,
       "anchor": [
-        "        <div className=\"border-b bg-muted/40 px-6\">",
-        "          <div className=\"flex gap-4\">",
-        "            {[",
-        "              { key: \"profit-analysis\", label: \"Profit analysis statement\" },",
-        "              { key: \"profit-statement\", label: \"Profit statement\" },"
+        "          </Link>",
+        "          , where a selection splits into one bill per settlement unit, attribute and currency.",
+        "        </p>",
+        "      </div>",
+        "    </main>"
       ],
       "jsonPath": "/guide/26/golden/6/src",
       "step": 27,
@@ -4033,13 +4084,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/report/financial/index.tsx",
-      "line": 908,
+      "line": 993,
       "anchor": [
-        "                  disabled={monthEndPackMutation.isPending}",
-        "                />",
-        "                <Button",
-        "                  variant=\"outline\"",
-        "                  size=\"sm\""
+        "                  }}",
+        "                  onApply={(state) => {",
+        "                    if (state) applyView(state);",
+        "                  }}",
+        "                />"
       ],
       "jsonPath": "/guide/26/golden/7/src",
       "step": 27,
@@ -4049,13 +4100,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/report/financial/index.tsx",
-      "line": 925,
+      "line": 950,
       "anchor": [
-        "              </>",
-        "            )}",
-        "            {canExport && (",
-        "              <ExportButton",
-        "                filters={summaryInput}"
+        "                    ? \"border-primary text-primary\"",
+        "                    : \"border-transparent text-muted-foreground hover:text-foreground\"",
+        "                }`}",
+        "                onClick={() => setActiveTab(tab.key as any)}",
+        "              >"
       ],
       "jsonPath": "/guide/26/golden/8/src",
       "step": 27,
@@ -4064,16 +4115,32 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
-      "line": 843,
+      "file": "apps/web/src/routes/_next/report/financial/index.tsx",
+      "line": 981,
       "anchor": [
-        "            size=\"icon-sm\"",
-        "            title={",
-        "              row.original.financeSynced ? \"Clear finance-synced mark\" : \"Mark synced to finance\"",
-        "            }",
-        "            aria-pressed={row.original.financeSynced}"
+        "              groups={FINANCIAL_FILTER_GROUPS}",
+        "              // No columns: this bar is shared by all five tabs, while the",
+        "              // one grid belongs to a card on the Profit statement tab. That",
+        "              // card keeps its own gear, beside the table it configures.",
+        "              views={"
       ],
       "jsonPath": "/guide/26/golden/9/src",
+      "step": 27,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
+      "line": 849,
+      "anchor": [
+        "            disabled={actions.financeSyncPending}",
+        "            onClick={() => actions.onToggleFinanceSynced(row.original)}",
+        "          >",
+        "            <Landmark />",
+        "          </Button>"
+      ],
+      "jsonPath": "/guide/26/golden/10/src",
       "step": 27,
       "kind": "golden",
       "seg": 0,
@@ -4489,7 +4556,8 @@
       "step": 2,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/routes/_next/inbox.$threadId.tsx"
       ]
     },
     {
@@ -4525,11 +4593,11 @@
       "text": "Customer",
       "step": 2,
       "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/link-picker.tsx",
         "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
       ]
     },
     {
@@ -4568,7 +4636,8 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/components/order-form.tsx",
-        "packages/api/src/routers/collective-order.ts"
+        "packages/api/src/routers/collective-order.ts",
+        "apps/web/src/components/customs-tracking/bl-job-record.tsx"
       ]
     },
     {
@@ -4655,6 +4724,7 @@
       "foundIn": [
         "apps/web/src/components/company/company-contacts.tsx",
         "packages/api/src/routers/company-contact.ts",
+        "packages/api/src/routers/report.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx",
         "apps/web/src/routes/_next/companies_.$companyId.tsx"
       ]
@@ -4694,6 +4764,7 @@
       "foundIn": [
         "apps/web/src/components/company/company-contacts.tsx",
         "packages/api/src/routers/report.ts",
+        "packages/api/src/quotation/values.ts",
         "packages/api/src/modules/quotation/sheet.ts"
       ]
     },
@@ -4705,7 +4776,7 @@
         "apps/web/src/components/company/company-contacts.tsx",
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/server/src/bl-tracking-worker.ts"
+        "packages/api/src/quotation/values.ts"
       ]
     },
     {
@@ -4832,6 +4903,7 @@
       "text": "Submit for review",
       "step": 4,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
@@ -4877,7 +4949,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/supersede-template-dialog.tsx",
-        "packages/api/src/routers/collective-order.ts"
+        "packages/api/src/quotation/tariff-check.ts"
       ]
     },
     {
@@ -4886,8 +4958,7 @@
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/components/supersede-template-dialog.tsx",
-        "packages/api/src/quotation/tariff-check.ts"
+        "apps/web/src/components/supersede-template-dialog.tsx"
       ]
     },
     {
@@ -5133,7 +5204,7 @@
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/components/order-form.tsx"
+        "apps/web/src/components/reference-template-dialog.tsx"
       ]
     },
     {
@@ -5213,6 +5284,7 @@
       "text": "Reference Template",
       "step": 6,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/reference-template-dialog.tsx",
         "packages/api/src/routers/collective-order.ts",
@@ -5431,11 +5503,11 @@
       "text": "Export",
       "step": 9,
       "foundIn": [
+        "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/report.ts",
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -5463,22 +5535,22 @@
       "text": "Send",
       "step": 9,
       "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/components/inbox/left-rail.tsx",
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "packages/api/src/routers/quotation.ts"
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
       ]
     },
     {
       "text": "From",
       "step": 9,
       "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/company.ts",
-        "packages/db/src/schema/company.ts",
-        "apps/web/src/components/company/company-contacts.tsx"
+        "packages/db/src/schema/company.ts"
       ]
     },
     {
@@ -5567,7 +5639,8 @@
       "text": "Resend",
       "step": 9,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
     },
     {
@@ -5605,6 +5678,8 @@
       "text": "Outcome",
       "step": 10,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/quotation/decide-quotation-dialog.tsx"
       ]
     },
@@ -5612,8 +5687,10 @@
       "text": "Won",
       "step": 10,
       "foundIn": [
+        "apps/web/src/components/inbox/link-picker.tsx",
         "apps/web/src/lib/quotation.ts",
         "packages/api/src/routers/quotation.ts",
+        "packages/api/src/modules/audit/seed.ts",
         "apps/web/src/components/quotation/decide-quotation-dialog.tsx"
       ]
     },
@@ -5621,8 +5698,11 @@
       "text": "Lost",
       "step": 10,
       "foundIn": [
+        "apps/web/src/components/inbox/link-picker.tsx",
         "apps/web/src/lib/quotation.ts",
-        "apps/web/src/components/quotation/decide-quotation-dialog.tsx"
+        "packages/api/src/routers/quotation.ts",
+        "packages/api/src/modules/audit/seed.ts",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -5636,6 +5716,7 @@
       "text": "Customer reference",
       "step": 10,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/quotation/decide-quotation-dialog.tsx"
       ]
     },
@@ -5697,6 +5778,7 @@
       "text": "Assign number",
       "step": 12,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/order-ledger/assign-job-number-button.tsx"
       ]
     },
@@ -6024,6 +6106,7 @@
       "text": "Submit for review",
       "step": 15,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
@@ -6148,7 +6231,7 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/triage-bar.tsx",
         "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/routes/_next/companies.tsx"
+        "apps/web/src/components/inbox/link-picker.tsx"
       ]
     },
     {
@@ -6657,6 +6740,7 @@
         "packages/api/src/routers/lading.ts",
         "apps/web/src/routes/_next/lading/$id/index.tsx",
         "apps/web/src/routes/_next/documents.$documentId.tsx",
+        "apps/web/src/components/customs-tracking/bl-job-record.tsx",
         "apps/web/src/routes/_next/lading/index.tsx"
       ]
     },
@@ -6715,6 +6799,26 @@
       ]
     },
     {
+      "text": "Review",
+      "step": 17,
+      "foundIn": [
+        "apps/web/src/routes/_next/companies.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "packages/db/src/schema/company.ts",
+        "packages/api/src/routers/company-contact.ts"
+      ]
+    },
+    {
+      "text": "Submit for review",
+      "step": 17,
+      "foundIn": [
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/components/review-menu.tsx"
+      ]
+    },
+    {
       "text": "Documents",
       "step": 18,
       "foundIn": [
@@ -6752,19 +6856,57 @@
       ]
     },
     {
-      "text": "Reclassify",
+      "text": "Save & approve",
       "step": 18,
-      "foundIn": []
+      "foundIn": [
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
+      ]
     },
     {
-      "text": "Reject",
+      "text": "Not freight",
+      "step": 18,
+      "foundIn": [
+        "apps/web/src/routes/_next/documents.index.tsx",
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
+      ]
+    },
+    {
+      "text": "Linked records",
+      "step": 18,
+      "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "apps/web/src/components/inbox/link-picker.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+      ]
+    },
+    {
+      "text": "Order",
       "step": 18,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/fee-templates/index.tsx",
-        "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/index.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "packages/api/src/routers/report.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx"
+      ]
+    },
+    {
+      "text": "Bill of lading",
+      "step": 18,
+      "foundIn": [
+        "packages/api/src/modules/audit/seed.ts",
+        "apps/web/src/routes/_next/lading/index.tsx"
+      ]
+    },
+    {
+      "text": "Link",
+      "step": 18,
+      "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "apps/web/src/components/inbox/triage-bar.tsx",
+        "apps/web/src/components/inbox/left-rail.tsx",
+        "apps/web/src/components/inbox/link-picker.tsx",
+        "apps/web/src/routes/_next/companies.tsx"
       ]
     },
     {
@@ -6785,14 +6927,21 @@
       ]
     },
     {
+      "text": "BL Number",
+      "step": 19,
+      "foundIn": [
+        "apps/web/src/routes/_next/customs-tracking.tsx"
+      ]
+    },
+    {
       "text": "Void",
       "step": 19,
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/lading.ts",
         "apps/web/src/routes/_next/customs-tracking.tsx",
-        "packages/api/src/routers/expense/cost-lines.ts",
-        "apps/web/src/routes/_next/expenses/write-offs.tsx"
+        "apps/web/src/components/customs-tracking/bl-job-record.tsx",
+        "packages/api/src/routers/expense/cost-lines.ts"
       ]
     },
     {
@@ -6859,6 +7008,7 @@
       "step": 20,
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
       ]
     },
@@ -6866,6 +7016,8 @@
       "text": "Quantity",
       "step": 20,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/components/reference-template-dialog.tsx",
         "packages/api/src/routers/collective-order.ts",
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx"
@@ -6941,7 +7093,7 @@
       "foundIn": []
     },
     {
-      "text": "The exchange rate for <period> has not been set for <currencies>.",
+      "text": "No exchange rate on file for <currencies>.",
       "step": 20,
       "foundIn": []
     },
@@ -6984,6 +7136,7 @@
       "text": "Submit for review",
       "step": 21,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
@@ -7019,10 +7172,10 @@
       "step": 21,
       "foundIn": [
         "packages/api/src/routers/report.ts",
+        "packages/api/src/routers/quotation.ts",
         "packages/api/src/routers/collective-order.ts",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "apps/web/src/components/expense/cost-line-batch-menu.tsx",
-        "packages/api/src/routers/expense/cost-lines.ts"
+        "apps/web/src/components/expense/cost-line-batch-menu.tsx"
       ]
     },
     {
@@ -7168,6 +7321,11 @@
       ]
     },
     {
+      "text": "Also split by order",
+      "step": 22,
+      "foundIn": []
+    },
+    {
       "text": "Invoice Title",
       "step": 22,
       "foundIn": [
@@ -7218,6 +7376,7 @@
       "text": "Submit for review",
       "step": 23,
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
@@ -7372,6 +7531,13 @@
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts"
+      ]
+    },
+    {
+      "text": "Reason for invoicing over the limit",
+      "step": 24,
+      "foundIn": [
+        "apps/web/src/routes/_next/expenses/bills.tsx"
       ]
     },
     {
@@ -7600,6 +7766,17 @@
       ]
     },
     {
+      "text": "Exchange Rate",
+      "step": 26,
+      "foundIn": [
+        "apps/web/src/routes/_next/expenses/cost-lines.tsx",
+        "apps/web/src/routes/_next/expenses/-bills.columns.tsx",
+        "apps/web/src/routes/_next/expenses/invoices.tsx",
+        "apps/web/src/routes/_next/expenses/payments.tsx",
+        "apps/web/src/routes/_next/expenses/write-offs.tsx"
+      ]
+    },
+    {
       "text": "Add Payment",
       "step": 26,
       "foundIn": [
@@ -7707,6 +7884,17 @@
       ]
     },
     {
+      "text": "Reason",
+      "step": 26,
+      "foundIn": [
+        "apps/web/src/routes/_next/companies.tsx",
+        "packages/db/src/schema/company.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/components/review-queue.tsx"
+      ]
+    },
+    {
       "text": "Void Write-off",
       "step": 26,
       "foundIn": [
@@ -7761,6 +7949,11 @@
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
         "apps/web/src/components/export-table-dialog.tsx"
       ]
+    },
+    {
+      "text": "结算单位 · Settlement unit",
+      "step": 27,
+      "foundIn": []
     },
     {
       "text": "文件名",
@@ -7918,12 +8111,15 @@
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
         "packages/api/src/quotation/values.ts",
+        "packages/api/src/quotation/tariff-check.ts",
         "packages/api/src/modules/audit/post-approval.ts"
       ]
     },
     {
       "literal": "withdrawn",
       "foundIn": [
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/quotation/values.ts",
         "packages/api/src/routers/collective-order.ts",
         "apps/web/src/components/review-menu.tsx",
