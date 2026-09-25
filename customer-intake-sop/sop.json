@@ -6,7 +6,7 @@
     "site": "Sepangar Port · Kolombong",
     "kind": "Standard operating sequence",
     "readFirst": "Most failures in this chain are in the joins between stages, not the stages — though the money stages carry defects of their own. Eight places marked <strong>chain break</strong> below are where the system stops carrying your data forward and a human has to retype it — the spine on the left is interrupted at each one. Two more sit inside single steps rather than between them, in the Watch notes on steps 17 and 19.",
-    "appBaseUrl": "http://localhost:3101/",
+    "appBaseUrl": "https://nct-ai-web-prod.zhiyuantech.workers.dev/",
     "baseUrlHint": "Every screen path on this page, like <code>/report/business</code>, opens against this address.",
     "mapLede": "All twenty-seven steps in order. Hover or tab one to read the summary below the chart; <strong>click a step (or press Enter) to open its full operator guide</strong> — golden path, screens, fields, what the system writes, and screenshots. The five severed links are where the system stops carrying your data across.",
     "docLede": "Every step in full, in order, with the chain breaks where they fall. The chart above is an index of what is written here — hovering a node shows you the step from this text, so the two can never disagree. Collapsed by default; it opens on its own when you follow a link to a step, and it always prints.",
