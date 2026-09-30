@@ -862,12 +862,12 @@
         {
           "action": "Type the name into **Search name, EN name, code, customer code** and check for an existing record",
           "detail": "The search matches substrings in all four fields. There is no typeahead warning when you add a company.",
-          "src": "apps/web/src/routes/_next/companies.tsx:734"
+          "src": "apps/web/src/routes/_next/companies.tsx:442"
         },
         {
           "action": "Not found? Click **Add** in the toolbar",
           "detail": "The **Add company** dialog opens.",
-          "src": "apps/web/src/routes/_next/companies.tsx:801"
+          "src": "apps/web/src/routes/_next/companies.tsx:509"
         },
         {
           "action": "Type the **Company title**",
@@ -881,7 +881,7 @@
         {
           "action": "Under **Roles**, keep **Customer** ticked (it is ticked by default); add **Supplier** or **Overseas agent** if they apply",
           "detail": "The server refuses a company with no role: **A company needs at least one role (customer, supplier or agent)**.",
-          "src": "packages/api/src/routers/company.ts:666"
+          "src": "packages/api/src/routers/company.ts:785"
         },
         {
           "action": "Press **Create and continue**",
@@ -1496,7 +1496,7 @@
           "title": "Quotation date is the row's save timestamp and no screen can set or correct it",
           "why": "quotationHeaderInput accepts quotationDate on both create and update, and update honours the patch, but no field for it exists anywhere in apps/web — create stamps `now` instead. The value is printed as 报价日期 / Quotation date on the customer-facing sheet that quotations.send emails out, it is the ledger's only date column and its From/To filter, and it is the effective date the price-floor check and the tariff hints resolve the fee-template window against. A quote drafted Monday and issued Thursday goes to the customer dated Monday, a quote entered late is floor-checked against the wrong tariff sheet, and the only correction is duplicate — which re-dates to today and burns a new quotation number.",
           "repair": "Add a Quotation Date input to the brief disclosure in $quotationId.tsx (beside Validity Start/End at :1891), seed it from loaded?.quotationDate in defaultValues (:993), and include it in the submit payload (:1076) so both create and the existing update patch path receive it.",
-          "src": "packages/api/src/routers/quotation.ts:1532,3159,3382; apps/web/src/routes/_next/quotations/$quotationId.tsx:993",
+          "src": "packages/api/src/routers/quotation.ts:1599,3442,3665; apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:159",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -1546,7 +1546,7 @@
           "title": "Quotation staff is auto-stamped, copied by duplicate, and editable nowhere — so the printed 业务员 can be the wrong person permanently",
           "why": "create writes quotationStaff from context.session.user.name, duplicate carries the SOURCE's quotationStaff in via `...source` (only createdBy is re-pointed at the duplicator), and quotationHeaderInput exposes the field on create and update but nothing in apps/web renders it. So a coordinator entering a quote for a salesperson, or salesperson B duplicating A's quote — the path the app itself prescribes for re-quoting a decided record — emails the customer a sheet naming the wrong salesperson, and the ledger's Quotation Staff filter hides B's own work from B. There is no in-app correction at all.",
           "repair": "Add a Quotation Staff field (member picker, defaulted to the session user) to the brief in $quotationId.tsx and send it in the payload; and in quotations.duplicate set quotationStaff to the duplicating member alongside createdBy at quotation.ts:3453 rather than letting it ride in on the spread.",
-          "src": "packages/api/src/routers/quotation.ts:3161,3543; packages/api/src/modules/quotation/sheet.ts:356",
+          "src": "packages/api/src/routers/quotation.ts:3444,3826; packages/api/src/modules/quotation/sheet.ts:363",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -1957,7 +1957,7 @@
           "title": "A quotation stays fully editable while it is sitting in the reviewer's queue",
           "why": "quotations.update guards only two things - decidedAt (a won/lost quote) and assertPostApprovalEditable (an already-passed review). It never calls assertNotUnderReview, the guard gates.ts:130 was written for exactly this and which lading.ts:1474 and company.ts:1343 do call. So after Submit for review the salesperson can reopen /quotations/$quotationId, rewrite every selling line and save; the submission stays under_review with the old submit stamp, and the branch manager's Approved in /approve/quotation signs a price sheet that no longer exists. modules/audit/gates.ts:123 asserts a quotation is already safe 'by its own private route, assertDraft inside loadScopedDraftLine' - that function is routers/quote.ts:78, in the legacy quote router, and never runs on the quotation path, so the claimed protection is not there. quotations.applyTemplate (:3519) has the same hole.",
           "repair": "Call assertNotUnderReview(tx, organizationId, \"quotation\", id) in quotations.update immediately after the scoped load, beside the existing assertPostApprovalEditable at :3196, and in applyTemplate beside the one at :3575. Correct the stale claim in modules/audit/gates.ts:123.",
-          "src": "packages/api/src/routers/quotation.ts:3288",
+          "src": "packages/api/src/routers/quotation.ts:3571",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2071,7 +2071,7 @@
           "title": "The legacy quotations.review verb stamps 'approved' with no submission behind it",
           "why": "quotations.review still writes quotation.auditStatus straight through canAuditTransition, filing no audit_submission row. No page in apps/web calls it any more, but it is a live oRPC procedure held by branch-manager and director. Because the gates read audit_submission (gates.ts:90) while the ledger badge and the /approve/quotation audit-status filter read the cache column, the two can be made to disagree permanently: a quotation reads 'Approved' with 'Approve staff' blank in every list, while convertToOrder refuses with '\"Convert order\" requires review approval first' and nothing in the UI explains why or offers a way out.",
           "repair": "Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.",
-          "src": "packages/api/src/routers/quotation.ts:3937",
+          "src": "packages/api/src/routers/quotation.ts:4220",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2158,7 +2158,7 @@
           "title": "The 'Export quotation' gate is wired to reading a quotation, not to exporting or emailing one",
           "why": "assertGateCleared(..., \"export\") sits inside quotations.retrieve, which is the query the whole quotation record page runs ($quotationId.tsx:585) and which the decide, send and reference-template dialogs re-fetch. quotations.exportSheet (:2489) and quotations.send (:2598) - the two verbs that actually put the price in front of the customer - call no gate at all. The moment a tenant ticks 'Export quotation' in the Approval Process Setting page, every un-approved quotation 409s on open, so the author cannot finish drafting it and the reviewer cannot read it before deciding (the review becomes undecidable), while the XLSX/PDF download and the customer email that the checkbox names keep working unchanged.",
           "repair": "Move the assertGateCleared(..., \"export\") call out of quotations.retrieve and into quotations.exportSheet and quotations.send, after each handler's scoped load.",
-          "src": "packages/api/src/routers/quotation.ts:2363",
+          "src": "packages/api/src/routers/quotation.ts:2491",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2310,7 +2310,7 @@
           "title": "There is no outbox, so a failed stamp costs a second email",
           "why": "Send mails the customer and then records the stamp. If the stamp fails after the mail is away, the only route forward is pressing Send again, which sends the customer a duplicate quotation.",
           "repair": "Record the send intent before dispatch and reconcile after, so a retry resumes the stamp instead of re-sending the document.",
-          "src": "packages/api/src/routers/quotation.ts:2725",
+          "src": "packages/api/src/routers/quotation.ts:2870",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2432,7 +2432,7 @@
           "title": "A mis-keyed decision cannot be corrected",
           "why": "Won or Lost freezes the quotation and re-deciding is refused. The code names the gap itself: correcting one today needs a database edit, so a wrong outcome poisons win-rate reporting permanently.",
           "repair": "Add a reviewed correction path that supersedes the decision and keeps both stamps, rather than making the first answer final.",
-          "src": "packages/api/src/routers/quotation.ts:2947",
+          "src": "packages/api/src/routers/quotation.ts:3230",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
