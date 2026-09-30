@@ -848,7 +848,7 @@
           "label": "Company record page"
         }
       ],
-      "navigate": "Top nav **Sales** → **Companies**",
+      "navigate": "Top nav **Sales** → **Companies**, or **Overview → New Customers → Add customer** (the same Add company form; that tab lists customers added in the last 30 days)",
       "before": [
         "Have the company's legal name exactly as it should print on documents.",
         "Search first. The duplicate check only catches an exact same-case name."
@@ -881,7 +881,7 @@
         {
           "action": "Under **Roles**, keep **Customer** ticked (it is ticked by default); add **Supplier** or **Overseas agent** if they apply",
           "detail": "The server refuses a company with no role: **A company needs at least one role (customer, supplier or agent)**.",
-          "src": "packages/api/src/routers/company.ts:654"
+          "src": "packages/api/src/routers/company.ts:666"
         },
         {
           "action": "Press **Create and continue**",
@@ -891,12 +891,12 @@
         {
           "action": "Use the section rail to fill **Identity** → **Roles & status** → **Classification** → **Address** → **Settlement** → **People** → **Record**",
           "detail": "The fields that reach the invoice are in **Address** and **Settlement** (**Days payable**, **Credit limit**, **Settlement currency**). **People** holds NCT's own staff for this account, not the customer's.",
-          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:647"
+          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:667"
         },
         {
           "action": "Press **Save changes** (header or form foot)",
           "detail": "The header counter shows **N unsaved** until you save. A toast reads **Company updated** and you land on the company record page. On this form, an emptied box clears the stored value.",
-          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:600"
+          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:620"
         }
       ],
       "fields": [
@@ -1069,7 +1069,7 @@
       ],
       "result": "The contact is on file. Next is **step 5** (raise the quotation). If this customer needs its own rate card, do **step 4** first.",
       "pitfalls": [
-        "The seven personnel fields on the company edit form are NCT's own staff, not the customer's people. Record the customer's people here."
+        "The seven personnel fields on the company edit form are NCT's own staff, not the customer's people — record the customer's people here. NCT's staff on this customer are listed under **Who's on this** at the top of the company page, where each person can only **Take lead**, **Join**, **Follow** or **Leave** for themselves; the seven fields mirror each role's lead."
       ],
       "shots": [
         {
@@ -1090,7 +1090,7 @@
           "title": "A contact nobody ticked as Primary never reaches the collections call list",
           "why": "The Add contact dialog defaults Primary to false and nothing promotes the first contact on a company, but the month-end ageing DETAIL sheet joins companyContact strictly on isPrimary = true with no fallback. A company with three recorded contacts and no ticked primary prints empty Contact / Role / Phone / Email columns on the 催收 sheet, so the collections clerk re-looks the number up in the company record — the one job the contacts table was added for.",
           "repair": "Either auto-promote in companyContacts.create (before the insert, if the company has no existing is_primary row, force isPrimary = true), or make report.ts fall back to the oldest contact when none is primary (DISTINCT ON / lateral ordered by is_primary desc, created_at asc instead of the flat eq(isPrimary, true) predicate).",
-          "src": "packages/api/src/routers/report.ts:1071; packages/api/src/routers/company-contact.ts:175",
+          "src": "packages/api/src/routers/report.ts:1081; packages/api/src/routers/company-contact.ts:175",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -1167,7 +1167,7 @@
         {
           "action": "Give every selling row an amount in at least one unit column",
           "detail": "Otherwise the server refuses the save: **Row \"…\" has no price — a selling template's row needs an amount in at least one 计费单位 column.**",
-          "src": "packages/api/src/routers/quotation.ts:582"
+          "src": "packages/api/src/routers/quotation.ts:583"
         },
         {
           "action": "Press **Save Template**",
@@ -1341,7 +1341,7 @@
           "label": "Quotation editor (\"new\" before the first save)"
         }
       ],
-      "navigate": "Top nav **Sales** → **Quotations**",
+      "navigate": "Top nav **Sales** → **Quotations**, or **Overview → New Quote → New quote** (that tab also lists recent quotations, drafts not sent yet first)",
       "before": [
         "Ideally the customer exists (step 2), so the client can be picked from the directory rather than typed."
       ],
@@ -1453,7 +1453,7 @@
           "title": "Quotation date is the row's save timestamp and no screen can set or correct it",
           "why": "quotationHeaderInput accepts quotationDate on both create and update, and update honours the patch, but no field for it exists anywhere in apps/web — create stamps `now` instead. The value is printed as 报价日期 / Quotation date on the customer-facing sheet that quotations.send emails out, it is the ledger's only date column and its From/To filter, and it is the effective date the price-floor check and the tariff hints resolve the fee-template window against. A quote drafted Monday and issued Thursday goes to the customer dated Monday, a quote entered late is floor-checked against the wrong tariff sheet, and the only correction is duplicate — which re-dates to today and burns a new quotation number.",
           "repair": "Add a Quotation Date input to the brief disclosure in $quotationId.tsx (beside Validity Start/End at :1891), seed it from loaded?.quotationDate in defaultValues (:993), and include it in the submit payload (:1076) so both create and the existing update patch path receive it.",
-          "src": "packages/api/src/routers/quotation.ts:1531,3067,3290; apps/web/src/routes/_next/quotations/$quotationId.tsx:993",
+          "src": "packages/api/src/routers/quotation.ts:1532,3159,3382; apps/web/src/routes/_next/quotations/$quotationId.tsx:993",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -1503,7 +1503,7 @@
           "title": "Quotation staff is auto-stamped, copied by duplicate, and editable nowhere — so the printed 业务员 can be the wrong person permanently",
           "why": "create writes quotationStaff from context.session.user.name, duplicate carries the SOURCE's quotationStaff in via `...source` (only createdBy is re-pointed at the duplicator), and quotationHeaderInput exposes the field on create and update but nothing in apps/web renders it. So a coordinator entering a quote for a salesperson, or salesperson B duplicating A's quote — the path the app itself prescribes for re-quoting a decided record — emails the customer a sheet naming the wrong salesperson, and the ledger's Quotation Staff filter hides B's own work from B. There is no in-app correction at all.",
           "repair": "Add a Quotation Staff field (member picker, defaulted to the session user) to the brief in $quotationId.tsx and send it in the payload; and in quotations.duplicate set quotationStaff to the duplicating member alongside createdBy at quotation.ts:3453 rather than letting it ride in on the spread.",
-          "src": "packages/api/src/routers/quotation.ts:3069,3451; packages/api/src/modules/quotation/sheet.ts:356",
+          "src": "packages/api/src/routers/quotation.ts:3161,3543; packages/api/src/modules/quotation/sheet.ts:356",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -1898,7 +1898,7 @@
           "title": "A quotation stays fully editable while it is sitting in the reviewer's queue",
           "why": "quotations.update guards only two things - decidedAt (a won/lost quote) and assertPostApprovalEditable (an already-passed review). It never calls assertNotUnderReview, the guard gates.ts:130 was written for exactly this and which lading.ts:1474 and company.ts:1343 do call. So after Submit for review the salesperson can reopen /quotations/$quotationId, rewrite every selling line and save; the submission stays under_review with the old submit stamp, and the branch manager's Approved in /approve/quotation signs a price sheet that no longer exists. modules/audit/gates.ts:123 asserts a quotation is already safe 'by its own private route, assertDraft inside loadScopedDraftLine' - that function is routers/quote.ts:78, in the legacy quote router, and never runs on the quotation path, so the claimed protection is not there. quotations.applyTemplate (:3519) has the same hole.",
           "repair": "Call assertNotUnderReview(tx, organizationId, \"quotation\", id) in quotations.update immediately after the scoped load, beside the existing assertPostApprovalEditable at :3196, and in applyTemplate beside the one at :3575. Correct the stale claim in modules/audit/gates.ts:123.",
-          "src": "packages/api/src/routers/quotation.ts:3196",
+          "src": "packages/api/src/routers/quotation.ts:3288",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2012,7 +2012,7 @@
           "title": "The legacy quotations.review verb stamps 'approved' with no submission behind it",
           "why": "quotations.review still writes quotation.auditStatus straight through canAuditTransition, filing no audit_submission row. No page in apps/web calls it any more, but it is a live oRPC procedure held by branch-manager and director. Because the gates read audit_submission (gates.ts:90) while the ledger badge and the /approve/quotation audit-status filter read the cache column, the two can be made to disagree permanently: a quotation reads 'Approved' with 'Approve staff' blank in every list, while convertToOrder refuses with '\"Convert order\" requires review approval first' and nothing in the UI explains why or offers a way out.",
           "repair": "Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.",
-          "src": "packages/api/src/routers/quotation.ts:3845",
+          "src": "packages/api/src/routers/quotation.ts:3937",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2099,7 +2099,7 @@
           "title": "The 'Export quotation' gate is wired to reading a quotation, not to exporting or emailing one",
           "why": "assertGateCleared(..., \"export\") sits inside quotations.retrieve, which is the query the whole quotation record page runs ($quotationId.tsx:585) and which the decide, send and reference-template dialogs re-fetch. quotations.exportSheet (:2489) and quotations.send (:2598) - the two verbs that actually put the price in front of the customer - call no gate at all. The moment a tenant ticks 'Export quotation' in the Approval Process Setting page, every un-approved quotation 409s on open, so the author cannot finish drafting it and the reviewer cannot read it before deciding (the review becomes undecidable), while the XLSX/PDF download and the customer email that the checkbox names keep working unchanged.",
           "repair": "Move the assertGateCleared(..., \"export\") call out of quotations.retrieve and into quotations.exportSheet and quotations.send, after each handler's scoped load.",
-          "src": "packages/api/src/routers/quotation.ts:2355",
+          "src": "packages/api/src/routers/quotation.ts:2363",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2251,7 +2251,7 @@
           "title": "There is no outbox, so a failed stamp costs a second email",
           "why": "Send mails the customer and then records the stamp. If the stamp fails after the mail is away, the only route forward is pressing Send again, which sends the customer a duplicate quotation.",
           "repair": "Record the send intent before dispatch and reconcile after, so a retry resumes the stamp instead of re-sending the document.",
-          "src": "packages/api/src/routers/quotation.ts:2633",
+          "src": "packages/api/src/routers/quotation.ts:2725",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -2318,7 +2318,7 @@
         },
         {
           "action": "Set **Decision date** to the day they actually answered",
-          "detail": "Required: **Decision date is required.**"
+          "detail": "Pre-filled with today in Malaysian time; change it when they answered on an earlier day. Required: **Decision date is required.**"
         },
         {
           "action": "Type **Customer reference** (their PO / reference number) and an optional **Note**"
@@ -2326,7 +2326,7 @@
         {
           "action": "Press **Record decision**",
           "detail": "A toast reads **Quotation NCT-Q-… marked won** (or lost). The header shows **by <member> on <date>**.",
-          "src": "apps/web/src/components/quotation/decide-quotation-dialog.tsx:181"
+          "src": "apps/web/src/components/quotation/decide-quotation-dialog.tsx:184"
         }
       ],
       "fields": [
@@ -2373,7 +2373,7 @@
           "title": "A mis-keyed decision cannot be corrected",
           "why": "Won or Lost freezes the quotation and re-deciding is refused. The code names the gap itself: correcting one today needs a database edit, so a wrong outcome poisons win-rate reporting permanently.",
           "repair": "Add a reviewed correction path that supersedes the decision and keeps both stamps, rather than making the first answer final.",
-          "src": "packages/api/src/routers/quotation.ts:2855",
+          "src": "packages/api/src/routers/quotation.ts:2947",
           "lastVerified": "2026-09-25",
           "evidence": [
             {
@@ -3551,6 +3551,11 @@
           "action": "If a job can never finish, press **Void** and write the reason",
           "detail": "e.g. \"Container table never extracted — shipment cancelled at origin\". Toast: **Job voided — it will stop being checked and alerted on**.",
           "src": "apps/web/src/routes/_next/customs-tracking.tsx:145"
+        },
+        {
+          "action": "Or work the clocks from **Overview → My tasks → Book haulier**",
+          "detail": "Every job with a running gate-out clock, soonest first; the whole row opens the job. This queue shows for anyone whose role can book hauliers (Owner, Admin, Branch manager and Ops by default; an admin can grant it to any role under **Permissions → BL tracking → Book hauliers for gate-out clocks**). Today's **Gate-out** card and the Overview's **Gate-out** tab show the same clocks; on that tab, the left panel's **Under 24 hours** filter keeps only the urgent ones.",
+          "src": "apps/web/src/components/shell-next/task-queues.ts:232"
         }
       ],
       "fields": [
@@ -3575,8 +3580,8 @@
           "path": "/customs-tracking"
         },
         {
-          "file": "customer-intake-sop/shots/step-19-overview.jpg",
-          "caption": "Overview / My tasks",
+          "file": "customer-intake-sop/shots/step-19-overview-today.jpg",
+          "caption": "Overview · Today (Do these first beside the Gate-out card)",
           "path": "/overview"
         }
       ]
@@ -4305,7 +4310,7 @@
         "Invoicing is refused with '\"Input invoice no.\" requires review approval first' until the bill's NEWEST submission is approved; re-submitting after approval re-freezes it.",
         "Gates only bite when the org has an enabled bill flow that ticks them; an org without one invoices freely (gates.ts:78-85).",
         "The row Review icon is hidden inside the Bill review queue; submitting is done from Money > Bills.",
-        "Seeded flow needs BOTH accounting reviewers, then a director: one approval is not enough.",
+        "You cannot decide a bill you submitted: it is left out of your Bill review queue and **Approved** is refused. With the seeded flow, when an accountant submits, the other accountant alone passes stage 1, then a director decides stage 2. If nobody but you could decide the opened stage, **Submit for review** is refused: 'Nobody but you can approve this record. Ask an administrator to add a reviewer under Approval Process Setting.' When someone who is not a bill reviewer submits, both accountants must approve, then a director.",
         "While a bill is under review nothing on it can be saved ('This record is under review and cannot be edited. Retract the submission first.'). After approval only **Courier**, **Courier No.**, **Financial Voucher No.**, **Exported Voucher Name**, **Remark** and **Bill Tag** still save; **Invoice Title**, **Service Fee**, **Service Fee Currency** and the exchange rate are refused, and removing a line asks you to dissolve the bill and bill the lines again."
       ],
       "shots": [
@@ -4542,57 +4547,57 @@
         {
           "action": "Go to **Money > Payments** and press **Add**.",
           "detail": "Opens the sheet **Add Payment / Receipt**.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1453"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1456"
         },
         {
           "action": "Set **Attribute** to **Receipt** (money in) or **Payment** (money out) and **Pay and Receive Date**.",
-          "detail": "Attribute defaults to Receipt; date defaults to today.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:600"
+          "detail": "Attribute defaults to Receipt; the date defaults to today in Malaysian time (before 8 am it no longer shows yesterday).",
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:603"
         },
         {
           "action": "Type **Settlement Unit** exactly as on the bill.",
           "detail": "Required free text (placeholder 'Counterparty name'); the Verify dialog lists only bills and lines whose settlement unit matches it.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:638"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:641"
         },
         {
           "action": "Fill **Our Account**, **Other Account**, **Financial Voucher No.**, **Receipts and Payment Way**, **Currency**, **Price**, **Bank Slip Number**, **Post Time**, **Note**.",
           "detail": "Currency and Price are required by validation even though unstarred.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:660"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:663"
         },
         {
           "action": "If an **Exchange Rate** row appears, correct the prefilled write-off rate to the bank's rate, or leave it blank.",
           "detail": "Shown only when the currency differs from the reporting currency. Blank means no rate, so no exchange gain or loss is booked when it is settled.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:789"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:792"
         },
         {
           "action": "Press **Add Payment**.",
           "detail": "Toast 'Payment <no> recorded'.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:861"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:864"
         },
         {
           "action": "On the payment row press the icon titled **Verify**.",
           "detail": "Opens **Verify — <payment no>**. Disabled once the payment is fully written off.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1352"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1355"
         },
         {
           "action": "Choose **Target** = **Bill** (or **Cost Line**) and pick the bill/line.",
           "detail": "Options show number and currency. Only this payment's own side is offered (receivables for a Receipt, payables for a Payment), only billed cost lines, and nothing already fully settled.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1016"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1019"
         },
         {
           "action": "Check **Write-off Amount** (prefilled with the payment's unwritten balance) and fill **Method**, **Account**, **Person**.",
           "detail": "Amount is in the payment currency.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1061"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1064"
         },
         {
           "action": "If the currencies differ, fill **Write-off Exchange Rate — 核销汇率** or leave it empty to use the org write-off rate.",
           "detail": "Shows the converted amount before confirming; refused if no rate is typed or on file.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1106"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:1109"
         },
         {
           "action": "Press **Verify**.",
           "detail": "Toast 'Write-off <no> recorded'; the amount is spread across the bill's cost lines oldest-created first.",
-          "src": "apps/web/src/routes/_next/expenses/payments.tsx:947"
+          "src": "apps/web/src/routes/_next/expenses/payments.tsx:950"
         },
         {
           "action": "To undo, go to **Money > Write-offs**, press **Void write-off** on the row, type a **Reason**, then press **Void Write-off**.",
@@ -4609,7 +4614,7 @@
         {
           "label": "Pay and Receive Date",
           "required": false,
-          "note": "Date; default today."
+          "note": "Date; defaults to today (Malaysian time)."
         },
         {
           "label": "Settlement Unit",

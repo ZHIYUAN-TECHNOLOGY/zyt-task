@@ -11,7 +11,7 @@ files are the spec for those. If something below stops being true, fix this file
 | URL | Source of truth | Managed by |
 |---|---|---|
 | `/` dashboard (companies · Overview · Tasks · Findings; a task view with its runbook's text, checklist and attachments) | `hosting/hub/index.html`; companies and their pages in `hosting/hub/projects.json`; tasks, stages and steps in `tracker/seed/runbook-<key>.json` (optional, `seed.runbook`); finding content in `tracker/seed/{tasks,client-tasks,flow}-<key>.json`; the runbook text's styles in `hosting/hub/runbook-body.css` (shared with the pages) | Hand edits in this repo |
-| `/nct/customer-intake-sop/` | `C:/Project/ZYT-Task/customer-intake-sop/sop.json` + `shots/*.jpg` beside it, built with zyt-setup's `build-page.mjs`. Falls back to the hand-written `customer-intake-sop.html` only if `sop.json` is missing | zyt pipeline since 2026-09-16. Registry id `ZYT-Task/customer-intake-sop` (live, code root `C:/Project/NCT/nct-layout`); 7-role "Show my flow" view. Built with `--no-ledger` since Phase 4 (2026-09-23): the page carries no fix list, no step fixes and no browser ticks; "What to fix first" lives in the dashboard's **Findings** (Group by Rank), generated from the same `sop.json`. Browser ticks from the old page (`sop.customer-intake-sop.fixDone`, `sop.fixDone`) can be imported once from the Findings banner and are then kept as `….imported`; the page's comment box is retired, and the claude.ai artifact copy's ticks and comments are abandoned (D12) |
+| `/nct/customer-intake-sop/` | `C:/Project/ZYT-Task/customer-intake-sop/sop.json` + `shots/*.jpg` beside it, built with zyt-setup's `build-page.mjs`. Falls back to the hand-written `customer-intake-sop.html` only if `sop.json` is missing | zyt pipeline since 2026-09-16. Registry id `ZYT-Task/customer-intake-sop` (live, code root `C:/Project/NCT/wt-release-r1`, the production release branch); 7-role "Show my flow" view. Built with `--no-ledger` since Phase 4 (2026-09-23): the page carries no fix list, no step fixes and no browser ticks; "What to fix first" lives in the dashboard's **Findings** (Group by Rank), generated from the same `sop.json`. Browser ticks from the old page (`sop.customer-intake-sop.fixDone`, `sop.fixDone`) can be imported once from the Findings banner and are then kept as `….imported`; the page's comment box is retired, and the claude.ai artifact copy's ticks and comments are abandoned (D12) |
 | `/nct/steps-1-3-runbook/` | `C:/Project/ZYT-Task/steps-1-3-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) since Phase 3 (2026-09-23): the dashboard's task "Steps 1–3" shows its text. The same holds for every NCT runbook and crosscheck below |
 | `/nct/steps-4-10-runbook/` | `C:/Project/ZYT-Task/steps-4-10-runbook.md`, rendered by `hosting/hub/build-runbook.mjs` (marked; the article's rules are in `hub/runbook-body.css`) | Hand edits. Built, hidden from the list (`nav: hidden`) |
 | `/nct/steps-11-15-runbook/` | `C:/Project/ZYT-Task/steps-11-15-runbook.md`, same renderer | Hand edits. Built, hidden from the list (`nav: hidden`) |
@@ -316,10 +316,10 @@ node hosting/runner/server.mjs
 
 ## Known gaps (2026-09-16)
 
-- NCT's App URL box defaults to `http://localhost:3101/`, so its screen links point at the
-  visitor's own machine until NCT's real app address is set.
+- NCT's App URL box defaults to production (`https://nct-ai-web-prod.zhiyuantech.workers.dev/`,
+  `meta.appBaseUrl` since 2026-09-27); a visitor who saved their own URL keeps it until they clear it.
 - NCT is on the `sop.json` pipeline (2026-09-16): the registry entry points at
-  `customer-intake-sop/sop.json` with code root `C:/Project/NCT/nct-layout`, so the zyt hooks flag NCT app
+  `customer-intake-sop/sop.json` with code root `C:/Project/NCT/wt-release-r1`, so the zyt hooks flag NCT app
   changes and `/zyt-update` / `/zyt-audit` work on it. The migration plan under
   `_plan/09-16_nct-sop-json-migration/` was stopped unwritten; it is not needed. The hand-written
   `customer-intake-sop.html` is only a fallback (backup: `~/.claude/zyt/pending/customer-intake-sop/`).

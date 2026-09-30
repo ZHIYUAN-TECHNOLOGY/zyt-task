@@ -1,7 +1,7 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-09-25T11:52:45.776Z",
-  "sopSha": "bd8b70b1feb38641b5faa6bfd2295fda81b720ff51c59f9a44495820f8430ff7",
+  "at": "2026-09-30T05:10:32.510Z",
+  "sopSha": "c0a28f921e769550a906a8374bad073ebb9b6932ded2b4a3315d6f1bad91cda1",
   "codeRoot": "C:\\Project\\NCT\\wt-release-r1",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
@@ -15,9 +15,9 @@
       "size": 21641
     },
     "apps/web/src/components/customs-tracking/bl-job-record.tsx": {
-      "sha": "184dd1f340382b33fd3b7a68c83dd6e4d267e61084d2d1f3ae0c791840a0a500",
-      "mtimeMs": 1790247408209,
-      "size": 36407
+      "sha": "4dacbcc2cff0cb92f2d307a9fa95af00f06f34a7920d268b65f5fd105f48e75c",
+      "mtimeMs": 1790577713902,
+      "size": 36411
     },
     "apps/web/src/components/document-upload.tsx": {
       "sha": "ad531cfd2432b5672d55da39415a2c59d0e9f6036dfe171b052c3354093e946d",
@@ -100,9 +100,9 @@
       "size": 17090
     },
     "apps/web/src/components/quotation/decide-quotation-dialog.tsx": {
-      "sha": "69cf9ae6a10eba8ea8b18549d95f72a920e5e15502b18585ae93f13f2f200a93",
-      "mtimeMs": 1790163136491,
-      "size": 6520
+      "sha": "29bfffd716cdf3426b7b80689242ff2513c98b53e5442a3d3e35a0f2536b4799",
+      "mtimeMs": 1790671640010,
+      "size": 6695
     },
     "apps/web/src/components/quotation/send-quotation-dialog.tsx": {
       "sha": "b9c6af11d4c384ea877cc30a9778d1adc8e07832b7e7cf8d96242d177c321a0d",
@@ -135,9 +135,14 @@
       "size": 12987
     },
     "apps/web/src/components/shell-next/nav.ts": {
-      "sha": "f75928a722e9d124c58cd76d816fdc843d5e1e42831829bcfbec140368f6de46",
-      "mtimeMs": 1790163136530,
-      "size": 15295
+      "sha": "2c3952a859f663eb5b57913e9b99472549d64905088568563f2b61dd3bd44980",
+      "mtimeMs": 1790577713902,
+      "size": 15302
+    },
+    "apps/web/src/components/shell-next/task-queues.ts": {
+      "sha": "02a06d27a5a494efa96a6ae43531c21e0dd0f5df2afcddf188f9d36624ad0122",
+      "mtimeMs": 1790744143178,
+      "size": 16618
     },
     "apps/web/src/components/supersede-template-dialog.tsx": {
       "sha": "f9b56b60e16b5f997a0928d6ebcb6bf63e82333773050829ddb239987411872d",
@@ -180,14 +185,14 @@
       "size": 37654
     },
     "apps/web/src/routes/_next/companies_.$companyId.tsx": {
-      "sha": "ce47cf16053cc611c019a4a8dc181beef36047063979dcaff925b0b194cf538f",
-      "mtimeMs": 1790163137115,
-      "size": 9498
+      "sha": "55cdc33d4ff814b24d6616341cbc0e2a36e7d9b64fb3bda847a9a52aef322a55",
+      "mtimeMs": 1790577713931,
+      "size": 10476
     },
     "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx": {
-      "sha": "3f1118227529dad06817742cf38379df09f18bfe1596a05873e433aea8873211",
-      "mtimeMs": 1790163137118,
-      "size": 45783
+      "sha": "e3a021f557963f9ce2f35e3c674449c4e6a1968b45224d39df73eb85a5d3c8e4",
+      "mtimeMs": 1790577713931,
+      "size": 46517
     },
     "apps/web/src/routes/_next/customs-tracking.tsx": {
       "sha": "3ac364ce323924c1fe3d02f01a9601e45c5c5ec107ee495faf815c862b95a943",
@@ -230,9 +235,9 @@
       "size": 52035
     },
     "apps/web/src/routes/_next/expenses/payments.tsx": {
-      "sha": "05852910a09272014da3932eaf33184f7f2501e356165ba909915b6c68b8de6b",
-      "mtimeMs": 1790247408236,
-      "size": 67848
+      "sha": "165e528176e1193b23e9b08526238414c99bb13b3fb86be157631cd4cb0c7dd7",
+      "mtimeMs": 1790671640018,
+      "size": 68017
     },
     "apps/web/src/routes/_next/expenses/write-offs.tsx": {
       "sha": "4606893eff2ba1700a0a9b20024ece9b7b44adefaeef18071a09dc9b2b1559d3",
@@ -310,9 +315,9 @@
       "size": 82017
     },
     "apps/web/src/routes/_next/overview.tsx": {
-      "sha": "9cb43bda1b2f7aab8af882ca3a5298ca3967cf6b133591415873ed4b30a26149",
-      "mtimeMs": 1790163137309,
-      "size": 3601
+      "sha": "fd331404e0faa4527175a9c043a29c06d67f703303bdbb5e5fef43a8f1b66eaa",
+      "mtimeMs": 1790668870218,
+      "size": 4219
     },
     "apps/web/src/routes/_next/quotations/$quotationId.tsx": {
       "sha": "d7d3ce89e9859fd9a41d0af82f7c9eb0f29300ca877fbfd3fb480b655701b9a7",
@@ -380,9 +385,9 @@
       "size": 13250
     },
     "packages/api/src/routers/company.ts": {
-      "sha": "4a8f7d47351273f3546ffa5801d7a718f33b8df0a9a5dabb07e63d9b40aab968",
-      "mtimeMs": 1790163140464,
-      "size": 57411
+      "sha": "f96c4cd3b6c132dd058494212571a1d248296ef5f0124b00fe1d0b3491744873",
+      "mtimeMs": 1790668870223,
+      "size": 58949
     },
     "packages/api/src/routers/expense/cost-lines.ts": {
       "sha": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
@@ -395,14 +400,14 @@
       "size": 115071
     },
     "packages/api/src/routers/quotation.ts": {
-      "sha": "8c753239b534febbb85bc9acd25f602246a640a1b902528cdb9674d8918b5df1",
-      "mtimeMs": 1790174942467,
-      "size": 253450
+      "sha": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
+      "mtimeMs": 1790577713950,
+      "size": 257192
     },
     "packages/api/src/routers/report.ts": {
-      "sha": "5c1163bf314dcfb2c8818f3f016ae3119f6a66e22000d7eb024a040701269ec6",
-      "mtimeMs": 1790250671607,
-      "size": 173049
+      "sha": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+      "mtimeMs": 1790577713952,
+      "size": 173943
     },
     "packages/db/src/schema/company.ts": {
       "sha": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
@@ -658,13 +663,13 @@
     },
     {
       "file": "packages/api/src/routers/company.ts",
-      "line": 654,
+      "line": 666,
       "anchor": [
-        "      z",
-        "        .object({ ...companyFields, ...roleFlags })",
-        "        .refine((v) => v.isCustomer || v.isSupplier || v.isAgent, {",
-        "          message: \"A company needs at least one role (customer, supplier or agent)\",",
-        "        }),"
+        "",
+        "  create: orgProcedure",
+        "    .use(requireNode(COMPANY.create))",
+        "    .input(",
+        "      z"
       ],
       "jsonPath": "/guide/1/golden/5/src",
       "step": 2,
@@ -690,7 +695,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-      "line": 647,
+      "line": 667,
       "anchor": [
         "",
         "              <div className=\"min-w-0 max-w-5xl space-y-10\">",
@@ -706,7 +711,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-      "line": 600,
+      "line": 620,
       "anchor": [
         "              {dirtyTotal > 0 ? `${dirtyTotal} unsaved` : \"No changes\"}",
         "            </span>",
@@ -818,13 +823,13 @@
     },
     {
       "file": "packages/api/src/routers/report.ts",
-      "line": 1071,
+      "line": 1081,
       "anchor": [
-        "      // non-null `contactName` is the signal \"there is somebody here\"; the rest",
-        "      // are nullable on the table and stay nullable on the row.",
-        "      //",
-        "      // `role` earns its place beside the phone number rather than being",
-        "      // decoration: \"Finance\" and \"Operations\" are different conversations, and"
+        "            // non-null `contactName` is the signal \"there is somebody here\"; the rest",
+        "            // are nullable on the table and stay nullable on the row.",
+        "            //",
+        "            // `role` earns its place beside the phone number rather than being",
+        "            // decoration: \"Finance\" and \"Operations\" are different conversations, and"
       ],
       "jsonPath": "/guide/2/fixes/0/src",
       "step": 3,
@@ -946,7 +951,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 582,
+      "line": 583,
       "anchor": [
         "  // key: two rows for the same charge that differ only by billing unit belong",
         "  // in ONE row's columns, not two rows.",
@@ -1186,7 +1191,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 1531,
+      "line": 1532,
       "anchor": [
         " *   *     → converted   `quotations.convertToOrder` (mints the order)",
         " *                       …and `costLines.importFromQuote`, which has written",
@@ -1202,7 +1207,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3067,
+      "line": 3159,
       "anchor": [
         "          size: sheetFile.sizeBytes,",
         "          stagedKey: null as string | null,",
@@ -1218,7 +1223,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3290,
+      "line": 3382,
       "anchor": [
         "        throw new ORPCError(\"INTERNAL_SERVER_ERROR\", { message: \"Failed to resolve the send\" });",
         "      }",
@@ -1250,7 +1255,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3069,
+      "line": 3161,
       "anchor": [
         "        };",
         "        let freshIntent: QuotationSendRow | null = null;",
@@ -1266,7 +1271,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3451,
+      "line": 3543,
       "anchor": [
         "          });",
         "",
@@ -1586,7 +1591,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3196,
+      "line": 3288,
       "anchor": [
         "              userId: context.session.user.id,",
         "              readableBranchIds,",
@@ -1618,7 +1623,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3845,
+      "line": 3937,
       "anchor": [
         "              eq(quotationDecision.quotationId, existing.id),",
         "              eq(quotationDecision.organizationId, organizationId),",
@@ -1650,7 +1655,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 2355,
+      "line": 2363,
       "anchor": [
         "  // ── THE LETTERHEAD IS ONE OF THE CELLS THIS CAN CATCH ──────────────────────",
         "  //",
@@ -1730,7 +1735,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 2633,
+      "line": 2725,
       "anchor": [
         "        decisionCorrected: current?.kind === \"correction\",",
         "      };",
@@ -1772,7 +1777,7 @@
     },
     {
       "file": "apps/web/src/components/quotation/decide-quotation-dialog.tsx",
-      "line": 181,
+      "line": 184,
       "anchor": [
         "              </Button>",
         "              <Button type=\"submit\" disabled={decideMutation.isPending}>",
@@ -1788,7 +1793,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 2855,
+      "line": 2947,
       "anchor": [
         "   *",
         "   * `quotation_send` has no `owningBranchId`/`createdBy` (schema comment) —",
@@ -2907,6 +2912,22 @@
       "lineIdx": 0
     },
     {
+      "file": "apps/web/src/components/shell-next/task-queues.ts",
+      "line": 232,
+      "anchor": [
+        "function useHaulierQueue(now: number): QueueView {",
+        "  // Booking the haulier is its own action; the rows still need bl-job:read.",
+        "  const gate = usePermissionGate(\"bl-job:dispatch\");",
+        "  const urgent = useUrgentSummary();",
+        "  const rows = urgent.query.data?.rows"
+      ],
+      "jsonPath": "/guide/18/golden/6/src",
+      "step": 19,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
       "file": "apps/web/src/components/order-ledger/order-record-page.tsx",
       "line": 156,
       "anchor": [
@@ -3836,7 +3857,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1453,
+      "line": 1456,
       "anchor": [
         "          />",
         "        }",
@@ -3852,7 +3873,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 600,
+      "line": 603,
       "anchor": [
         "          <div className=\"grid grid-cols-2 gap-3\">",
         "            <form.Field name=\"bankSlipNumber\">",
@@ -3868,7 +3889,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 638,
+      "line": 641,
       "anchor": [
         "            )}",
         "          </form.Field>",
@@ -3884,7 +3905,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 660,
+      "line": 663,
       "anchor": [
         "}",
         "",
@@ -3900,7 +3921,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 789,
+      "line": 792,
       "anchor": [
         "        queryClient.invalidateQueries({ queryKey: orpc.bills.list.queryKey() });",
         "        queryClient.invalidateQueries({ queryKey: orpc.bills.totals.queryKey() });",
@@ -3916,7 +3937,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 861,
+      "line": 864,
       "anchor": [
         "              <Input",
         "                id=\"verify-method\"",
@@ -3932,7 +3953,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1352,
+      "line": 1355,
       "anchor": [
         "    chip(\"postedRange\", \"Posted\", [\"postFrom\", \"postTo\"]),",
         "    chip(\"createdBy\", \"Creator\"),",
@@ -3948,7 +3969,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1016,
+      "line": 1019,
       "anchor": [
         "      ),",
         "    },",
@@ -3964,7 +3985,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1061,
+      "line": 1064,
       "anchor": [
         "      cell: ({ row }) => labelFor(PAYMENT_WAY_LABELS, row.original.paymentWay),",
         "    },",
@@ -3980,7 +4001,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 1106,
+      "line": 1109,
       "anchor": [
         "          onClick={(e) => e.stopPropagation()}",
         "          onKeyDown={(e) => e.stopPropagation()}",
@@ -3996,7 +4017,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/payments.tsx",
-      "line": 947,
+      "line": 950,
       "anchor": [
         "            }",
         "          >",
@@ -4486,7 +4507,7 @@
         "apps/web/src/components/inbox/notes-panel.tsx",
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/routes/_next/fee-templates/index.tsx"
+        "packages/api/src/routers/company.ts"
       ]
     },
     {
@@ -4969,7 +4990,6 @@
       "step": 4,
       "foundIn": [
         "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/overview.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/modules/audit/seed.ts",
         "apps/web/src/routes/_next/approve/template.tsx"
@@ -5504,10 +5524,10 @@
       "step": 8,
       "foundIn": [
         "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/overview.tsx",
         "packages/api/src/modules/audit/seed.ts",
         "apps/web/src/routes/_next/quotations/index.tsx",
-        "packages/api/src/quotation/values.ts"
+        "packages/api/src/quotation/values.ts",
+        "apps/web/src/routes/_next/approve/quotation.tsx"
       ]
     },
     {
@@ -6178,7 +6198,6 @@
       "step": 15,
       "foundIn": [
         "apps/web/src/components/shell-next/nav.ts",
-        "apps/web/src/routes/_next/overview.tsx",
         "packages/api/src/modules/audit/seed.ts",
         "packages/api/src/quotation/values.ts",
         "apps/web/src/routes/_next/approve/order.tsx"
@@ -7013,6 +7032,17 @@
       ]
     },
     {
+      "text": "Overview → My tasks → Book haulier",
+      "step": 19,
+      "foundIn": [
+        "packages/api/src/routers/company.ts",
+        "packages/api/src/routers/report.ts",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/components/shell-next/task-queues.ts",
+        "apps/web/src/components/shell-next/nav.ts"
+      ]
+    },
+    {
       "text": "Expenses",
       "step": 20,
       "foundIn": [
@@ -7245,11 +7275,11 @@
       "text": "Lock",
       "step": 21,
       "foundIn": [
+        "packages/api/src/routers/company.ts",
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/components/order-ledger/order-row-actions.tsx",
-        "packages/api/src/modules/document/register-hooks.ts"
+        "apps/web/src/components/order-ledger/order-row-actions.tsx"
       ]
     },
     {
@@ -7744,10 +7774,10 @@
       "step": 26,
       "foundIn": [
         "packages/api/src/routers/report.ts",
+        "apps/web/src/components/shell-next/task-queues.ts",
         "apps/web/src/components/shell-next/nav.ts",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "packages/api/src/routers/expense/cost-lines.ts",
-        "apps/web/src/routes/_next/expenses/-bills.columns.tsx"
+        "packages/api/src/routers/expense/cost-lines.ts"
       ]
     },
     {
@@ -8002,6 +8032,7 @@
         "apps/web/src/lib/quotation.ts",
         "apps/web/src/components/order-form.tsx",
         "packages/api/src/routers/lading.ts",
+        "apps/web/src/components/shell-next/task-queues.ts",
         "apps/web/src/routes/_next/lading/index.tsx"
       ]
     },
@@ -8168,6 +8199,7 @@
         "packages/api/src/routers/collective-order.ts",
         "apps/web/src/routes/_next/approve/order.tsx",
         "apps/web/src/routes/_next/documents.$documentId.tsx",
+        "apps/web/src/components/shell-next/task-queues.ts",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
         "apps/web/src/routes/_next/approve/cost.tsx",
         "apps/web/src/routes/_next/expenses/bills.tsx",
@@ -8263,24 +8295,24 @@
     },
     {
       "file": "customer-intake-sop/shots/step-02.jpg",
-      "sha": "b1d12ec81d461b0c2483bedb1cf4f2bb8dc77d0d567746a73a14fecab8fcdf7a",
-      "mtimeMs": 1789291836797,
+      "sha": "faa89026c831f2dd20100ab11bdd22a5447f550e337d2534ab71f208a62e7801",
+      "mtimeMs": 1790673111203,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02-add.jpg",
-      "sha": "3ccc39e8dd156cfe0516ed434740552e77442887566e037578b4a4d69d1bb8c7",
-      "mtimeMs": 1789291434315,
+      "sha": "211f26400c916c6cf241fb6f1b7bd8567e20339bb1ae88a02f9d18a2783d94e9",
+      "mtimeMs": 1790673111199,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02-edit.jpg",
-      "sha": "b848e188e4be746b2f4e5e39c6af451cb6c955e96eeecff2e0caf9938e912f59",
-      "mtimeMs": 1789291437395,
+      "sha": "adef81b2bbf727d9259392369caa01171a8e5fa72450865af3141da3975bb2fb",
+      "mtimeMs": 1790673111202,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
@@ -8462,9 +8494,9 @@
       "routeFile": "apps/web/src/routes/_next/customs-tracking.tsx"
     },
     {
-      "file": "customer-intake-sop/shots/step-19-overview.jpg",
-      "sha": "2f8cbf01685c88d03f6ca675bbc7980d0365d6e06cdb5c8a2e0c4de07ed085f1",
-      "mtimeMs": 1789291925656,
+      "file": "customer-intake-sop/shots/step-19-overview-today.jpg",
+      "sha": "e58f231c8ea420b912a73e3c084e3eb00c4308729a98e06da6745326e56e9ea5",
+      "mtimeMs": 1790673111205,
       "step": 19,
       "path": "/overview",
       "routeFile": "apps/web/src/routes/_next/overview.tsx"
@@ -8487,8 +8519,8 @@
     },
     {
       "file": "customer-intake-sop/shots/step-22.jpg",
-      "sha": "9dfa658f86059c1398318c04cdaed7c4f5081f0581f44b00094f0f958b709062",
-      "mtimeMs": 1790330684403,
+      "sha": "8e21c3e7bf04ece0003bf89d5988baa91e2aba45630642c4ba7a77e95381a7b7",
+      "mtimeMs": 1790673111206,
       "step": 22,
       "path": "/expenses/cost-lines",
       "routeFile": "apps/web/src/routes/_next/expenses/cost-lines.tsx"
@@ -8519,24 +8551,24 @@
     },
     {
       "file": "customer-intake-sop/shots/step-26.jpg",
-      "sha": "7d1e6583cd140222e5456a937b5ec156dfddb7d142ad3805378b0c636ee48aee",
-      "mtimeMs": 1790330684868,
+      "sha": "d40152e2dd3f625878fb12a1cf4ad3de34408aa2581a02be8b89cdbeec79cf7d",
+      "mtimeMs": 1790673111209,
       "step": 26,
       "path": "/expenses/payments",
       "routeFile": "apps/web/src/routes/_next/expenses/payments.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-26-writeoffs.jpg",
-      "sha": "b9dbe14c51462dda4907e664f2896d4be4998b29b237ac798da49ae90dd67207",
-      "mtimeMs": 1790330684773,
+      "sha": "54f0db35c6d109456834986a0fa20e57b787eb3cb474241a66329840e17e598d",
+      "mtimeMs": 1790673111207,
       "step": 26,
       "path": "/expenses/write-offs",
       "routeFile": "apps/web/src/routes/_next/expenses/write-offs.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-27.jpg",
-      "sha": "ded4d96695f8faebf6b3409d82f9c4882618eb49fe28882fd91d356f3a1b40cb",
-      "mtimeMs": 1790330685049,
+      "sha": "2490fc24464c75f613b70aa1f14b61ac154f289430a70e6255af7ed45b1f9e61",
+      "mtimeMs": 1790673111210,
       "step": 27,
       "path": "/report/financial",
       "routeFile": "apps/web/src/routes/_next/report/financial/index.tsx"
