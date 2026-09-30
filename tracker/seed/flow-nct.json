@@ -72,7 +72,7 @@
         "/fee-templates/$templateId",
         "/approve/template"
       ],
-      "summary": "Once approved, the card shows in the quotation's Reference Template picker (step 6) and sets the price floor enforced at step 7."
+      "summary": "Once approved, the card prices the quotation's package cards (its tagged rows, step 6), shows in the Reference Template picker (step 6) and sets the price floor enforced at step 7."
     },
     {
       "n": 5,
@@ -84,7 +84,7 @@
         "/quotations",
         "/quotations/$quotationId"
       ],
-      "summary": "The quotation is saved with a number but no prices. Go straight on to step 6 in the Fee Details card on the same page."
+      "summary": "The quotation is saved with a number and — if you picked a package — its charges. Check them in the Charges table on the same page: that is step 6."
     },
     {
       "n": 6,
@@ -95,7 +95,7 @@
       "routes": [
         "/quotations/$quotationId"
       ],
-      "summary": "The applied lines are already stored on a saved quotation; anything you typed by hand is not. Press Save Quote — that is step 7."
+      "summary": "Package and hand-typed lines live in the form until you press Save Quote — that is step 7. (Lines applied with Reference Template on a saved quotation are stored straight away.)"
     },
     {
       "n": 7,
@@ -118,7 +118,7 @@
         "/quotations/$quotationId",
         "/approve/quotation"
       ],
-      "summary": "Approved: the Convert to order button unlocks (step 11), and you can send it (step 9). Rejected: fix it and Resubmit."
+      "summary": "Approved: Send becomes the header's next-step button (step 9) and Convert to order unlocks (step 11). Rejected: fix it and Resubmit."
     },
     {
       "n": 9,
@@ -140,7 +140,7 @@
       "routes": [
         "/quotations/$quotationId"
       ],
-      "summary": "Won → step 11 (Convert to order). Lost → the chain ends here."
+      "summary": "Won → step 11 (Convert to order becomes the next-step button). Lost → the chain ends here."
     },
     {
       "n": 11,

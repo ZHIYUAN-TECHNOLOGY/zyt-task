@@ -20,7 +20,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-fx-gain-loss",
@@ -64,7 +65,8 @@
     "state": "open",
     "owner": null,
     "repair": null,
-    "src": []
+    "src": [],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-lump-sums",
@@ -430,7 +432,8 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "open",
+    "status": "fixed",
+    "fixedAt": "2026-09-30",
     "origin": "defect"
   },
   {
@@ -440,6 +443,39 @@
     "title": "Before 8 am the payment date and decision date default to yesterday",
     "isNew": false,
     "detail": "The Add Payment dialog (step 26) pre-fills Pay and Receive Date, and the Decide dialog (step 10) pre-fills Decision date, with new Date().toISOString().slice(0, 10). That is the UTC calendar date. In Malaysia (UTC+8), anything recorded between 00:00 and 07:59 local time silently gets the previous day. A receipt keyed by the cashier early on the 1st of the month is dated the last day of the prior month, so it lands in the wrong month in Financial Stat and the month-end pack. A Won/Lost entered early in the morning gets the wrong decision date. The field looks correctly filled, so it is rarely checked.",
+    "severity": "data",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "fixed",
+    "fixedAt": "2026-09-30",
+    "origin": "defect"
+  },
+  {
+    "id": "nct-au-holding-only-correct-extraction-is-enoug",
+    "kind": "chain",
+    "rank": 21,
+    "title": "Holding only 'Correct extraction' is enough to approve a carrier MBL/HBL",
+    "isNew": true,
+    "detail": "Step 18 says approving a document needs its own review right (document.review.approve). The Approve button calls review.approve, which checks that permission. But 'Save corrections & approve' and a document-type change call review.correct, and that endpoint only checks document.review.correct. It then finalises the document as approved (persistFinal writes a final extraction, sets status approved and stamps reviewedBy) and runs the approval hooks that start the B/L tracking job. A role given 'Correct extraction' without 'Approve extraction' can edit one field, or just change the type, and approve the MBL/HBL that way. The permission tree labels these as two separate powers, so an admin who splits them gets an approval the split was meant to stop.",
+    "severity": "data",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "open",
+    "origin": "defect"
+  },
+  {
+    "id": "nct-au-an-auto-approved-b-l-whose-tracking-job-",
+    "kind": "chain",
+    "rank": 22,
+    "title": "An auto-approved B/L whose tracking job fails or is refused tells nobody",
+    "isNew": true,
+    "detail": "Steps 18 to 19: when an organisation sets a document type to auto_approve, the extraction workflow approves the MBL/HBL itself and then runs the approval hooks, which create the bl_job that the demurrage board reads. runApprovalHooks catches any hook failure and returns it as an 'approval_hook_failed' notice, along with any re-sync the automation refused. The workflow throws that return value away. The reviewer path shows these notices to a person; the automatic path records nothing, notifies no one and creates no task. The document shows as approved, but no tracking job exists, so the 72h demurrage clock is never watched and no one knows it is missing. The workflow's own comment says a swallowed failure means no tracking job. The default policy is review_all, so this only happens for organisations that opt in.",
     "severity": "data",
     "steps": [],
     "state": "open",
@@ -488,8 +524,9 @@
     "owner": null,
     "repair": "Either auto-promote in companyContacts.create (before the insert, if the company has no existing is_primary row, force isPrimary = true), or make report.ts fall back to the oldest contact when none is primary (DISTINCT ON / lateral ordered by is_primary desc, created_at asc instead of the flat eq(isPrimary, true) predicate).",
     "src": [
-      "packages/api/src/routers/report.ts:1071; packages/api/src/routers/company-contact.ts:175"
-    ]
+      "packages/api/src/routers/report.ts:1081; packages/api/src/routers/company-contact.ts:175"
+    ],
+    "status": "partly-fixed"
   },
   {
     "id": "nct-s04-the-tariff-gate-is-declared-but-never-enforced",
@@ -532,7 +569,7 @@
     "owner": null,
     "repair": "Add a Quotation Date input to the brief disclosure in $quotationId.tsx (beside Validity Start/End at :1891), seed it from loaded?.quotationDate in defaultValues (:993), and include it in the submit payload (:1076) so both create and the existing update patch path receive it.",
     "src": [
-      "packages/api/src/routers/quotation.ts:1531,3067,3290; apps/web/src/routes/_next/quotations/$quotationId.tsx:993"
+      "packages/api/src/routers/quotation.ts:1599,3442,3665; apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:159"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
@@ -555,7 +592,7 @@
     "owner": null,
     "repair": "Add a Quotation Staff field (member picker, defaulted to the session user) to the brief in $quotationId.tsx and send it in the payload; and in quotations.duplicate set quotationStaff to the duplicating member alongside createdBy at quotation.ts:3453 rather than letting it ride in on the spread.",
     "src": [
-      "packages/api/src/routers/quotation.ts:3069,3451; packages/api/src/modules/quotation/sheet.ts:356"
+      "packages/api/src/routers/quotation.ts:3444,3826; packages/api/src/modules/quotation/sheet.ts:363"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
@@ -623,7 +660,7 @@
     "owner": null,
     "repair": "Call assertNotUnderReview(tx, organizationId, \"quotation\", id) in quotations.update immediately after the scoped load, beside the existing assertPostApprovalEditable at :3196, and in applyTemplate beside the one at :3575. Correct the stale claim in modules/audit/gates.ts:123.",
     "src": [
-      "packages/api/src/routers/quotation.ts:3196"
+      "packages/api/src/routers/quotation.ts:3571"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
@@ -669,7 +706,7 @@
     "owner": null,
     "repair": "Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.",
     "src": [
-      "packages/api/src/routers/quotation.ts:3845"
+      "packages/api/src/routers/quotation.ts:4220"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
@@ -715,7 +752,7 @@
     "owner": null,
     "repair": "Move the assertGateCleared(..., \"export\") call out of quotations.retrieve and into quotations.exportSheet and quotations.send, after each handler's scoped load.",
     "src": [
-      "packages/api/src/routers/quotation.ts:2355"
+      "packages/api/src/routers/quotation.ts:2491"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
@@ -738,7 +775,7 @@
     "owner": null,
     "repair": "Record the send intent before dispatch and reconcile after, so a retry resumes the stamp instead of re-sending the document.",
     "src": [
-      "packages/api/src/routers/quotation.ts:2633"
+      "packages/api/src/routers/quotation.ts:2870"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
@@ -761,7 +798,7 @@
     "owner": null,
     "repair": "Add a reviewed correction path that supersedes the decision and keeps both stamps, rather than making the first answer final.",
     "src": [
-      "packages/api/src/routers/quotation.ts:2855"
+      "packages/api/src/routers/quotation.ts:3230"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25"
