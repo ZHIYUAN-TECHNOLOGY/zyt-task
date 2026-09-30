@@ -74,11 +74,11 @@
       "n": 2,
       "phase": "A",
       "title": "Create the customer",
-      "where": "/companies → Add",
-      "what": "Search the directory first. Then press Add: <strong>Company title is the only mandatory field</strong>, plus at least one role — Customer, Supplier or Agent. Saving takes you straight to the edit form’s seven sections, five of them new since the dialog: classification, address, settlement terms (days payable, credit limit), the internal staff slots and the record.",
+      "where": "/companies → Add → /companies/new",
+      "what": "Search the directory first. Then press <strong>Add</strong>: the <em>New customer</em> page opens. Keep at least one role card pressed — Customer, Supplier or Overseas agent — and type the <strong>Company title</strong>, the only required box. Fill the <strong>main contact</strong> (name, role, phone, email) on the same page; it is saved as the Primary contact and becomes the quote’s Attention. Settlement currency starts at MYR and Sales owner is you; everything else sits under <em>More details</em>. <strong>Save</strong> lands on the company record. <strong>Save &amp; new quote</strong> (Customer only) opens a new quotation straight away when the customer may be quoted.",
       "watch": {
         "tag": "Watch",
-        "html": "Nothing forces this step — a quotation needs only a typed client <em>name</em>, so a walk-in can be quoted without ever existing as a company. Skipping it drops the buyer’s address, tax ID and payment terms from the invoice — those rows vanish, the name still prints. Duplicate protection is case-<em>sensitive</em> and there is no typeahead, so “Sunrise Sdn Bhd” and “SUNRISE SDN BHD” both save."
+        "html": "Nothing forces this step — a quotation needs only a typed client <em>name</em>, so a walk-in can be quoted without ever existing as a company. Skipping it drops the buyer’s address, tax ID and payment terms from the invoice — those rows vanish, the name still prints. As you type the title the page lists near matches (<em>Already on file</em>), in any case — but Save only refuses an exact same-case name, so “Sunrise Sdn Bhd” and “SUNRISE SDN BHD” both save if the hint is ignored."
       },
       "actors": [
         {
@@ -92,7 +92,7 @@
       "phase": "A",
       "title": "Record the person who called",
       "where": "/companies/$companyId → Contacts card",
-      "what": "Add the counterparty's human: name, role, phone, email, primary flag. This is the only real table for counterparty people — the seven “personnel” fields on the company record are <em>NCT's</em> staff, not theirs.",
+      "what": "The main contact typed at step 2 is already here, marked Primary. Add anyone else — accounts, operations — with name, role, phone and email, and tick primary only if they should take over. This is the only real table for counterparty people — the seven “personnel” fields on the company record are <em>NCT's</em> staff, not theirs.",
       "actors": [
         {
           "role": "sales",
@@ -493,7 +493,7 @@
     {
       "after": 1,
       "label": "Inbox → Customer",
-      "body": "<p>An inbound email can be triaged, assigned and replied to, but never turned into a customer. The sender's name, address and domain get retyped by hand in step 2. The database already reserves <code>customer</code> as a link target; the router refuses it.</p>"
+      "body": "<p>Email automation is paused in production, so there is no inbox today: every emailed enquiry is retyped by hand in step 2. Once it is switched back on, <strong>Create company from sender</strong> in a thread’s <strong>Customer</strong> section closes this gap — it opens step 2’s page with the sender’s name (or email domain), contact name and email filled in, and links the thread to the new customer on Save.</p>"
     },
     {
       "after": 18,
@@ -684,7 +684,7 @@
         "homeless": true,
         "join": 2,
         "jlbl": "Joins at",
-        "body": "<p>Someone at the Kolombong counter with a shipment. Take the details on paper or straight into the create-company dialog while they stand there — you will need company title, one role, a contact name and a phone number as a minimum.</p><p>Ask for the billing name and tax ID <em>now</em>, not later: by the time an invoice needs them the fields are three screens away from whoever is typing.</p>"
+        "body": "<p>Someone at the Kolombong counter with a shipment. Take the details on paper or straight into the <strong>New customer</strong> page while they stand there — you will need company title, one role, a contact name and a phone number as a minimum, and the contact boxes are on the same page.</p><p>Ask for the billing name and registration number <em>now</em>, not later: they are under <em>More details</em> on that page, and by the time an invoice needs them nobody is standing at the counter.</p>"
       },
       {
         "key": "phone",
@@ -741,6 +741,7 @@
       ],
       "navigate": "Left rail, **You** block → **Inbox** (it is no longer under the Documents menu)",
       "before": [
+        "Email automation is paused in production today: **Inbox** shows **Email automation paused**, and nothing syncs or sends. While it is paused, every enquiry starts at step 2.",
         "A mailbox must be connected for the org, or nothing syncs in. Press the **Sync now** icon on the mailbox row at the top of the left rail to pull new mail immediately.",
         "Only email arrives here by itself. WhatsApp, walk-in, phone and agent enquiries start at step 2."
       ],
@@ -759,6 +760,11 @@
           "action": "Click the enquiry to open it",
           "detail": "The URL becomes /inbox/<threadId>. The reading pane shows an **AI Summary**, every message, and the thread context panel.",
           "src": "apps/web/src/components/inbox/reading-pane.tsx:309"
+        },
+        {
+          "action": "In the context panel's **Customer** section, press **Create company from sender** — or **Link existing company…** if they are already on file",
+          "detail": "Create company from sender opens the **New customer** page (step 2) with the sender's name (or email domain) as the company title, and their name and email as the main contact, under a **From inbox thread** strip. The section shows these buttons only while the thread is not linked to a customer. **Save** links the thread to the new customer and brings you back with **Customer added and linked to the thread**.",
+          "src": "apps/web/src/components/inbox/reading-pane.tsx:209"
         },
         {
           "action": "Set the **Thread status** dropdown to **Open**",
@@ -818,9 +824,9 @@
         "Outgoing mail sent through the connected mailbox and stored on the thread",
         "Inbound count and first-response rate feeding the SLA tiles"
       ],
-      "result": "Nothing in the inbox creates a customer. Copy the sender's company name, email and signature details, then go to **step 2** (Sales → Companies).",
+      "result": "Once the inbox is live, **Create company from sender** turns the thread into a customer on step 2's page, already filled in and linked. While email automation is paused, copy the sender's company name, email and signature details and type them in at **step 2** (Sales → Companies → Add).",
       "pitfalls": [
-        "There is no **Create company from sender** action. Retype the sender details by hand in step 2.",
+        "**Create company from sender** needs email automation switched on. While it is paused there is no inbox to start from, so retype the sender details by hand in step 2.",
         "A thread can be closed but never marked won or lost, so an emailed enquiry that goes nowhere leaves no outcome."
       ],
       "shots": [
@@ -840,105 +846,135 @@
           "label": "Companies directory (Sales → Companies)"
         },
         {
-          "path": "/companies/$companyId/edit",
-          "label": "Full company edit form — where Create lands you"
+          "path": "/companies/new",
+          "label": "New customer page — where Add opens. ?role=supplier or ?role=agent presses that card; ?from=inbox&threadId=… is the inbox hand-off"
         },
         {
           "path": "/companies/$companyId",
-          "label": "Company record page"
+          "label": "Company record page — where Save lands you"
+        },
+        {
+          "path": "/companies/$companyId/edit",
+          "label": "Edit company — the same form, More details open"
         }
       ],
-      "navigate": "Top nav **Sales** → **Companies**, or **Overview → New Customers → Add customer** (the same Add company form; that tab lists customers added in the last 30 days)",
+      "navigate": "Top nav **Sales** → **Companies** → **Add**, or **Overview → New Customers → Add customer** (the same page with **Customer** pressed; that tab lists customers added in the last 30 days)",
       "before": [
         "Have the company's legal name exactly as it should print on documents.",
-        "Search first. The duplicate check only catches an exact same-case name."
+        "Search first. Save only refuses an exact same-case name; the **Already on file** hint under the title is the only warning about other spellings."
       ],
       "golden": [
         {
           "action": "Open **Sales → Companies**",
           "detail": "The directory lists every company, with role segments **Customers**, **Suppliers** and **Overseas agents**.",
-          "src": "apps/web/src/routes/_next/companies.tsx:360"
+          "src": "apps/web/src/routes/_next/companies.tsx:108"
         },
         {
           "action": "Type the name into **Search name, EN name, code, customer code** and check for an existing record",
-          "detail": "The search matches substrings in all four fields. There is no typeahead warning when you add a company.",
-          "src": "apps/web/src/routes/_next/companies.tsx:442"
+          "detail": "The search matches substrings in all four fields, in any case.",
+          "src": "apps/web/src/routes/_next/companies.tsx:481"
         },
         {
           "action": "Not found? Click **Add** in the toolbar",
-          "detail": "The **Add company** dialog opens.",
-          "src": "apps/web/src/routes/_next/companies.tsx:509"
+          "detail": "The **New customer** page opens (breadcrumb **Companies / New customer**, **Cancel** and **Save** top right). Add from the **Suppliers** or **Overseas agents** segment opens with that card pressed.",
+          "src": "apps/web/src/routes/_next/companies.tsx:553"
         },
         {
-          "action": "Type the **Company title**",
-          "detail": "This is the only required field. Leaving it blank shows **Required**.",
-          "src": "apps/web/src/routes/_next/companies.tsx:254"
+          "action": "Under **1 · What is this company to us?**, keep **Customer** pressed; add **Supplier** or **Overseas agent** if they apply",
+          "detail": "More than one can be pressed. With none, **Save** is disabled and the card says **Pick at least one role**.",
+          "src": "apps/web/src/components/company/company-form.tsx:688"
         },
         {
-          "action": "Optionally fill **Code** and **Customer code**",
-          "src": "apps/web/src/routes/_next/companies.tsx:274"
+          "action": "Under **2 · Who**, type the **Company title**",
+          "detail": "The only required box. From two letters, up to three existing companies with a similar name appear under it as **Already on file:** links — open one rather than adding a duplicate. **Customer code** and **Address (EN)** sit beside it.",
+          "src": "apps/web/src/components/company/company-form.tsx:271"
         },
         {
-          "action": "Under **Roles**, keep **Customer** ticked (it is ticked by default); add **Supplier** or **Overseas agent** if they apply",
-          "detail": "The server refuses a company with no role: **A company needs at least one role (customer, supplier or agent)**.",
-          "src": "packages/api/src/routers/company.ts:785"
+          "action": "Under **3 · Main contact (optional)**, fill **Name**, **Role**, **Phone** and **Email** of the person you deal with",
+          "detail": "Saved as the company's **Primary** contact in the same save, and used as the quote's **Attention**. Any contact box filled without a name asks **Add a name to save this contact**.",
+          "src": "packages/api/src/routers/company.ts:847"
         },
         {
-          "action": "Press **Create and continue**",
-          "detail": "A toast reads **Company created — add the rest of its details** and you land on the full edit form. A same-name company is refused with **A company with this name already exists in the directory**.",
-          "src": "apps/web/src/routes/_next/companies.tsx:165"
+          "action": "Under **4 · How they pay**, check **Settlement currency**, **Days payable** and **Credit limit**",
+          "detail": "Settlement currency starts at **MYR**. Credit limit only shows if your role may see it. **Sales owner** (Business personnel) defaults to you.",
+          "src": "apps/web/src/components/company/company-form-payload.ts:402"
         },
         {
-          "action": "Use the section rail to fill **Identity** → **Roles & status** → **Classification** → **Address** → **Settlement** → **People** → **Record**",
-          "detail": "The fields that reach the invoice are in **Address** and **Settlement** (**Days payable**, **Credit limit**, **Settlement currency**). **People** holds NCT's own staff for this account, not the customer's.",
-          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:667"
+          "action": "Anything else is under **More details** (closed)",
+          "detail": "English name, Code, **Registration no. (SSM / USCC)**, Aliases, classification, CN address, settlement mode, NCT's other staff on the account, and Note.",
+          "src": "apps/web/src/components/company/company-form.tsx:393"
         },
         {
-          "action": "Press **Save changes** (header or form foot)",
-          "detail": "The header counter shows **N unsaved** until you save. A toast reads **Company updated** and you land on the company record page. On this form, an emptied box clears the stored value.",
-          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:620"
+          "action": "Press **Save**",
+          "detail": "Toast **Customer added** (**Company added** when Customer is not pressed) and you land on the company record page. A same-name company is refused under the title with **A company with this name already exists in the directory**; nothing is saved and your typing stays.",
+          "src": "apps/web/src/routes/_next/companies_.new.tsx:214"
+        },
+        {
+          "action": "Or, to quote this customer now, press **Save & new quote** (shown only while **Customer** is pressed)",
+          "detail": "If the customer may be quoted — no customer review applies, or it has passed — the toast reads **Customer added — start the quote** and a new quotation opens with **Client** and **Attention** filled: carry on at **step 5**. Otherwise you land on the record page under **Waiting for approval — this customer can be quoted once its customer review passes.**, with **Submit for review**, or **Submitted <date>, waiting for review stage n**. A blacklisted company is told it cannot be quoted. Once approved, the banner offers **Start a quote**.",
+          "src": "apps/web/src/routes/_next/companies_.new.tsx:254"
+        },
+        {
+          "action": "To change details later: record page → **Edit**",
+          "detail": "The same form, with **More details** open and the main contact shown read-only (manage contacts on the record page). Roles and the blacklist change through their own confirm buttons, not Save. **Save changes** (header or foot) shows **N unsaved** until saved; toast **Company updated**. An emptied box clears the stored value.",
+          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:201"
         }
       ],
       "fields": [
+        {
+          "label": "Roles: Customer / Supplier / Overseas agent",
+          "required": true,
+          "note": "At least one. Customer is pre-pressed (or the segment's role when Add came from Suppliers or Overseas agents)"
+        },
         {
           "label": "Company title",
           "required": true,
           "note": "Unique per org, compared case-sensitively"
         },
         {
-          "label": "Code / Customer code",
+          "label": "Customer code, Address (EN)",
           "required": false,
-          "note": "Free text, searchable"
+          "note": "Who section; Address (EN) prints as the buyer address"
         },
         {
-          "label": "Roles: Customer / Supplier / Overseas agent",
-          "required": true,
-          "note": "At least one. Customer is pre-ticked"
+          "label": "Main contact: Name, Role, Phone, Email",
+          "required": false,
+          "note": "Saved as the Primary contact; a name is needed once any box is filled. Email is not format-checked"
         },
         {
-          "label": "English name, Unified social credit code, Aliases",
+          "label": "Settlement currency, Days payable, Credit limit",
           "required": false,
-          "note": "Identity section; aliases comma-separated"
+          "note": "MYR pre-filled. Days payable 0–3650 sets the invoice payment terms. Credit limit is hidden from roles that may not see it"
+        },
+        {
+          "label": "Sales owner",
+          "required": false,
+          "note": "NCT's salesperson on the account (Business personnel); defaults to you"
+        },
+        {
+          "label": "English name, Code, Registration no. (SSM / USCC), Aliases",
+          "required": false,
+          "note": "More details; aliases comma-separated"
         },
         {
           "label": "Business type, Development mode, Consignee type, Tags",
           "required": false,
-          "note": "Classification section"
+          "note": "More details (classification)"
         },
         {
-          "label": "Address (CN), Province, City, Area, Address (EN)",
+          "label": "Address (CN), Province, City, Area",
           "required": false,
-          "note": "Printed as the buyer address on the invoice"
+          "note": "More details; printed with the buyer address on the invoice"
         },
         {
-          "label": "Settlement mode, Reconciliation method, Settlement currency, Days payable, Credit limit",
+          "label": "Settlement mode, Reconciliation method",
           "required": false,
-          "note": "Days payable 0–3650; it sets the invoice payment terms"
+          "note": "More details"
         },
         {
-          "label": "Operation, Service, Business, Associated, Documentation, Commercial, Related (second)",
+          "label": "Operation, Service, Documentation, Associated, Commercial, Related (second)",
           "required": false,
-          "note": "NCT staff on the account"
+          "note": "More details; NCT staff on the account"
         },
         {
           "label": "Note",
@@ -947,13 +983,16 @@
         }
       ],
       "writes": [
-        "A company row with its roles (isCustomer / isSupplier / isAgent)",
-        "Every section's fields on Save changes"
+        "A company row with its roles (isCustomer / isSupplier / isAgent) and every filled field",
+        "The main contact, if given, as a company_contact row with isPrimary = true — in the same transaction (company.createWithContact), audited as company.create and companyContact.create",
+        "Edit: only the changed fields, on Save changes"
       ],
-      "result": "You are on the company record page. Scroll to the **Contacts** card for **step 3**, or go straight to **Sales → Quotations** for **step 5**.",
+      "result": "After **Save** you are on the company record page, and the main contact is already on the **Contacts** card as Primary — **step 3** is only for further people. After **Save & new quote** you are on a new quotation for this customer (**step 5**), or on the record page under the approval banner. If the customer needs its own rate card, do **step 4** first.",
       "pitfalls": [
         "Nothing forces this step. A quotation takes a typed client name, so a walk-in can be quoted without a company record, and the invoice then loses the address, tax ID and payment terms.",
-        "\"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" both save, because the unique index is on the raw name."
+        "\"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" both save, because the unique index is on the raw name. The **Already on file** hint shows the other spelling but does not stop Save.",
+        "The approval check behind **Save & new quote** only chooses where you land. A quotation raised by hand from **Sales → Quotations** is not held back by the customer review.",
+        "The page heading reads **New customer** even when only Supplier or Overseas agent is pressed."
       ],
       "shots": [
         {
@@ -963,12 +1002,12 @@
         },
         {
           "file": "customer-intake-sop/shots/step-02-add.jpg",
-          "caption": "The Add company dialog",
-          "path": "/companies"
+          "caption": "The New customer page",
+          "path": "/companies/new"
         },
         {
           "file": "customer-intake-sop/shots/step-02-edit.jpg",
-          "caption": "Where Create lands you: the full edit form",
+          "caption": "Edit company: the same form, More details open",
           "path": "/companies"
         }
       ],
@@ -1011,17 +1050,18 @@
       ],
       "navigate": "**Sales → Companies** → click the company's row",
       "before": [
-        "The company exists (step 2)."
+        "The company exists (step 2). If **Main contact** was filled there, that person is already listed as **Primary** — this step is for anyone else, or for a company saved without a contact."
       ],
       "golden": [
         {
-          "action": "Open the company from **Sales → Companies**",
-          "detail": "The record page shows the company's cards, including **Contacts** with a count badge."
+          "action": "Open the company from **Sales → Companies** (Save at step 2 lands you here)",
+          "detail": "The record page shows the company's cards, including **Contacts** with a count badge. A main contact from step 2 is listed with the **Primary** chip.",
+          "src": "apps/web/src/components/company/company-contacts.tsx:231"
         },
         {
           "action": "On the **Contacts** card, press **Add contact**",
           "detail": "The **Add contact** dialog opens.",
-          "src": "apps/web/src/components/company/company-contacts.tsx:151"
+          "src": "apps/web/src/components/company/company-contacts.tsx:167"
         },
         {
           "action": "Type the person's **Name**",
@@ -1031,17 +1071,17 @@
         {
           "action": "Fill **Role** (e.g. Accounts payable), **Phone** (+60 12-345 6789) and **Email**",
           "detail": "Email is not format-validated, by design: the address book accepts whatever the customer gave you.",
-          "src": "apps/web/src/components/company/company-contacts.tsx:414"
+          "src": "apps/web/src/components/company/company-contacts.tsx:475"
         },
         {
-          "action": "Tick **Primary contact** for the person who should receive quotations",
+          "action": "Leave **Primary contact** unticked for a further person; tick it only if they should receive quotations instead",
           "detail": "Ticking it clears the flag from whoever held it before. The primary contact pre-fills the recipient when you send a quotation at step 9.",
           "src": "packages/api/src/routers/company-contact.ts:181"
         },
         {
           "action": "Press **Add contact**",
           "detail": "The row appears in the table (**Name · Role · Phone · Email · Primary**). Use the pencil (**Edit**) or bin (**Delete**) icons on the row later.",
-          "src": "apps/web/src/components/company/company-contacts.tsx:478"
+          "src": "apps/web/src/components/company/company-contacts.tsx:513"
         }
       ],
       "fields": [
@@ -1076,17 +1116,18 @@
       ],
       "result": "The contact is on file. Next is **step 5** (raise the quotation). If this customer needs its own rate card, do **step 4** first.",
       "pitfalls": [
-        "The seven personnel fields on the company edit form are NCT's own staff, not the customer's people — record the customer's people here. NCT's staff on this customer are listed under **Who's on this** at the top of the company page, where each person can only **Take lead**, **Join**, **Follow** or **Leave** for themselves; the seven fields mirror each role's lead."
+        "The seven personnel fields on the company edit form are NCT's own staff, not the customer's people — record the customer's people here. NCT's staff on this customer are listed under **Who's on this** at the top of the company page, where each person can only **Take lead**, **Join**, **Follow** or **Leave** for themselves; the seven fields mirror each role's lead.",
+        "If people are on file but nobody is Primary, the card warns **Nobody is marked primary** — the collections sheet then has no one to ring. Edit a contact and tick **Primary contact**."
       ],
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-03.jpg",
-          "caption": "The company record's Contacts card",
+          "caption": "The Contacts card: the main contact from step 2, already Primary",
           "path": "/companies"
         },
         {
           "file": "customer-intake-sop/shots/step-03-add.jpg",
-          "caption": "Add contact",
+          "caption": "Add contact, for a further person",
           "path": "/companies"
         }
       ],
