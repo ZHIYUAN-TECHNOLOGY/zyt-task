@@ -72,7 +72,8 @@
       "nct-s16-a-bill-of-lading-can-be-set-to-released-or-on-ho",
       "nct-s16-a-bill-of-lading-under-review-stays-fully-editab",
       "nct-s16-ocr-validation-issues-are-computed-returned-and-",
-      "nct-s16-linking-the-approved-order-carries-only-its-job-"
+      "nct-s16-linking-the-approved-order-carries-only-its-job-",
+      "nct-au-holding-only-correct-extraction-is-enoug"
     ]
   },
   {
@@ -125,7 +126,8 @@
       "nct-island",
       "nct-haulage",
       "nct-never-closed",
-      "nct-s18-there-is-no-customs-declaration-type"
+      "nct-s18-there-is-no-customs-declaration-type",
+      "nct-au-an-auto-approved-b-l-whose-tracking-job-"
     ]
   },
   {
