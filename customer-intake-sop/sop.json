@@ -105,7 +105,7 @@
       "phase": "B",
       "title": "Publish the rate card",
       "where": "/fee-templates → /approve/template",
-      "what": "Build the pivoted tariff: billing-unit columns (<code>20GP</code>, <code>40HQ</code>, <code>40RF</code>), fee rows carrying destination, minimum charge and if-any flags, an amount in at least one column on every selling row — a single cell may be blank (unpriced) or N/A (not available at that unit). Bind it to a company to make it that customer's deal. <strong>Only an approved selling template counts as a tariff.</strong>",
+      "what": "Build the pivoted tariff: billing-unit columns (<code>20GP</code>, <code>40HQ</code>, <code>40RF</code>), fee rows carrying destination, minimum charge and if-any flags, an amount in at least one column on every selling row — a single cell may be blank (unpriced) or N/A (not available at that unit). Tag each row into the service packages it belongs to (<strong>Packages</strong> column), so the quotation's package cards can fill it. Bind it to a company to make it that customer's deal. <strong>Only an approved selling template counts as a tariff.</strong>",
       "watch": {
         "tag": "Watch",
         "html": "The gate meant to stop an un-approved template being applied ships switched off, so nothing on the server refuses a draft card — only the picker’s default filter hides it, one tick away. Revising a card is Duplicate → edit → approve, then supersede the old one."
@@ -126,7 +126,7 @@
       "phase": "B",
       "title": "Raise the quotation",
       "where": "/quotations → /quotations/$quotationId",
-      "what": "Fill the header: entrust unit, business type, incoterms, POL and POD, carrier, schedule, validity. Two remark fields — the annotation prints on the customer's sheet, the internal remark never does. Saving allocates <code>NCT-Q-YYYYMM-####</code> and forces status to draft.",
+      "what": "Pick the service package under <em>What are you quoting?</em>, then fill <em>Who and where</em>: client, port of destination, attention (the customer's contact person), validity and containers. Everything else — route and parties, cargo, addresses, package settings — sits under <em>More details</em>. Two remark fields — the note to customer prints on the customer's sheet, the internal remark never does. Saving allocates <code>NCT-Q-YYYYMM-####</code> and forces status to draft.",
       "actors": [
         {
           "role": "sales",
@@ -138,11 +138,11 @@
       "n": 6,
       "phase": "B",
       "title": "Price it",
-      "where": "/quotations/$quotationId → fee grid",
-      "what": "Record containers and batches. Then either tick tariff cells in the Reference-template dialog and apply them, or type fee lines by hand with side and segment. The FX table seeds each foreign line's rate; the footer computes the tax-inclusive total and estimated profit; each line gets a badge reading its price against the tariff.",
+      "where": "/quotations/$quotationId → What are you quoting? · Charges",
+      "what": "The service package fills the Charges table from its tagged tariff rows, priced from the approved tariff for the quotation's date — a customer's deal wins — with quantities from Containers. Add anything else with Add Line or Charge if required, or bring in another sheet with Reference Template. Side, segment, currency, FX and tax live in each row's Details drawer. Each line gets a badge reading its price against the tariff; the Cost and profit switch shows the cost lines and estimated profit.",
       "watch": {
         "tag": "Watch",
-        "html": "<strong>Applied lines always land at quantity 1.</strong> The template never reads your container mix, so on a 3×40HQ booking every applied line is a third of the real charge until you retype the quantity. Nothing checks the cost side at all, so the margin rests on unverified buy figures."
+        "html": "<strong>The package reads Client, Port of Destination and Containers when you pick it.</strong> Change any of them afterwards and press Refresh package charges, or the lines keep the old prices. It fills only rows tagged into that package on the fee template, and nothing checks the cost side, so the margin rests on unverified buy figures."
       },
       "actors": [
         {
@@ -159,7 +159,7 @@
       "what": "The server refuses the whole quotation if any selling line sits below its resolved tariff floor, and names every offending line. A price may be <em>higher</em> than tariff — never lower.",
       "watch": {
         "tag": "Watch",
-        "html": "Two approved sheets with the same start date that disagree on a price leave a line “ambiguous”, which carries no floor — the refusal silently skips it. Two spellings of one charge unit do the same."
+        "html": "Two approved sheets with the same start date that disagree on a price no longer drop the floor — the higher price holds and the badge reads Contested. But a charge unit spelt two ways (<code>40HQ</code> vs <code>40 HQ</code>) still misses the tariff cell, carries no floor, and the refusal skips it."
       },
       "actors": [
         {
@@ -210,7 +210,7 @@
       "what": "Read the reply in the Threads card, then mark Won or Lost with the date they actually answered, their PO reference and a note. The server refuses if the quotation was never sent, and freezes the record afterwards.",
       "watch": {
         "tag": "Watch",
-        "html": "<strong>A mis-keyed decision cannot be corrected.</strong> The code says so itself: fixing one currently needs a database edit. The customer never touches the system — there is no accept link and no signature capture."
+        "html": "<strong>A mis-keyed decision is corrected through review, not edited.</strong> More ▾ → Correct decision proposes the right outcome with a reason, and it only takes effect once approved. The customer never touches the system — there is no accept link and no signature capture."
       },
       "actors": [
         {
@@ -714,7 +714,7 @@
         "homeless": true,
         "join": 5,
         "jlbl": "Joins at",
-        "body": "<p>An existing customer with another shipment — most of the volume. They are already in the directory and their deal card is already bound, so <strong>skip creation entirely</strong> — press Duplicate on their last quotation, or raise a fresh one. Duplicate on an order row instead makes a new numbered order with no fees and skips straight to receiving it into operations at step 13.</p><p>Check the deal card's validity dates first. An expired card silently falls back to the standard tariff, and the price you quote changes without warning.</p>"
+        "body": "<p>An existing customer with another shipment — most of the volume. They are already in the directory and their deal card is already bound, so <strong>skip creation entirely</strong> — raise a fresh quotation and pick the package, or open their last quotation and use More ▾ → Duplicate. A duplicate keeps the old prices: press Refresh package charges to re-price it against today's tariff and deal. Duplicate on an order row instead makes a new numbered order with no fees and skips straight to receiving it into operations at step 13.</p><p>Check the deal card's validity dates first. An expired card falls back to the standard tariff: the charges' badge then reads Tariff instead of Deal, so read the badges before you save.</p>"
       }
     ],
     "junctions": {
@@ -1137,47 +1137,52 @@
         {
           "action": "Open **Sales → Fee templates** and press **Add**",
           "detail": "The editor opens as **New Fee Template**.",
-          "src": "apps/web/src/routes/_next/fee-templates/index.tsx:580"
+          "src": "apps/web/src/routes/_next/fee-templates/index.tsx:615"
         },
         {
           "action": "In **Basic Information**, fill **Template Name *** and **Business Type ***",
           "detail": "These two are required. **Template name is required** appears if the name is blank.",
-          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:700"
+          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:720"
         },
         {
           "action": "Set **Fee Type** to **Selling Price**",
           "detail": "Only an approved Selling Price template acts as a tariff floor. **Cost** templates price the buy side.",
-          "src": "apps/web/src/lib/quotation.ts:35"
+          "src": "apps/web/src/lib/quotation.ts:41"
         },
         {
           "action": "For a customer's own deal, pick them in **Client** (\"Start typing to search the directory\")",
           "detail": "Leave Client empty for the company-wide standard tariff. Optionally set **Shipping Type**, **Carrier**, **Booking Agent**, **Foreign Agent**, **Settlement Unit**, **Valid From**, **Valid To** and **Annotation**.",
-          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:781"
+          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:801"
         },
         {
           "action": "In **Fee Details**, press **Add Billing Unit** once per container size",
           "detail": "Type each column header, e.g. `20GP`, `40HQ`, `40RF`. A billing unit cannot be blank or repeated.",
-          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:1268"
+          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:1304"
         },
         {
           "action": "Press **Add Fee** for each charge and fill the row",
-          "detail": "Columns: **Rank · Cost Name · Destination · Currency · <one column per unit> · Min charge · If any · Cost Label · Note**. In a unit cell, type an amount, leave it blank (unpriced), or type `N/A` (not available at that unit).",
-          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:1259"
+          "detail": "Columns: **Rank · Cost Name · Destination · Currency · <one column per unit> · Min charge · If any · Cost Label · Note · Packages**. In a unit cell, type an amount, leave it blank (unpriced), or type `N/A` (not available at that unit).",
+          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:1295"
         },
         {
           "action": "Give every selling row an amount in at least one unit column",
           "detail": "Otherwise the server refuses the save: **Row \"…\" has no price — a selling template's row needs an amount in at least one 计费单位 column.**",
-          "src": "packages/api/src/routers/quotation.ts:583"
+          "src": "packages/api/src/routers/quotation.ts:679"
+        },
+        {
+          "action": "In the row's **Packages** cell, tick the service packages the charge belongs to: **Port to door**, **Clearance only**, **Loose cargo**, **Forwarding**",
+          "detail": "A quotation's package card fills only the rows tagged with it (step 6). To tag or untag the whole grid at once, use **Tag all rows with…** beside **Add Billing Unit** (**Add to every row** / **Remove from every row**). Tagging an approved card does not send it back for review; changing a price does.",
+          "src": "apps/web/src/routes/_next/fee-templates/-package-cell.tsx:61"
         },
         {
           "action": "Press **Save Template**",
           "detail": "A toast reads **Template created** or **Template saved**. A refused save names the field: **Cannot save — check …**.",
-          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:659"
+          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:679"
         },
         {
           "action": "On the saved template's header, open **Review** → **Submit for review**",
           "detail": "The **Review** menu only appears once the template has been saved.",
-          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:655"
+          "src": "apps/web/src/routes/_next/fee-templates/$templateId.tsx:675"
         },
         {
           "action": "Reviewer: open **Approvals → Expense template**, tick the row and press **Approved** (or **Rejected**)",
@@ -1188,6 +1193,10 @@
           "action": "To revise a live card later, use the row actions on the list: **Duplicate** → edit the copy → submit and approve it → **Supersede** the old one",
           "detail": "**Supersede** asks for **End validity on**: the old sheet stops applying after that date. Its rows, prices and approval stay untouched.",
           "src": "apps/web/src/components/supersede-template-dialog.tsx:211"
+        },
+        {
+          "action": "To see which cards feed a package, read the list's **Packages** column or filter it with **Package**",
+          "src": "apps/web/src/routes/_next/fee-templates/index.tsx:489"
         }
       ],
       "fields": [
@@ -1240,26 +1249,32 @@
           "label": "If any",
           "required": false,
           "note": "Conditional charge; never carried onto an order"
+        },
+        {
+          "label": "Packages (per row)",
+          "required": false,
+          "note": "Service packages the row belongs to; a package card on the quotation fills only its tagged rows"
         }
       ],
       "writes": [
         "fee_template row plus its billing units and fee lines",
         "An audit submission; the template's audit status moves draft → pending → approved or rejected"
       ],
-      "result": "Once approved, the card shows in the quotation's **Reference Template** picker (step 6) and sets the price floor enforced at step 7.",
+      "result": "Once approved, the card prices the quotation's package cards (its tagged rows, step 6), shows in the **Reference Template** picker (step 6) and sets the price floor enforced at step 7.",
       "pitfalls": [
         "The **Reference Template** gate is declared but the seeded fee_template flow carries no gate row for it, so the server never refuses applying a draft card. Only the picker's default filter hides unapproved cards, and **Show all templates** reveals them.",
-        "An unapproved card enforces no floor, and the quotation shows **The tariff price floor is not enforcing anything on this quotation.**"
+        "An unapproved card enforces no floor, and the quotation shows **The tariff price floor is not enforcing anything on this quotation.**",
+        "A package fills only rows tagged into it. With nothing tagged, the quotation says **No tariff rows are tagged for this package yet — add charges by hand or tag rows in Fee templates**. Tag rows on the standard tariff; a customer's deal still wins on price without being tagged."
       ],
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-04.jpg",
-          "caption": "Fee Templates list",
+          "caption": "Fee Templates list, with its Packages column",
           "path": "/fee-templates"
         },
         {
           "file": "customer-intake-sop/shots/step-04-new.jpg",
-          "caption": "The template editor: Basic Information + the pivoted Fee Details grid",
+          "caption": "The template editor: Basic Information + the pivoted Fee Details grid with its Packages column",
           "path": "/fee-templates"
         },
         {
@@ -1348,91 +1363,119 @@
       "golden": [
         {
           "action": "Open **Sales → Quotations** and press **Add**",
-          "detail": "The editor opens titled **New Quote**. A one-line brief shows **Business type · Client · Route · Incoterm · Transit · Carrier · Validity · Entrusted**.",
-          "src": "apps/web/src/routes/_next/quotations/index.tsx:713"
+          "detail": "The editor opens titled **New Quote**. Top to bottom: **What are you quoting?**, **Who and where**, **Charges**, **More details**, then **Internal remark (never printed)**.",
+          "src": "apps/web/src/routes/_next/quotations/index.tsx:746"
         },
         {
-          "action": "Press **All 27 fields + 16 services** to expand the header",
-          "detail": "The full header form opens under the brief.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1641"
+          "action": "In **What are you quoting?**, pick a service package card: **Port to door**, **Clearance only**, **Loose cargo** or **Forwarding** — or **No package / custom** to build the charges by hand",
+          "detail": "The package sets Business Type, Shipping Type, the services on the order and the foreign segment, and fills the charges from the approved tariff (step 6).",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx:285"
         },
         {
-          "action": "Set **Business Type *** and optionally **Shipping Type**",
-          "detail": "Business type decides which templates the picker offers at step 6.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1660"
+          "action": "In **Who and where**, pick **Client *** (\"Start typing to search the directory\")",
+          "detail": "Required: **Entrust unit is required**. Picking from the directory links the company record — and its approved deal, which then prices the package. A typed name that matches nothing saves as text only.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx:75"
         },
         {
-          "action": "Pick **Client *** (\"Start typing to search the directory\")",
-          "detail": "Required: **Entrust unit is required**. Picking from the directory links the company record. A typed name that matches nothing saves as text only.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:285"
+          "action": "Fill **Port of Destination ***",
+          "detail": "Required: **Port of Destination is required**. The package uses it to choose destination-priced rows.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx:106"
         },
         {
-          "action": "Fill the lane: **Incoterms**, **Transit Term**, **Carrier**, **Port of Loading**, **Port of Destination**, **Route**",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1757"
+          "action": "Set **Attention** — the customer's contact person",
+          "detail": "Pick one of the client's contacts or type a name (**Contact person — pick or type**). It prints as **Attention / 收件人** on the quotation sheet.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx:168"
         },
         {
-          "action": "Fill the schedule and validity: **Shipment Schedule**, **Voyage (Lowest)**, **Voyage (Highest)**, **Validity Start**, **Validity End**",
-          "detail": "Validity Start dates the quotation for the tariff lookup at step 7.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1855"
+          "action": "Check **Validity Start** and **Validity End**",
+          "detail": "A new quote defaults to today through today + 30 days. **Expires within 7 days.** or **This quotation has expired.** shows under Validity End.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:119"
         },
         {
-          "action": "Add cargo facts as needed: **Cargo Value**, **Premium**, **UN No.**, **Class No.**, **Wharf**, **Product Name (CN)**, **Total Number Entrusted**, **Total Gross Weight (KGS)**, **Total Volume (CBM)**, **Whether Booking**",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1939"
+          "action": "In **Containers**, press **Add Container** and set **Container Type** and **Qty** for each size",
+          "detail": "The package reads these to set each line's quantity.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx:323"
         },
         {
-          "action": "Write customer-facing wording in **Annotation (shown to the customer)**",
-          "detail": "The staff-only note is **Quotation Remarks (internal — never printed)**, at the bottom below Estimated Profit.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2076"
+          "action": "Read the chips under Containers: **Business type**, **Services on the order**, **Currency** (MYR)",
+          "detail": "Read-only — the package set them. To change them, open **More details → Package settings**. When the tariff prices both trailers, a **Trailer** toggle (**Normal** / **Side-loader**) appears here; switching it re-prices the package charges.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx:199"
+        },
+        {
+          "action": "Open **More details** only when the quote needs more",
+          "detail": "**Route and parties** (**Quotation Date ***, **Quotation Staff**, **Port of Loading**, **Carrier**, **Incoterms**, **Transit Term**, **Booking Agent**, **Foreign Agent**, **How they reached us**, **Route**, **Shipment Schedule**, **Voyage (Lowest)** / **(Highest)**, **Wharf**, **Whether Booking**), **Cargo** (**Cargo Value**, **Premium**, **Total Gross Weight (KGS)**, **Total Volume (CBM)**, **UN No.**, **Class No.**, **Product Name (CN)**, **Total Number Entrusted**), **Addresses** (batches), **Package settings** (**Business Type**, **Shipping Type**, **Foreign segment**, **Record cost**, the services) and **Notes**. A save refused on a field inside opens the fold.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx:685"
+        },
+        {
+          "action": "Write customer-facing wording in **More details → Notes → Note to customer (printed)**",
+          "detail": "The staff-only note is **Internal remark (never printed)**, below More details.",
+          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:474"
         },
         {
           "action": "Press **Save Quote** (top-right)",
-          "detail": "The first save allocates `NCT-Q-YYYYMM-####`, status **Draft**, audit status draft, and moves the URL to the new id.",
-          "src": "packages/api/src/quotation/values.ts:415"
+          "detail": "The first save allocates `NCT-Q-YYYYMM-####`, status **Draft**, audit status draft, toasts **Quote NCT-Q-… created** and moves the URL to the new id. Leaving the page with unsaved edits asks **Leave without saving?** first.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:691"
         }
       ],
       "fields": [
         {
-          "label": "Business Type",
-          "required": true,
-          "note": "Nine trades"
+          "label": "Service package",
+          "required": false,
+          "note": "Port to door, Clearance only, Loose cargo, Forwarding, or No package / custom"
         },
         {
           "label": "Client (entrust unit)",
           "required": true,
-          "note": "Directory pick links the company"
+          "note": "Directory pick links the company and its deal"
         },
         {
-          "label": "Incoterms / Transit Term / Carrier",
-          "required": false,
-          "note": ""
+          "label": "Port of Destination",
+          "required": true,
+          "note": "Chooses destination-priced tariff rows"
         },
         {
-          "label": "Port of Loading / Port of Destination / Route",
+          "label": "Attention",
           "required": false,
-          "note": ""
+          "note": "Contact person; prints as Attention / 收件人"
         },
         {
           "label": "Validity Start / Validity End",
           "required": false,
-          "note": "Dates the tariff lookup"
+          "note": "New quotes default to today → +30 days"
         },
         {
-          "label": "Annotation (shown to the customer)",
+          "label": "Containers (Container Type / Qty)",
+          "required": false,
+          "note": "Sets the package lines' quantities"
+        },
+        {
+          "label": "Quotation Date (More details)",
+          "required": true,
+          "note": "Defaults to today; dates the tariff lookup"
+        },
+        {
+          "label": "Business Type (More details → Package settings)",
+          "required": true,
+          "note": "Set by the package"
+        },
+        {
+          "label": "Note to customer (printed)",
           "required": false,
           "note": "Prints on the sheet"
         },
         {
-          "label": "Quotation Remarks (internal — never printed)",
+          "label": "Internal remark (never printed)",
           "required": false,
           "note": "Stripped from every export"
         }
       ],
       "writes": [
-        "quotation row numbered NCT-Q-YYYYMM-####, status draft, audit status draft"
+        "quotation row numbered NCT-Q-YYYYMM-####, status draft, audit status draft, with its service package, attention and containers"
       ],
-      "result": "The quotation is saved with a number but no prices. Go straight on to **step 6** in the **Fee Details** card on the same page.",
+      "result": "The quotation is saved with a number and — if you picked a package — its charges. Check them in the **Charges** table on the same page: that is **step 6**.",
       "pitfalls": [
-        "The client box accepts a free-typed name, so a quotation can exist for a company that is not in the directory. Every document downstream then loses the address and tax ID."
+        "The client box accepts a free-typed name, so a quotation can exist for a company that is not in the directory. Every document downstream then loses the address and tax ID — and no customer deal can price it.",
+        "The package reads Client, Port of Destination and Containers at the moment you pick it. Fill them first, or press **Refresh package charges** after changing them."
       ],
       "shots": [
         {
@@ -1442,7 +1485,7 @@
         },
         {
           "file": "customer-intake-sop/shots/step-05-new.jpg",
-          "caption": "The quotation header, expanded to all 27 fields",
+          "caption": "The quotation page: What are you quoting? package cards and Who and where",
           "path": "/quotations"
         }
       ],
@@ -1562,112 +1605,123 @@
       "routes": [
         {
           "path": "/quotations/$quotationId",
-          "label": "Quotation editor → Containers, Batches and Fee Details cards"
+          "label": "Quotation editor → What are you quoting? and the Charges table"
         }
       ],
       "navigate": "**Sales → Quotations** → open the quotation",
       "before": [
-        "The quotation is saved (step 5). The **Reference Template** dialog still opens over unsaved edits, but **Next** and **Apply** are disabled with **Save the quotation first**."
+        "Client, Port of Destination and Containers are filled (step 5): the package reads them to choose rows, prices and quantities.",
+        "**Reference Template** needs a saved quotation: over unsaved edits its **Next** and **Apply** are disabled with **Save the quotation first**."
       ],
       "golden": [
         {
-          "action": "In **Containers**, press **Add Container** and set **Container Type** and **Qty** for each size",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2193"
+          "action": "Pick the package card in **What are you quoting?** (if not done at step 5)",
+          "detail": "**Filling charges from the tariff…**, then the card shows how many lines it brought. Each selling line is priced from the approved tariff for the quotation's date; a customer's approved deal wins over the standard tariff. Quantities follow Containers.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx:101"
         },
         {
-          "action": "If the cargo splits, press **Add Batch** and fill **Batch Name**, **Unpacking Address**, **Pickup Address**, **Delivery Address**",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2286"
+          "action": "If the quote already has charges, answer **Replace package charges?**",
+          "detail": "Ticked charges are removed and replaced by the package's; unticked ones stay. Charges the package also produces are pre-ticked; hand-added lines, other sheets and all cost lines are listed unticked. Fields you changed by hand are listed under **You changed these by hand. They will be overwritten:**. Press **Replace** (or **Apply package**), or **Cancel** to change nothing.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx:449"
         },
         {
-          "action": "In **Fee Details**, press **Reference Template**",
-          "detail": "The **Apply a Fee Template** dialog opens. Step 1 lists approved templates grouped, with the standard tariff always shown. Tick **Show all templates** to ignore business and shipping type.",
-          "src": "apps/web/src/components/reference-template-dialog.tsx:556"
+          "action": "Read the note under the cards, if any",
+          "detail": "**No tariff rows are tagged for this package yet — add charges by hand or tag rows in Fee templates** (step 4), **No tagged row matches this destination/containers**, or **Packages unavailable — add charges by hand**.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts:331"
         },
         {
-          "action": "Choose the template, set **Apply lines as** to **Selling Price**, then press **Next**",
-          "src": "apps/web/src/components/reference-template-dialog.tsx:675"
+          "action": "After changing Client, Port of Destination, Containers or the Trailer, press **Refresh package charges**",
+          "detail": "It re-prices the package through the same Replace dialog. When only Containers changed, the table also flags **N template lines don't match Containers** with **Match Qty to containers**.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx:268"
         },
         {
-          "action": "Tick the cells (charge × unit) you are quoting and press **Apply**",
-          "detail": "Only ticked cells are copied. On a saved quotation the lines are written server-side straight away (a toast reads **Template lines applied**) and the grid refreshes; on an unsaved one they are appended to the form.",
-          "src": "apps/web/src/components/reference-template-dialog.tsx:516"
+          "action": "Check the **Charges** table: **Charge · Unit · Qty · Price · Total**, the tariff badge and **If req.**",
+          "detail": "Prices are tax-inclusive. The badge reads **Tariff** (at tariff), **Deal** (a customer deal), **+n** (above tariff), **Below** (will be refused), **Contested**, **N/A** or **Unchecked** (added since the last save). Under the price a hint reads e.g. **Tariff 540 (Standard) · +110** or **Below tariff 540 — not allowed**, with **Use tariff** to copy the tariff price in.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:1089"
         },
         {
-          "action": "**Retype Qty on every applied line** to match your containers",
-          "detail": "Applied lines land at quantity 1 whatever the Containers card says, so 3×40HQ needs Qty 3.",
-          "src": "apps/web/src/components/reference-template-dialog.tsx:190"
+          "action": "For a charge not in the package, press **Add Line**; for one billed only if it happens, press **Charge if required**",
+          "detail": "If-required lines are listed under **Charges upon requirement (not in total)** and are never carried onto an order. Ticking **If req.** on a row does the same.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:1064"
         },
         {
-          "action": "For anything not on the card, press **Add Line** and fill **Side**, **Segment**, **Cost Name**, **Currency**, **Charge Unit**, **Settlement Unit**, **Qty**, **Unit Price**",
-          "detail": "**Total**, **FX Rate**, **Local Amt.**, **Tax %** and **Taxes** compute on the row. Prices are tax-inclusive.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:3129"
+          "action": "Optional: to bring in cells from another sheet, press **Reference Template**",
+          "detail": "In **Apply a Fee Template**, choose the template, set **Apply lines as** to **Selling Price**, press **Next**, tick the cells and press **Apply** (toast **Template lines applied**). Quantities are seeded from Containers. Tick **Show all templates** to ignore business and shipping type.",
+          "src": "apps/web/src/components/reference-template-dialog.tsx:620"
         },
         {
-          "action": "Add the buy side: lines with **Side = Cost**, and tick **Record cost** if the cost should be kept",
-          "detail": "Cost lines never go on the customer's sheet. The row flag reads **if any** — charge only if required.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2403"
+          "action": "For anything else about a line, open its **⋯ → Details…**",
+          "detail": "The drawer holds **Side**, **Segment**, **Currency**, **Comm. %**, **Settlement Unit**, **FX Rate**, **Local Amt.**, **Tax %**, **Taxes** and **Note**. Set **Side** to **Cost** to make it a buy-side line. **⋯ → Delete** removes a line.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/fee-line-drawer.tsx:92"
         },
         {
-          "action": "Read each row's tariff hint and the header badge, then check **Estimated Profit (local currency)** at the foot",
-          "detail": "A price above tariff shows a delta. A price below tariff will be refused at step 7.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2321"
+          "action": "Turn on **Cost and profit** to see the cost lines and **Estimated Profit (local currency)**",
+          "detail": "A display switch, not a permission: cost lines are saved either way and are never printed. It is on by default while the quote is pending review, so the reviewer sees the margin. Cost lines sit under **Cost (payable)**; tick **Record cost** in **More details → Package settings** if the cost should be kept.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:1053"
         }
       ],
       "fields": [
         {
-          "label": "Container Type / Qty",
+          "label": "Service package",
           "required": false,
-          "note": "Informs the brief's Entrusted count"
+          "note": "Fills the charges from its tagged tariff rows"
         },
         {
-          "label": "Side",
-          "required": true,
-          "note": "Selling Price or Cost"
-        },
-        {
-          "label": "Segment",
-          "required": true,
-          "note": "Template lines default to domestic"
-        },
-        {
-          "label": "Cost Name",
+          "label": "Charge (Cost Name)",
           "required": true,
           "note": "Suggested from Cost items"
         },
         {
-          "label": "Currency",
+          "label": "Unit / Qty / Price",
+          "required": true,
+          "note": "Total = Qty × Price, floored by Min charge. Qty follows Containers on package and template lines"
+        },
+        {
+          "label": "If req.",
+          "required": false,
+          "note": "Charge upon requirement — excluded from the total, never carried onto an order"
+        },
+        {
+          "label": "Side (Details)",
+          "required": true,
+          "note": "Selling Price or Cost"
+        },
+        {
+          "label": "Segment (Details)",
+          "required": true,
+          "note": "Template lines default to domestic"
+        },
+        {
+          "label": "Currency / FX Rate (Details)",
           "required": true,
           "note": "FX Rate is optional and seeded from the FX table"
         },
         {
-          "label": "Qty / Unit Price",
-          "required": true,
-          "note": "Total = Qty × Unit Price, floored by Min charge. Comm. % is optional"
-        },
-        {
-          "label": "Tax %",
+          "label": "Tax % (Details)",
           "required": true,
           "note": "Tax is embedded in the price, not added on top"
         },
         {
-          "label": "if any",
+          "label": "Cost and profit",
           "required": false,
-          "note": "Conditional charge — never carried onto an order"
+          "note": "Display only — shows cost lines and Estimated Profit; never printed"
         }
       ],
       "writes": [
-        "quotation_fee_line rows, each with provenance to the template it came from",
-        "quotation_container and batch rows"
+        "quotation_fee_line rows, each with provenance to the tariff sheet that priced it",
+        "The quotation's service package; quotation_container and batch rows"
       ],
-      "result": "The applied lines are already stored on a saved quotation; anything you typed by hand is not. Press **Save Quote** — that is **step 7**.",
+      "result": "Package and hand-typed lines live in the form until you press **Save Quote** — that is **step 7**. (Lines applied with Reference Template on a saved quotation are stored straight away.)",
       "pitfalls": [
-        "Applied lines always land at quantity 1. The template never reads your container mix.",
-        "Nothing checks the cost side, so Estimated Profit is only as good as the buy prices you typed."
+        "A package fills only the tariff rows tagged into it (step 4). An untagged tariff fills nothing, and the note under the cards says so.",
+        "Picking a package reads Client, Port of Destination and Containers at that moment. Change them afterwards and press **Refresh package charges**, or the prices stay those of the old inputs.",
+        "The package is locked while the quote is under review, once it is approved or decided, and once its cost lines are posted to the cost ledger; the cards show why, e.g. **Cost lines from this quote are already posted to the ledger, so the package cannot change.**",
+        "Nothing checks the cost side, so Estimated Profit is only as good as the buy prices on the cost lines."
       ],
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-06.jpg",
-          "caption": "Containers, Batches and the Fee Details grid",
+          "caption": "Package cards above the Charges table, with the Cost and profit switch and the Details drawer",
           "path": "/quotations"
         }
       ],
@@ -1732,24 +1786,29 @@
       ],
       "golden": [
         {
-          "action": "Press **Save Quote**",
-          "detail": "The toast reads **Quote saved** and the tariff check re-runs against the stored quotation.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:725"
+          "action": "Press **Save Quote** (top-right)",
+          "detail": "The toast reads **Quote saved** and the tariff check re-runs against the stored quotation. Under the **Charges** title a count badge sums the drift, e.g. **2 above tariff · 1 on a deal**.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:691"
         },
         {
-          "action": "If refused, read the red text under the offending rows",
-          "detail": "Each message reads **Line \"<charge — destination · unit>\" is below tariff: <typed> < <floor>**. The whole save is refused, not just that line.",
-          "src": "packages/api/src/quotation/tariff-check.ts:457"
+          "action": "If refused, read the error toast",
+          "detail": "It lists every offending line: **Line \"<charge — destination · unit>\" is below tariff: <typed> < <floor>**. The whole save is refused, not just that line.",
+          "src": "packages/api/src/quotation/tariff-check.ts:604"
         },
         {
-          "action": "Raise each flagged price to at least the floor, or remove the line, then save again",
+          "action": "Find the refused rows in **Charges**",
+          "detail": "Each one's badge reads **Below — refused**, and under its price **Refused: <typed> is below the tariff <floor>**. A refusal the table cannot match to a row is printed under the **Charges** title.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:371"
+        },
+        {
+          "action": "Raise each flagged price to at least the floor (**Use tariff** copies it in), or remove the line with **⋯ → Delete**, then save again",
           "detail": "A price above tariff is allowed. The sanctioned way to charge less is an approved customer deal template.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2354"
+          "src": "apps/web/src/components/tariff-hint.tsx:308"
         },
         {
-          "action": "Read the grey banner if it appears: **The tariff price floor is off on N of M selling lines**",
-          "detail": "It lists why: no approved price for this date, marked N/A, two tariffs that disagree, or added since the last save. Those lines are accepted at any price.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2567"
+          "action": "Read the banner above the table if it appears: **The tariff price floor is off on N of M selling lines**",
+          "detail": "It lists why: no approved price for this date, marked N/A, or added since the last save. Those lines are accepted at any price.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:953"
         }
       ],
       "writes": [
@@ -1757,13 +1816,13 @@
       ],
       "result": "The quotation is saved and within tariff. Next is **step 8**: submit it for review.",
       "pitfalls": [
-        "Two approved sheets with the same start date that disagree leave a line \"ambiguous\", and it carries no floor.",
-        "Two spellings of one charge unit (40HQ vs 40 HQ) miss the tariff cell in the same way."
+        "Two approved sheets with the same start date that disagree: the higher price holds and the badge reads **Contested**.",
+        "Two spellings of one charge unit (40HQ vs 40 HQ) miss the tariff cell, so the line carries no floor and the refusal skips it."
       ],
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-06.jpg",
-          "caption": "Save Quote runs the tariff floor against this grid",
+          "caption": "Save Quote runs the tariff floor against the Charges table; badges sit in its Tariff column",
           "path": "/quotations"
         }
       ],
@@ -1852,9 +1911,9 @@
       ],
       "golden": [
         {
-          "action": "On the quotation header, press **Submit for Review**",
-          "detail": "It shows next to the audit badge while audit status is draft. A toast reads **Review updated** and the badge turns pending.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1266"
+          "action": "In the quotation header, press **Submit for Review**",
+          "detail": "It sits beside the audit badge, at the start of the header's buttons, while the audit status is draft — never inside **More ▾**. A toast reads **Review updated** and the badge turns pending. Save Quote is then disabled: **Under review. Retract the submission to edit.** (**Retract** takes it back.)",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:298"
         },
         {
           "action": "Reviewer: open **Approvals → Quotation review**",
@@ -1862,26 +1921,26 @@
         },
         {
           "action": "Click the row to open and check the quotation, or tick rows in the queue",
-          "detail": "Check the prices against the tariff badge, Estimated Profit and the annotation."
+          "detail": "**Cost and profit** is on by default while the quote is pending, so the cost lines and **Estimated Profit** show. Check the prices against each row's tariff badge and the **Note to customer (printed)**."
         },
         {
-          "action": "Press **Approved** on the queue toolbar, or **Approve** on the record",
+          "action": "Press **Approved** on the queue toolbar, or **Approve** in the record's header",
           "detail": "The toolbar reads **Approved · Rejected · Refresh Page**.",
           "src": "apps/web/src/components/review-queue.tsx:360"
         },
         {
           "action": "To send it back, press **Rejected** / **Reject** and type a reason",
-          "detail": "The reason is optional (up to 2000 characters) but should be given. A rejected quotation stays editable, and the submitter fixes it and presses **Resubmit**.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1314"
+          "detail": "The reason is optional (up to 2000 characters) but should be given. A rejected quotation stays editable, and the submitter fixes it and presses **Resubmit** in the header.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:331"
         }
       ],
       "writes": [
         "An audit submission and decision; the quotation's audit status becomes approved or rejected",
         "Audit-log entries audit.submit and audit.decide"
       ],
-      "result": "Approved: the **Convert to order** button unlocks (step 11), and you can send it (step 9). Rejected: fix it and **Resubmit**.",
+      "result": "Approved: **Send** becomes the header's next-step button (step 9) and **Convert to order** unlocks (step 11). Rejected: fix it and **Resubmit**.",
       "pitfalls": [
-        "Send is not gated on approval: the **Send** button shows on any draft. Follow the SOP and approve first.",
+        "Send is not gated on approval: on any draft, **Send** is in **More ▾**. Follow the SOP and approve first — only an approved, unsent quote shows **Send** as the next-step button.",
         "What approval actually unlocks is the **Convert order** gate at step 11."
       ],
       "shots": [
@@ -2151,32 +2210,32 @@
       "routes": [
         {
           "path": "/quotations/$quotationId",
-          "label": "Quotation header → Send"
+          "label": "Quotation header → Send (next-step button, or More ▾)"
         }
       ],
-      "navigate": "**Sales → Quotations** → open the quotation → **Send**",
+      "navigate": "**Sales → Quotations** → open the quotation → **Send** (the header's next-step button on an approved quote, otherwise **More ▾**)",
       "before": [
         "A mailbox is connected in Settings. Without one the dialog says **No active mailbox connected — connect one in Settings first.**",
         "No unsaved edits. **Send** is disabled with **Save the quotation first — the email is built from the saved version.**"
       ],
       "golden": [
         {
-          "action": "Optionally preview via **Export** → **Quotation sheet PDF (English)**, **Quotation sheet (English)** or **报价单（中文）**",
-          "detail": "This is exactly what the customer receives. Cost lines, margin and internal remarks are stripped.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1431"
+          "action": "Optionally preview with **Preview PDF** in the header, or **More ▾ → Export sheet** → **Quotation sheet (English)**, **Quotation sheet PDF (English)** or **报价单（中文）**",
+          "detail": "This is exactly what the customer receives, including the **Attention / 收件人** row. Cost lines, margin and the internal remark are stripped.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:576"
         },
         {
-          "action": "Press **Send** (next to the status badge)",
-          "detail": "The **Send quotation NCT-Q-…** dialog opens.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1372"
+          "action": "Press **Send**",
+          "detail": "On an approved, unsent quote it is the next-step button in the header; otherwise it is in **More ▾**. The **Send quotation NCT-Q-…** dialog opens.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:219"
         },
         {
           "action": "Choose **From** (your mailbox)",
-          "src": "apps/web/src/components/quotation/send-quotation-dialog.tsx:257"
+          "src": "apps/web/src/components/quotation/send-quotation-dialog.tsx:321"
         },
         {
           "action": "Check **To**, which is pre-filled from the company's primary contact",
-          "detail": "With no company on file it says **No company on file for this quote — type the recipient's address.**"
+          "detail": "Not from **Attention** — change it if the quote is for someone else. With no company on file it says **No company on file for this quote — type the recipient's address.**"
         },
         {
           "action": "Type any **Cc** (separate with , or ;)"
@@ -2187,11 +2246,11 @@
         },
         {
           "action": "Edit **Subject** and **Message**, then press **Send**",
-          "detail": "A toast reads **Quotation NCT-Q-… sent**. Status becomes **Sent**.",
-          "src": "apps/web/src/components/quotation/send-quotation-dialog.tsx:394"
+          "detail": "A toast reads **Quotation NCT-Q-… sent**. Status becomes **Sent**, and **Decide** becomes the header's next-step button.",
+          "src": "apps/web/src/components/quotation/send-quotation-dialog.tsx:214"
         },
         {
-          "action": "To send to someone else later, use **Resend**",
+          "action": "To send to someone else later, use **More ▾ → Resend**",
           "detail": "Resend stays available while status is Sent."
         }
       ],
@@ -2240,7 +2299,7 @@
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-05-new.jpg",
-          "caption": "Send, Export and Decide sit in this header once the quotation is saved",
+          "caption": "Preview PDF, the next-step button and More ▾ sit in this header once the quotation is saved",
           "path": "/quotations"
         }
       ],
@@ -2296,22 +2355,22 @@
       "routes": [
         {
           "path": "/quotations/$quotationId",
-          "label": "Quotation header → Decide; Threads card for the reply"
+          "label": "Quotation header → Decide (next-step button); Threads card for the reply"
         }
       ],
-      "navigate": "**Sales → Quotations** → open the quotation → **Decide**",
+      "navigate": "**Sales → Quotations** → open the quotation → **Decide** (the header's next-step button once it is sent)",
       "before": [
         "The quotation was genuinely sent through step 9. **Decide** only appears once there is a send stamp."
       ],
       "golden": [
         {
           "action": "Read the customer's answer in the **Threads** card on the quotation (or in **Inbox**)",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:531"
+          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:69"
         },
         {
           "action": "Press **Decide**",
-          "detail": "The **Decide quotation NCT-Q-…** dialog: **Records the customer's answer. Once decided, this quotation becomes read-only.**",
-          "src": "apps/web/src/components/quotation/decide-quotation-dialog.tsx"
+          "detail": "The header's next-step button on a sent quote. The **Decide quotation NCT-Q-…** dialog: **Records the customer's answer. Once decided, this quotation becomes read-only.**",
+          "src": "apps/web/src/components/quotation/decide-quotation-dialog.tsx:106"
         },
         {
           "action": "Choose **Outcome**: **Won** or **Lost**"
@@ -2354,15 +2413,15 @@
       "writes": [
         "status won or lost, decided_at, decided_by, customer reference and note; the quotation becomes read-only"
       ],
-      "result": "**Won** → **step 11** (Convert to order). **Lost** → the chain ends here.",
+      "result": "**Won** → **step 11** (**Convert to order** becomes the next-step button). **Lost** → the chain ends here.",
       "pitfalls": [
-        "A mis-keyed decision cannot be corrected from any screen, only with a database edit.",
-        "A legacy quotation marked Sent without a real send stamp hides **Decide**. Use **Resend** to write real stamps first."
+        "A mis-keyed decision is fixed with **More ▾ → Correct decision** (needs quotation update rights): it asks for a **Reason for correction** and goes to review (**Correction sent for review**). The header shows **Correction pending review** until it is decided, then **Corrected**.",
+        "A legacy quotation marked Sent without a real send stamp shows no **Decide**. Use **More ▾ → Resend** to write real stamps first."
       ],
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-05-new.jpg",
-          "caption": "Decide appears in the header of a sent quotation",
+          "caption": "Decide is the next-step button in the header of a sent quotation",
           "path": "/quotations"
         }
       ],
@@ -2418,37 +2477,36 @@
       "routes": [
         {
           "path": "/quotations/$quotationId",
-          "label": "Quotation header → Convert to order"
+          "label": "Quotation header → Convert to order (next-step button on a won quote, otherwise More ▾)"
         },
         {
           "path": "/order/$orderId/edit",
           "label": "The new order's edit form, where you land"
         }
       ],
-      "navigate": "**Sales → Quotations** → open the won quotation → **Convert to order**",
+      "navigate": "**Sales → Quotations** → open the won quotation → **Convert to order** (the header's next-step button)",
       "before": [
-        "The quotation's review has passed (step 8). The button only renders on an approved quotation with no order yet.",
+        "The quotation's review has passed (step 8). **Convert to order** is only offered on an approved quotation that is not Lost and has no order yet.",
         "The customer said yes (step 10). This is procedure only: the server does not check for Won."
       ],
       "golden": [
         {
           "action": "Open the won, approved quotation",
-          "detail": "Check that no one has already converted it. The button disappears once an order exists."
+          "detail": "Check that no one has already converted it. The action disappears once an order exists."
         },
         {
           "action": "Press **Convert to order**",
-          "detail": "It reads **Converting…** while running.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:1505"
+          "detail": "On a won quote it is the header's next-step button; on an approved quote not yet won it is in **More ▾**. It reads **Converting…** while running.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:441"
         },
         {
-          "action": "Read the toast: **Order created with N receivable fee line(s)**",
-          "detail": "It may add **M existing line(s) attached**, when fee lines were already posted to the ledger from this quotation.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:817"
+          "action": "Read the toast: **Order <job number> created with N receivable fee line(s)**",
+          "detail": "Without a job-number sequence it reads **Order created with N receivable fee line(s)**. It may add **M existing line(s) attached**, when fee lines were already posted to the ledger from this quotation.",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts:242"
         },
         {
-          "action": "You land on the new order's edit form. **Before anything else, do step 12.**",
-          "detail": "The Job Number box is empty.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:834"
+          "action": "You land on the new order's edit form. **Check the Job Number box — step 12.**",
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts:261"
         }
       ],
       "writes": [
@@ -2460,12 +2518,12 @@
       "pitfalls": [
         "The server refuses a second conversion with **This quotation has already been converted to an order.**",
         "A quotation for a retired trade (e.g. rail) is refused: **… orders are no longer offered …**",
-        "**Post to cost ledger** is a different button. It books lines and marks the quotation converted without creating any order."
+        "**More ▾ → Post to cost ledger** is a different action. It books lines and marks the quotation converted without creating any order — and locks the package."
       ],
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-05-new.jpg",
-          "caption": "Convert to order appears here on an approved quotation",
+          "caption": "Convert to order is the next-step button on a won, approved quotation",
           "path": "/quotations"
         }
       ]
