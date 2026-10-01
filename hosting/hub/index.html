@@ -355,6 +355,7 @@ body.readonly .tick, body.readonly .tick-wrap { cursor: not-allowed; }
 #ov-cards .sec-h { margin-top: 1.75rem; }
 /* Findings: audit chips, and the one-time import of the SOP page's old browser ticks */
 .audit-fixed { color: var(--ok); background: rgba(31,157,98,.1); }
+.audit-partly { color: var(--warn); background: var(--warn-soft); }
 .imp { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: flex-start; margin: 1.25rem 0 0; padding: .9rem 1rem; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; background: var(--canvas); font-size: .85rem; }
 .imp[hidden] { display: none; }
 .imp-text { flex: 1 1 22rem; min-width: 0; }
@@ -1643,6 +1644,7 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
   function auditChips(t) {
     return [
       t.status === 'fixed' ? h('span', { class: 'chip audit-fixed', title: 'An audit found this fixed in the code', text: 'Fixed (audit)' + (t.fixedAt ? ' · ' + day(t.fixedAt) : '') }) : null,
+      t.status === 'partly-fixed' ? h('span', { class: 'chip audit-partly', title: 'An audit found part of this fixed in the code; the rest is still open', text: 'Partly fixed (audit)' + (t.statusAt ? ' · ' + day(t.statusAt) : '') }) : null,
       t.origin === 'rule-violation' ? h('span', { class: 'chip cat-blocked', title: 'Breaks a process rule', text: 'Rule' + (t.ruleId ? ' ' + t.ruleId : '') }) : null
     ];
   }
@@ -2140,10 +2142,11 @@ dialog.snip-dialog { max-width: min(46rem, calc(100% - 2rem)); width: 100%; padd
       h('dl', { class: 'facts' },
         fact('Category', h('span', { class: 'chip cat-' + cat, text: cat === 'chain' ? 'Chain break' : (CAT[cat] || cat) })),
         fact('Kind', t.kind === 'chain' ? 'Across steps · rank ' + t.rank + ' of ' + c.tasks.filter(function (x) { return x.kind === 'chain'; }).length : 'Inside one step'),
-        t.status === 'fixed' || t.origin === 'rule-violation' ? fact('Audit', auditChips(t)) : null,
+        t.status === 'fixed' || t.status === 'partly-fixed' || t.origin === 'rule-violation' ? fact('Audit', auditChips(t)) : null,
         fact('Owner', t.owner || 'Unassigned'),
         fact('Key', h('code', { text: t.id }))),
       section('Detail', h('p', { text: t.detail })),
+      t.statusNote ? section('Audit note' + (t.statusAt ? ' · ' + day(t.statusAt) : ''), h('p', { text: t.statusNote })) : null,
       t.steps.length ? section('Where in the SOP', h('ul', { class: 'steps' }, t.steps.map(function (s) {
         var st = c.stepByN[s.n];
         var label = (s.kind === 'break-after' ? 'Chain break after step ' : 'Step ') + s.n + (st ? ' · ' + st.title : '');

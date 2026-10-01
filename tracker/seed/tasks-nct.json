@@ -21,7 +21,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-30",
+    "statusNote": "Fixed: createBill now looks up a bill's company by the exact settlement-unit name when no line carries a company id. The quote editor's CompanyPicker writes the directory name into clientName, so on the happy path the bill regains its company, which gives it payment terms, a due date and the buyer's address and tax ID. Still broken: the quote-to-cost-line bridge still carries no settlementCompanyId (bridge.ts never mentions it), even though the quotation holds clientCompanyId. The identity is dropped at the cost line and only recovered by name, so a renamed company or a free-typed client name loses it again."
   },
   {
     "id": "nct-fx-gain-loss",
@@ -42,7 +44,9 @@
     "repair": null,
     "src": [],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The payment form now sends an exchange rate. The write-off treats a stored payment rate of 1 as unknown and looks the rate up in the org table instead. settlementFx books no gain or loss when a rate is unknown, and reports which rate was missing (fxUnknown)."
   },
   {
     "id": "nct-never-overdue",
@@ -66,7 +70,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-30",
+    "statusNote": "Fixed: createBill falls back to an exact-name company lookup on the settlement unit, so a happy-path bill (client picked from the directory) now gets a company. The 0062 payment-terms trigger therefore fills its due date. The ageing report also counts undated unpaid bills separately. Still broken: cost lines from the quote bridge carry no company id. Any bill whose settlement unit does not exactly match a company name (a renamed company, or a free-typed client) still has no due date, and ageing still gives it a null Days overdue."
   },
   {
     "id": "nct-lump-sums",
@@ -91,7 +97,9 @@
     "repair": null,
     "src": [],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The quote-to-cost-line bridge now carries quantity and unit price whenever quantity x price equals the amount. Only lines raised to a minimum charge stay as lump sums, and that is deliberate."
   },
   {
     "id": "nct-two-profits",
@@ -138,7 +146,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: the retotal writer is now blocked while the bill is under review and frozen after approval, and header edits are blocked during review. Still broken: the seeded bill flow still ticks only two gates. cancel_write_off is wired into write-offs.reverse but not seeded, so under the default flow a write-off can still be reversed with no approval."
   },
   {
     "id": "nct-base-currency",
@@ -162,7 +172,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: there is now an optional org base currency (org_setting.base_currency), and the Financial summary warns when branch currencies are mixed. Still broken: the setting is nullable, and when unset reportingCurrency falls back to the branch currency. Cross-branch roll-ups still add bills converted into different currencies; the new warning flags this but the figures are unchanged."
   },
   {
     "id": "nct-unnumbered",
@@ -187,7 +199,9 @@
     "repair": null,
     "src": [],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "convertToOrder now allocates a job number through insertOrderWithJobNumber. The carried cost lines take that job number and fall back to the quotation number only when no job sequence exists."
   },
   {
     "id": "nct-never-closed",
@@ -211,7 +225,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: the order row menu now calls collectiveOrder.batch for End job, Cancel end, Lock and Unlock, so a shipment can be ended. Still broken: shut out, archive and delete have no web caller, so nothing in the app can delete an order."
   },
   {
     "id": "nct-paperwork",
@@ -235,7 +251,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: the document link screen now sends collective_order or lading and searches with collectiveOrder.list. The per-order Documents & customs card is mounted in the order reading pane. Still broken: there is still no K1/K2 customs declaration document type."
   },
   {
     "id": "nct-island",
@@ -259,7 +277,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "countdownDeadline is now in the customs payload, and OrderDocumentsCard shows the 72h clock in the ledger reading pane and on the lading page. The order's own full record page renders only config.detailGroups through RecordPage and never mounts the card. So opening the order via Open full page still shows no countdown."
   },
   {
     "id": "nct-dead-queues",
@@ -283,7 +303,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: To Receive now links out to the order record, and the B/L detail page has a ReviewMenu that submits a lading into Shipment review. Still broken: the seeded company qualification and contract review flows are enabled: false, so those queues are still empty by construction."
   },
   {
     "id": "nct-channels",
@@ -307,7 +329,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: a quotation now records enquiryChannel (email, whatsapp, walk_in, phone, agent_nomination, repeat_booking). Still broken: there is still no enquiry record for non-email channels, and the thread status vocabulary still ends at closed, with no won or lost outcome."
   },
   {
     "id": "nct-money-by-hand",
@@ -350,7 +374,9 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: order status is now checked against its trade's milestone set on create, update and updateBatch. Still broken: create still requires only owningBranchId and businessType; every other field is optional."
   },
   {
     "id": "nct-credit",
@@ -375,7 +401,9 @@
     "repair": null,
     "src": [],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "Invoicing now computes company exposure and refuses when a company is over its credit limit, unless a creditOverrideReason is given. bills.creditCheck previews the same check."
   },
   {
     "id": "nct-tax-invoice",
@@ -434,7 +462,9 @@
     "src": [],
     "status": "fixed",
     "fixedAt": "2026-09-30",
-    "origin": "defect"
+    "origin": "defect",
+    "statusAt": "2026-09-30",
+    "statusNote": "The bill resource now sets separationOfDuties: true, with a comment naming the exact accountant self-approval case. decide() refuses a decision by the submitter on any resource with that flag. The concurrency test comment saying 'separationOfDuties off' is now stale."
   },
   {
     "id": "nct-au-before-8-am-the-payment-date-and-decisio",
@@ -451,7 +481,9 @@
     "src": [],
     "status": "fixed",
     "fixedAt": "2026-09-30",
-    "origin": "defect"
+    "origin": "defect",
+    "statusAt": "2026-09-30",
+    "statusNote": "Both dialogs now pre-fill with businessDateInput(new Date()), which formats businessDayStart(d). That takes the Malaysia (UTC+8) calendar day, not the UTC slice."
   },
   {
     "id": "nct-au-holding-only-correct-extraction-is-enoug",
@@ -468,7 +500,9 @@
     "src": [],
     "status": "fixed",
     "fixedAt": "2026-10-01",
-    "origin": "defect"
+    "origin": "defect",
+    "statusAt": "2026-10-01",
+    "statusNote": "Fixed by #141 (deployed 18dd7506): review.correct now also requires Approve extraction and throws FORBIDDEN before persistFinal and the approval hooks. Refuter c-004 CONFIRMED (scoped audit wf_bd4d638d-39b)."
   },
   {
     "id": "nct-au-an-auto-approved-b-l-whose-tracking-job-",
@@ -484,7 +518,9 @@
     "repair": null,
     "src": [],
     "status": "partly-fixed",
-    "origin": "defect"
+    "origin": "defect",
+    "statusAt": "2026-10-01",
+    "statusNote": "Partly fixed by #141 (deployed 18dd7506): the hourly review sweep now finds approved MBL/HBLs with no bl_job (approved 1-72h ago; duplicates by B/L number skipped) and emails the owning branch \"Approved bill of lading is not being tracked\". Still broken: the auto_approve workflow discards runApprovalHooks notices, so nothing is recorded at the moment of failure and the branch hears within the hour, not at once. Status set by Wilfred's decision on 2026-10-01 after the scoped audit's ledger checker missed the sweep; verified by the main session against the cited lines, not by a refuter agent."
   },
   {
     "id": "nct-au-post-to-cost-ledger-books-an-unapproved-",
@@ -559,7 +595,9 @@
     "src": [
       "packages/api/src/routers/report.ts:1081; packages/api/src/routers/company-contact.ts:175"
     ],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-30",
+    "statusNote": "Fixed (new 2026-09-30): creating a company with a main contact now inserts that contact with isPrimary: true, and the contacts card warns when nobody is primary. Still broken: companyContacts.create still promotes nothing when no primary exists. The ageing detail still joins companyContact strictly on isPrimary = true with no fallback, so a company whose contacts were added later without ticking Primary still prints empty contact columns."
   },
   {
     "id": "nct-s04-the-tariff-gate-is-declared-but-never-enforced",
@@ -582,7 +620,9 @@
       "packages/api/src/modules/audit/seed.ts:156"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The fee_template flow now seeds the reference_fee_template gate. applyTemplate enforces it on the server through assertTemplatesReferenceable, which checks both that the gate is cleared and that the cached status is approved."
   },
   {
     "id": "nct-s05-quotation-date-is-the-row-s-save-timestamp-and-n",
@@ -605,7 +645,9 @@
       "packages/api/src/routers/quotation.ts:1599,3442,3665; apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:159"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The quotation form now has a required Quotation Date input. It is seeded from the loaded record and sent in the payload."
   },
   {
     "id": "nct-s05-quotation-staff-is-auto-stamped-copied-by-duplic",
@@ -628,7 +670,9 @@
       "packages/api/src/routers/quotation.ts:3444,3826; packages/api/src/modules/quotation/sheet.ts:363"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The form now has an editable Quotation Staff member picker. duplicate resets quotationStaff to the duplicating member instead of copying the source's."
   },
   {
     "id": "nct-s06-applied-tariff-lines-ignore-the-container-mix",
@@ -651,7 +695,9 @@
       "apps/web/src/components/reference-template-dialog.tsx:190"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "An applied template line's quantity is now seeded from the container rows (seededQuantity), both in the dialog and in the server applyTemplate."
   },
   {
     "id": "nct-s07-an-ambiguous-tariff-silently-drops-the-floor",
@@ -673,7 +719,9 @@
     "src": [
       "packages/api/src/quotation/tariff-check.ts:457"
     ],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: when same-dated sheets disagree, the strictest (highest) cell now wins and the line is marked contested, so the floor holds. Still broken: a charge unit spelt differently still resolves to status none with no floor. It only gets a tariffUnits hint, and belowTariffRefusal still refuses only below_tariff lines."
   },
   {
     "id": "nct-s08-a-quotation-stays-fully-editable-while-it-is-sit",
@@ -696,7 +744,9 @@
       "packages/api/src/routers/quotation.ts:3571"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "quotations.update and applyTemplate now both call assertNotUnderReview."
   },
   {
     "id": "nct-s08-the-seeded-quotation-flow-lets-the-branch-manage",
@@ -719,7 +769,9 @@
       "packages/api/src/modules/audit/seed.ts:90"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "decide() now refuses when the submitter decides their own submission on a resource with separationOfDuties, and the quotation resource has it set to true."
   },
   {
     "id": "nct-s08-the-legacy-quotations-review-verb-stamps-approve",
@@ -742,7 +794,9 @@
       "packages/api/src/routers/quotation.ts:4220"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The legacy quotations.review procedure is gone from the router. The procedure list ends at convertToOrder and listPendingDecisionCorrections, with no review verb."
   },
   {
     "id": "nct-s08-submit-then-retract-permanently-unlocks-an-appro",
@@ -765,7 +819,9 @@
       "packages/api/src/modules/audit/post-approval.ts:43"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "submitForReview now runs assertPostApprovalEditable first. An approved record under a locking flow can no longer be re-submitted and retracted to unlock it."
   },
   {
     "id": "nct-s08-the-export-quotation-gate-is-wired-to-reading-a-",
@@ -788,7 +844,9 @@
       "packages/api/src/routers/quotation.ts:2491"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The export gate has moved out of retrieve and into exportSheet and send."
   },
   {
     "id": "nct-s09-there-is-no-outbox-so-a-failed-stamp-costs-a-sec",
@@ -811,7 +869,9 @@
       "packages/api/src/routers/quotation.ts:2870"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "send now takes a client idempotency key and records an intent row before dispatch. A retry resumes the stamp instead of re-mailing, and openSends/abandonSend exist."
   },
   {
     "id": "nct-s10-a-mis-keyed-decision-cannot-be-corrected",
@@ -834,7 +894,9 @@
       "packages/api/src/routers/quotation.ts:3230"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "A reviewed correction path now exists: requestDecisionCorrection, plus a seeded correction review flow and decisionHistory."
   },
   {
     "id": "nct-s13-intake-decisions-are-asymmetrical",
@@ -857,7 +919,9 @@
       "packages/api/src/routers/collective-order.ts:3335"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "Receive is now legal only from unaccepted, so a rejected order is refused. Undoing a rejection needs the separate reopen verb, which has its own node and requires a reason."
   },
   {
     "id": "nct-s15-a-collective-order-stays-fully-editable-while-it",
@@ -880,7 +944,9 @@
       "packages/api/src/routers/collective-order.ts:3111"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "collectiveOrder.update, assignNumber and saveChildren all call assertNotUnderReview, and updateBatch calls assertNoneUnderReview."
   },
   {
     "id": "nct-s15-order-approval-freezes-nothing-downstream-so-app",
@@ -902,7 +968,9 @@
     "src": [
       "packages/api/src/modules/audit/seed.ts:171"
     ],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "Fixed: the Order flow now seeds the lock, end_order, shut_out and create_lading gates, and lading.create enforces create_lading. Still broken: those gates are seeded only for new orgs (gatesOnlyForNewOrg), so existing orgs keep an ungated flow. expense_entry is deliberately left unticked, so costs can still be booked against a rejected order."
   },
   {
     "id": "nct-s15-the-legacy-collectiveorder-review-verb-lets-ops-",
@@ -925,7 +993,9 @@
       "packages/api/src/routers/collective-order.ts:3380"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The legacy collectiveOrder.review procedure is gone. The router moves from receive/reject/reopen to transition/batch with no review verb."
   },
   {
     "id": "nct-s16-a-bill-of-lading-can-be-set-to-released-or-on-ho",
@@ -948,7 +1018,9 @@
       "apps/web/src/routes/_next/lading/$id/edit.tsx:165"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "Both forms now offer only draft, confirmed and cancelled. On the server, create and update call assertSettableStatus on any status change."
   },
   {
     "id": "nct-s16-a-bill-of-lading-under-review-stays-fully-editab",
@@ -971,7 +1043,9 @@
       "packages/api/src/routers/lading.ts:1554"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "lading.update now calls assertNotUnderReview before assertPostApprovalEditable."
   },
   {
     "id": "nct-s16-ocr-validation-issues-are-computed-returned-and-",
@@ -994,7 +1068,9 @@
       "apps/web/src/routes/_next/lading/create.tsx:293"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "OCR issues are now kept in state and shown next to their fields. Apply to Form is disabled while any issue has severity error, unless the clerk ticks an acknowledgement."
   },
   {
     "id": "nct-s16-linking-the-approved-order-carries-only-its-job-",
@@ -1017,7 +1093,9 @@
       "apps/web/src/routes/_next/lading/create.tsx:1371"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "Picking an order now runs prefillFromOrder, which fills the empty B/L fields from the order and marks them as coming from the order."
   },
   {
     "id": "nct-s18-there-is-no-customs-declaration-type",
@@ -1060,7 +1138,9 @@
     "src": [
       "apps/web/src/routes/_next/order.$orderId.expenses.tsx:629"
     ],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "The Expense Entry page now refuses any unnamed row that has content. The order form's fee section still silently drops a new row that has an amount but no name. It filters feeRowProblems down to the saved-* kinds only, and its payload keeps only rows with a name, amount and currency, so the half-typed line vanishes on save without a word."
   },
   {
     "id": "nct-s21-the-fees-must-pass-review-before-billing-gate-is",
@@ -1083,7 +1163,9 @@
       "packages/api/src/routers/expense/cost-lines.ts:2506"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "createBill now passes the resolved costLineIds to the create_bill gate instead of input.costLineIds."
   },
   {
     "id": "nct-s21-an-approved-fee-s-exchange-rate-can-still-be-rew",
@@ -1106,7 +1188,9 @@
       "packages/api/src/routers/expense/cost-lines.ts:2115"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "exchangeRateBatch now loads the review freezes and skips rows that are under review or approved-frozen, reporting them with a reason."
   },
   {
     "id": "nct-s21-an-approved-fee-can-be-deleted-outright-approval",
@@ -1128,7 +1212,9 @@
     "src": [
       "packages/api/src/routers/expense/cost-lines.ts:407"
     ],
-    "status": "partly-fixed"
+    "status": "partly-fixed",
+    "statusAt": "2026-09-25",
+    "statusNote": "The writer's delete verb, the batch delete branch and saveChildren's removal path all refuse approved and under-review fees now. Deleting the parent order does not. collectiveOrder.delete and the order batch delete call clearOrderCostLines, which checks only billed/settled/locked and then hard-deletes every fee on the order, approved ones included, without consulting fee review state."
   },
   {
     "id": "nct-s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
@@ -1151,7 +1237,9 @@
       "packages/api/src/routers/expense/cost-lines.ts:340"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The costLineWriter update verb now runs costLineContentUnderReviewGate, which calls assertNotUnderReview for content edits."
   },
   {
     "id": "nct-s22-bills-cannot-be-split-per-order-though-the-serve",
@@ -1174,7 +1262,9 @@
       "packages/api/src/routers/expense/cost-lines.ts:2314"
     ],
     "status": "fixed",
-    "fixedAt": "2026-09-25"
+    "fixedAt": "2026-09-25",
+    "statusAt": "2026-09-25",
+    "statusNote": "The Create Bill dialog now has a groupByOrder checkbox and sends groupByOrder to the server."
   },
   {
     "id": "nct-s27-the-month-end-documents-have-no-menu-entry",

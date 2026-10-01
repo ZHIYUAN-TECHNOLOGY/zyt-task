@@ -44,7 +44,18 @@ const status = (x) => {
 const srcList = (s) => (s == null ? [] : [].concat(s).filter((x) => x != null && x !== ''));
 // audit facts written by /zyt-audit, passed through when present
 const AUDIT = ['status', 'fixedAt', 'origin', 'ruleId'];
-const auditFacts = (x) => Object.fromEntries(AUDIT.filter((k) => x[k] != null).map((k) => [k, x[k]]));
+const auditFacts = (x) => ({
+  ...Object.fromEntries(AUDIT.filter((k) => x[k] != null).map((k) => [k, x[k]])),
+  ...statusFacts(x),
+});
+// when and why the current audit status was set: the latest history entry that moved it there
+const statusFacts = (x) => {
+  const st = status(x);
+  if (st !== 'partly-fixed' && st !== 'fixed') return {};
+  const e = [...(x.history || [])].reverse().find((h) => h && h.to === st);
+  if (!e) return {};
+  return { ...(e.date ? { statusAt: e.date } : {}), ...(e.note ? { statusNote: clean(e.note) } : {}) };
+};
 
 export function findingsFromSop(sop, { prefix = 'nct-' } = {}) {
   const ledger = (sop.ledger && sop.ledger.items) || [];
