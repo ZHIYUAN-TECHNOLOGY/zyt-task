@@ -3839,7 +3839,7 @@
     },
     {
       "n": 18,
-      "role": "Documentation · needs document:read plus review rights to approve",
+      "role": "Documentation · needs document:read; saving corrections or approving needs Approve extraction, and changing an approved document needs Amend approved extraction",
       "routes": [
         {
           "path": "/documents",
@@ -3870,12 +3870,12 @@
           "src": "apps/web/src/routes/_next/documents.$documentId.tsx:782"
         },
         {
-          "action": "Correct any wrong value in place, then save the amendment",
-          "detail": "Toast: **Amendment saved**. A correction the automation has already acted on can be refused, and the refusal says which field and why.",
-          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:373"
+          "action": "Correct any wrong value in place, then press **Save corrections & approve**",
+          "detail": "One press saves the corrections **and approves the document** (toast **Corrections saved and approved**), so it needs **Approve extraction**. With only **Correct extraction** the save is refused: \"Saving corrections also approves the document, which needs the Approve extraction permission\".",
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:345"
         },
         {
-          "action": "Press **Approve** (or ⌘⏎)",
+          "action": "Nothing to correct? Press **Approve (⌘⏎)**",
           "detail": "**This approval is what starts automated customs and port tracking** — nothing else does.",
           "src": "apps/web/src/routes/_next/documents.$documentId.tsx:697"
         },
@@ -3888,6 +3888,11 @@
           "action": "Wrong type? Pick the right one in the type select beside the filename and press **Save & approve**",
           "detail": "Re-typing a document to **MBL/HBL** starts its tracking job on approval. After approval the type is fixed. A document set aside as not freight offers **This is a freight document — reprocess** instead (toast **Sent back through classification**).",
           "src": "apps/web/src/routes/_next/documents.$documentId.tsx:615"
+        },
+        {
+          "action": "Already approved and a value is wrong? Edit it and press **Save amendment**",
+          "detail": "Needs **Amend approved extraction**. Toast: **Amendment saved**. If tracking declined to follow the change, a warning names the field and why instead. On an MBL/HBL whose tracking never started, saving an amendment retries it.",
+          "src": "apps/web/src/routes/_next/documents.$documentId.tsx:604"
         },
         {
           "action": "Not freight at all? Press **Not freight** and give a reason",
@@ -3917,7 +3922,8 @@
       ],
       "result": "Approval starts the tracking clock. Watch it at **step 19**.",
       "pitfalls": [
-        "There is no K1 or K2 customs-declaration type in the vocabulary, so the Sepangar filing lives outside this system."
+        "There is no K1 or K2 customs-declaration type in the vocabulary, so the Sepangar filing lives outside this system.",
+        "An approved MBL/HBL that got no tracking job (usually tracking failed at the moment of approval, or the B/L number is missing) is chased by an hourly check that emails the owning branch **Approved bill of lading is not being tracked**, for approvals 1–72 hours old. **That check is off while email automation is paused, as it is in production today**, so until then read the toast after every approval yourself. To fix one: open the document, check the B/L number and save an amendment."
       ],
       "shots": [
         {

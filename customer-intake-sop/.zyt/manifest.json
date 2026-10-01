@@ -1,7 +1,7 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-09-30T05:10:32.510Z",
-  "sopSha": "c0a28f921e769550a906a8374bad073ebb9b6932ded2b4a3315d6f1bad91cda1",
+  "at": "2026-10-01T08:46:54.323Z",
+  "sopSha": "30be05f6263e50d16cd5b0b69bae084a3661b681340b1ed9b5d48af9372dd1f2",
   "codeRoot": "C:\\Project\\NCT\\wt-release-r1",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
@@ -13,6 +13,16 @@
       "sha": "a9d77a797a57b8b0a0b9b982afdd243170d42f537da5cb271d6310697ddb55a5",
       "mtimeMs": 1790163144767,
       "size": 21641
+    },
+    "apps/web/src/components/company/company-form-payload.ts": {
+      "sha": "23171cdf9d8df4c40b3f96e8bb430016f140a294f0085613fabb8d899c69632f",
+      "mtimeMs": 1790773847944,
+      "size": 21180
+    },
+    "apps/web/src/components/company/company-form.tsx": {
+      "sha": "53123030cbba9ff612868b45410a029a5a714b41f636a294ee84b1bff95e4ecd",
+      "mtimeMs": 1790773847947,
+      "size": 38961
     },
     "apps/web/src/components/customs-tracking/bl-job-record.tsx": {
       "sha": "4dacbcc2cff0cb92f2d307a9fa95af00f06f34a7920d268b65f5fd105f48e75c",
@@ -30,9 +40,9 @@
       "size": 19109
     },
     "apps/web/src/components/export-table-dialog.tsx": {
-      "sha": "014cc6b171bdc18a8472b264d5c0e3072ad618e819c34c1f3d8b0103ec544de7",
-      "mtimeMs": 1790250671544,
-      "size": 28745
+      "sha": "98bf87c751df4bf4845c5532bacbbcaa874a4b42833383bc8f256a6f3b433020",
+      "mtimeMs": 1790753174815,
+      "size": 28774
     },
     "apps/web/src/components/inbox/composer-logic.ts": {
       "sha": "7aeab5a4cbfcbbf36bd957bd3c245c1e3708f65e351c7488af02a5a9aba7c34b",
@@ -149,6 +159,11 @@
       "mtimeMs": 1790163144791,
       "size": 10664
     },
+    "apps/web/src/components/tariff-hint.tsx": {
+      "sha": "50f87848664013e4d49e602a35dc0384ec8fdbe10cddf2311c6b1776aa523daf",
+      "mtimeMs": 1790163144794,
+      "size": 16835
+    },
     "apps/web/src/lib/quotation.ts": {
       "sha": "6d5c9ce7007da430887b445498d82e16cfbff1b19a4d593642ca2e0e5bd9bc7f",
       "mtimeMs": 1790163144800,
@@ -180,19 +195,24 @@
       "size": 1840
     },
     "apps/web/src/routes/_next/companies.tsx": {
-      "sha": "5334b4dd5110280ba0c8e66dd764d629f7766db2accf4ef4d03589afd51dbf0e",
-      "mtimeMs": 1790163144805,
-      "size": 37654
+      "sha": "7aa5efd01bdc005b70bf23daadc81c2f24a4911142352b2978080f890ea0b542",
+      "mtimeMs": 1790773847953,
+      "size": 25464
     },
     "apps/web/src/routes/_next/companies_.$companyId.tsx": {
-      "sha": "55cdc33d4ff814b24d6616341cbc0e2a36e7d9b64fb3bda847a9a52aef322a55",
-      "mtimeMs": 1790577713931,
-      "size": 10476
+      "sha": "81ff559d90f8461a554b6699d1b993c6d89d2852b155f7d1aa9f72d8d5b1cc1a",
+      "mtimeMs": 1790773847954,
+      "size": 11091
     },
     "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx": {
-      "sha": "e3a021f557963f9ce2f35e3c674449c4e6a1968b45224d39df73eb85a5d3c8e4",
-      "mtimeMs": 1790577713931,
-      "size": 46517
+      "sha": "96384f5132077ffdd1a1eed24c9401c4eb004da37550fd6dbc9c9cc6d7aeb16c",
+      "mtimeMs": 1790833938079,
+      "size": 15598
+    },
+    "apps/web/src/routes/_next/companies_.new.tsx": {
+      "sha": "9dab2aa6814f57ca3f72cb91928eb99054fedba96b9bf47edeb93229f8e9697e",
+      "mtimeMs": 1790773847957,
+      "size": 11804
     },
     "apps/web/src/routes/_next/customs-tracking.tsx": {
       "sha": "3ac364ce323924c1fe3d02f01a9601e45c5c5ec107ee495faf815c862b95a943",
@@ -230,9 +250,9 @@
       "size": 131154
     },
     "apps/web/src/routes/_next/expenses/invoices.tsx": {
-      "sha": "bb082d3c882f7eacab62b92ae7fc46c26dbcec6fa4ccb55f63f5ecd68a159e6f",
-      "mtimeMs": 1790250671557,
-      "size": 52035
+      "sha": "0a255fae2159b5586eaddb271e86f52b70a4e044baae40b240c51500fc4b946f",
+      "mtimeMs": 1790753174819,
+      "size": 52064
     },
     "apps/web/src/routes/_next/expenses/payments.tsx": {
       "sha": "165e528176e1193b23e9b08526238414c99bb13b3fb86be157631cd4cb0c7dd7",
@@ -245,19 +265,24 @@
       "size": 32761
     },
     "apps/web/src/routes/_next/fee-templates/$templateId.tsx": {
-      "sha": "6ba81d91e3e18eb960963060a782d281e48c9929c7399bfb9eeab0e4f370a0a4",
-      "mtimeMs": 1790163137187,
-      "size": 62242
+      "sha": "adeeeb98c375ae691a6e23525e95ab455a1ad355b0a2c7d7c9a5be8ab6437674",
+      "mtimeMs": 1790773847961,
+      "size": 64643
+    },
+    "apps/web/src/routes/_next/fee-templates/-package-cell.tsx": {
+      "sha": "62d466a846e2d0df9636f6669b0c3d42ece025ecc253d148c9129621c25b41aa",
+      "mtimeMs": 1790773847964,
+      "size": 3803
     },
     "apps/web/src/routes/_next/fee-templates/index.tsx": {
-      "sha": "d6b193a21dcb8baa82f571ca7eb562142fd1ef9243490fd4c44a9913f40323b8",
-      "mtimeMs": 1790163137195,
-      "size": 25046
+      "sha": "24e748621c1899f48354b16fb505922d0dfd78a183287bfe67ea6e268de2ce13",
+      "mtimeMs": 1790773847968,
+      "size": 26333
     },
     "apps/web/src/routes/_next/inbox.$threadId.tsx": {
-      "sha": "323bfdcd6a5f681880366462a30cdbbac279292c7b3ba3641777810b0e55fa35",
-      "mtimeMs": 1790163144810,
-      "size": 9223
+      "sha": "6819982b1aa4074d0d2be5060f54e52f0ba44c46bf71eb56d5302e6d65bcb0ac",
+      "mtimeMs": 1790773847969,
+      "size": 8808
     },
     "apps/web/src/routes/_next/inbox.index.tsx": {
       "sha": "cb1c290616c03896a457d80a54257a6029dbadd6eefa5bdbd49c724bc3ab105f",
@@ -320,14 +345,64 @@
       "size": 4219
     },
     "apps/web/src/routes/_next/quotations/$quotationId.tsx": {
-      "sha": "d7d3ce89e9859fd9a41d0af82f7c9eb0f29300ca877fbfd3fb480b655701b9a7",
-      "mtimeMs": 1790174942396,
-      "size": 189833
+      "sha": "ab04555148e90b6fbf253050eb17ba552df36c674ee81e468545954e6fb758a4",
+      "mtimeMs": 1790773847971,
+      "size": 26282
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx": {
+      "sha": "5f0f750ff4a63b8375f5510d0c338cce4b90fe6be2ad7563e6e27ba1dca4df3b",
+      "mtimeMs": 1790773847974,
+      "size": 45699
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/fee-line-drawer.tsx": {
+      "sha": "62c7f9ec03ac1917044a625ec9f49c71c980cb539f78ff08a02b88c2401b7b90",
+      "mtimeMs": 1790773847978,
+      "size": 11012
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts": {
+      "sha": "876007ce83a02001370840329f5ebcd3c7fa9bca648c24e23354e9018cf37ae0",
+      "mtimeMs": 1790773847981,
+      "size": 15780
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx": {
+      "sha": "bd18c023934a363ec7f4f6501d5298c90383211107968952fab3007a34227181",
+      "mtimeMs": 1790773847982,
+      "size": 29510
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx": {
+      "sha": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
+      "mtimeMs": 1790773847984,
+      "size": 24507
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts": {
+      "sha": "7508dfede3a300c3321cc64362712fd386437dfb1778b8e929026edd903ffbe4",
+      "mtimeMs": 1790773847986,
+      "size": 13597
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx": {
+      "sha": "5a9c1db4623a1fb30db148ea63be12e1bbc959f9e844d182f38ee57c804aa1d9",
+      "mtimeMs": 1790773847988,
+      "size": 17781
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/totals-profit.tsx": {
+      "sha": "16280edb627a28bdde6541160549249bf6fb633f3dfb9f65330167598811b13f",
+      "mtimeMs": 1790773847990,
+      "size": 6754
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts": {
+      "sha": "ac7c65862fb096caad94284783f4bc6763fe628cc79bbcae89d44bcf19db29b7",
+      "mtimeMs": 1790773847995,
+      "size": 14868
+    },
+    "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx": {
+      "sha": "2d13a389e1740391d2394e4322d1780ab5f692d2cda04f74464b691b71038a5c",
+      "mtimeMs": 1790773847997,
+      "size": 13560
     },
     "apps/web/src/routes/_next/quotations/index.tsx": {
-      "sha": "aac6f185da5ffcd768a4b20608c1cec26d6fdf67d5d345a5e6c0c87de5630fc2",
-      "mtimeMs": 1790163144817,
-      "size": 31670
+      "sha": "60ad0bc787995ccb8211cf45990b4bc19ca88ba30867ef582a1a5a1aab8a14a1",
+      "mtimeMs": 1790773848000,
+      "size": 31767
     },
     "apps/web/src/routes/_next/report/financial/index.tsx": {
       "sha": "efaf0fc38bcd491103412c1a846db66dcc004e625095923cc77d440795abc636",
@@ -360,9 +435,9 @@
       "size": 4003
     },
     "packages/api/src/modules/quotation/sheet.ts": {
-      "sha": "9c06239711416e095fcf0fabcca26c4af0b2bd9e2f15ea4bee8e0f11f2b9f0d1",
-      "mtimeMs": 1790163140271,
-      "size": 20789
+      "sha": "2fb07a6a74d1aa2e73921a03875295f8f8aec742537370960917e8b3916c1e54",
+      "mtimeMs": 1790773848028,
+      "size": 21580
     },
     "packages/api/src/quotation/tariff-check.ts": {
       "sha": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
@@ -370,9 +445,9 @@
       "size": 31116
     },
     "packages/api/src/quotation/values.ts": {
-      "sha": "60f4fed3b3f0b2294acc7f11e0f56e8f3169d96f89423ec065b4dd2b8a7b08a6",
-      "mtimeMs": 1790250671587,
-      "size": 19305
+      "sha": "f7bafef33caca6b6a20bae11f4e48d11c938bfe10f516ce9f97c84462506de66",
+      "mtimeMs": 1790773848032,
+      "size": 21736
     },
     "packages/api/src/routers/collective-order.ts": {
       "sha": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
@@ -385,9 +460,9 @@
       "size": 13250
     },
     "packages/api/src/routers/company.ts": {
-      "sha": "f96c4cd3b6c132dd058494212571a1d248296ef5f0124b00fe1d0b3491744873",
-      "mtimeMs": 1790668870223,
-      "size": 58949
+      "sha": "85d9706b8a006820f3465bbf0ecf2bacb0753bfa86a56bc53677c2785af416af",
+      "mtimeMs": 1790773848035,
+      "size": 66664
     },
     "packages/api/src/routers/expense/cost-lines.ts": {
       "sha": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
@@ -400,9 +475,9 @@
       "size": 115071
     },
     "packages/api/src/routers/quotation.ts": {
-      "sha": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
-      "mtimeMs": 1790577713950,
-      "size": 257192
+      "sha": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
+      "mtimeMs": 1790773848043,
+      "size": 270391
     },
     "packages/api/src/routers/report.ts": {
       "sha": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
@@ -470,6 +545,22 @@
       "lineIdx": 0
     },
     {
+      "file": "apps/web/src/components/inbox/reading-pane.tsx",
+      "line": 209,
+      "anchor": [
+        "          <div className=\"mt-2 flex flex-wrap gap-2\">",
+        "            <Button type=\"button\" variant=\"outline\" size=\"sm\" onClick={onCreateFromSender}>",
+        "              Create company from sender",
+        "            </Button>",
+        "            <Button"
+      ],
+      "jsonPath": "/guide/0/golden/3/src",
+      "step": 1,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
       "file": "apps/web/src/components/inbox/triage-bar.tsx",
       "line": 79,
       "anchor": [
@@ -479,7 +570,7 @@
         "        <SelectTrigger size=\"sm\" className=\"w-36\" aria-label=\"Thread status\">",
         "          <SelectValue>"
       ],
-      "jsonPath": "/guide/0/golden/3/src",
+      "jsonPath": "/guide/0/golden/4/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -495,7 +586,7 @@
         "        <DropdownMenuTrigger",
         "          render={<Button variant=\"outline\" size=\"sm\" />}"
       ],
-      "jsonPath": "/guide/0/golden/4/src",
+      "jsonPath": "/guide/0/golden/5/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -511,7 +602,7 @@
         "              rows={2}",
         "              aria-label=\"New internal note\""
       ],
-      "jsonPath": "/guide/0/golden/5/src",
+      "jsonPath": "/guide/0/golden/6/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -527,7 +618,7 @@
         "  switch (mode) {",
         "    case \"new\":"
       ],
-      "jsonPath": "/guide/0/golden/6/src",
+      "jsonPath": "/guide/0/golden/7/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -543,7 +634,7 @@
         "          <PenSquare className=\"size-4\" data-icon=\"inline-start\" aria-hidden />",
         "          New email"
       ],
-      "jsonPath": "/guide/0/golden/7/src",
+      "jsonPath": "/guide/0/golden/8/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -559,7 +650,7 @@
         "                        className=\"max-w-40 truncate font-mono text-[11px] text-foreground hover:underline\"",
         "                        title={link.entityLabel ?? link.entityRef ?? undefined}"
       ],
-      "jsonPath": "/guide/0/golden/8/src",
+      "jsonPath": "/guide/0/golden/9/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -575,7 +666,7 @@
         "          {archived ? (",
         "            <>"
       ],
-      "jsonPath": "/guide/0/golden/9/src",
+      "jsonPath": "/guide/0/golden/10/src",
       "step": 1,
       "kind": "golden",
       "seg": 0,
@@ -583,13 +674,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/companies.tsx",
-      "line": 360,
+      "line": 108,
       "anchor": [
-        "                ))}",
-        "              </div>",
-        "              <p className=\"text-xs text-muted-foreground\">",
-        "                At least one. A company can be more than one — the same row serves every list it",
-        "                belongs to."
+        "/** The role segments, in eyun's own order. Labels are the ones the select had. */",
+        "const ROLE_OPTIONS: readonly { value: CompanyRole; label: string }[] = [",
+        "  { value: \"customer\", label: \"Customers\" },",
+        "  { value: \"supplier\", label: \"Suppliers\" },",
+        "  { value: \"agent\", label: \"Overseas agents\" },"
       ],
       "jsonPath": "/guide/1/golden/0/src",
       "step": 2,
@@ -599,13 +690,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/companies.tsx",
-      "line": 734,
+      "line": 481,
       "anchor": [
-        "    getSortedRowModel: getSortedRowModel(),",
-        "    getRowId: (row) => row.id,",
-        "  });",
-        "",
-        "  const hasFilters = Object.keys(applied).length > 0;"
+        "           * which undersold two of them; the fix is a truer placeholder, never",
+        "           * a wider server field. */",
+        "          placeholder: \"Search name, EN name, code, customer code\",",
+        "          ariaLabel: \"Search company name, English name, code or customer code\",",
+        "        }}"
       ],
       "jsonPath": "/guide/1/golden/1/src",
       "step": 2,
@@ -615,13 +706,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/companies.tsx",
-      "line": 801,
+      "line": 553,
       "anchor": [
-        "                    <SelectItem key={option.value} value={option.value}>",
-        "                      {option.label}",
-        "                    </SelectItem>",
-        "                  ))}",
-        "                </SelectContent>"
+        "                onClick: () =>",
+        "                  void navigate({",
+        "                    to: \"/companies/new\",",
+        "                    search: applied.role ? { role: applied.role } : {},",
+        "                  }),"
       ],
       "jsonPath": "/guide/1/golden/2/src",
       "step": 2,
@@ -630,14 +721,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/companies.tsx",
-      "line": 254,
+      "file": "apps/web/src/components/company/company-form.tsx",
+      "line": 688,
       "anchor": [
-        "    if (open) {",
-        "      form.reset({",
-        "        name: defaults?.name ?? \"\",",
-        "        code: \"\",",
-        "        customerCode: \"\","
+        "            {noRole ? (",
+        "              <p className=\"mt-2 text-xs text-destructive\" role=\"alert\">",
+        "                Pick at least one role",
+        "              </p>",
+        "            ) : ("
       ],
       "jsonPath": "/guide/1/golden/3/src",
       "step": 2,
@@ -646,14 +737,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/companies.tsx",
-      "line": 274,
+      "file": "apps/web/src/components/company/company-form.tsx",
+      "line": 271,
       "anchor": [
-        "  const dirty = useStore(form.store, (s) => s.isDirty);",
-        "  const { requestClose, confirmDialog } = useUnsavedDialogClose(dirty, () => onOpenChange(false));",
-        "",
         "  return (",
-        "    <>"
+        "    <p className=\"text-xs text-amber-800\" data-testid=\"similar-names\">",
+        "      Already on file:{\" \"}",
+        "      {hits.map((h, i) => (",
+        "        <React.Fragment key={h.id}>"
       ],
       "jsonPath": "/guide/1/golden/4/src",
       "step": 2,
@@ -663,13 +754,13 @@
     },
     {
       "file": "packages/api/src/routers/company.ts",
-      "line": 666,
+      "line": 847,
       "anchor": [
-        "",
-        "  create: orgProcedure",
-        "    .use(requireNode(COMPANY.create))",
-        "    .input(",
-        "      z"
+        "              createdBy: membership.id,",
+        "              ...mainContact,",
+        "              isPrimary: true,",
+        "            })",
+        "            .returning();"
       ],
       "jsonPath": "/guide/1/golden/5/src",
       "step": 2,
@@ -678,14 +769,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/companies.tsx",
-      "line": 165,
+      "file": "apps/web/src/components/company/company-form-payload.ts",
+      "line": 402,
       "anchor": [
-        "}: {",
-        "  open: boolean;",
-        "  onOpenChange: (open: boolean) => void;",
-        "  /**",
-        "   * Prefill for a caller that already knows something about the company being"
+        "      ...EMPTY_FORM(\"\"),",
+        "      name: prefill?.name ?? \"\",",
+        "      settlementCurrency: \"MYR\",",
+        "      businessPersonnel: meId ?? \"\",",
+        "    },"
       ],
       "jsonPath": "/guide/1/golden/6/src",
       "step": 2,
@@ -694,14 +785,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-      "line": 667,
+      "file": "apps/web/src/components/company/company-form.tsx",
+      "line": 393,
       "anchor": [
-        "",
-        "              <div className=\"min-w-0 max-w-5xl space-y-10\">",
-        "                <section id=\"s-identity\" className=\"scroll-mt-4\">",
-        "                  <SectionHeading>Identity</SectionHeading>",
-        "                  <div className=\"grid gap-4 md:grid-cols-2 lg:grid-cols-3\">"
+        "          <Text",
+        "            name=\"uniformSocialCreditCode\"",
+        "            label=\"Registration no. (SSM / USCC)\"",
+        "            className=\"space-y-2\"",
+        "          />"
       ],
       "jsonPath": "/guide/1/golden/7/src",
       "step": 2,
@@ -710,16 +801,48 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-      "line": 620,
+      "file": "apps/web/src/routes/_next/companies_.new.tsx",
+      "line": 214,
       "anchor": [
-        "              {dirtyTotal > 0 ? `${dirtyTotal} unsaved` : \"No changes\"}",
-        "            </span>",
-        "            <Button type=\"submit\" form=\"company-edit-form\" disabled={updateMutation.isPending}>",
-        "              {updateMutation.isPending ? \"Saving…\" : \"Save changes\"}",
-        "            </Button>"
+        "        }",
+        "        if (!inboxThreadId) {",
+        "          toast.success(input.isCustomer ? \"Customer added\" : \"Company added\");",
+        "        }",
+        "        void navigate({"
       ],
       "jsonPath": "/guide/1/golden/8/src",
+      "step": 2,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/companies_.new.tsx",
+      "line": 254,
+      "anchor": [
+        "        }",
+        "        if (cleared) {",
+        "          toast.success(\"Customer added — start the quote\");",
+        "          const contact = result.mainContact;",
+        "          void navigate({"
+      ],
+      "jsonPath": "/guide/1/golden/9/src",
+      "step": 2,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+      "line": 201,
+      "anchor": [
+        "   * matters. `DIRTY_KEYS` is pinned to every `companyFields` key by the unit",
+        "   * test, so it does not depend on how the layout groups the fields. */",
+        "  const dirtyTotal = dirtyCount(form, baseline);",
+        "",
+        "  const updateMutation = useMutation({"
+      ],
+      "jsonPath": "/guide/1/golden/10/src",
       "step": 2,
       "kind": "golden",
       "seg": 0,
@@ -743,13 +866,29 @@
     },
     {
       "file": "apps/web/src/components/company/company-contacts.tsx",
-      "line": 151,
+      "line": 231,
       "anchor": [
-        "    const lastPage = Math.max(0, Math.ceil(total / PAGE_SIZE) - 1);",
-        "    if (page > lastPage) setPage(lastPage);",
-        "  }, [page, total]);",
-        "",
-        "  return ("
+        "                      {row.email ? <a href={`mailto:${row.email}`}>{row.email}</a> : \"—\"}",
+        "                    </td>",
+        "                    <td>{row.isPrimary ? <span className=\"chip\">Primary</span> : null}</td>",
+        "                    <td>",
+        "                      <div className=\"flex items-center justify-end gap-1\">"
+      ],
+      "jsonPath": "/guide/2/golden/0/src",
+      "step": 3,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/components/company/company-contacts.tsx",
+      "line": 167,
+      "anchor": [
+        "            }}",
+        "          >",
+        "            <Plus /> Add contact",
+        "          </Button>",
+        "        ) : null}"
       ],
       "jsonPath": "/guide/2/golden/1/src",
       "step": 3,
@@ -775,13 +914,13 @@
     },
     {
       "file": "apps/web/src/components/company/company-contacts.tsx",
-      "line": 414,
+      "line": 475,
       "anchor": [
-        "  return (",
-        "    <>",
-        "      <Dialog open={open} onOpenChange={requestClose}>",
-        "        <DialogContent>",
-        "          <DialogHeader>"
+        "                {(field) => (",
+        "                  <div className=\"space-y-1.5\">",
+        "                    <Label htmlFor={field.name}>Email</Label>",
+        "                    {/* NOT type=\"email\": the browser would apply its own",
+        "                        format validation, which is the same refusal the schema"
       ],
       "jsonPath": "/guide/2/golden/3/src",
       "step": 3,
@@ -807,13 +946,13 @@
     },
     {
       "file": "apps/web/src/components/company/company-contacts.tsx",
-      "line": 478,
+      "line": 513,
       "anchor": [
-        "                    {/* NOT type=\"email\": the browser would apply its own",
-        "                        format validation, which is the same refusal the schema",
-        "                        above deliberately does not make. */}",
-        "                    <Input",
-        "                      id={field.name}"
+        "              </Button>",
+        "              <Button type=\"submit\" disabled={isPending}>",
+        "                {isPending ? \"Saving…\" : editing ? \"Save changes\" : \"Add contact\"}",
+        "              </Button>",
+        "            </DialogFooter>"
       ],
       "jsonPath": "/guide/2/golden/5/src",
       "step": 3,
@@ -855,7 +994,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/fee-templates/index.tsx",
-      "line": 580,
+      "line": 615,
       "anchor": [
         "            ? undefined",
         "            : {",
@@ -871,7 +1010,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-      "line": 700,
+      "line": 720,
       "anchor": [
         "                {(field) => (",
         "                  <div className=\"space-y-1.5 sm:col-span-2 lg:col-span-1\">",
@@ -887,13 +1026,13 @@
     },
     {
       "file": "apps/web/src/lib/quotation.ts",
-      "line": 35,
+      "line": 41,
       "anchor": [
         "",
-        "export const SHIPPING_TYPE_LABELS: Record<string, string> = {",
-        "  fcl: \"FCL\",",
-        "  lcl: \"LCL\",",
-        "  bulk: \"Bulk\","
+        "export const FEE_SIDE_LABELS: Record<string, string> = {",
+        "  selling: \"Selling Price\",",
+        "  cost: \"Cost\",",
+        "};"
       ],
       "jsonPath": "/guide/3/golden/2/src",
       "step": 4,
@@ -903,7 +1042,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-      "line": 781,
+      "line": 801,
       "anchor": [
         "                {(field) => (",
         "                  <div className=\"space-y-1.5\">",
@@ -919,13 +1058,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-      "line": 1268,
+      "line": 1304,
       "anchor": [
         "                            >",
         "                              <Plus data-icon=\"inline-start\" />",
         "                              Add Billing Unit",
         "                            </Button>",
-        "                          </div>"
+        "                            <TagAllRowsMenu"
       ],
       "jsonPath": "/guide/3/golden/4/src",
       "step": 4,
@@ -935,7 +1074,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-      "line": 1259,
+      "line": 1295,
       "anchor": [
         "                            >",
         "                              <Plus data-icon=\"inline-start\" />",
@@ -951,13 +1090,13 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 583,
+      "line": 679,
       "anchor": [
-        "  // key: two rows for the same charge that differ only by billing unit belong",
-        "  // in ONE row's columns, not two rows.",
-        "  if (feeType === \"selling\") {",
-        "    const seenRows = new Map<string, number>();",
-        "    lines.forEach((line, index) => {"
+        "      const label = line.destination ? `${line.costName} — ${line.destination}` : line.costName;",
+        "      throw new ORPCError(\"BAD_REQUEST\", {",
+        "        message: `Row \"${label}\" has no price — a selling template's row needs an amount in at least one 计费单位 column.`,",
+        "      });",
+        "    }"
       ],
       "jsonPath": "/guide/3/golden/6/src",
       "step": 4,
@@ -966,14 +1105,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-      "line": 659,
+      "file": "apps/web/src/routes/_next/fee-templates/-package-cell.tsx",
+      "line": 61,
       "anchor": [
-        "                {({ canSubmit }) => (",
-        "                  <Button disabled={!canSubmit || isPending} onClick={() => form.handleSubmit()}>",
-        "                    {isPending ? \"Saving…\" : \"Save Template\"}",
-        "                  </Button>",
-        "                )}"
+        "      <DropdownMenuContent align=\"start\" className=\"w-56\">",
+        "        <DropdownMenuGroup>",
+        "          <DropdownMenuLabel>Service packages</DropdownMenuLabel>",
+        "          {SERVICE_PACKAGES.map((pkg) => (",
+        "            <DropdownMenuCheckboxItem"
       ],
       "jsonPath": "/guide/3/golden/7/src",
       "step": 4,
@@ -983,7 +1122,23 @@
     },
     {
       "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-      "line": 655,
+      "line": 679,
+      "anchor": [
+        "                {({ canSubmit }) => (",
+        "                  <Button disabled={!canSubmit || isPending} onClick={() => form.handleSubmit()}>",
+        "                    {isPending ? \"Saving…\" : \"Save Template\"}",
+        "                  </Button>",
+        "                )}"
+      ],
+      "jsonPath": "/guide/3/golden/8/src",
+      "step": 4,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+      "line": 675,
       "anchor": [
         "                  row; a page header has the room and the operator needs the",
         "                  verb spelled out. */}",
@@ -991,7 +1146,7 @@
         "              <form.Subscribe selector={(state) => ({ canSubmit: state.canSubmit })}>",
         "                {({ canSubmit }) => ("
       ],
-      "jsonPath": "/guide/3/golden/8/src",
+      "jsonPath": "/guide/3/golden/9/src",
       "step": 4,
       "kind": "golden",
       "seg": 0,
@@ -1007,7 +1162,7 @@
         "      </Button>",
         "      <Button size=\"sm\" variant=\"outline\" onClick={onReject} disabled={none || busy}>"
       ],
-      "jsonPath": "/guide/3/golden/9/src",
+      "jsonPath": "/guide/3/golden/10/src",
       "step": 4,
       "kind": "golden",
       "seg": 0,
@@ -1023,7 +1178,23 @@
         "            <Input",
         "              id=\"supersede-valid-to\""
       ],
-      "jsonPath": "/guide/3/golden/10/src",
+      "jsonPath": "/guide/3/golden/11/src",
+      "step": 4,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/fee-templates/index.tsx",
+      "line": 489,
+      "anchor": [
+        "              </FilterField>",
+        "",
+        "              <FilterField label=\"Package\">",
+        "                <Select",
+        "                  value={draft.packageKey ?? \"all\"}"
+      ],
+      "jsonPath": "/guide/3/golden/12/src",
       "step": 4,
       "kind": "golden",
       "seg": 0,
@@ -1047,13 +1218,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/index.tsx",
-      "line": 713,
+      "line": 746,
       "anchor": [
-        "                </SelectTrigger>",
-        "                <SelectContent>",
-        "                  <SelectItem value=\"all\">All</SelectItem>",
-        "                  <SelectItem value=\"expiring\">Expiring soon</SelectItem>",
-        "                  <SelectItem value=\"expired\">Expired</SelectItem>"
+        "          ? undefined",
+        "          : {",
+        "              label: \"Add\",",
+        "              onClick: () =>",
+        "                routerNavigate({"
       ],
       "jsonPath": "/guide/4/golden/0/src",
       "step": 5,
@@ -1062,14 +1233,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1641,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
+      "line": 285,
       "anchor": [
-        "                                  }",
-        "                                >",
-        "                                  It did not go out",
-        "                                </Button>",
-        "                                <Button"
+        "            title={gate.allowed ? undefined : gate.reason}",
+        "          >",
+        "            {SERVICE_PACKAGES.map((p) => (",
+        "              <PackageCard",
+        "                key={p.key}"
       ],
       "jsonPath": "/guide/4/golden/1/src",
       "step": 5,
@@ -1078,14 +1249,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1660,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+      "line": 75,
       "anchor": [
-        "                          </div>",
-        "                        )}",
-        "                      </div>",
-        "                    );",
-        "                  }}"
+        "            {(field) => (",
+        "              <div className=\"space-y-1.5\">",
+        "                <Label htmlFor={field.name}>Client *</Label>",
+        "                <form.Field name=\"clientCompanyId\">",
+        "                  {(idField) => ("
       ],
       "jsonPath": "/guide/4/golden/2/src",
       "step": 5,
@@ -1094,14 +1265,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 285,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+      "line": 106,
       "anchor": [
-        "  /** Which template this price came from — template-level, because cell ids re-mint (P0-10). */",
-        "  listTemplateId: z.string().nullable().optional(),",
-        "});",
-        "",
-        "const quoteFormSchema = z.object({"
+        "            {(field) => (",
+        "              <div className=\"space-y-1.5\">",
+        "                <Label htmlFor={field.name}>Port of Destination *</Label>",
+        "                <Input",
+        "                  id={field.name}"
       ],
       "jsonPath": "/guide/4/golden/3/src",
       "step": 5,
@@ -1110,14 +1281,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1757,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+      "line": 168,
       "anchor": [
-        "              the authority, and a stale tab that presses anyway gets the Lost",
-        "              sentence as a toast. Shared predicate rather than a second copy",
-        "              of the rule, so the button and the handler cannot drift.",
-        "            */}",
-        "              {!isNew &&"
+        "                    {(linkField) => (",
+        "                      <div className=\"space-y-1.5\">",
+        "                        <Label htmlFor={field.name}>Attention</Label>",
+        "                        <AttentionPicker",
+        "                          id={field.name}"
       ],
       "jsonPath": "/guide/4/golden/4/src",
       "step": 5,
@@ -1126,14 +1297,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1855,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+      "line": 119,
       "anchor": [
-        "            <div className=\"flex flex-wrap items-stretch\">",
-        "              <form.Subscribe",
-        "                selector={(state) => ({",
-        "                  businessType: state.values.businessType,",
-        "                  clientName: state.values.clientName,"
+        "    shippingType: loaded?.shippingType ?? undefined,",
+        "    services: loaded?.services ?? emptyServices(),",
+        "    clientName: loaded?.clientName ?? seed?.clientName ?? \"\",",
+        "    clientCompanyId: loaded?.clientCompanyId ?? seed?.clientCompanyId ?? null,",
+        "    attention: loaded?.attention ?? seed?.attention ?? \"\","
       ],
       "jsonPath": "/guide/4/golden/5/src",
       "step": 5,
@@ -1142,14 +1313,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1939,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+      "line": 323,
       "anchor": [
-        "            >",
-        "              <CardContent className=\"grid grid-cols-1 gap-3 py-4 sm:grid-cols-2 lg:grid-cols-4\">",
-        "                <form.Field name=\"businessType\">",
-        "                  {(field) => (",
-        "                    <div className=\"space-y-1.5\">"
+        "                >",
+        "                  <Plus data-icon=\"inline-start\" />",
+        "                  Add Container",
+        "                </Button>",
+        "              </div>"
       ],
       "jsonPath": "/guide/4/golden/6/src",
       "step": 5,
@@ -1158,14 +1329,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2076,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+      "line": 199,
       "anchor": [
-        "                          {INCOTERMS.map((t) => (",
-        "                            <SelectItem key={t} value={t}>",
-        "                              {t}",
-        "                            </SelectItem>",
-        "                          ))}"
+        "            {(businessType) => (",
+        "              <div className=\"flex items-center gap-1.5\" data-testid=\"business-type-chip\">",
+        "                <span className=\"font-medium text-muted-foreground\">Business type</span>",
+        "                <Badge variant=\"outline\">",
+        "                  {BUSINESS_TYPE_LABELS[businessType] ?? businessType}"
       ],
       "jsonPath": "/guide/4/golden/7/src",
       "step": 5,
@@ -1174,14 +1345,14 @@
       "lineIdx": 0
     },
     {
-      "file": "packages/api/src/quotation/values.ts",
-      "line": 415,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+      "line": 685,
       "anchor": [
-        "      if (openStageOtherDecided === \"approve\") return \"withdrawal_approved_by_other_reviewer\";",
-        "      return \"withdrawal_under_review\";",
-        "    case \"approved\":",
-        "      return actedByOther ? \"approved_by_other_reviewer\" : \"passed\";",
-        "    case \"rejected\":"
+        "      >",
+        "        <span>",
+        "          More details",
+        "          <span className=\"ml-2 text-xs font-normal text-muted-foreground\">",
+        "            Route and parties, cargo, addresses, package settings, notes"
       ],
       "jsonPath": "/guide/4/golden/8/src",
       "step": 5,
@@ -1190,8 +1361,40 @@
       "lineIdx": 0
     },
     {
+      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+      "line": 474,
+      "anchor": [
+        "                showCost={showCost}",
+        "                onShowCostChange={setShowCostOverride}",
+        "                templatePicker={",
+        "                  <TemplatePicker",
+        "                    form={form}"
+      ],
+      "jsonPath": "/guide/4/golden/9/src",
+      "step": 5,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 691,
+      "anchor": [
+        "            onClick={() => form.handleSubmit()}",
+        "          >",
+        "            {isPending ? \"Saving…\" : \"Save Quote\"}",
+        "          </Button>",
+        "        )}"
+      ],
+      "jsonPath": "/guide/4/golden/10/src",
+      "step": 5,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 1532,
+      "line": 1599,
       "anchor": [
         " *   *     → converted   `quotations.convertToOrder` (mints the order)",
         " *                       …and `costLines.importFromQuote`, which has written",
@@ -1207,7 +1410,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3159,
+      "line": 3442,
       "anchor": [
         "          size: sheetFile.sizeBytes,",
         "          stagedKey: null as string | null,",
@@ -1223,7 +1426,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3382,
+      "line": 3665,
       "anchor": [
         "        throw new ORPCError(\"INTERNAL_SERVER_ERROR\", { message: \"Failed to resolve the send\" });",
         "      }",
@@ -1238,14 +1441,14 @@
       "lineIdx": 2
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 993,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+      "line": 159,
       "anchor": [
-        "   * permanently un-hinted, which is exactly the row Journey 3 step 5 checks.",
-        "   *",
-        "   * So the join goes through the id, on the SERVER's rows, and lands on the",
-        "   * RESOLVER KEY (A15) — the very thing the tariff resolves on. Two rows sharing",
-        "   * a key resolve against the same cell, so which of them a key lookup returns"
+        "    // function's own comment). A new quote defaults to today's MYT day; a",
+        "    // saved quote shows its stored day.",
+        "    quotationDate: businessDateInput(loaded?.quotationDate ?? (isNew ? new Date() : undefined)),",
+        "    quotationStaff: loaded?.quotationStaff ?? (isNew ? (session?.user.name ?? \"\") : \"\"),",
+        "    whetherBooking: loaded?.whetherBooking ?? false,"
       ],
       "jsonPath": "/guide/4/fixes/0/src",
       "step": 5,
@@ -1255,7 +1458,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3161,
+      "line": 3444,
       "anchor": [
         "        };",
         "        let freshIntent: QuotationSendRow | null = null;",
@@ -1271,7 +1474,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3543,
+      "line": 3826,
       "anchor": [
         "          });",
         "",
@@ -1287,7 +1490,7 @@
     },
     {
       "file": "packages/api/src/modules/quotation/sheet.ts",
-      "line": 356,
+      "line": 363,
       "anchor": [
         "      [dateOnly(header.validFrom), dateOnly(header.validTo)].filter(Boolean).join(\" – \"),",
         "    ],",
@@ -1302,14 +1505,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2193,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
+      "line": 101,
       "anchor": [
-        "                        id={field.name}",
-        "                        value={field.state.value}",
-        "                        onChange={(e) => field.handleChange(e.target.value)}",
-        "                      />",
-        "                    </div>"
+        "",
+        "  /** Ask the server what the package would put on this quote, from the FORM's values. */",
+        "  async function run(key: ServicePackageKey, trailer?: Trailer) {",
+        "    const v = form.state.values;",
+        "    const token = ++seq.current;"
       ],
       "jsonPath": "/guide/5/golden/0/src",
       "step": 6,
@@ -1318,14 +1521,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2286,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
+      "line": 449,
       "anchor": [
-        "                  {(field) => (",
-        "                    <div className=\"space-y-1.5\">",
-        "                      <Label htmlFor={field.name}>Premium</Label>",
-        "                      <Input",
-        "                        id={field.name}"
+        "        <AlertDialogHeader>",
+        "          <AlertDialogTitle>",
+        "            {hasLines ? \"Replace package charges?\" : \"Change package settings?\"}",
+        "          </AlertDialogTitle>",
+        "          <AlertDialogDescription>"
       ],
       "jsonPath": "/guide/5/golden/1/src",
       "step": 6,
@@ -1334,14 +1537,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/components/reference-template-dialog.tsx",
-      "line": 556,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts",
+      "line": 331,
       "anchor": [
-        "      return;",
-        "    }",
-        "    // New quote (no server id yet) → apply client-side, from the SAME grid the",
-        "    // picker was drawn from, narrowed by the same picks the server would get",
-        "    // (A10). Both paths therefore choose the same cells in the same order."
+        "};",
+        "",
+        "export const NOTHING_TAGGED =",
+        "  \"No tariff rows are tagged for this package yet — add charges by hand or tag rows in Fee templates\";",
+        "export const NOTHING_FITS = \"No tagged row matches this destination/containers\";"
       ],
       "jsonPath": "/guide/5/golden/2/src",
       "step": 6,
@@ -1350,14 +1553,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/components/reference-template-dialog.tsx",
-      "line": 675,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
+      "line": 268,
       "anchor": [
-        "                                  />",
-        "                                }",
-        "                              >",
-        "                                <Info className=\"size-3.5\" />",
-        "                              </TooltipTrigger>"
+        "              >",
+        "                <RefreshCw data-icon=\"inline-start\" />",
+        "                Refresh package charges",
+        "              </Button>",
+        "            ) : null"
       ],
       "jsonPath": "/guide/5/golden/3/src",
       "step": 6,
@@ -1366,14 +1569,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/components/reference-template-dialog.tsx",
-      "line": 516,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
+      "line": 1089,
       "anchor": [
-        "   * arriving, or the toast would be followed by cells ticking themselves.",
-        "   *",
-        "   * Back → Next is a new visit and does re-seed, which is the one place an",
-        "   * operator can ask for the defaults again.",
-        "   */"
+        "                    </TableHead>",
+        "                    <TableHead className=\"w-12\" />",
+        "                    <TableHead className={headClass}>Charge</TableHead>",
+        "                    <TableHead className={headClass}>Unit</TableHead>",
+        "                    <TableHead className={headClass}>Qty</TableHead>"
       ],
       "jsonPath": "/guide/5/golden/4/src",
       "step": 6,
@@ -1382,14 +1585,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/components/reference-template-dialog.tsx",
-      "line": 190,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
+      "line": 1064,
       "anchor": [
-        "const NO_KEYS: ReadonlySet<string> = new Set();",
-        "",
-        "/**",
-        " * The server's refusal when a pick names a cell the template no longer has",
-        " * (P0-10), matched on its PREFIX: `quotations.applyTemplate` appends the cell it"
+        "                >",
+        "                  <Plus data-icon=\"inline-start\" />",
+        "                  Charge if required",
+        "                </Button>",
+        "                <Button type=\"button\" variant=\"outline\" size=\"sm\" onClick={() => addLine(false)}>"
       ],
       "jsonPath": "/guide/5/golden/5/src",
       "step": 6,
@@ -1398,14 +1601,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 3129,
+      "file": "apps/web/src/components/reference-template-dialog.tsx",
+      "line": 620,
       "anchor": [
-        "                                    {(f) => (",
-        "                                      <Select",
-        "                                        value={f.state.value}",
-        "                                        onValueChange={(v) => f.handleChange(v as never)}",
-        "                                      >"
+        "      <DialogContent className={step === 2 ? \"sm:max-w-4xl\" : undefined}>",
+        "        <DialogHeader>",
+        "          <DialogTitle>Apply a Fee Template</DialogTitle>",
+        "          <DialogDescription>",
+        "            {step === 1"
       ],
       "jsonPath": "/guide/5/golden/6/src",
       "step": 6,
@@ -1414,14 +1617,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2403,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/fee-line-drawer.tsx",
+      "line": 92,
       "anchor": [
-        "",
-        "                {/*",
-        "              注释 — CUSTOMER-FACING. Manual p030 callout ④:",
-        "              「报价注释：体现在报价单中，给到客户查看」. It prints. Its internal",
-        "              twin 报价备注 lives below Estimated Profit and does not."
+        "                {(f) => (",
+        "                  <div className=\"space-y-1.5\">",
+        "                    <Label>Side</Label>",
+        "                    <Select",
+        "                      value={f.state.value}"
       ],
       "jsonPath": "/guide/5/golden/7/src",
       "step": 6,
@@ -1430,14 +1633,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2321,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
+      "line": 1053,
       "anchor": [
-        "                  )}",
-        "                </form.Field>",
-        "",
-        "                <form.Field name=\"wharf\">",
-        "                  {(field) => ("
+        "                  }}",
+        "                />",
+        "                <Label htmlFor=\"cost-profit-toggle\">Cost and profit</Label>",
+        "              </div>",
+        "              <div className=\"flex flex-wrap items-center gap-2\">"
       ],
       "jsonPath": "/guide/5/golden/8/src",
       "step": 6,
@@ -1462,14 +1665,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 725,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 691,
       "anchor": [
-        "   *",
-        "   * `retry:false` + `meta:{suppressErrorToast:true}` + the muted header line",
-        "   * below, exactly as `orgChargeUnitsQuery` above and `ContractsCard` do: this is",
-        "   * a READING AID over a quotation the operator can still finish. A failed check",
-        "   * must never look like \"no tariff\" — every row would silently read as though it"
+        "            onClick={() => form.handleSubmit()}",
+        "          >",
+        "            {isPending ? \"Saving…\" : \"Save Quote\"}",
+        "          </Button>",
+        "        )}"
       ],
       "jsonPath": "/guide/6/golden/0/src",
       "step": 7,
@@ -1479,13 +1682,13 @@
     },
     {
       "file": "packages/api/src/quotation/tariff-check.ts",
-      "line": 457,
+      "line": 604,
       "anchor": [
-        "      push(standardCells, lineKey(cell), cell);",
-        "      addUnit(standardNameDest, nameDestKey(cell), cell.chargeUnit);",
-        "    } else if (client !== null && owner === client) {",
-        "      push(dealCells, lineKey(cell), cell);",
-        "      addUnit(dealNameDest, nameDestKey(cell), cell.chargeUnit);"
+        "  const unit = line.chargeUnit?.trim();",
+        "  const label = unit ? `${name} · ${unit}` : name;",
+        "  return `Line \"${label}\" is below tariff: ${toDecimalString(toNumber(unitPrice, 0))} < ${toDecimalString(toNumber(tariffAmount, 0))}`;",
+        "}",
+        ""
       ],
       "jsonPath": "/guide/6/golden/1/src",
       "step": 7,
@@ -1494,14 +1697,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2354,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
+      "line": 371,
       "anchor": [
-        "                      <Input",
-        "                        id={field.name}",
-        "                        type=\"number\"",
-        "                        min={0}",
-        "                        value={field.state.value ?? 0}"
+        "    return (",
+        "      <Badge variant=\"destructive\" data-testid={testid}>",
+        "        Below — refused",
+        "      </Badge>",
+        "    );"
       ],
       "jsonPath": "/guide/6/golden/2/src",
       "step": 7,
@@ -1510,16 +1713,32 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 2567,
+      "file": "apps/web/src/components/tariff-hint.tsx",
+      "line": 308,
       "anchor": [
-        "                                <div className=\"space-y-1.5\">",
-        "                                  <Label>Unpacking Address</Label>",
-        "                                  <Input",
-        "                                    value={f.state.value}",
-        "                                    onChange={(e) => f.handleChange(e.target.value)}"
+        "/** How a refusal reads once it is sitting under the row it is about. */",
+        "export function refusalText(offender: BelowTariffOffender): string {",
+        "  return `Refused: ${offender.typed} is below the tariff ${offender.floor}`;",
+        "}",
+        ""
       ],
       "jsonPath": "/guide/6/golden/3/src",
+      "step": 7,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
+      "line": 953,
+      "anchor": [
+        "                <p className=\"font-medium\">",
+        "                  {floor.enforced === 0",
+        "                    ? \"The tariff price floor is not enforcing anything on this quotation.\"",
+        "                    : `The tariff price floor is off on ${floorGaps} of ${floor.selling} selling ${lineWord(floor.selling)}.`}",
+        "                </p>"
+      ],
+      "jsonPath": "/guide/6/golden/4/src",
       "step": 7,
       "kind": "golden",
       "seg": 0,
@@ -1542,14 +1761,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1266,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 298,
       "anchor": [
-        "    const token = (rateTokens.current[i] ?? 0) + 1;",
-        "    rateTokens.current[i] = token;",
-        "    try {",
-        "      const { rate } = (await queryClient.fetchQuery(",
-        "        orpc.exchangeRates.suggest.queryOptions({"
+        "              onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}",
+        "            >",
+        "              Submit for Review",
+        "            </Button>",
+        "          )}"
       ],
       "jsonPath": "/guide/7/golden/0/src",
       "step": 8,
@@ -1574,14 +1793,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1314,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 331,
       "anchor": [
-        "      // ── OURS ── (0060, A4.) The tariff's floor holds on EVERY qty/price edit,",
-        "      // not only at apply time: without it a line that arrived at its floor",
-        "      // silently drops below it the moment the operator retypes the quantity, and",
-        "      // the number on screen stops agreeing with the one the server will store.",
-        "      // `\"\"` (no floor) reads as 0 through `toNumber`, so a hand-typed line is"
+        "                }}",
+        "              >",
+        "                Reject",
+        "              </Button>",
+        "            </>"
       ],
       "jsonPath": "/guide/7/golden/4/src",
       "step": 8,
@@ -1591,7 +1810,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3288,
+      "line": 3571,
       "anchor": [
         "              userId: context.session.user.id,",
         "              readableBranchIds,",
@@ -1623,7 +1842,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 3937,
+      "line": 4220,
       "anchor": [
         "              eq(quotationDecision.quotationId, existing.id),",
         "              eq(quotationDecision.organizationId, organizationId),",
@@ -1655,7 +1874,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 2363,
+      "line": 2491,
       "anchor": [
         "  // ── THE LETTERHEAD IS ONE OF THE CELLS THIS CAN CATCH ──────────────────────",
         "  //",
@@ -1670,14 +1889,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1431,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 576,
       "anchor": [
-        "                        reviewMutation.mutate({ id: loaded.id, to: \"withdraw_pending\" })",
-        "                      }",
-        "                    >",
-        "                      Retract",
-        "                    </Button>"
+        "                >",
+        "                  <FileText data-icon=\"inline-start\" />",
+        "                  Preview PDF",
+        "                </Button>",
+        "                {primarySpec && ("
       ],
       "jsonPath": "/guide/8/golden/0/src",
       "step": 9,
@@ -1686,14 +1905,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1372,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 219,
       "anchor": [
-        "            <>",
-        "              {!isNew && loaded && (",
-        "                <div className=\"flex items-center gap-2\" data-testid=\"audit-controls\">",
-        "                  <AuditStatusBadge status={loaded.auditStatus} />",
-        "                  {loaded.auditStatus === \"draft\" && ("
+        "  let primary: HeaderActionId | null = null;",
+        "  if (m.showDecide) primary = \"decide\";",
+        "  else if (m.showSend && quote.auditStatus === \"approved\") primary = \"send\";",
+        "  else if (quote.status === \"won\" && m.showConvert) primary = \"convert\";",
+        ""
       ],
       "jsonPath": "/guide/8/golden/1/src",
       "step": 9,
@@ -1703,13 +1922,13 @@
     },
     {
       "file": "apps/web/src/components/quotation/send-quotation-dialog.tsx",
-      "line": 257,
+      "line": 321,
       "anchor": [
-        "    }),",
-        "  );",
-        "",
-        "  /**",
-        "   * One text box in, an ARRAY out — `quotations.send` takes `cc?: string[]`."
+        "          <form className=\"flex flex-col gap-3\" onSubmit={handleSubmit}>",
+        "            <div className=\"space-y-1.5\">",
+        "              <Label htmlFor=\"send-from\">From</Label>",
+        "              <Select",
+        "                value={connectionId}"
       ],
       "jsonPath": "/guide/8/golden/2/src",
       "step": 9,
@@ -1719,13 +1938,13 @@
     },
     {
       "file": "apps/web/src/components/quotation/send-quotation-dialog.tsx",
-      "line": 394,
+      "line": 214,
       "anchor": [
-        "                    <SelectItem value=\"pdf\">PDF</SelectItem>",
-        "                    <SelectItem value=\"xlsx\">XLSX</SelectItem>",
-        "                  </SelectContent>",
-        "                </Select>",
-        "              </div>"
+        "    orpc.quotations.send.mutationOptions({",
+        "      onSuccess: () => {",
+        "        toast.success(`Quotation ${quotationNo} sent`);",
+        "        setResumeNotice(null);",
+        "        queryClient.invalidateQueries({"
       ],
       "jsonPath": "/guide/8/golden/6/src",
       "step": 9,
@@ -1735,7 +1954,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 2725,
+      "line": 2870,
       "anchor": [
         "        decisionCorrected: current?.kind === \"correction\",",
         "      };",
@@ -1751,13 +1970,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 531,
+      "line": 69,
       "anchor": [
-        "      out.enforced += 1;",
-        "      continue;",
-        "    }",
-        "    if (check.status === \"not_available\") out.notAvailable += 1;",
-        "    else out.noCell += 1;"
+        "});",
+        "",
+        "/**",
+        " * The inbox threads linked to this quotation — the INVERSE of the reading",
+        " * pane's \"Linked records\" chip (TC-134 ruling 2026-08-17: navigable both ways)."
       ],
       "jsonPath": "/guide/9/golden/0/src",
       "step": 10,
@@ -1767,13 +1986,19 @@
     },
     {
       "file": "apps/web/src/components/quotation/decide-quotation-dialog.tsx",
-      "line": null,
-      "anchor": [],
+      "line": 106,
+      "anchor": [
+        "        <DialogContent className=\"sm:max-w-md\">",
+        "          <DialogHeader>",
+        "            <DialogTitle>Decide quotation {quotationNo}</DialogTitle>",
+        "            <DialogDescription>",
+        "              Records the customer's answer. Once decided, this quotation becomes read-only."
+      ],
       "jsonPath": "/guide/9/golden/1/src",
       "step": 10,
       "kind": "golden",
       "seg": 0,
-      "lineIdx": null
+      "lineIdx": 0
     },
     {
       "file": "apps/web/src/components/quotation/decide-quotation-dialog.tsx",
@@ -1793,7 +2018,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 2947,
+      "line": 3230,
       "anchor": [
         "   *",
         "   * `quotation_send` has no `owningBranchId`/`createdBy` (schema comment) —",
@@ -1808,14 +2033,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 1505,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+      "line": 441,
       "anchor": [
-        "                            )}",
-        "                          {/* Task 1.8 — the small \"Corrected\" tag (Journey 2",
-        "                              step 3, Journey 3): true once the CURRENT decision",
-        "                              row's kind is \"correction\" rather than the",
-        "                              original \"decision\" (`quotations.retrieve`,"
+        "              convert: {",
+        "                testid: \"convert-to-order\",",
+        "                label: convertMutation.isPending ? \"Converting…\" : \"Convert to order\",",
+        "                disabled: convertMutation.isPending || live.convertBlocked,",
+        "                title: correctionReason,"
       ],
       "jsonPath": "/guide/10/golden/1/src",
       "step": 11,
@@ -1824,14 +2049,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 817,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts",
+      "line": 242,
       "anchor": [
-        "        // The ids are stamped into that copy rather than left to arrive with the",
-        "        // refetch. They DID arrive that way — `reset` clears every field's meta,",
-        "        // `isTouched` goes false, and form-core re-seeds from the server — but",
-        "        // that is a race, not a mechanism: one keystroke between this handler and",
-        "        // the refetch landing sets `isTouched` again and blocks the re-seed for"
+        "        const parts = [",
+        "          jobNumber",
+        "            ? `Order ${jobNumber} created with ${carriedFeeLines} receivable fee line(s)`",
+        "            : `Order created with ${carriedFeeLines} receivable fee line(s)`,",
+        "        ];"
       ],
       "jsonPath": "/guide/10/golden/2/src",
       "step": 11,
@@ -1840,14 +2065,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 834,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts",
+      "line": 261,
       "anchor": [
-        "  // without freezing anything, while the engine's decision is what",
-        "  // assertPostApprovalEditable reads — so the page's buttons and the",
-        "  // reviewer queues now mean the same thing. The legacy `quotations.review`",
-        "  // endpoint is unreachable from the web app already (architecture test) and",
-        "  // is deleted outright in step 08 Phase 3 — nothing here calls it."
+        "        queryClient.invalidateQueries({ queryKey: orpc.costLines.list.queryKey() });",
+        "        // Same landing the order toolbar uses after it creates an order.",
+        "        navigate({ to: \"/order/$orderId/edit\", params: { orderId } });",
+        "      },",
+        "      onError: (error) => toast.error(error.message),"
       ],
       "jsonPath": "/guide/10/golden/3/src",
       "step": 11,
@@ -2705,13 +2930,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
-      "line": 373,
+      "line": 345,
       "anchor": [
-        "        }",
-        "      } else {",
-        "        toast.success(\"Amendment saved\");",
-        "      }",
-        "    },"
+        "      setChosenDocType(\"\");",
+        "      await queryClient.invalidateQueries();",
+        "      reportNotices(result, \"Corrections saved and approved\");",
+        "    },",
+        "    onError: (error) => toast.error(error.message || \"Could not save corrections\"),"
       ],
       "jsonPath": "/guide/17/golden/3/src",
       "step": 18,
@@ -2769,6 +2994,22 @@
     },
     {
       "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
+      "line": 604,
+      "anchor": [
+        "                        ? \"Saving amendment…\"",
+        "                        : hasEdits",
+        "                          ? \"Save amendment\"",
+        "                          : \"Edit a field to amend\"",
+        "                      : hasEdits"
+      ],
+      "jsonPath": "/guide/17/golden/7/src",
+      "step": 18,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
+      "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
       "line": 969,
       "anchor": [
         "          <DialogContent>",
@@ -2777,7 +3018,7 @@
         "              <DialogDescription>",
         "                It leaves the review queue but is kept, along with your reason and name. If this"
       ],
-      "jsonPath": "/guide/17/golden/7/src",
+      "jsonPath": "/guide/17/golden/8/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
@@ -2793,7 +3034,7 @@
         "              {payload.links.length > 0 ? (",
         "                <ul className=\"mt-2 space-y-1\">"
       ],
-      "jsonPath": "/guide/17/golden/8/src",
+      "jsonPath": "/guide/17/golden/9/src",
       "step": 18,
       "kind": "golden",
       "seg": 0,
@@ -4257,14 +4498,19 @@
       "file": "apps/web/src/routes/_next/companies.tsx"
     },
     {
-      "path": "/companies/$companyId/edit",
+      "path": "/companies/new",
       "step": 2,
-      "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+      "file": "apps/web/src/routes/_next/companies_.new.tsx"
     },
     {
       "path": "/companies/$companyId",
       "step": 2,
       "file": "apps/web/src/routes/_next/companies_.$companyId.tsx"
+    },
+    {
+      "path": "/companies/$companyId/edit",
+      "step": 2,
+      "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
     },
     {
       "path": "/companies/$companyId",
@@ -4496,7 +4742,7 @@
         "apps/web/src/components/inbox/filters.ts",
         "apps/web/src/components/inbox/triage-bar.tsx",
         "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/components/shell-next/nav.ts"
+        "apps/web/src/routes/_next/companies_.new.tsx"
       ]
     },
     {
@@ -4507,7 +4753,35 @@
         "apps/web/src/components/inbox/notes-panel.tsx",
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/components/inbox/left-rail.tsx",
+        "apps/web/src/components/company/company-form.tsx"
+      ]
+    },
+    {
+      "text": "Customer",
+      "step": 1,
+      "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "apps/web/src/components/inbox/link-picker.tsx",
+        "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts"
+      ]
+    },
+    {
+      "text": "Create company from sender",
+      "step": 1,
+      "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "apps/web/src/routes/_next/inbox.$threadId.tsx"
+      ]
+    },
+    {
+      "text": "Link existing company…",
+      "step": 1,
+      "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "apps/web/src/components/inbox/link-picker.tsx",
+        "apps/web/src/routes/_next/inbox.$threadId.tsx"
       ]
     },
     {
@@ -4534,7 +4808,7 @@
       "foundIn": [
         "apps/web/src/components/inbox/filters.ts",
         "apps/web/src/components/inbox/triage-bar.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
@@ -4603,11 +4877,11 @@
       "text": "Sales → Companies",
       "step": 2,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/order.to-receive.tsx",
         "apps/web/src/components/order-ledger/order-row-actions.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/routes/_next/lading/create.tsx"
       ]
     },
     {
@@ -4629,41 +4903,10 @@
       ]
     },
     {
-      "text": "Company title",
+      "text": "1 · What is this company to us?",
       "step": 2,
       "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/routes/_next/inbox.$threadId.tsx"
-      ]
-    },
-    {
-      "text": "Code",
-      "step": 2,
-      "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/company-contact.ts"
-      ]
-    },
-    {
-      "text": "Customer code",
-      "step": 2,
-      "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
-      ]
-    },
-    {
-      "text": "Roles",
-      "step": 2,
-      "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/api/src/modules/audit/seed.ts"
+        "apps/web/src/components/company/company-form.tsx"
       ]
     },
     {
@@ -4673,8 +4916,8 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/link-picker.tsx",
         "apps/web/src/routes/_next/companies.tsx",
-        "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts"
       ]
     },
     {
@@ -4682,10 +4925,10 @@
       "step": 2,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "packages/api/src/modules/audit/seed.ts"
+        "apps/web/src/components/company/company-form-payload.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx"
       ]
     },
     {
@@ -4693,93 +4936,148 @@
       "step": 2,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
-        "packages/api/src/modules/audit/seed.ts",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
+        "packages/api/src/modules/audit/seed.ts"
       ]
     },
     {
-      "text": "Create and continue",
+      "text": "2 · Who",
       "step": 2,
       "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx"
+        "apps/web/src/components/company/company-form.tsx"
       ]
     },
     {
-      "text": "Identity",
+      "text": "Company title",
       "step": 2,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/components/company/company-form-payload.ts",
+        "apps/web/src/routes/_next/inbox.$threadId.tsx"
+      ]
+    },
+    {
+      "text": "3 · Main contact (optional)",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx"
+      ]
+    },
+    {
+      "text": "Name",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/components/inbox/sla-tiles.tsx",
         "apps/web/src/components/inbox/reading-pane.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/components/order-form.tsx",
-        "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/components/customs-tracking/bl-job-record.tsx"
+        "apps/web/src/components/inbox/triage-bar.tsx",
+        "apps/web/src/components/inbox/notes-panel.tsx",
+        "apps/web/src/components/inbox/left-rail.tsx"
       ]
     },
     {
-      "text": "Roles & status",
+      "text": "Role",
       "step": 2,
       "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
-      ]
-    },
-    {
-      "text": "Classification",
-      "step": 2,
-      "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/routes/_next/report/financial/index.tsx"
-      ]
-    },
-    {
-      "text": "Address",
-      "step": 2,
-      "foundIn": [
-        "apps/web/src/components/inbox/filters.ts",
-        "apps/web/src/components/inbox/reading-pane.tsx",
-        "apps/web/src/components/inbox/left-rail.tsx",
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/components/company/company-form-payload.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx"
       ]
     },
     {
-      "text": "Settlement",
+      "text": "Phone",
       "step": 2,
       "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/components/company/company-contacts.tsx",
         "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/routers/collective-order.ts"
+        "packages/api/src/modules/quotation/sheet.ts"
       ]
     },
     {
-      "text": "People",
+      "text": "Email",
       "step": 2,
       "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/routes/_next/order.to-receive.tsx",
-        "apps/web/src/components/order-ledger/order-record-page.tsx",
-        "apps/web/src/routes/_next/report/financial/index.tsx",
+        "apps/web/src/components/inbox/composer-logic.ts",
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/components/company/company-contacts.tsx",
+        "packages/api/src/routers/report.ts"
+      ]
+    },
+    {
+      "text": "4 · How they pay",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx"
+      ]
+    },
+    {
+      "text": "Settlement currency",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx"
+      ]
+    },
+    {
+      "text": "Days payable",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.$companyId.tsx"
       ]
     },
     {
-      "text": "Record",
+      "text": "Credit limit",
       "step": 2,
       "foundIn": [
-        "apps/web/src/components/inbox/reading-pane.tsx",
-        "apps/web/src/components/inbox/composer-logic.ts",
-        "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/components/inbox/link-picker.tsx",
-        "apps/web/src/routes/_next/companies.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId.tsx"
       ]
     },
     {
-      "text": "Save changes",
+      "text": "More details",
       "step": 2,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts"
+      ]
+    },
+    {
+      "text": "Save",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+      ]
+    },
+    {
+      "text": "Save & new quote",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+      ]
+    },
+    {
+      "text": "Edit",
+      "step": 2,
+      "foundIn": [
+        "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
         "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/components/company/company-contacts.tsx"
       ]
@@ -4788,22 +5086,22 @@
       "text": "Sales → Companies",
       "step": 3,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/order.to-receive.tsx",
         "apps/web/src/components/order-ledger/order-row-actions.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/routes/_next/lading/create.tsx"
       ]
     },
     {
       "text": "Contacts",
       "step": 3,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/components/company/company-contacts.tsx",
-        "packages/api/src/routers/company-contact.ts",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/components/quotation/send-quotation-dialog.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId.tsx"
+        "packages/api/src/routers/company-contact.ts"
       ]
     },
     {
@@ -4829,19 +5127,19 @@
       "step": 3,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/components/company/company-contacts.tsx",
-        "packages/api/src/routers/report.ts"
+        "apps/web/src/components/company/company-form-payload.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx"
       ]
     },
     {
       "text": "Phone",
       "step": 3,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/components/company/company-contacts.tsx",
         "packages/api/src/routers/report.ts",
-        "packages/api/src/quotation/values.ts",
         "packages/api/src/modules/quotation/sheet.ts"
       ]
     },
@@ -4850,16 +5148,18 @@
       "step": 3,
       "foundIn": [
         "apps/web/src/components/inbox/composer-logic.ts",
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
         "apps/web/src/components/company/company-contacts.tsx",
-        "packages/api/src/routers/report.ts",
-        "packages/api/src/routers/quotation.ts",
-        "packages/api/src/quotation/values.ts"
+        "packages/api/src/routers/report.ts"
       ]
     },
     {
       "text": "Primary contact",
       "step": 3,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
         "apps/web/src/components/company/company-contacts.tsx"
       ]
     },
@@ -4867,11 +5167,11 @@
       "text": "Sales → Fee templates",
       "step": 4,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/order.to-receive.tsx",
         "apps/web/src/components/order-ledger/order-row-actions.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/routes/_next/lading/create.tsx"
       ]
     },
     {
@@ -4889,8 +5189,7 @@
       "text": "Basic Information",
       "step": 4,
       "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
       ]
     },
     {
@@ -4908,7 +5207,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "apps/web/src/routes/_next/quotations/index.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx"
       ]
     },
     {
@@ -4931,9 +5230,9 @@
       "foundIn": [
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
+        "apps/web/src/components/company/company-form-payload.ts"
       ]
     },
     {
@@ -4941,7 +5240,8 @@
       "step": 4,
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+        "apps/web/src/components/tariff-hint.tsx"
       ]
     },
     {
@@ -4953,6 +5253,45 @@
     },
     {
       "text": "Add Fee",
+      "step": 4,
+      "foundIn": [
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+      ]
+    },
+    {
+      "text": "Packages",
+      "step": 4,
+      "foundIn": [
+        "packages/api/src/routers/report.ts",
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/fee-templates/-package-cell.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
+      ]
+    },
+    {
+      "text": "Port to door",
+      "step": 4,
+      "foundIn": [
+        "packages/api/src/routers/quotation.ts"
+      ]
+    },
+    {
+      "text": "Clearance only",
+      "step": 4,
+      "foundIn": [
+        "packages/api/src/quotation/values.ts"
+      ]
+    },
+    {
+      "text": "Loose cargo",
+      "step": 4,
+      "foundIn": [
+        "packages/api/src/quotation/values.ts"
+      ]
+    },
+    {
+      "text": "Forwarding",
       "step": 4,
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
@@ -4971,9 +5310,9 @@
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/company-contact.ts"
+        "packages/api/src/routers/company-contact.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx"
       ]
     },
     {
@@ -4981,7 +5320,7 @@
       "step": 4,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
     },
@@ -5003,7 +5342,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
       ]
     },
     {
@@ -5013,19 +5352,19 @@
         "apps/web/src/routes/_next/companies.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
       "text": "Duplicate",
       "step": 4,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/components/supersede-template-dialog.tsx",
-        "packages/api/src/quotation/tariff-check.ts"
+        "apps/web/src/components/supersede-template-dialog.tsx"
       ]
     },
     {
@@ -5038,14 +5377,25 @@
       ]
     },
     {
+      "text": "Package",
+      "step": 4,
+      "foundIn": [
+        "packages/api/src/routers/report.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx",
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/fee-templates/-package-cell.tsx"
+      ]
+    },
+    {
       "text": "Sales → Quotations",
       "step": 5,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/order.to-receive.tsx",
         "apps/web/src/components/order-ledger/order-row-actions.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/routes/_next/lading/create.tsx"
       ]
     },
     {
@@ -5060,28 +5410,53 @@
       ]
     },
     {
-      "text": "All 27 fields + 16 services",
+      "text": "What are you quoting?",
       "step": 5,
       "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
-      "text": "Business Type",
+      "text": "Port to door",
       "step": 5,
       "foundIn": [
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/index.tsx",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/index.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "packages/api/src/routers/quotation.ts"
       ]
     },
     {
-      "text": "Shipping Type",
+      "text": "Clearance only",
       "step": 5,
       "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "packages/api/src/quotation/values.ts"
+      ]
+    },
+    {
+      "text": "Loose cargo",
+      "step": 5,
+      "foundIn": [
+        "packages/api/src/quotation/values.ts"
+      ]
+    },
+    {
+      "text": "Forwarding",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+      ]
+    },
+    {
+      "text": "No package / custom",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx"
+      ]
+    },
+    {
+      "text": "Who and where",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
@@ -5091,212 +5466,70 @@
       "foundIn": [
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
-      ]
-    },
-    {
-      "text": "Incoterms",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
-      ]
-    },
-    {
-      "text": "Transit Term",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Carrier",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
-      ]
-    },
-    {
-      "text": "Port of Loading",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/components/company/company-form-payload.ts"
       ]
     },
     {
       "text": "Port of Destination",
       "step": 5,
       "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx"
       ]
     },
     {
-      "text": "Route",
+      "text": "Attention",
       "step": 5,
       "foundIn": [
-        "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/routes/_next/companies.tsx",
-        "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/components/company/company-contacts.tsx"
-      ]
-    },
-    {
-      "text": "Shipment Schedule",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Voyage (Lowest)",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Voyage (Highest)",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+        "packages/api/src/modules/quotation/sheet.ts"
       ]
     },
     {
       "text": "Validity Start",
       "step": 5,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx"
       ]
     },
     {
       "text": "Validity End",
       "step": 5,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Cargo Value",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Premium",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/components/order-form.tsx"
-      ]
-    },
-    {
-      "text": "UN No.",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Class No.",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Wharf",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/components/order-form.tsx"
-      ]
-    },
-    {
-      "text": "Product Name (CN)",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Total Number Entrusted",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Total Gross Weight (KGS)",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Total Volume (CBM)",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Whether Booking",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/index.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Annotation (shown to the customer)",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Save Quote",
-      "step": 5,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx"
       ]
     },
     {
       "text": "Containers",
-      "step": 6,
+      "step": 5,
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/components/reference-template-dialog.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx"
       ]
     },
     {
       "text": "Add Container",
-      "step": 6,
+      "step": 5,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx"
       ]
     },
     {
       "text": "Container Type",
-      "step": 6,
+      "step": 5,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx",
         "packages/api/src/routers/lading.ts"
@@ -5304,56 +5537,129 @@
     },
     {
       "text": "Qty",
-      "step": 6,
+      "step": 5,
       "foundIn": [
         "packages/api/src/routers/report.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+        "packages/api/src/modules/quotation/sheet.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
+        "apps/web/src/components/order-form.tsx"
+      ]
+    },
+    {
+      "text": "Business type",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/report.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx",
+        "apps/web/src/routes/_next/quotations/index.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx"
+      ]
+    },
+    {
+      "text": "Services on the order",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx"
+      ]
+    },
+    {
+      "text": "Currency",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/components/company/company-form-payload.ts",
+        "packages/db/src/schema/company.ts",
+        "packages/api/src/routers/report.ts"
+      ]
+    },
+    {
+      "text": "More details",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts"
+      ]
+    },
+    {
+      "text": "More details → Notes → Note to customer (printed)",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts"
+      ]
+    },
+    {
+      "text": "Save Quote",
+      "step": 5,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/fee-line-drawer.tsx"
+      ]
+    },
+    {
+      "text": "What are you quoting?",
+      "step": 6,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+      ]
+    },
+    {
+      "text": "Replace package charges?",
+      "step": 6,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx"
+      ]
+    },
+    {
+      "text": "Refresh package charges",
+      "step": 6,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx"
+      ]
+    },
+    {
+      "text": "Charges",
+      "step": 6,
+      "foundIn": [
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
-        "apps/web/src/components/order-form.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
       ]
     },
     {
-      "text": "Add Batch",
+      "text": "Charge · Unit · Qty · Price · Total",
+      "step": 6,
+      "foundIn": []
+    },
+    {
+      "text": "If req.",
       "step": 6,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
       ]
     },
     {
-      "text": "Batch Name",
+      "text": "Add Line",
       "step": 6,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
       ]
     },
     {
-      "text": "Unpacking Address",
+      "text": "Charge if required",
       "step": 6,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Pickup Address",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Delivery Address",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Fee Details",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
       ]
     },
     {
@@ -5361,150 +5667,67 @@
       "step": 6,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/reference-template-dialog.tsx",
-        "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts"
       ]
     },
     {
-      "text": "Apply lines as",
+      "text": "⋯ → Details…",
       "step": 6,
       "foundIn": [
-        "apps/web/src/components/reference-template-dialog.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
       ]
     },
     {
-      "text": "Selling Price",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/lib/quotation.ts"
-      ]
-    },
-    {
-      "text": "Next",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/components/company/company-contacts.tsx",
-        "apps/web/src/components/reference-template-dialog.tsx",
-        "apps/web/src/routes/_next/order.to-receive.tsx"
-      ]
-    },
-    {
-      "text": "Apply",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/fee-templates/index.tsx",
-        "packages/api/src/routers/quotation.ts",
-        "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/index.tsx"
-      ]
-    },
-    {
-      "text": "Retype Qty on every applied line",
-      "step": 6,
-      "foundIn": []
-    },
-    {
-      "text": "Add Line",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Side",
-      "step": 6,
-      "foundIn": [
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/lib/quotation.ts",
-        "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Segment",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts",
-        "apps/web/src/components/reference-template-dialog.tsx"
-      ]
-    },
-    {
-      "text": "Cost Name",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Currency",
-      "step": 6,
-      "foundIn": [
-        "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
-      ]
-    },
-    {
-      "text": "Charge Unit",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Settlement Unit",
-      "step": 6,
-      "foundIn": [
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "packages/api/src/routers/expense/cost-lines.ts"
-      ]
-    },
-    {
-      "text": "Unit Price",
+      "text": "Cost and profit",
       "step": 6,
       "foundIn": [
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
-      ]
-    },
-    {
-      "text": "Side = Cost",
-      "step": 6,
-      "foundIn": []
-    },
-    {
-      "text": "Record cost",
-      "step": 6,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
       ]
     },
     {
       "text": "Estimated Profit (local currency)",
       "step": 6,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/totals-profit.tsx"
       ]
     },
     {
       "text": "Save Quote",
       "step": 7,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/fee-line-drawer.tsx"
+      ]
+    },
+    {
+      "text": "Charges",
+      "step": 7,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "packages/api/src/modules/quotation/sheet.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx"
+      ]
+    },
+    {
+      "text": "Use tariff",
+      "step": 7,
+      "foundIn": [
+        "apps/web/src/components/tariff-hint.tsx"
+      ]
+    },
+    {
+      "text": "⋯ → Delete",
+      "step": 7,
+      "foundIn": [
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "apps/web/src/components/inbox/notes-panel.tsx",
+        "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts"
       ]
     },
     {
@@ -5516,7 +5739,7 @@
       "text": "Submit for Review",
       "step": 8,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
@@ -5526,7 +5749,6 @@
         "apps/web/src/components/shell-next/nav.ts",
         "packages/api/src/modules/audit/seed.ts",
         "apps/web/src/routes/_next/quotations/index.tsx",
-        "packages/api/src/quotation/values.ts",
         "apps/web/src/routes/_next/approve/quotation.tsx"
       ]
     },
@@ -5538,7 +5760,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
       ]
     },
     {
@@ -5559,8 +5781,8 @@
         "apps/web/src/routes/_next/companies.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
@@ -5575,35 +5797,36 @@
       ]
     },
     {
-      "text": "Export",
+      "text": "Preview PDF",
       "step": 9,
       "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
+      ]
+    },
+    {
+      "text": "More ▾ → Export sheet",
+      "step": 9,
+      "foundIn": []
+    },
+    {
+      "text": "Quotation sheet (English)",
+      "step": 9,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
       "text": "Quotation sheet PDF (English)",
       "step": 9,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
-      ]
-    },
-    {
-      "text": "Quotation sheet (English)",
-      "step": 9,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
       "text": "报价单（中文）",
       "step": 9,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
@@ -5613,8 +5836,8 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "packages/api/src/routers/quotation.ts"
       ]
     },
     {
@@ -5624,8 +5847,8 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/composer-logic.ts",
         "apps/web/src/routes/_next/companies.tsx",
-        "packages/api/src/routers/company.ts",
-        "packages/db/src/schema/company.ts"
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts"
       ]
     },
     {
@@ -5665,7 +5888,7 @@
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
@@ -5675,7 +5898,7 @@
       "step": 9,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx",
         "apps/web/src/routes/_next/expenses/invoices.tsx"
@@ -5711,12 +5934,9 @@
       ]
     },
     {
-      "text": "Resend",
+      "text": "More ▾ → Resend",
       "step": 9,
-      "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/components/quotation/send-quotation-dialog.tsx"
-      ]
+      "foundIn": []
     },
     {
       "text": "Threads",
@@ -5735,7 +5955,7 @@
         "apps/web/src/components/inbox/filters.ts",
         "apps/web/src/components/inbox/triage-bar.tsx",
         "apps/web/src/components/inbox/left-rail.tsx",
-        "apps/web/src/components/shell-next/nav.ts"
+        "apps/web/src/routes/_next/companies_.new.tsx"
       ]
     },
     {
@@ -5746,7 +5966,7 @@
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/index.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
@@ -5755,6 +5975,7 @@
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "apps/web/src/components/quotation/decide-quotation-dialog.tsx"
       ]
     },
@@ -5777,7 +5998,7 @@
         "apps/web/src/lib/quotation.ts",
         "packages/api/src/routers/quotation.ts",
         "packages/api/src/modules/audit/seed.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
@@ -5801,9 +6022,9 @@
       "foundIn": [
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/notes-panel.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "packages/db/src/schema/company.ts"
       ]
     },
     {
@@ -5818,16 +6039,16 @@
       "step": 11,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx"
       ]
     },
     {
-      "text": "Order created with N receivable fee line(s)",
+      "text": "Order <job number> created with N receivable fee line(s)",
       "step": 11,
       "foundIn": []
     },
     {
-      "text": "Before anything else, do step 12.",
+      "text": "Check the Job Number box — step 12.",
       "step": 11,
       "foundIn": []
     },
@@ -5940,9 +6161,9 @@
       "foundIn": [
         "apps/web/src/components/inbox/notes-panel.tsx",
         "packages/api/src/routers/report.ts",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/components/order-form.tsx",
-        "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
+        "packages/api/src/routers/collective-order.ts"
       ]
     },
     {
@@ -6001,7 +6222,6 @@
       "step": 14,
       "foundIn": [
         "apps/web/src/routes/_next/quotations/index.tsx",
-        "packages/api/src/quotation/values.ts",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/order-form.tsx",
         "apps/web/src/routes/_next/report/financial/index.tsx"
@@ -6013,7 +6233,7 @@
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "apps/web/src/components/order-form.tsx",
         "apps/web/src/routes/_next/report/financial/index.tsx"
       ]
@@ -6030,11 +6250,11 @@
       "text": "Tag",
       "step": 14,
       "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/components/order-form.tsx",
-        "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-        "apps/web/src/components/expense/cost-line-batch-menu.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/components/company/company-form-payload.ts",
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "apps/web/src/routes/_next/fee-templates/-package-cell.tsx",
+        "apps/web/src/components/order-form.tsx"
       ]
     },
     {
@@ -6162,10 +6382,10 @@
       "step": 14,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/components/company/company-contacts.tsx",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
       ]
     },
     {
@@ -6189,7 +6409,7 @@
       "step": 15,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
     },
@@ -6199,7 +6419,6 @@
       "foundIn": [
         "apps/web/src/components/shell-next/nav.ts",
         "packages/api/src/modules/audit/seed.ts",
-        "packages/api/src/quotation/values.ts",
         "apps/web/src/routes/_next/approve/order.tsx"
       ]
     },
@@ -6211,7 +6430,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
       ]
     },
     {
@@ -6221,8 +6440,8 @@
         "apps/web/src/routes/_next/companies.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
@@ -6231,9 +6450,9 @@
       "foundIn": [
         "apps/web/src/components/inbox/link-picker.tsx",
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/components/order-form.tsx",
-        "apps/web/src/routes/_next/order.to-receive.tsx"
+        "apps/web/src/components/order-form.tsx"
       ]
     },
     {
@@ -6266,7 +6485,6 @@
       "step": 16,
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx",
         "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
@@ -6343,7 +6561,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "apps/web/src/routes/_next/quotations/index.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx"
       ]
     },
     {
@@ -6377,7 +6595,7 @@
       "text": "Voyage",
       "step": 16,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/order-form.tsx",
         "packages/api/src/routers/collective-order.ts",
@@ -6389,7 +6607,7 @@
       "step": 16,
       "foundIn": [
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx"
@@ -6468,7 +6686,7 @@
       "text": "Consignee",
       "step": 16,
       "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/report.ts",
         "apps/web/src/components/order-form.tsx",
         "packages/api/src/routers/collective-order.ts",
@@ -6565,7 +6783,7 @@
       "text": "Container Type",
       "step": 16,
       "foundIn": [
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx",
         "packages/api/src/routers/lading.ts"
@@ -6576,7 +6794,7 @@
       "step": 16,
       "foundIn": [
         "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx",
         "packages/api/src/routers/lading.ts"
@@ -6596,7 +6814,7 @@
       "step": 16,
       "foundIn": [
         "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/routes/_next/lading/create.tsx",
         "apps/web/src/routes/_next/lading/$id/edit.tsx"
@@ -6699,11 +6917,11 @@
       "text": "Sales",
       "step": 16,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/order.to-receive.tsx",
         "apps/web/src/components/order-ledger/order-row-actions.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx",
-        "apps/web/src/routes/_next/lading/$id/edit.tsx"
+        "apps/web/src/routes/_next/lading/create.tsx"
       ]
     },
     {
@@ -6775,10 +6993,10 @@
       "step": 16,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/report.ts"
+        "apps/web/src/components/company/company-form-payload.ts",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
       ]
     },
     {
@@ -6802,9 +7020,9 @@
       "foundIn": [
         "apps/web/src/components/inbox/link-picker.tsx",
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "apps/web/src/components/order-form.tsx",
-        "apps/web/src/routes/_next/order.to-receive.tsx"
+        "apps/web/src/components/order-form.tsx"
       ]
     },
     {
@@ -6862,7 +7080,7 @@
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
@@ -6889,9 +7107,9 @@
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/company-contact.ts"
+        "packages/api/src/routers/company-contact.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx"
       ]
     },
     {
@@ -6899,7 +7117,7 @@
       "step": 17,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
     },
@@ -6907,7 +7125,7 @@
       "text": "Documents",
       "step": 18,
       "foundIn": [
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/components/order-form.tsx",
         "apps/web/src/routes/_next/order.to-receive.tsx",
         "packages/api/src/routers/collective-order.ts",
@@ -6930,18 +7148,28 @@
       ]
     },
     {
-      "text": "Approve",
+      "text": "Save corrections & approve",
       "step": 18,
       "foundIn": [
-        "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/fee-templates/index.tsx",
-        "packages/api/src/routers/quotation.ts",
-        "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/index.tsx"
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
+      ]
+    },
+    {
+      "text": "Approve (⌘⏎)",
+      "step": 18,
+      "foundIn": [
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
       ]
     },
     {
       "text": "Save & approve",
+      "step": 18,
+      "foundIn": [
+        "apps/web/src/routes/_next/documents.$documentId.tsx"
+      ]
+    },
+    {
+      "text": "Save amendment",
       "step": 18,
       "foundIn": [
         "apps/web/src/routes/_next/documents.$documentId.tsx"
@@ -6971,9 +7199,9 @@
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/index.tsx"
+        "apps/web/src/routes/_next/fee-templates/index.tsx",
+        "apps/web/src/lib/quotation.ts"
       ]
     },
     {
@@ -7064,20 +7292,21 @@
       "step": 20,
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "apps/web/src/components/company/company-contacts.tsx",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "apps/web/src/components/company/company-form.tsx",
+        "packages/api/src/routers/company.ts",
+        "apps/web/src/routes/_next/companies_.new.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
       ]
     },
     {
       "text": "Loading…",
       "step": 20,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "apps/web/src/routes/_next/customs-tracking.tsx",
-        "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-        "apps/web/src/routes/_next/tracking.tsx"
+        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
       ]
     },
     {
@@ -7115,21 +7344,21 @@
       "step": 20,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/reference-template-dialog.tsx",
         "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
-        "apps/web/src/routes/_next/expenses/cost-lines.tsx"
+        "apps/web/src/routes/_next/order.$orderId.expenses.tsx"
       ]
     },
     {
       "text": "Currency",
       "step": 20,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form-payload.ts",
         "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "packages/api/src/routers/report.ts"
       ]
     },
     {
@@ -7241,7 +7470,7 @@
       "step": 21,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
     },
@@ -7344,7 +7573,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
       ]
     },
     {
@@ -7354,8 +7583,8 @@
         "apps/web/src/routes/_next/companies.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
@@ -7451,7 +7680,7 @@
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/index.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
         "packages/api/src/modules/quotation/sheet.ts"
       ]
@@ -7477,9 +7706,9 @@
       "foundIn": [
         "apps/web/src/routes/_next/companies.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/company-contact.ts"
+        "packages/api/src/routers/company-contact.ts",
+        "apps/web/src/routes/_next/fee-templates/index.tsx"
       ]
     },
     {
@@ -7487,7 +7716,7 @@
       "step": 23,
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
         "apps/web/src/components/review-menu.tsx"
       ]
     },
@@ -7525,7 +7754,7 @@
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
       ]
     },
     {
@@ -7535,8 +7764,8 @@
         "apps/web/src/routes/_next/companies.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
@@ -7639,8 +7868,8 @@
         "packages/api/src/routers/report.ts",
         "apps/web/src/lib/quotation.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/modules/quotation/sheet.ts"
+        "packages/api/src/modules/quotation/sheet.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-merge.ts"
       ]
     },
     {
@@ -7751,11 +7980,11 @@
       "text": "Attribute",
       "step": 26,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/report.ts",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/order-form.tsx",
-        "packages/api/src/routers/collective-order.ts",
-        "apps/web/src/routes/_next/lading/$id/index.tsx"
+        "packages/api/src/routers/collective-order.ts"
       ]
     },
     {
@@ -7793,7 +8022,7 @@
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/fee-line-drawer.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
         "packages/api/src/routers/expense/cost-lines.ts"
       ]
@@ -7832,11 +8061,11 @@
       "text": "Currency",
       "step": 26,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form-payload.ts",
         "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/report.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "packages/api/src/routers/report.ts"
       ]
     },
     {
@@ -7846,8 +8075,8 @@
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "apps/web/src/lib/quotation.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/modules/quotation/sheet.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/package-step.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -7870,9 +8099,9 @@
       "foundIn": [
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/notes-panel.tsx",
+        "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
+        "packages/db/src/schema/company.ts"
       ]
     },
     {
@@ -7909,7 +8138,7 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/routes/_next/fee-templates/index.tsx",
         "apps/web/src/components/supersede-template-dialog.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts",
         "apps/web/src/components/review-menu.tsx"
       ]
     },
@@ -7921,7 +8150,7 @@
         "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
         "packages/api/src/routers/quotation.ts",
         "packages/api/src/modules/audit/seed.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts"
       ]
     },
     {
@@ -7945,11 +8174,11 @@
       "text": "Method",
       "step": 26,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/components/company/company-form-payload.ts",
         "packages/db/src/schema/company.ts",
-        "apps/web/src/components/order-form.tsx",
-        "packages/api/src/routers/collective-order.ts"
+        "apps/web/src/components/order-form.tsx"
       ]
     },
     {
@@ -7967,11 +8196,11 @@
       "text": "Person",
       "step": 26,
       "foundIn": [
+        "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
+        "apps/web/src/components/company/company-form-payload.ts",
         "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts",
-        "packages/api/src/routers/report.ts",
-        "packages/api/src/routers/quotation.ts"
+        "packages/db/src/schema/company.ts"
       ]
     },
     {
@@ -8030,10 +8259,10 @@
       "step": 27,
       "foundIn": [
         "apps/web/src/lib/quotation.ts",
+        "apps/web/src/components/tariff-hint.tsx",
         "apps/web/src/components/order-form.tsx",
         "packages/api/src/routers/lading.ts",
-        "apps/web/src/components/shell-next/task-queues.ts",
-        "apps/web/src/routes/_next/lading/index.tsx"
+        "apps/web/src/components/shell-next/task-queues.ts"
       ]
     },
     {
@@ -8119,7 +8348,7 @@
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "packages/api/src/routers/lading.ts"
       ]
@@ -8169,7 +8398,7 @@
       "foundIn": [
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx"
       ]
@@ -8220,8 +8449,10 @@
         "packages/api/src/modules/audit/seed.ts",
         "apps/web/src/routes/_next/quotations/index.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/modules/quotation/sheet.ts",
         "apps/web/src/components/quotation/send-quotation-dialog.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/use-quote-mutations.ts",
         "packages/api/src/routers/expense/cost-lines.ts"
       ]
     },
@@ -8234,8 +8465,8 @@
     {
       "literal": "passed",
       "foundIn": [
+        "packages/api/src/routers/company.ts",
         "packages/api/src/routers/quotation.ts",
-        "packages/api/src/quotation/values.ts",
         "packages/api/src/quotation/tariff-check.ts",
         "packages/api/src/modules/audit/post-approval.ts"
       ]
@@ -8243,9 +8474,9 @@
     {
       "literal": "withdrawn",
       "foundIn": [
+        "packages/api/src/routers/company.ts",
         "packages/api/src/routers/quotation.ts",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-        "packages/api/src/quotation/values.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
         "packages/api/src/routers/collective-order.ts",
         "apps/web/src/components/review-menu.tsx",
         "apps/web/src/routes/_next/expenses/cost-lines.tsx",
@@ -8295,56 +8526,56 @@
     },
     {
       "file": "customer-intake-sop/shots/step-02.jpg",
-      "sha": "faa89026c831f2dd20100ab11bdd22a5447f550e337d2534ab71f208a62e7801",
-      "mtimeMs": 1790673111203,
+      "sha": "e9f15cd50db6a1466a6c29cdddbec2e696b5c16109245a9aafa650dd925d2b23",
+      "mtimeMs": 1790782166923,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02-add.jpg",
-      "sha": "211f26400c916c6cf241fb6f1b7bd8567e20339bb1ae88a02f9d18a2783d94e9",
-      "mtimeMs": 1790673111199,
+      "sha": "ee66bbf636bcba7e57625d1ae9f1462667581018c5c3ff26e4b743515be078df",
+      "mtimeMs": 1790782166916,
       "step": 2,
-      "path": "/companies",
-      "routeFile": "apps/web/src/routes/_next/companies.tsx"
+      "path": "/companies/new",
+      "routeFile": "apps/web/src/routes/_next/companies_.new.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02-edit.jpg",
-      "sha": "adef81b2bbf727d9259392369caa01171a8e5fa72450865af3141da3975bb2fb",
-      "mtimeMs": 1790673111202,
+      "sha": "cff3b89f82fcae34e188b167c41381416f101f0a575b8b2aee9dce3d4b41d297",
+      "mtimeMs": 1790782166920,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-03.jpg",
-      "sha": "0f31cb6f9380dc3998ed674b735fcc0ed2a364e903cf3d6791eca62e979136c7",
-      "mtimeMs": 1789291459475,
+      "sha": "39bbaa05b93a50da8d73e090c22183ef58ffece4d243c5ccdd67ae93deebdf97",
+      "mtimeMs": 1790782166927,
       "step": 3,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-03-add.jpg",
-      "sha": "363804d8c10dac312ff244d46067aca56b7457b2feb7e132fd9e6d8d798c4ac5",
-      "mtimeMs": 1789291460043,
+      "sha": "add1ef4ecdc1ff1d064e45b02532b6d61b0947f1dc4000eb8bcffbc9d51c88c7",
+      "mtimeMs": 1790782166924,
       "step": 3,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-04.jpg",
-      "sha": "efc854bf4225a3c5b89bac18fcb952301b80ceb932b6799e4ac30643696f2623",
-      "mtimeMs": 1789291842779,
+      "sha": "0ed836d7d82a5d7004dc0fcf8f5c65f5ce5524f2097fee5facc630fe7cb54e56",
+      "mtimeMs": 1790771909298,
       "step": 4,
       "path": "/fee-templates",
       "routeFile": "apps/web/src/routes/_next/fee-templates/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-04-new.jpg",
-      "sha": "aba58d5e8215e0561e1422417c92365c5a23d6cb596e6ae5e383c5996f436b82",
-      "mtimeMs": 1789291848985,
+      "sha": "d96dee851f6b007cc60477a5664a62c3c66b02d9276f7c56e98b6b479c5aa290",
+      "mtimeMs": 1790771909297,
       "step": 4,
       "path": "/fee-templates",
       "routeFile": "apps/web/src/routes/_next/fee-templates/index.tsx"
@@ -8367,24 +8598,24 @@
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "906b54c13a2cd45a6efdb29c882d9036e6ada897414909e605d2a19022f94bc2",
-      "mtimeMs": 1789290985099,
+      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
+      "mtimeMs": 1790771909300,
       "step": 5,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-06.jpg",
-      "sha": "47b73666ef95c406d13744b3b918feebe6a6da988eb49908773025f3202ed126",
-      "mtimeMs": 1789291468882,
+      "sha": "2433250b466babfec3cb52f3524dad18e74de67db895ff500ed7082aa541059f",
+      "mtimeMs": 1790771909303,
       "step": 6,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-06.jpg",
-      "sha": "47b73666ef95c406d13744b3b918feebe6a6da988eb49908773025f3202ed126",
-      "mtimeMs": 1789291468882,
+      "sha": "2433250b466babfec3cb52f3524dad18e74de67db895ff500ed7082aa541059f",
+      "mtimeMs": 1790771909303,
       "step": 7,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
@@ -8399,24 +8630,24 @@
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "906b54c13a2cd45a6efdb29c882d9036e6ada897414909e605d2a19022f94bc2",
-      "mtimeMs": 1789290985099,
+      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
+      "mtimeMs": 1790771909300,
       "step": 9,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "906b54c13a2cd45a6efdb29c882d9036e6ada897414909e605d2a19022f94bc2",
-      "mtimeMs": 1789290985099,
+      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
+      "mtimeMs": 1790771909300,
       "step": 10,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "906b54c13a2cd45a6efdb29c882d9036e6ada897414909e605d2a19022f94bc2",
-      "mtimeMs": 1789290985099,
+      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
+      "mtimeMs": 1790771909300,
       "step": 11,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
