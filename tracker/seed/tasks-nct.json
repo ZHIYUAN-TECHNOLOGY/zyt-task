@@ -570,7 +570,7 @@
     ],
     "state": "open",
     "owner": null,
-    "repair": "Make the unique index case-insensitive (lower(name)) and offer a typeahead of near matches in the Add dialog before the save is attempted.",
+    "repair": "Make the unique index case-insensitive (lower(name)). The new customer page already lists near matches under Company title as you type (Already on file); only the case-insensitive refusal at Save is missing.",
     "src": [
       "packages/db/src/schema/company.ts:138"
     ]

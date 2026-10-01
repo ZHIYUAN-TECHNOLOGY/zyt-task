@@ -1017,7 +1017,7 @@
           "sev": "data",
           "title": "Duplicate companies enter through case",
           "why": "The unique index is on the raw name, so \"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" both save. Two records then split one customer's quotations, orders and ageing, and neither shows the true exposure.",
-          "repair": "Make the unique index case-insensitive (lower(name)) and offer a typeahead of near matches in the Add dialog before the save is attempted.",
+          "repair": "Make the unique index case-insensitive (lower(name)). The new customer page already lists near matches under Company title as you type (**Already on file**); only the case-insensitive refusal at Save is missing.",
           "src": "packages/db/src/schema/company.ts:138",
           "lastVerified": "2026-10-01",
           "evidence": [
