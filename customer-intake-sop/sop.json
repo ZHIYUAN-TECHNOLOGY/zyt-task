@@ -7051,6 +7051,64 @@
             "note": "found by audit"
           }
         ]
+      },
+      {
+        "id": "au-applying-a-foreign-currency-tariff-with-",
+        "title": "Applying a foreign-currency tariff with no rate on file silently prices it at exchange rate 1",
+        "body": "Steps 6, 8, 11 and 20. When sales apply a rate card (quotations.applyTemplate), each line's exchange rate is looked up in the org rate table. If no rate covers the currency, the lookup's rateMissing flag is thrown away. computeFeeLineAmounts then fills the rate with \"1\", so a USD 500 line is stored with a local amount of 500 as if it were ringgit. Quotation create and update run the same lookup but pass rateMissing to assertUnratedFeeAllowed, which either refuses the line (when the org's 'fees can be saved without a rate' switch is off) or returns the warning the page shows as a banner. applyTemplate does neither and returns only { feeLines }, so the switch is bypassed and nobody is told. The reviewer at step 8 approves a quotation total that adds foreign and local amounts at face value. At conversion the bridge copies the stored \"1\" onto the cost lines, so the job's local-currency profit, its bills and base-currency totals inherit the wrong rate, and nothing on the line marks it as unrated.",
+        "sev": "money",
+        "pattern": "fake-default",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-01",
+        "lastVerified": "2026-10-01",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/quotation.ts:5304",
+            "quote": "const { seeds: applyRateSeeds } = await resolveFeeLineRates(",
+            "absent": "await assertUnratedFeeAllowed(",
+            "commit": null,
+            "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5329",
+            "quote": "exchangeRate: applyRateSeeds.get(rateSeedKey(line.currency, side)),",
+            "commit": null,
+            "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/quotation/money.ts:77",
+            "quote": "const exchangeRate = args.exchangeRate ?? \"1\";",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:4449",
+            "quote": "await assertUnratedFeeAllowed(context.db, organizationId, rateMissing);",
+            "commit": null,
+            "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/modules/expense/bridge.ts:239",
+            "quote": "exchangeRate: feeLine.exchangeRate ?? \"1\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-01",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (fake-default)"
+          }
+        ]
       }
     ]
   },

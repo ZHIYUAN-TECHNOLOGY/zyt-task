@@ -555,6 +555,22 @@
     "origin": "defect"
   },
   {
+    "id": "nct-au-applying-a-foreign-currency-tariff-with-",
+    "kind": "chain",
+    "rank": 25,
+    "title": "Applying a foreign-currency tariff with no rate on file silently prices it at exchange rate 1",
+    "isNew": true,
+    "detail": "Steps 6, 8, 11 and 20. When sales apply a rate card (quotations.applyTemplate), each line's exchange rate is looked up in the org rate table. If no rate covers the currency, the lookup's rateMissing flag is thrown away. computeFeeLineAmounts then fills the rate with \"1\", so a USD 500 line is stored with a local amount of 500 as if it were ringgit. Quotation create and update run the same lookup but pass rateMissing to assertUnratedFeeAllowed, which either refuses the line (when the org's 'fees can be saved without a rate' switch is off) or returns the warning the page shows as a banner. applyTemplate does neither and returns only { feeLines }, so the switch is bypassed and nobody is told. The reviewer at step 8 approves a quotation total that adds foreign and local amounts at face value. At conversion the bridge copies the stored \"1\" onto the cost lines, so the job's local-currency profit, its bills and base-currency totals inherit the wrong rate, and nothing on the line marks it as unrated.",
+    "severity": "money",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "open",
+    "origin": "defect"
+  },
+  {
     "id": "nct-s02-duplicate-companies-enter-through-case",
     "kind": "step",
     "rank": null,
