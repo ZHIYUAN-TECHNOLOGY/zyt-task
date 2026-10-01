@@ -35,7 +35,7 @@
         "/inbox",
         "/inbox/$threadId"
       ],
-      "summary": "Nothing in the inbox creates a customer. Copy the sender's company name, email and signature details, then go to step 2 (Sales → Companies)."
+      "summary": "Once the inbox is live, Create company from sender turns the thread into a customer on step 2's page, already filled in and linked. While email automation is paused, copy the sender's company name, email and signature details and type them in at step 2 (Sales → Companies → Add)."
     },
     {
       "n": 2,
@@ -45,10 +45,11 @@
       "role": "Sales · needs customer:read to see the directory, and create rights to add",
       "routes": [
         "/companies",
-        "/companies/$companyId/edit",
-        "/companies/$companyId"
+        "/companies/new",
+        "/companies/$companyId",
+        "/companies/$companyId/edit"
       ],
-      "summary": "You are on the company record page. Scroll to the Contacts card for step 3, or go straight to Sales → Quotations for step 5."
+      "summary": "After Save you are on the company record page, and the main contact is already on the Contacts card as Primary — step 3 is only for further people. After Save & new quote you are on a new quotation for this customer (step 5), or on the record page under the approval banner. If the customer needs its own rate card, do step 4 first."
     },
     {
       "n": 3,

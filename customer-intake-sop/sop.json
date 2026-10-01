@@ -1019,7 +1019,7 @@
           "why": "The unique index is on the raw name, so \"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" both save. Two records then split one customer's quotations, orders and ageing, and neither shows the true exposure.",
           "repair": "Make the unique index case-insensitive (lower(name)) and offer a typeahead of near matches in the Add dialog before the save is attempted.",
           "src": "packages/db/src/schema/company.ts:138",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-01",
           "evidence": [
             {
               "at": "packages/db/src/schema/company.ts:138",
@@ -1034,6 +1034,20 @@
               "commit": null,
               "fingerprint": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/db/src/schema/company.ts:138",
+              "quote": "uniqueIndex(\"company_org_name_uidx\").on(table.organizationId, table.name),",
+              "commit": null,
+              "fingerprint": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
+              "date": "2026-10-01"
+            },
+            {
+              "at": "packages/db/src/schema/company.ts:135",
+              "quote": "// One name per org. Case-sensitive on purpose for v1 — the typeahead",
+              "commit": null,
+              "fingerprint": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
+              "date": "2026-10-01"
             }
           ]
         }
@@ -1139,7 +1153,7 @@
           "why": "The Add contact dialog defaults Primary to false and nothing promotes the first contact on a company, but the month-end ageing DETAIL sheet joins companyContact strictly on isPrimary = true with no fallback. A company with three recorded contacts and no ticked primary prints empty Contact / Role / Phone / Email columns on the 催收 sheet, so the collections clerk re-looks the number up in the company record — the one job the contacts table was added for.",
           "repair": "Either auto-promote in companyContacts.create (before the insert, if the company has no existing is_primary row, force isPrimary = true), or make report.ts fall back to the oldest contact when none is primary (DISTINCT ON / lateral ordered by is_primary desc, created_at asc instead of the flat eq(isPrimary, true) predicate).",
           "src": "packages/api/src/routers/report.ts:1081; packages/api/src/routers/company-contact.ts:175",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-01",
           "evidence": [
             {
               "at": "packages/api/src/routers/report.ts:1107",
@@ -1175,6 +1189,27 @@
               "commit": null,
               "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/report.ts:1117",
+              "quote": "eq(companyContact.isPrimary, true),",
+              "commit": null,
+              "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+              "date": "2026-10-01"
+            },
+            {
+              "at": "packages/api/src/routers/company-contact.ts:181",
+              "quote": "if (input.isPrimary) {",
+              "commit": null,
+              "fingerprint": "541b2c69e7f01d6f5a21bcb83c97c9e7631409787ec266632c773e44bc30e381",
+              "date": "2026-10-01"
+            },
+            {
+              "at": "packages/api/src/routers/company.ts:847",
+              "quote": "isPrimary: true,",
+              "commit": null,
+              "fingerprint": "f96c4cd3b6c132dd058494212571a1d248296ef5f0124b00fe1d0b3491744873",
+              "date": "2026-10-01"
             }
           ],
           "status": "partly-fixed",
@@ -3899,7 +3934,7 @@
           "why": "The document vocabulary has no K1 or K2, so the Sepangar filing itself is never held in the system. The declaration that clears the cargo lives in someone's email, and nothing links it to the job.",
           "repair": "Add K1/K2 to the document type vocabulary and its extraction rules so the declaration files against the same B/L as the rest.",
           "src": "packages/api/src/modules/document/register-hooks.ts:1",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-01",
           "evidence": [
             {
               "at": "packages/document-ai/src/registry/types.ts:5",
@@ -3914,6 +3949,20 @@
               "commit": null,
               "fingerprint": null,
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/document-ai/src/registry/types.ts:5",
+              "quote": "export type DocTypeId = \"mbl_hbl\" | \"commercial_invoice\" | \"packing_list\" | \"unknown\";",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-01"
+            },
+            {
+              "at": "packages/api/src/routers/document.ts:667",
+              "quote": "docTypeOverride: z.enum([\"mbl_hbl\", \"commercial_invoice\", \"packing_list\"]).optional(),",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-01"
             }
           ]
         }
@@ -6738,10 +6787,10 @@
         "body": "Step 18 says approving a document needs its own review right (document.review.approve). The Approve button calls review.approve, which checks that permission. But 'Save corrections & approve' and a document-type change call review.correct, and that endpoint only checks document.review.correct. It then finalises the document as approved (persistFinal writes a final extraction, sets status approved and stamps reviewedBy) and runs the approval hooks that start the B/L tracking job. A role given 'Correct extraction' without 'Approve extraction' can edit one field, or just change the type, and approve the MBL/HBL that way. The permission tree labels these as two separate powers, so an admin who splits them gets an approval the split was meant to stop.",
         "sev": "data",
         "pattern": "unenforced-approval",
-        "status": "open",
+        "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-09-30",
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-01",
         "evidence": [
           {
             "at": "packages/api/src/routers/document.ts:661",
@@ -6770,6 +6819,27 @@
             "commit": null,
             "fingerprint": "3f16fe23253174cd090afce1b75cb5a2d5fd1d665a82fd0265501fb8aa7c6db2",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/document.ts:676",
+            "quote": "if (!permittedNode(context.org, DOCUMENT.reviewApprove)) {",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/document.ts:679",
+            "quote": "\"Saving corrections also approves the document, which needs the Approve extraction permission\",",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/document.ts:661",
+            "quote": ".use(requireNode(DOCUMENT.reviewCorrect))",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
           }
         ],
         "history": [
@@ -6779,8 +6849,16 @@
             "to": "open",
             "by": "zyt-audit",
             "note": "found by zyt-audit (unenforced-approval)"
+          },
+          {
+            "date": "2026-10-01",
+            "from": "open",
+            "to": "fixed",
+            "by": "zyt-audit",
+            "note": "Fixed by #141 (deployed 18dd7506): review.correct now also requires Approve extraction and throws FORBIDDEN before persistFinal and the approval hooks. Refuter c-004 CONFIRMED (scoped audit wf_bd4d638d-39b)."
           }
-        ]
+        ],
+        "fixedAt": "2026-10-01"
       },
       {
         "id": "au-an-auto-approved-b-l-whose-tracking-job-",
@@ -6788,10 +6866,10 @@
         "body": "Steps 18 to 19: when an organisation sets a document type to auto_approve, the extraction workflow approves the MBL/HBL itself and then runs the approval hooks, which create the bl_job that the demurrage board reads. runApprovalHooks catches any hook failure and returns it as an 'approval_hook_failed' notice, along with any re-sync the automation refused. The workflow throws that return value away. The reviewer path shows these notices to a person; the automatic path records nothing, notifies no one and creates no task. The document shows as approved, but no tracking job exists, so the 72h demurrage clock is never watched and no one knows it is missing. The workflow's own comment says a swallowed failure means no tracking job. The default policy is review_all, so this only happens for organisations that opt in.",
         "sev": "data",
         "pattern": "handoff-drop",
-        "status": "open",
+        "status": "partly-fixed",
         "origin": "defect",
         "firstFound": "2026-09-30",
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-01",
         "evidence": [
           {
             "at": "apps/server/src/document/workflow.ts:216",
@@ -6813,6 +6891,41 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/document/review-queue.ts:438",
+            "quote": "export async function findUntrackedApprovedBls(",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/modules/document/review-queue.ts:478",
+            "quote": "sql`not exists (select 1 from ${blJob} where ${blJob.sourceDocumentId} = ${document.id})`,",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/server/src/document-review-worker.ts:151",
+            "quote": "findUntrackedApprovedBls(db, now, UNTRACKED_AFTER_HOURS, UNTRACKED_WINDOW_HOURS),",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/server/src/document-review-worker.ts:339",
+            "quote": "? \"Approved bill of lading is not being tracked\"",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/server/src/document/workflow.ts:216",
+            "quote": "await runApprovalHooks(db, documentId);",
+            "commit": "18dd7506",
+            "fingerprint": null,
+            "date": "2026-10-01"
           }
         ],
         "history": [
@@ -6822,6 +6935,120 @@
             "to": "open",
             "by": "zyt-audit",
             "note": "found by zyt-audit (handoff-drop)"
+          },
+          {
+            "date": "2026-10-01",
+            "from": "open",
+            "to": "partly-fixed",
+            "by": "zyt-audit",
+            "note": "Partly fixed by #141 (deployed 18dd7506): the hourly review sweep now finds approved MBL/HBLs with no bl_job (approved 1-72h ago; duplicates by B/L number skipped) and emails the owning branch \"Approved bill of lading is not being tracked\". Still broken: the auto_approve workflow discards runApprovalHooks notices, so nothing is recorded at the moment of failure and the branch hears within the hour, not at once. Status set by Wilfred's decision on 2026-10-01 after the scoped audit's ledger checker missed the sweep; verified by the main session against the cited lines, not by a refuter agent."
+          }
+        ]
+      },
+      {
+        "id": "au-post-to-cost-ledger-books-an-unapproved-",
+        "title": "'Post to cost ledger' books an unapproved won quotation's fees, while Convert to order is refused",
+        "body": "Steps 8, 10, 11 and 20. Convert to order (quotations.convertToOrder) checks the quotation flow's 'Convert order' gate, which the seeded Quotation review flow ticks, so a quotation whose review has not passed is refused. The menu item beside it, 'Post to cost ledger' (costLines.importFromQuote), makes the same state change: it moves the quotation to status 'converted' and writes its fee lines into the cost ledger as billable receivables and payables. It checks only that the status is won or converted and never asks the convert_order gate or the quotation's audit status. The editor shows the item for any won quotation, while Convert is shown only when auditStatus is approved. The seeded flow does not tick the 'export' gate, so a draft that was never approved can be sent, recorded as Won and then posted to the ledger. From there it can be billed (the cost_line create_bill gate is not seeded either) and invoiced, all without a reviewer seeing the prices. The quotation then reads 'converted' as if it had gone through the approved path.",
+        "sev": "money",
+        "pattern": "unenforced-approval",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-01",
+        "lastVerified": "2026-10-01",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/quotation.ts:5446",
+            "quote": "await assertGateCleared(tx, organizationId, \"quotation\", q.id, \"convert_order\");",
+            "commit": null,
+            "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2060",
+            "quote": ".use(requireNode(EXPENSE.costLineImport))",
+            "commit": null,
+            "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2075",
+            "quote": "message: \"Only a won or converted quotation can be recorded to cost\",",
+            "commit": null,
+            "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2210",
+            "quote": ".set({ status: \"converted\" })",
+            "commit": null,
+            "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:147",
+            "quote": "showPostToLedger: quote.status === \"won\" || quote.status === \"converted\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:152",
+            "quote": "quote.auditStatus === \"approved\" &&",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-01",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (unenforced-approval)"
+          }
+        ]
+      },
+      {
+        "id": "au-an-unvetted-customer-can-be-quoted-by-ty",
+        "title": "A customer still waiting for director vetting can be quoted by typing its name instead of picking it",
+        "body": "The seeded Customer qualification flow (director) ticks customer_reference: 'A customer must be vetted before it can be referenced on documents.' The only enforcement is a filter in company.search, which hides unvetted companies from the Client picker. The picker still accepts free text and clears the company link when the user types, and quotation.create does not check the gate on the server. At step 5, sales can therefore type the unvetted company's name and save, send and convert the quote. The resulting order and bills (steps 11-24) carry only a free-text name with no company record. That bypasses the director review and loses the link that step 9 uses to pre-fill To from the primary contact. Refuter c-003 CONFIRMED (scoped audit wf_bd4d638d-39b).",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-01",
+        "lastVerified": "2026-10-01",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/company.ts:888",
+            "quote": "* apart. UX only: `quotation.create` does not enforce this gate.",
+            "commit": null,
+            "fingerprint": "f96c4cd3b6c132dd058494212571a1d248296ef5f0124b00fe1d0b3491744873",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/components/company-picker.tsx:199",
+            "quote": "onChange({ name: e.target.value, companyId: null });",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/company.ts:185",
+            "quote": "await assertGateCleared(db, org.organizationId, \"customer\", row.id, \"customer_reference\");",
+            "commit": null,
+            "fingerprint": "f96c4cd3b6c132dd058494212571a1d248296ef5f0124b00fe1d0b3491744873",
+            "date": "2026-10-01"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-01",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by audit"
           }
         ]
       }

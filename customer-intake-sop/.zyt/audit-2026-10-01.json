@@ -1,0 +1,156 @@
+{
+  "page": "ZYT-Task/customer-intake-sop",
+  "createdAt": "2026-10-01T06:00:46.9387962Z",
+  "source": "audit",
+  "ops": [
+    {
+      "id": "op-001",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-post-to-cost-ledger-books-an-unapproved-",
+        "title": "'Post to cost ledger' books an unapproved won quotation's fees, while Convert to order is refused",
+        "body": "Steps 8, 10, 11 and 20. Convert to order (quotations.convertToOrder) checks the quotation flow's 'Convert order' gate, which the seeded Quotation review flow ticks, so a quotation whose review has not passed is refused. The menu item beside it, 'Post to cost ledger' (costLines.importFromQuote), makes the same state change: it moves the quotation to status 'converted' and writes its fee lines into the cost ledger as billable receivables and payables. It checks only that the status is won or converted and never asks the convert_order gate or the quotation's audit status. The editor shows the item for any won quotation, while Convert is shown only when auditStatus is approved. The seeded flow does not tick the 'export' gate, so a draft that was never approved can be sent, recorded as Won and then posted to the ledger. From there it can be billed (the cost_line create_bill gate is not seeded either) and invoiced, all without a reviewer seeing the prices. The quotation then reads 'converted' as if it had gone through the approved path.",
+        "sev": "money",
+        "pattern": "unenforced-approval",
+        "note": "found by zyt-audit (unenforced-approval)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5446,
+          "quote": "await assertGateCleared(tx, organizationId, \"quotation\", q.id, \"convert_order\");"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2060,
+          "quote": ".use(requireNode(EXPENSE.costLineImport))"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2075,
+          "quote": "message: \"Only a won or converted quotation can be recorded to cost\","
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2210,
+          "quote": ".set({ status: \"converted\" })"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 147,
+          "quote": "showPostToLedger: quote.status === \"won\" || quote.status === \"converted\","
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 152,
+          "quote": "quote.auditStatus === \"approved\" &&"
+        }
+      ],
+      "reason": "unenforced-approval defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-002",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-applying-a-foreign-currency-tariff-with-",
+        "title": "Applying a foreign-currency tariff with no rate on file silently prices it at exchange rate 1",
+        "body": "Steps 6, 8, 11 and 20. When sales apply a rate card (quotations.applyTemplate), each line's exchange rate is looked up in the org rate table. If no rate covers the currency, the lookup's rateMissing flag is thrown away. computeFeeLineAmounts then fills the rate with \"1\", so a USD 500 line is stored with a local amount of 500 as if it were ringgit. Quotation create and update run the same lookup but pass rateMissing to assertUnratedFeeAllowed, which either refuses the line (when the org's 'fees can be saved without a rate' switch is off) or returns the warning the page shows as a banner. applyTemplate does neither and returns only { feeLines }, so the switch is bypassed and nobody is told. The reviewer at step 8 approves a quotation total that adds foreign and local amounts at face value. At conversion the bridge copies the stored \"1\" onto the cost lines, so the job's local-currency profit, its bills and base-currency totals inherit the wrong rate, and nothing on the line marks it as unrated.",
+        "sev": "money",
+        "pattern": "fake-default",
+        "note": "found by zyt-audit (fake-default)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5304,
+          "quote": "const { seeds: applyRateSeeds } = await resolveFeeLineRates(",
+          "absent": "await assertUnratedFeeAllowed("
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5329,
+          "quote": "exchangeRate: applyRateSeeds.get(rateSeedKey(line.currency, side)),"
+        },
+        {
+          "file": "packages/api/src/quotation/money.ts",
+          "line": 77,
+          "quote": "const exchangeRate = args.exchangeRate ?? \"1\";"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4449,
+          "quote": "await assertUnratedFeeAllowed(context.db, organizationId, rateMissing);"
+        },
+        {
+          "file": "packages/api/src/modules/expense/bridge.ts",
+          "line": 239,
+          "quote": "exchangeRate: feeLine.exchangeRate ?? \"1\","
+        }
+      ],
+      "reason": "fake-default defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-003",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/1/fixes/0",
+      "old": "s02-duplicate-companies-enter-through-case",
+      "new": {
+        "lastVerified": "2026-10-01",
+        "note": "The unique index on company is still built on the raw name column, with no lower(). A code comment says it is case-sensitive on purpose for v1. So \"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" can still both be saved in the same org."
+      },
+      "evidence": [
+        {
+          "file": "packages/db/src/schema/company.ts",
+          "line": 138,
+          "quote": "uniqueIndex(\"company_org_name_uidx\").on(table.organizationId, table.name),"
+        },
+        {
+          "file": "packages/db/src/schema/company.ts",
+          "line": 135,
+          "quote": "// One name per org. Case-sensitive on purpose for v1 — the typeahead"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-004",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/2/fixes/0",
+      "old": "s03-a-contact-nobody-ticked-as-primary-never-reaches",
+      "new": {
+        "lastVerified": "2026-10-01",
+        "note": "Still fixed: creating a company with a main contact inserts that contact with isPrimary: true (company.ts:847). Still broken: companyContacts.create only touches primaries when input.isPrimary is true, and then only to demote the old one. When a company has no primary, it never promotes the new contact. The ageing detail query in report.ts still joins companyContact strictly on isPrimary = true with no fallback to another contact."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 1117,
+          "quote": "eq(companyContact.isPrimary, true),"
+        },
+        {
+          "file": "packages/api/src/routers/company-contact.ts",
+          "line": 181,
+          "quote": "if (input.isPrimary) {"
+        },
+        {
+          "file": "packages/api/src/routers/company.ts",
+          "line": 847,
+          "quote": "isPrimary: true,"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    }
+  ]
+}
