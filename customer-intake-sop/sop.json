@@ -6958,7 +6958,7 @@
         "body": "Steps 8, 10, 11 and 20. Convert to order (quotations.convertToOrder) checks the quotation flow's 'Convert order' gate, which the seeded Quotation review flow ticks, so a quotation whose review has not passed is refused. The menu item beside it, 'Post to cost ledger' (costLines.importFromQuote), makes the same state change: it moves the quotation to status 'converted' and writes its fee lines into the cost ledger as billable receivables and payables. It checks only that the status is won or converted and never asks the convert_order gate or the quotation's audit status. The editor shows the item for any won quotation, while Convert is shown only when auditStatus is approved. The seeded flow does not tick the 'export' gate, so a draft that was never approved can be sent, recorded as Won and then posted to the ledger. From there it can be billed (the cost_line create_bill gate is not seeded either) and invoiced, all without a reviewer seeing the prices. The quotation then reads 'converted' as if it had gone through the approved path.",
         "sev": "money",
         "pattern": "unenforced-approval",
-        "status": "open",
+        "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-10-01",
         "lastVerified": "2026-10-01",
@@ -7004,6 +7004,27 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2086",
+            "quote": "await assertGateCleared(context.db, organizationId, \"quotation\", q.id, \"convert_order\");",
+            "commit": "a9e825fc",
+            "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2075",
+            "quote": "message: \"Only a won or converted quotation can be recorded to cost\",",
+            "commit": "a9e825fc",
+            "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:151",
+            "quote": "quote.auditStatus === \"approved\" && (quote.status === \"won\" || quote.status === \"converted\"),",
+            "commit": "a9e825fc",
+            "fingerprint": "bd18c023934a363ec7f4f6501d5298c90383211107968952fab3007a34227181",
+            "date": "2026-10-01"
           }
         ],
         "history": [
@@ -7013,8 +7034,16 @@
             "to": "open",
             "by": "zyt-audit",
             "note": "found by zyt-audit (unenforced-approval)"
+          },
+          {
+            "date": "2026-10-01",
+            "from": "open",
+            "to": "fixed",
+            "by": "zyt-audit",
+            "note": "costLines.importFromQuote now calls the same quotation 'convert_order' gate that quotations.convertToOrder uses, right after the won/converted status check. A quotation whose review has not passed is now refused at the server, as Convert is. The editor also hides 'Post to cost ledger' unless auditStatus is approved, the same pre-filter Convert uses."
           }
-        ]
+        ],
+        "fixedAt": "2026-10-01"
       },
       {
         "id": "au-an-unvetted-customer-can-be-quoted-by-ty",
@@ -7065,7 +7094,7 @@
         "body": "Steps 6, 8, 11 and 20. When sales apply a rate card (quotations.applyTemplate), each line's exchange rate is looked up in the org rate table. If no rate covers the currency, the lookup's rateMissing flag is thrown away. computeFeeLineAmounts then fills the rate with \"1\", so a USD 500 line is stored with a local amount of 500 as if it were ringgit. Quotation create and update run the same lookup but pass rateMissing to assertUnratedFeeAllowed, which either refuses the line (when the org's 'fees can be saved without a rate' switch is off) or returns the warning the page shows as a banner. applyTemplate does neither and returns only { feeLines }, so the switch is bypassed and nobody is told. The reviewer at step 8 approves a quotation total that adds foreign and local amounts at face value. At conversion the bridge copies the stored \"1\" onto the cost lines, so the job's local-currency profit, its bills and base-currency totals inherit the wrong rate, and nothing on the line marks it as unrated.",
         "sev": "money",
         "pattern": "fake-default",
-        "status": "open",
+        "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-10-01",
         "lastVerified": "2026-10-01",
@@ -7104,6 +7133,128 @@
             "quote": "exchangeRate: feeLine.exchangeRate ?? \"1\",",
             "commit": null,
             "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5304",
+            "quote": "const { seeds: applyRateSeeds, rateMissing } = await resolveFeeLineRates(",
+            "commit": "a9e825fc",
+            "fingerprint": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5313",
+            "quote": "await assertUnratedFeeAllowed(context.db, organizationId, rateMissing);",
+            "commit": "a9e825fc",
+            "fingerprint": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5416",
+            "quote": "return { feeLines, rateMissing };",
+            "commit": "a9e825fc",
+            "fingerprint": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/components/reference-template-dialog.tsx:411",
+            "quote": "if (result.rateMissing) {",
+            "commit": "a9e825fc",
+            "fingerprint": "447ff2932034db5d79d5306352e961df360475ac4d7bf4aec93b2d9759a182f8",
+            "date": "2026-10-01"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-01",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (fake-default)"
+          },
+          {
+            "date": "2026-10-01",
+            "from": "open",
+            "to": "fixed",
+            "by": "zyt-audit",
+            "note": "quotations.applyTemplate now keeps rateMissing from resolveFeeLineRates and passes it to assertUnratedFeeAllowed, as create and update do. So it refuses the apply when the org's 'fees can be saved without a rate' switch is off. It also returns { feeLines, rateMissing }, and reference-template-dialog.tsx shows a warning toast when rateMissing is true. When the switch is on, the line is still stored at rate 1 (money.ts:77 still falls back to \"1\"), but staff are now warned. That matches how create and update behave."
+          }
+        ],
+        "fixedAt": "2026-10-01"
+      },
+      {
+        "id": "au-decide-won-lost-cannot-be-recorded-on-a-",
+        "title": "Decide (Won/Lost) cannot be recorded on a quotation that was not sent through the in-app mailbox",
+        "body": "At step 10 Sales press Decide to record Won or Lost. The header only shows Decide when the quotation has a sentAt stamp, and the server's decide procedure refuses any quotation whose sentAt is null. Only the mailbox Send path (step 9) writes sentAt. Some quotations reach the customer another way: a PDF from Preview PDF or Export sheet sent from the salesperson's own email, WhatsApp, or handed over at the counter. The same applies whenever the mailbox is unavailable. For those quotations, step 10 cannot be done at all. No decision date and no customer PO/reference is ever recorded. Convert to order still works, because the convert guard refuses only 'lost'. The result is orders with no recorded Won and a win-rate report missing those deals. The convert-guard docblock admits the gap ('would strand every quotation handed over by WhatsApp or across a counter') and defers it to a manual 'record as sent' action, which does not exist.",
+        "sev": "blocked",
+        "pattern": "unreachable-screen",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-01",
+        "lastVerified": "2026-10-01",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/quotation.ts:4043",
+            "quote": "if (existing.sentAt === null) {",
+            "commit": null,
+            "fingerprint": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:144",
+            "quote": "showDecide: quote.status === \"sent\" && !!quote.sentAt,",
+            "commit": null,
+            "fingerprint": "bd18c023934a363ec7f4f6501d5298c90383211107968952fab3007a34227181",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/modules/quotation/convert-guard.ts:18",
+            "quote": "* would strand every quotation handed over by WhatsApp or across a counter.",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/modules/quotation/convert-guard.ts:21",
+            "quote": "* revisited once steps 01/09 add a manual \"record as sent\".",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-01"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-01",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (unreachable-screen)"
+          }
+        ]
+      },
+      {
+        "id": "au-converting-a-quotation-with-no-shipping-",
+        "title": "Converting a quotation with no Shipping Type creates an FCL order",
+        "body": "At step 11, Convert to order copies the quotation's shippingType into the order's consign type and falls back to 'fcl' when it is empty. Shipping Type is set by the four package cards. For a 'No package' quotation it can only be set under More details, which step 5 tells Sales to open only when needed. So a custom LCL, bulk or air quotation becomes an order marked FCL. At step 14 the order looks complete with an FCL consign type the customer never asked for. Ledger filters and documents keyed on consign type then treat it as a full-container job.",
+        "sev": "data",
+        "pattern": "fake-default",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-01",
+        "lastVerified": "2026-10-01",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/quotation.ts:5564",
+            "quote": "consignType: (q.shippingType ?? \"fcl\") as ConsignType,",
+            "commit": null,
+            "fingerprint": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
+            "date": "2026-10-01"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx:591",
+            "quote": "<form.Field name=\"shippingType\">",
+            "commit": null,
+            "fingerprint": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
             "date": "2026-10-01"
           }
         ],

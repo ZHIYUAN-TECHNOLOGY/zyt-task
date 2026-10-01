@@ -232,7 +232,7 @@
       "key": "step-18",
       "title": "Approve the carrier's MBL/HBL",
       "phase": "D",
-      "role": "Documentation · needs document:read plus review rights to approve",
+      "role": "Documentation · needs document:read; saving corrections or approving needs Approve extraction, and changing an approved document needs Amend approved extraction",
       "routes": [
         "/documents",
         "/documents/$documentId"

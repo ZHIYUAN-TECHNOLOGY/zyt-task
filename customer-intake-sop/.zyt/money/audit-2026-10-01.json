@@ -1,0 +1,182 @@
+{
+  "page": "ZYT-Task/customer-intake-sop",
+  "createdAt": "2026-10-01T12:15:59.3978203Z",
+  "source": "audit",
+  "ops": [
+    {
+      "id": "op-001",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-decide-won-lost-cannot-be-recorded-on-a-",
+        "title": "Decide (Won/Lost) cannot be recorded on a quotation that was not sent through the in-app mailbox",
+        "body": "At step 10 Sales press Decide to record Won or Lost. The header only shows Decide when the quotation has a sentAt stamp, and the server's decide procedure refuses any quotation whose sentAt is null. Only the mailbox Send path (step 9) writes sentAt. Some quotations reach the customer another way: a PDF from Preview PDF or Export sheet sent from the salesperson's own email, WhatsApp, or handed over at the counter. The same applies whenever the mailbox is unavailable. For those quotations, step 10 cannot be done at all. No decision date and no customer PO/reference is ever recorded. Convert to order still works, because the convert guard refuses only 'lost'. The result is orders with no recorded Won and a win-rate report missing those deals. The convert-guard docblock admits the gap ('would strand every quotation handed over by WhatsApp or across a counter') and defers it to a manual 'record as sent' action, which does not exist.",
+        "sev": "blocked",
+        "pattern": "unreachable-screen",
+        "note": "found by zyt-audit (unreachable-screen)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4043,
+          "quote": "if (existing.sentAt === null) {"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 144,
+          "quote": "showDecide: quote.status === \"sent\" && !!quote.sentAt,"
+        },
+        {
+          "file": "packages/api/src/modules/quotation/convert-guard.ts",
+          "line": 18,
+          "quote": "* would strand every quotation handed over by WhatsApp or across a counter."
+        },
+        {
+          "file": "packages/api/src/modules/quotation/convert-guard.ts",
+          "line": 21,
+          "quote": "* revisited once steps 01/09 add a manual \"record as sent\"."
+        }
+      ],
+      "reason": "unreachable-screen defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-002",
+      "kind": "ledger-add",
+      "tier": "needs-human",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-72h-demurrage-countdown-starts-from-when",
+        "title": "72h demurrage countdown starts from when the poller saw the ship, not when it actually berthed, if the berth time cell does not parse",
+        "body": "At step 19 Operations rely on the 72h Countdown to book a haulier before demurrage starts. The SBCP berth parser accepts only 'DD/MM/YYYY hh:mm AM/PM', with two-digit day and month and an AM/PM marker. A blank berth cell, a single-digit day or month, or a 24-hour time all return berthedAt null. The transition then quietly uses observation.observedAt, the time the hourly or late poll noticed the vessel at berth. That time is stored as vesselBerthedAt, and countdownDeadline is set 72h after it. The berth time and deadline look real but can be hours or days later than the true berth, for example after a paused or failed poll. Staff believe they have more free time than they do, and the forwarder pays demurrage it thought it had avoided.",
+        "sev": "money",
+        "pattern": "fake-default",
+        "note": "found by zyt-audit (fake-default)"
+      },
+      "evidence": [
+        {
+          "file": "packages/port-tracking/src/transitions.ts",
+          "line": 157,
+          "quote": "const berthedAt = observation.berthedAt ?? observation.observedAt;"
+        },
+        {
+          "file": "packages/port-tracking/src/transitions.ts",
+          "line": 171,
+          "quote": "countdownDeadline: new Date(berthedAt.getTime() + GATE_OUT_WINDOW_MS),"
+        },
+        {
+          "file": "packages/port-tracking/src/sbcp/berth-parser.ts",
+          "line": 107,
+          "quote": "return { berthed: true, berthedAt: parseMytBerthTime(cells[berthTable.dateCol] ?? \"\") };"
+        },
+        {
+          "file": "packages/port-tracking/src/sbcp/berth-parser.ts",
+          "line": 20,
+          "quote": "const BERTH_DATETIME = /(\\d{2})\\/(\\d{2})\\/(\\d{4})\\s+(\\d{1,2}):(\\d{2})\\s*(AM|PM)/i;"
+        }
+      ],
+      "reason": "fake-default defect [needs-human: refuter PLAUSIBLE: The code path is real and live. sbcp/adapter.ts calls parseBerthTable and passes berthedAt only when it is truthy. parseMytBerthTime returns null when BERTH_DATETIME does not match: it needs two-digit DD/MM and an AM/PM marker, so a 24h time or a blank cell gives null. transitions.ts then quietly falls back to observedAt for both vesselBerthedAt and countdownDeadline. Nothing logs or flags the fallback. The berth parser's own header comment says a wrong berth time is permanent, because the countdown is set only once. Not tracked anywhere in the ledger. It is unproven that the SBCP dashboard ever renders a berth cell in a non-matching format, so the trigger is likely but not demonstrated.]",
+      "chain": false
+    },
+    {
+      "id": "op-003",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-converting-a-quotation-with-no-shipping-",
+        "title": "Converting a quotation with no Shipping Type creates an FCL order",
+        "body": "At step 11, Convert to order copies the quotation's shippingType into the order's consign type and falls back to 'fcl' when it is empty. Shipping Type is set by the four package cards. For a 'No package' quotation it can only be set under More details, which step 5 tells Sales to open only when needed. So a custom LCL, bulk or air quotation becomes an order marked FCL. At step 14 the order looks complete with an FCL consign type the customer never asked for. Ledger filters and documents keyed on consign type then treat it as a full-container job.",
+        "sev": "data",
+        "pattern": "fake-default",
+        "note": "found by zyt-audit (fake-default)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5564,
+          "quote": "consignType: (q.shippingType ?? \"fcl\") as ConsignType,"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+          "line": 591,
+          "quote": "<form.Field name=\"shippingType\">"
+        }
+      ],
+      "reason": "fake-default defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-004",
+      "kind": "ledger-status",
+      "tier": "decision",
+      "path": "/ledger/items/22",
+      "old": "au-post-to-cost-ledger-books-an-unapproved-",
+      "new": {
+        "status": "fixed",
+        "note": "costLines.importFromQuote now calls the same quotation 'convert_order' gate that quotations.convertToOrder uses, right after the won/converted status check. A quotation whose review has not passed is now refused at the server, as Convert is. The editor also hides 'Post to cost ledger' unless auditStatus is approved, the same pre-filter Convert uses."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2086,
+          "quote": "await assertGateCleared(context.db, organizationId, \"quotation\", q.id, \"convert_order\");"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2075,
+          "quote": "message: \"Only a won or converted quotation can be recorded to cost\","
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 151,
+          "quote": "quote.auditStatus === \"approved\" && (quote.status === \"won\" || quote.status === \"converted\"),"
+        }
+      ],
+      "reason": "transition open -> fixed",
+      "chain": false,
+      "refute": "holds",
+      "commit": "a9e825fc"
+    },
+    {
+      "id": "op-005",
+      "kind": "ledger-status",
+      "tier": "decision",
+      "path": "/ledger/items/24",
+      "old": "au-applying-a-foreign-currency-tariff-with-",
+      "new": {
+        "status": "fixed",
+        "note": "quotations.applyTemplate now keeps rateMissing from resolveFeeLineRates and passes it to assertUnratedFeeAllowed, as create and update do. So it refuses the apply when the org's 'fees can be saved without a rate' switch is off. It also returns { feeLines, rateMissing }, and reference-template-dialog.tsx shows a warning toast when rateMissing is true. When the switch is on, the line is still stored at rate 1 (money.ts:77 still falls back to \"1\"), but staff are now warned. That matches how create and update behave."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5304,
+          "quote": "const { seeds: applyRateSeeds, rateMissing } = await resolveFeeLineRates("
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5313,
+          "quote": "await assertUnratedFeeAllowed(context.db, organizationId, rateMissing);"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5416,
+          "quote": "return { feeLines, rateMissing };"
+        },
+        {
+          "file": "apps/web/src/components/reference-template-dialog.tsx",
+          "line": 411,
+          "quote": "if (result.rateMissing) {"
+        }
+      ],
+      "reason": "transition open -> fixed",
+      "chain": false,
+      "refute": "holds",
+      "commit": "a9e825fc"
+    }
+  ]
+}

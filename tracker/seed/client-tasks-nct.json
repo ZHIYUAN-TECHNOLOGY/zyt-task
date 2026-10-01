@@ -90,7 +90,8 @@
       "nct-s05-quotation-date-is-the-row-s-save-timestamp-and-n",
       "nct-s05-quotation-staff-is-auto-stamped-copied-by-duplic",
       "nct-s09-there-is-no-outbox-so-a-failed-stamp-costs-a-sec",
-      "nct-s10-a-mis-keyed-decision-cannot-be-corrected"
+      "nct-s10-a-mis-keyed-decision-cannot-be-corrected",
+      "nct-au-decide-won-lost-cannot-be-recorded-on-a-"
     ]
   },
   {
@@ -116,7 +117,8 @@
       "nct-paperwork",
       "nct-job-shape",
       "nct-dead-queues",
-      "nct-s13-intake-decisions-are-asymmetrical"
+      "nct-s13-intake-decisions-are-asymmetrical",
+      "nct-au-converting-a-quotation-with-no-shipping-"
     ]
   },
   {
