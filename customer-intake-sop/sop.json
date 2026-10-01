@@ -1802,7 +1802,7 @@
         },
         {
           "action": "Optional: to bring in cells from another sheet, press **Reference Template**",
-          "detail": "In **Apply a Fee Template**, choose the template, set **Apply lines as** to **Selling Price**, press **Next**, tick the cells and press **Apply** (toast **Template lines applied**). Quantities are seeded from Containers. Tick **Show all templates** to ignore business and shipping type.",
+          "detail": "In **Apply a Fee Template**, choose the template, set **Apply lines as** to **Selling Price**, press **Next**, tick the cells and press **Apply** (toast **Template lines applied**). Quantities are seeded from Containers. Tick **Show all templates** to ignore business and shipping type. If a line's currency has no exchange rate on file, a warning says its lines read as though the rate were 1.",
           "src": "apps/web/src/components/reference-template-dialog.tsx:620"
         },
         {
@@ -1872,7 +1872,8 @@
         "A package fills only the tariff rows tagged into it (step 4). An untagged tariff fills nothing, and the note under the cards says so.",
         "Picking a package reads Client, Port of Destination and Containers at that moment. Change them afterwards and press **Refresh package charges**, or the prices stay those of the old inputs.",
         "The package is locked while the quote is under review, once it is approved or decided, and once its cost lines are posted to the cost ledger; the cards show why, e.g. **Cost lines from this quote are already posted to the ledger, so the package cannot change.**",
-        "Nothing checks the cost side, so Estimated Profit is only as good as the buy prices on the cost lines."
+        "Nothing checks the cost side, so Estimated Profit is only as good as the buy prices on the cost lines.",
+        "A foreign-currency line needs an exchange rate on file for the quotation's date. Without one, **Reference Template** prices it at rate 1 and warns; if the organization forbids fees without a rate (参数设置 · 无汇率时费用可保存 off), the apply is refused and nothing is added. Add the rate under Expenses → Exchange rates first."
       ],
       "shots": [
         {
@@ -2794,7 +2795,7 @@
       "pitfalls": [
         "The server refuses a second conversion with **This quotation has already been converted to an order.**",
         "A quotation for a retired trade (e.g. rail) is refused: **… orders are no longer offered …**",
-        "**More ▾ → Post to cost ledger** is a different action. It books lines and marks the quotation converted without creating any order — and locks the package."
+        "**More ▾ → Post to cost ledger** is a different action. It books lines and marks the quotation converted without creating any order — and locks the package. Like **Convert to order**, it is offered only on an approved quotation, and the server refuses it until the quotation's review has passed."
       ],
       "shots": [
         {
