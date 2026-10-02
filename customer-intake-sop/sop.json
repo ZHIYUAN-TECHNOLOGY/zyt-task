@@ -917,7 +917,7 @@
         {
           "action": "To change details later: record page → **Edit**",
           "detail": "The same form, with **More details** open and the main contact shown read-only (manage contacts on the record page). Roles and the blacklist change through their own confirm buttons, not Save. **Save changes** (header or foot) shows **N unsaved** until saved; toast **Company updated**. An emptied box clears the stored value.",
-          "src": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx:201"
+          "src": "apps/web/src/routes/_next/companies_.$companyId.tsx:162"
         }
       ],
       "fields": [
@@ -1517,7 +1517,7 @@
         {
           "action": "Check **Validity Start** and **Validity End**",
           "detail": "A new quote defaults to today through today + 30 days. **Expires within 7 days.** or **This quotation has expired.** shows under Validity End.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:119"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx:118"
         },
         {
           "action": "In **Containers**, press **Add Container** and set **Container Type** and **Qty** for each size",
@@ -1537,12 +1537,12 @@
         {
           "action": "Write customer-facing wording in **More details → Notes → Note to customer (printed)**",
           "detail": "The staff-only note is **Internal remark (never printed)**, below More details.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:474"
+          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:502"
         },
         {
           "action": "Press **Save Quote** (top-right)",
           "detail": "The first save allocates `NCT-Q-YYYYMM-####`, status **Draft**, audit status draft, toasts **Quote NCT-Q-… created** and moves the URL to the new id. Leaving the page with unsaved edits asks **Leave without saving?** first.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:691"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:695"
         }
       ],
       "fields": [
@@ -1803,7 +1803,7 @@
         {
           "action": "Optional: to bring in cells from another sheet, press **Reference Template**",
           "detail": "In **Apply a Fee Template**, choose the template, set **Apply lines as** to **Selling Price**, press **Next**, tick the cells and press **Apply** (toast **Template lines applied**). Quantities are seeded from Containers. Tick **Show all templates** to ignore business and shipping type. If a line's currency has no exchange rate on file, a warning says its lines read as though the rate were 1.",
-          "src": "apps/web/src/components/reference-template-dialog.tsx:620"
+          "src": "apps/web/src/components/reference-template-dialog.tsx:613"
         },
         {
           "action": "For anything else about a line, open its **⋯ → Details…**",
@@ -1959,7 +1959,7 @@
         {
           "action": "Press **Save Quote** (top-right)",
           "detail": "The toast reads **Quote saved** and the tariff check re-runs against the stored quotation. Under the **Charges** title a count badge sums the drift, e.g. **2 above tariff · 1 on a deal**.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:691"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:695"
         },
         {
           "action": "If refused, read the error toast",
@@ -1979,7 +1979,7 @@
         {
           "action": "Read the banner above the table if it appears: **The tariff price floor is off on N of M selling lines**",
           "detail": "It lists why: no approved price for this date, marked N/A, or added since the last save. Those lines are accepted at any price.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:953"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx:954"
         }
       ],
       "writes": [
@@ -2098,7 +2098,7 @@
         {
           "action": "In the quotation header, press **Submit for Review**",
           "detail": "It sits beside the audit badge, at the start of the header's buttons, while the audit status is draft — never inside **More ▾**. A toast reads **Review updated** and the badge turns pending. Save Quote is then disabled: **Under review. Retract the submission to edit.** (**Retract** takes it back.)",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:298"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:302"
         },
         {
           "action": "Reviewer: open **Approvals → Quotation review**",
@@ -2476,7 +2476,7 @@
         {
           "action": "Press **Send**",
           "detail": "On an approved, unsent quote it is the next-step button in the header; otherwise it is in **More ▾**. The **Send quotation NCT-Q-…** dialog opens.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:219"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:409"
         },
         {
           "action": "Choose **From** (your mailbox)",
@@ -2628,7 +2628,7 @@
       "golden": [
         {
           "action": "Read the customer's answer in the **Threads** card on the quotation (or in **Inbox**)",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:69"
+          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:87"
         },
         {
           "action": "Press **Decide**",
@@ -2774,7 +2774,7 @@
         {
           "action": "Press **Convert to order**",
           "detail": "On a won quote it is the header's next-step button; on an approved quote not yet won it is in **More ▾**. It reads **Converting…** while running.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:441"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:445"
         },
         {
           "action": "Read the toast: **Order <job number> created with N receivable fee line(s)**",
@@ -4316,7 +4316,7 @@
         {
           "action": "Open **Review (n)** and choose **Submit for review**.",
           "detail": "The Review menu only appears once rows are ticked. Each row is submitted separately; a mixed selection can half-succeed and the toast names the first refusal.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2293"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2257"
         },
         {
           "action": "(Optional, before submitting) use **BatchOperation (n)** > **Modify exchange rate…** / **Tag…** / **Mark reconciled** / **Lock** / **Archiving**, or **Mark as… (n)** > **对账 · Reconciled** / **锁定 · Locked**.",
@@ -4638,12 +4638,12 @@
         {
           "action": "Tick specific lines, or tick nothing to bill the whole filtered set.",
           "detail": "Button reads **Create Bill (n)** with ticks or **Create Bill (全选)** with none; unticked scope is capped at 2000 lines.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2287"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2251"
         },
         {
           "action": "Press **Create Bill**.",
           "detail": "Opens the **Create Bill** dialog. With nothing ticked it first counts the filtered set and names it.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1178"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:2251"
         },
         {
           "action": "Read the preview **N bills will be created**.",
@@ -4653,17 +4653,17 @@
         {
           "action": "Tick **Also split by tax rate** if each tax rate needs its own bill.",
           "detail": "Settlement unit, attribute and currency (and owning branch) always split.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1255"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1228"
         },
         {
           "action": "Tick **Also split by order** if each order needs its own bill.",
           "detail": "Off by default, so one bill can cover several orders to the same settlement unit (a month-end statement). Works on the unticked (全选) path too.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1267"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1240"
         },
         {
           "action": "If the ticked selection yields exactly one bill, adjust **Invoice Title** (prefilled with the settlement unit).",
           "detail": "The field only shows for a single-bill TICKED selection with an unmasked settlement unit. It is absent on a split, on the whole unticked (全选) path, and whenever a selected line's settlement unit is masked — and in every hidden case no title is sent, so each bill takes its own settlement unit.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1305"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1278"
         },
         {
           "action": "Optionally type a **Remark**.",
@@ -4673,7 +4673,7 @@
         {
           "action": "Press **Create Bill** / **Create N Bills** / **Create Bills from N Lines**.",
           "detail": "Toast 'Bill B… created' or 'N bills created: …'; lines are claimed by the new bill(s) in one transaction.",
-          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1370"
+          "src": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1342"
         }
       ],
       "fields": [

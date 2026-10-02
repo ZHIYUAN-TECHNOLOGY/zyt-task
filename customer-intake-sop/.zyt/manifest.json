@@ -1,7 +1,7 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-10-02T04:31:13.969Z",
-  "sopSha": "37bd77d3d5341b139ea71bfc00f2779d0c5100c28760cd51b17aadb93e3081d3",
+  "at": "2026-10-02T04:51:47.454Z",
+  "sopSha": "b000ac1f173ea7bf7ba95243d3c9bf998fd0f3dad205e9b21ba857764de068f1",
   "codeRoot": "C:\\Project\\NCT\\wt-release-r1",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
@@ -833,14 +833,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-      "line": 201,
+      "file": "apps/web/src/routes/_next/companies_.$companyId.tsx",
+      "line": 162,
       "anchor": [
-        "   * matters. `DIRTY_KEYS` is pinned to every `companyFields` key by the unit",
-        "   * test, so it does not depend on how the layout groups the fields. */",
-        "  const dirtyTotal = dirtyCount(form, baseline);",
-        "",
-        "  const updateMutation = useMutation({"
+        "            >",
+        "              <Pencil className=\"mr-2 size-4\" aria-hidden />",
+        "              Edit",
+        "            </Button>",
+        "          </>"
       ],
       "jsonPath": "/guide/1/golden/10/src",
       "step": 2,
@@ -1297,14 +1297,14 @@
       "lineIdx": 0
     },
     {
-      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
-      "line": 119,
+      "file": "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
+      "line": 118,
       "anchor": [
-        "    shippingType: loaded?.shippingType ?? undefined,",
-        "    services: loaded?.services ?? emptyServices(),",
-        "    clientName: loaded?.clientName ?? seed?.clientName ?? \"\",",
-        "    clientCompanyId: loaded?.clientCompanyId ?? seed?.clientCompanyId ?? null,",
-        "    attention: loaded?.attention ?? seed?.attention ?? \"\","
+        "            {(field) => (",
+        "              <div className=\"space-y-1.5\">",
+        "                <Label htmlFor={field.name}>Validity Start</Label>",
+        "                <Input",
+        "                  id={field.name}"
       ],
       "jsonPath": "/guide/4/golden/5/src",
       "step": 5,
@@ -1362,13 +1362,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 474,
+      "line": 502,
       "anchor": [
-        "                showCost={showCost}",
-        "                onShowCostChange={setShowCostOverride}",
-        "                templatePicker={",
-        "                  <TemplatePicker",
-        "                    form={form}"
+        "                {(field) => (",
+        "                  <div className=\"space-y-1.5\">",
+        "                    <Label htmlFor={field.name}>Note to customer (printed)</Label>",
+        "                    <Textarea",
+        "                      id={field.name}"
       ],
       "jsonPath": "/guide/4/golden/9/src",
       "step": 5,
@@ -1378,13 +1378,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 691,
+      "line": 695,
       "anchor": [
-        "        {({ canSubmit }) => (",
-        "          <Button",
-        "            disabled={!canSubmit || isPending || underReview}",
-        "            title={underReview ? underReviewReason : undefined}",
-        "            onClick={() => form.handleSubmit()}"
+        "            onClick={() => form.handleSubmit()}",
+        "          >",
+        "            {isPending ? \"Saving…\" : \"Save Quote\"}",
+        "          </Button>",
+        "        )}"
       ],
       "jsonPath": "/guide/4/golden/10/src",
       "step": 5,
@@ -1602,13 +1602,13 @@
     },
     {
       "file": "apps/web/src/components/reference-template-dialog.tsx",
-      "line": 620,
+      "line": 613,
       "anchor": [
-        "        Step 2 draws a fee × 计费单位 matrix and needs the width; step 1 is a",
-        "        list and keeps the app's default dialog. The grid scrolls INSIDE this",
-        "        box (`overflow-auto` in the picker), so a wide tariff never widens the",
-        "        page — plan §10 checks that at 375px.",
-        "      */}"
+        "          >",
+        "            <LayoutTemplate data-icon=\"inline-start\" />",
+        "            Reference Template",
+        "          </Button>",
+        "        }"
       ],
       "jsonPath": "/guide/5/golden/6/src",
       "step": 6,
@@ -1666,13 +1666,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 691,
+      "line": 695,
       "anchor": [
-        "        {({ canSubmit }) => (",
-        "          <Button",
-        "            disabled={!canSubmit || isPending || underReview}",
-        "            title={underReview ? underReviewReason : undefined}",
-        "            onClick={() => form.handleSubmit()}"
+        "            onClick={() => form.handleSubmit()}",
+        "          >",
+        "            {isPending ? \"Saving…\" : \"Save Quote\"}",
+        "          </Button>",
+        "        )}"
       ],
       "jsonPath": "/guide/6/golden/0/src",
       "step": 7,
@@ -1730,13 +1730,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx",
-      "line": 953,
+      "line": 954,
       "anchor": [
-        "                <p className=\"font-medium\">",
         "                  {floor.enforced === 0",
         "                    ? \"The tariff price floor is not enforcing anything on this quotation.\"",
         "                    : `The tariff price floor is off on ${floorGaps} of ${floor.selling} selling ${lineWord(floor.selling)}.`}",
-        "                </p>"
+        "                </p>",
+        "                <ul className=\"mt-1 list-disc space-y-0.5 pl-4\">"
       ],
       "jsonPath": "/guide/6/golden/4/src",
       "step": 7,
@@ -1762,13 +1762,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 298,
+      "line": 302,
       "anchor": [
-        "            <Button",
-        "              variant=\"outline\"",
-        "              size=\"sm\"",
-        "              disabled={reviewMutation.isPending}",
-        "              onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}"
+        "              onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}",
+        "            >",
+        "              Submit for Review",
+        "            </Button>",
+        "          )}"
       ],
       "jsonPath": "/guide/7/golden/0/src",
       "step": 8,
@@ -1906,13 +1906,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 219,
+      "line": 409,
       "anchor": [
-        "  if (m.showPostToLedger) shown.push(\"post-to-ledger\");",
-        "  if (m.showDuplicate) shown.push(\"duplicate\");",
-        "  if (m.showDiscard) shown.push(\"discard\");",
-        "",
-        "  let primary: HeaderActionId | null = null;"
+        "              send: {",
+        "                testid: \"send-quote\",",
+        "                label: \"Send\",",
+        "                icon: <Mail data-icon=\"inline-start\" />,",
+        "                disabled: live.sendBlockedUnsaved || Boolean(openSend),"
       ],
       "jsonPath": "/guide/8/golden/1/src",
       "step": 9,
@@ -1970,13 +1970,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 69,
+      "line": 87,
       "anchor": [
-        "});",
-        "",
-        "/**",
-        " * The inbox threads linked to this quotation — the INVERSE of the reading",
-        " * pane's \"Linked records\" chip (TC-134 ruling 2026-08-17: navigable both ways)."
+        "    <Card className=\"print:hidden\" data-testid=\"linked-threads\">",
+        "      <CardHeader>",
+        "        <CardTitle>Threads</CardTitle>",
+        "      </CardHeader>",
+        "      <CardContent>"
       ],
       "jsonPath": "/guide/9/golden/0/src",
       "step": 10,
@@ -2034,13 +2034,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 441,
+      "line": 445,
       "anchor": [
-        "              // `!convertedOrderId` is the procedure's second guard;",
-        "              // `auditStatus === \"approved\"` and `isConvertibleOutcome` are UI",
-        "              // pre-filters — the server's gates have the final say and their",
-        "              // refusal arrives as the mutation's error toast.",
-        "              convert: {"
+        "              convert: {",
+        "                testid: \"convert-to-order\",",
+        "                label: convertMutation.isPending ? \"Converting…\" : \"Convert to order\",",
+        "                disabled: convertMutation.isPending || live.convertBlocked,",
+        "                title: correctionReason,"
       ],
       "jsonPath": "/guide/10/golden/1/src",
       "step": 11,
@@ -3378,13 +3378,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 2293,
+      "line": 2257,
       "anchor": [
-        "                always the literal selection.",
-        "",
-        "                D8 has been discharged and 「不勾选=全选」 IS built — on Create Bill",
-        "                and 导出单证 above, the two controls whose tooltips were captured",
-        "                (2026-08-04). This menu's actions are 标记对账 / 锁定 / 归档 /"
+        "                the way for it. */}",
+        "          {selectedCount > 0 && (",
+        "            <ReviewMenu",
+        "              selectedIds={selectedLines.map((l) => l.id)}",
+        "              onDone={() => setSelected({})}"
       ],
       "jsonPath": "/guide/20/golden/2/src",
       "step": 21,
@@ -3570,13 +3570,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 2287,
+      "line": 2251,
       "anchor": [
-        "              selectedIds={selectedLines.map((l) => l.id)}",
-        "              onDone={() => setSelected({})}",
-        "            />",
-        "          )}",
-        "          {/* 费用明细-批量操作 (manual:403). STILL EXPLICIT SELECTION ONLY —"
+        "          <Button size=\"sm\" variant=\"outline\" onClick={() => setCreateBillOpen(true)}>",
+        "            <FileStack data-icon=\"inline-start\" />",
+        "            Create Bill {selectedCount > 0 ? `(${selectedCount})` : \"(全选)\"}",
+        "          </Button>",
+        "          {/* Cost review. Create Bill above now REFUSES a line that is"
       ],
       "jsonPath": "/guide/21/golden/1/src",
       "step": 22,
@@ -3586,13 +3586,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1178,
+      "line": 2251,
       "anchor": [
-        "          <FilterScopeNotice state={scope} noun=\"billed\" />",
-        "",
-        "          {/* The split, before it happens. A selection spanning two settlement",
-        "              units used to be a refusal; showing what it will become is the",
-        "              whole of decision 3.1 made visible."
+        "          <Button size=\"sm\" variant=\"outline\" onClick={() => setCreateBillOpen(true)}>",
+        "            <FileStack data-icon=\"inline-start\" />",
+        "            Create Bill {selectedCount > 0 ? `(${selectedCount})` : \"(全选)\"}",
+        "          </Button>",
+        "          {/* Cost review. Create Bill above now REFUSES a line that is"
       ],
       "jsonPath": "/guide/21/golden/2/src",
       "step": 22,
@@ -3618,13 +3618,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1255,
+      "line": 1228,
       "anchor": [
-        "              the preview can be TRUSTED to know that.",
-        "",
-        "              `settlementUnit` is a maskable column: a field-denied role reads",
-        "              every line with the key removed, so every line hashes to the same",
-        "              bucket and the preview says \"1 bill\" for a selection that really"
+        "            />",
+        "            <Label htmlFor=\"create-bill-group-tax\" className=\"font-normal\">",
+        "              Also split by tax rate",
+        "            </Label>",
+        "          </div>"
       ],
       "jsonPath": "/guide/21/golden/4/src",
       "step": 22,
@@ -3634,13 +3634,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1267,
+      "line": 1240,
       "anchor": [
-        "              Each bill takes its own settlement unit as its invoice title.",
-        "            </p>",
-        "          ) : null}",
-        "          {/* Only offered when the selection produces ONE bill.",
-        "              `invoiceTitle` is a single scalar on the request and the server"
+        "            />",
+        "            <Label htmlFor=\"create-bill-group-order\" className=\"font-normal\">",
+        "              Also split by order",
+        "            </Label>",
+        "          </div>"
       ],
       "jsonPath": "/guide/21/golden/5/src",
       "step": 22,
@@ -3650,13 +3650,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1305,
+      "line": 1278,
       "anchor": [
-        "              : `${selectedLines.length} cost line(s) selected.`}",
-        "          </p>",
-        "        </div>",
-        "        <DialogFooter>",
-        "          <Button variant=\"outline\" onClick={() => onOpenChange(false)}>"
+        "          {groups.length === 1 && !maskedSelection ? (",
+        "            <div className=\"space-y-1.5\">",
+        "              <Label htmlFor=\"create-bill-invoice-title\">Invoice Title</Label>",
+        "              <Input",
+        "                id=\"create-bill-invoice-title\""
       ],
       "jsonPath": "/guide/21/golden/6/src",
       "step": 22,
@@ -3682,13 +3682,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
-      "line": 1370,
+      "line": 1342,
       "anchor": [
-        " * total — `cost_line` has no CHECK against it, so a minus typed here would be",
-        " * stored happily and detonate somewhere downstream. The same reasoning as",
-        " * `templateLineInput.taxRate`, which is `nonNegativeDecimalString` for exactly",
-        " * this class of delayed failure.",
-        " *"
+        "                ? // The split is unknown here (see the withheld preview above),",
+        "                  // so the label promises a scope, never a bill count.",
+        "                  `Create Bills from ${scope.count ?? \"…\"} Lines`",
+        "                : groups.length > 1",
+        "                  ? `Create ${groups.length} Bills`"
       ],
       "jsonPath": "/guide/21/golden/8/src",
       "step": 22,
@@ -5044,9 +5044,9 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -5057,7 +5057,7 @@
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "apps/web/src/routes/_next/companies_.$companyId.tsx"
       ]
     },
     {
@@ -5067,7 +5067,7 @@
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+        "apps/web/src/routes/_next/companies_.$companyId.tsx",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
@@ -5078,7 +5078,7 @@
         "apps/web/src/routes/_next/companies.tsx",
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId.tsx",
         "apps/web/src/components/company/company-contacts.tsx"
       ]
     },
@@ -5099,7 +5099,7 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
+        "apps/web/src/routes/_next/companies_.$companyId.tsx",
         "apps/web/src/components/company/company-contacts.tsx",
         "packages/api/src/routers/company-contact.ts"
       ]
@@ -5512,8 +5512,8 @@
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -5581,9 +5581,9 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -5592,9 +5592,9 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
       ]
     },
     {
@@ -6023,8 +6023,8 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/notes-panel.tsx",
         "apps/web/src/components/company/company-form.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
+        "packages/db/src/schema/company.ts",
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
       ]
     },
     {
@@ -6261,11 +6261,11 @@
       "text": "ETD",
       "step": 14,
       "foundIn": [
+        "apps/web/src/routes/_next/companies_.$companyId.tsx",
         "packages/api/src/routers/report.ts",
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/order-form.tsx",
-        "apps/web/src/routes/_next/order.to-receive.tsx",
-        "apps/web/src/routes/_next/lading/create.tsx"
+        "apps/web/src/routes/_next/order.to-receive.tsx"
       ]
     },
     {
@@ -6385,7 +6385,7 @@
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "apps/web/src/routes/_next/companies_.$companyId.tsx"
       ]
     },
     {
@@ -6996,7 +6996,7 @@
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/components/company/company-form-payload.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "packages/db/src/schema/company.ts"
       ]
     },
     {
@@ -7295,7 +7295,7 @@
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/routes/_next/companies_.new.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx"
+        "apps/web/src/routes/_next/companies_.$companyId.tsx"
       ]
     },
     {
@@ -7680,8 +7680,8 @@
       "foundIn": [
         "packages/api/src/routers/quotation.ts",
         "apps/web/src/components/review-queue.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
         "apps/web/src/routes/_next/quotations/$quotationId.tsx",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
         "packages/api/src/modules/quotation/sheet.ts"
       ]
     },
@@ -8100,8 +8100,8 @@
         "apps/web/src/components/inbox/reading-pane.tsx",
         "apps/web/src/components/inbox/notes-panel.tsx",
         "apps/web/src/components/company/company-form.tsx",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
+        "packages/db/src/schema/company.ts",
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx"
       ]
     },
     {
@@ -8199,8 +8199,8 @@
         "apps/web/src/components/company/company-form.tsx",
         "packages/api/src/routers/company.ts",
         "apps/web/src/components/company/company-form-payload.ts",
-        "apps/web/src/routes/_next/companies_.$companyId_.edit.tsx",
-        "packages/db/src/schema/company.ts"
+        "packages/db/src/schema/company.ts",
+        "packages/api/src/routers/report.ts"
       ]
     },
     {
