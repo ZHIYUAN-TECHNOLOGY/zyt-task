@@ -207,7 +207,7 @@
       "phase": "B",
       "title": "Record their answer",
       "where": "/quotations/$quotationId → Decide",
-      "what": "Read the reply in the Threads card, then mark Won or Lost with the date they actually answered, their PO reference and a note. The server refuses if the quotation was never sent, and freezes the record afterwards.",
+      "what": "Read the reply in the Threads card, then mark Won or Lost with the date they actually answered, their PO reference and a note. The server refuses if the quotation was never sent (through step 9, or with More ▾ → Mark as sent…), and freezes the record afterwards.",
       "watch": {
         "tag": "Watch",
         "html": "<strong>A mis-keyed decision is corrected through review, not edited.</strong> More ▾ → Correct decision proposes the right outcome with a reason, and it only takes effect once approved. The customer never touches the system — there is no accept link and no signature capture."
@@ -2092,7 +2092,8 @@
       ],
       "navigate": "Submit on the quotation; decide under **Approvals** → **Quotation review**",
       "before": [
-        "The quotation saves cleanly (step 7) with no unsaved edits."
+        "The quotation saves cleanly (step 7) with no unsaved edits.",
+        "**Shipping Type** is set. A package card sets it; for **No package**, set it under **More details**. **Submit for Review** refuses without it, because an approved quotation can no longer be edited and Convert to order (step 11) needs it."
       ],
       "golden": [
         {
@@ -2623,9 +2624,14 @@
       ],
       "navigate": "**Sales → Quotations** → open the quotation → **Decide** (the header's next-step button once it is sent)",
       "before": [
-        "The quotation was genuinely sent through step 9. **Decide** only appears once there is a send stamp."
+        "The quotation reached the customer: sent through step 9, or marked sent with **More ▾ → Mark as sent…** when it went by WhatsApp, your own email or by hand. **Decide** only appears once there is a send stamp."
       ],
       "golden": [
+        {
+          "action": "Sent it outside the app? Press **More ▾ → Mark as sent…**, choose how it went (**WhatsApp**, **My own email**, **Handed over in person** or **Other**), add a note if useful, and press **Mark as sent**",
+          "detail": "A toast reads **Quotation NCT-Q-… marked as sent**; the status turns **Sent** and **Decide** appears. It is offered only on an unsent draft, asks the same Export check as Send, and is refused while a mailbox send is still unresolved.",
+          "src": "apps/web/src/components/quotation/mark-sent-dialog.tsx:66"
+        },
         {
           "action": "Read the customer's answer in the **Threads** card on the quotation (or in **Inbox**)",
           "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:87"
@@ -2795,7 +2801,8 @@
       "pitfalls": [
         "The server refuses a second conversion with **This quotation has already been converted to an order.**",
         "A quotation for a retired trade (e.g. rail) is refused: **… orders are no longer offered …**",
-        "**More ▾ → Post to cost ledger** is a different action. It books lines and marks the quotation converted without creating any order — and locks the package. Like **Convert to order**, it is offered only on an approved quotation, and the server refuses it until the quotation's review has passed."
+        "**More ▾ → Post to cost ledger** is a different action. It books lines and marks the quotation converted without creating any order — and locks the package. Like **Convert to order**, it is offered only on an approved quotation, and the server refuses it until the quotation's review has passed.",
+        "A quotation with no **Shipping Type** cannot be converted, because the order's consign type comes from it: **… has no Shipping Type, which the order needs. Withdraw its approval, set Shipping Type under More details, and submit it again.** Submit for Review requires it since 2 Oct 2026 (step 8), so only quotations approved before then can hit this."
       ],
       "shots": [
         {
