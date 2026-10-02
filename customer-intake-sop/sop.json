@@ -1019,7 +1019,7 @@
           "why": "The unique index is on the raw name, so \"Sunrise Sdn Bhd\" and \"SUNRISE SDN BHD\" both save. Two records then split one customer's quotations, orders and ageing, and neither shows the true exposure.",
           "repair": "Make the unique index case-insensitive (lower(name)). The new customer page already lists near matches under Company title as you type (**Already on file**); only the case-insensitive refusal at Save is missing.",
           "src": "packages/db/src/schema/company.ts:138",
-          "lastVerified": "2026-10-01",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/db/src/schema/company.ts:138",
@@ -1048,6 +1048,27 @@
               "commit": null,
               "fingerprint": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
               "date": "2026-10-01"
+            },
+            {
+              "at": "packages/db/src/schema/company.ts:135",
+              "quote": "// One name per org. Case-sensitive on purpose for v1 — the typeahead",
+              "commit": null,
+              "fingerprint": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/db/src/schema/company.ts:138",
+              "quote": "uniqueIndex(\"company_org_name_uidx\").on(table.organizationId, table.name),",
+              "commit": null,
+              "fingerprint": "a454585c99d4a1fa7f0562b5a2d7a1f195b47f91bbfc93e9e030a244a1a15518",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/company.ts:90",
+              "quote": "if (pgErrorCode(error) === \"23505\") {",
+              "commit": null,
+              "fingerprint": "85d9706b8a006820f3465bbf0ecf2bacb0753bfa86a56bc53677c2785af416af",
+              "date": "2026-10-02"
             }
           ]
         }
@@ -1153,7 +1174,7 @@
           "why": "The Add contact dialog defaults Primary to false and nothing promotes the first contact on a company, but the month-end ageing DETAIL sheet joins companyContact strictly on isPrimary = true with no fallback. A company with three recorded contacts and no ticked primary prints empty Contact / Role / Phone / Email columns on the 催收 sheet, so the collections clerk re-looks the number up in the company record — the one job the contacts table was added for.",
           "repair": "Either auto-promote in companyContacts.create (before the insert, if the company has no existing is_primary row, force isPrimary = true), or make report.ts fall back to the oldest contact when none is primary (DISTINCT ON / lateral ordered by is_primary desc, created_at asc instead of the flat eq(isPrimary, true) predicate).",
           "src": "packages/api/src/routers/report.ts:1081; packages/api/src/routers/company-contact.ts:175",
-          "lastVerified": "2026-10-01",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/report.ts:1107",
@@ -1210,6 +1231,27 @@
               "commit": null,
               "fingerprint": "f96c4cd3b6c132dd058494212571a1d248296ef5f0124b00fe1d0b3491744873",
               "date": "2026-10-01"
+            },
+            {
+              "at": "packages/api/src/routers/company.ts:847",
+              "quote": "isPrimary: true,",
+              "commit": null,
+              "fingerprint": "85d9706b8a006820f3465bbf0ecf2bacb0753bfa86a56bc53677c2785af416af",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/company-contact.ts:181",
+              "quote": "if (input.isPrimary) {",
+              "commit": null,
+              "fingerprint": "541b2c69e7f01d6f5a21bcb83c97c9e7631409787ec266632c773e44bc30e381",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/report.ts:1117",
+              "quote": "eq(companyContact.isPrimary, true),",
+              "commit": null,
+              "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+              "date": "2026-10-02"
             }
           ],
           "status": "partly-fixed",
@@ -1405,7 +1447,7 @@
           "why": "The seeded fee_template flow carries no row for the Reference Template gate, so the server accepts an unapproved rate card. Only the picker's default filter hides one, and Show all templates reveals it — so a draft card can price a real quotation.",
           "repair": "Seed the gate row on the fee_template flow, or enforce approved-only inside applyTemplate rather than leaving it to the picker's filter.",
           "src": "packages/api/src/modules/audit/seed.ts:156",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/modules/audit/seed.ts:170",
@@ -1455,6 +1497,27 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/modules/audit/seed.ts:170",
+              "quote": "gates: [\"reference_fee_template\"],",
+              "commit": null,
+              "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:5228",
+              "quote": "await assertTemplatesReferenceable(context.db, context.org.organizationId, [template.id]);",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:1968",
+              "quote": "ne(feeTemplate.auditStatus, \"approved\"),",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -1625,7 +1688,7 @@
           "why": "quotationHeaderInput accepts quotationDate on both create and update, and update honours the patch, but no field for it exists anywhere in apps/web — create stamps `now` instead. The value is printed as 报价日期 / Quotation date on the customer-facing sheet that quotations.send emails out, it is the ledger's only date column and its From/To filter, and it is the effective date the price-floor check and the tariff hints resolve the fee-template window against. A quote drafted Monday and issued Thursday goes to the customer dated Monday, a quote entered late is floor-checked against the wrong tariff sheet, and the only correction is duplicate — which re-dates to today and burns a new quotation number.",
           "repair": "Add a Quotation Date input to the brief disclosure in $quotationId.tsx (beside Validity Start/End at :1891), seed it from loaded?.quotationDate in defaultValues (:993), and include it in the submit payload (:1076) so both create and the existing update patch path receive it.",
           "src": "packages/api/src/routers/quotation.ts:1599,3442,3665; apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:159",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2199",
@@ -1668,6 +1731,34 @@
               "commit": null,
               "fingerprint": null,
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx:113",
+              "quote": "<form.Field name=\"quotationDate\">",
+              "commit": null,
+              "fingerprint": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:159",
+              "quote": "quotationDate: businessDateInput(loaded?.quotationDate ?? (isNew ? new Date() : undefined)),",
+              "commit": null,
+              "fingerprint": "876007ce83a02001370840329f5ebcd3c7fa9bca648c24e23354e9018cf37ae0",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:282",
+              "quote": "quotationDate: emptyToUndefined(value.quotationDate),",
+              "commit": null,
+              "fingerprint": "876007ce83a02001370840329f5ebcd3c7fa9bca648c24e23354e9018cf37ae0",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:4545",
+              "quote": "const quotationDate = header.quotationDate ?? businessDayStart(now);",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -1689,7 +1780,7 @@
           "why": "create writes quotationStaff from context.session.user.name, duplicate carries the SOURCE's quotationStaff in via `...source` (only createdBy is re-pointed at the duplicator), and quotationHeaderInput exposes the field on create and update but nothing in apps/web renders it. So a coordinator entering a quote for a salesperson, or salesperson B duplicating A's quote — the path the app itself prescribes for re-quoting a decided record — emails the customer a sheet naming the wrong salesperson, and the ledger's Quotation Staff filter hides B's own work from B. There is no in-app correction at all.",
           "repair": "Add a Quotation Staff field (member picker, defaulted to the session user) to the brief in $quotationId.tsx and send it in the payload; and in quotations.duplicate set quotationStaff to the duplicating member alongside createdBy at quotation.ts:3453 rather than letting it ride in on the spread.",
           "src": "packages/api/src/routers/quotation.ts:3444,3826; packages/api/src/modules/quotation/sheet.ts:363",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/quotations/$quotationId.tsx:2213",
@@ -1739,6 +1830,34 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx:127",
+              "quote": "<form.Field name=\"quotationStaff\">",
+              "commit": null,
+              "fingerprint": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts:283",
+              "quote": "quotationStaff: emptyToUndefined(value.quotationStaff),",
+              "commit": null,
+              "fingerprint": "876007ce83a02001370840329f5ebcd3c7fa9bca648c24e23354e9018cf37ae0",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:4609",
+              "quote": "quotationStaff: header.quotationStaff?.trim() || defaultQuotationStaff(context),",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:5098",
+              "quote": "quotationStaff: defaultQuotationStaff(context),",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -1890,7 +2009,7 @@
           "why": "Every line applied from a template lands at quantity 1 whatever the Containers card says, so a 3x40HQ booking is quoted at a third of the real charge until someone retypes each quantity.",
           "repair": "Seed the applied line's quantity from the quotation's container rows for the matching billing unit, instead of defaulting to 1.",
           "src": "apps/web/src/components/reference-template-dialog.tsx:190",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/components/reference-template-dialog.tsx:217",
@@ -1926,6 +2045,20 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/components/reference-template-dialog.tsx:217",
+              "quote": "quantity: seededQuantity(chargeUnit, containers),",
+              "commit": null,
+              "fingerprint": "d1ab441a6c64cc9d279c6eedb3373996eef987daa01330f8b4847dfb2a88e0c5",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:5408",
+              "quote": "quantity: seededQuantity(chargeUnit, containerRows),",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2005,7 +2138,7 @@
           "why": "When two approved sheets with the same start date disagree, or one charge unit is spelt two ways, the line resolves to no floor at all — and the refusal skips it. The quotation saves below cost with nothing on screen refusing it.",
           "repair": "Treat an ambiguous resolution as a refusal (or an explicit override with a reason) rather than as an absent floor.",
           "src": "packages/api/src/quotation/tariff-check.ts:457",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/quotation/tariff-check.ts:37",
@@ -2062,6 +2195,34 @@
               "commit": null,
               "fingerprint": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/quotation/tariff-check.ts:37",
+              "quote": "* Now the STRICTEST cell wins: among the tied latest cells, the highest",
+              "commit": null,
+              "fingerprint": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/quotation/tariff-check.ts:482",
+              "quote": "status: \"none\",",
+              "commit": null,
+              "fingerprint": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/quotation/tariff-check.ts:489",
+              "quote": "tariffUnits: units ? [...units].sort().slice(0, 3) : null,",
+              "commit": null,
+              "fingerprint": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/quotation/tariff-check.ts:626",
+              "quote": "const offending = result.lines.filter((line) => line.status === \"below_tariff\");",
+              "commit": null,
+              "fingerprint": "5740e6a0350c0a14f22be34686e0af31e73f22437e91115eff78ff472d9d7823",
+              "date": "2026-10-02"
             }
           ],
           "status": "partly-fixed",
@@ -2144,7 +2305,7 @@
           "why": "quotations.update guards only two things - decidedAt (a won/lost quote) and assertPostApprovalEditable (an already-passed review). It never calls assertNotUnderReview, the guard gates.ts:130 was written for exactly this and which lading.ts:1474 and company.ts:1343 do call. So after Submit for review the salesperson can reopen /quotations/$quotationId, rewrite every selling line and save; the submission stays under_review with the old submit stamp, and the branch manager's Approved in /approve/quotation signs a price sheet that no longer exists. modules/audit/gates.ts:123 asserts a quotation is already safe 'by its own private route, assertDraft inside loadScopedDraftLine' - that function is routers/quote.ts:78, in the legacy quote router, and never runs on the quotation path, so the claimed protection is not there. quotations.applyTemplate (:3519) has the same hole.",
           "repair": "Call assertNotUnderReview(tx, organizationId, \"quotation\", id) in quotations.update immediately after the scoped load, beside the existing assertPostApprovalEditable at :3196, and in applyTemplate beside the one at :3575. Correct the stale claim in modules/audit/gates.ts:123.",
           "src": "packages/api/src/routers/quotation.ts:3571",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/quotation.ts:4288",
@@ -2194,6 +2355,27 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:4751",
+              "quote": "await assertNotUnderReview(tx, context.org.organizationId, \"quotation\", id);",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:4963",
+              "quote": "await assertNotUnderReview(tx, organizationId, \"quotation\", input.id);",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:5188",
+              "quote": "await assertNotUnderReview(context.db, organizationId, \"quotation\", input.quotationId);",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2215,7 +2397,7 @@
           "why": "The seeded Quotation review flow's only stage targets role branch-manager with quorum any_pass_all_reject - one approval carries it. roles.ts:102 grants branch-manager the whole `quotation` subtree, i.e. both quotation.update (the submitNode, resources.ts:124) and quotation.review (the reviewNode). Nothing in decide() compares org.membership.id with submission.submittedBy; the only ownership test in the engine is withdraw.ts:48. A branch manager therefore prices a quote, presses Submit for review, opens /approve/quotation and presses Approved on their own row; the convert_order gate then opens and the quote becomes an order with no second pair of eyes. The same seed file rejects this arrangement explicitly for customer (seed.ts:83-89, 'approving their own edit, which is the exact property director exists to provide') and for lading (:160), so quotation is the one trigger that shipped with the pattern the others were fixed to avoid.",
           "repair": "Refuse self-decision in decide(): after loading the submission, throw FORBIDDEN when submission.submittedBy === org.membership.id, the same shape as withdraw.ts:48. Or point the seeded quotation stage at `director`, as the customer/supplier/agent/lading flows do.",
           "src": "packages/api/src/modules/audit/seed.ts:90",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/modules/audit/decide.ts:59",
@@ -2265,6 +2447,27 @@
               "commit": null,
               "fingerprint": null,
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/modules/audit/decide.ts:59",
+              "quote": "if (entry.separationOfDuties && submission.submittedBy === org.membership.id) {",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/audit/resources.ts:262",
+              "quote": "separationOfDuties: true,",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/audit/seed.ts:90",
+              "quote": "stages: [{ roles: [\"branch-manager\"], quorum: \"any_pass_all_reject\" }],",
+              "commit": null,
+              "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2286,7 +2489,7 @@
           "why": "quotations.review still writes quotation.auditStatus straight through canAuditTransition, filing no audit_submission row. No page in apps/web calls it any more, but it is a live oRPC procedure held by branch-manager and director. Because the gates read audit_submission (gates.ts:90) while the ledger badge and the /approve/quotation audit-status filter read the cache column, the two can be made to disagree permanently: a quotation reads 'Approved' with 'Approve staff' blank in every list, while convertToOrder refuses with '\"Convert order\" requires review approval first' and nothing in the UI explains why or offers a way out.",
           "repair": "Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.",
           "src": "packages/api/src/routers/quotation.ts:4220",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/quotation.ts:5454",
@@ -2317,6 +2520,21 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:5948",
+              "quote": "listPendingDecisionCorrections: orgProcedure",
+              "absent": "review: orgProcedure",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:5501",
+              "quote": "convertToOrder: orgProcedure",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2338,7 +2556,7 @@
           "why": "Every seeded flow sets postApprovalEditable: false (seed.ts:232), so assertPostApprovalEditable freezes an approved quotation against editing. But it only fires when the LATEST submission is `passed` (post-approval.ts:43), and submitForReview happily opens a new attempt on an approved record. retract() then succeeds because that new attempt is under_review (withdraw.ts:51), leaving the latest status `withdrawn` - at which point the freeze is inert forever and, per the first finding, the record was editable throughout. Whoever holds quotation.update can therefore rewrite an approved quotation's prices alone, in three clicks. The same sequence unlocks an approved collective order.",
           "repair": "Either refuse submitForReview when the latest submission is `passed` and the flow's postApprovalEditable is false (force an explicit unlock), or key assertPostApprovalEditable on 'this resource has a passed submission not superseded by a later passed one' rather than on the latest attempt's status alone.",
           "src": "packages/api/src/modules/audit/post-approval.ts:43",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/modules/audit/submit.ts:59",
@@ -2367,6 +2585,27 @@
               "commit": null,
               "fingerprint": null,
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/modules/audit/submit.ts:59",
+              "quote": "await assertPostApprovalEditable(tx, org.organizationId, input.resourceType, input.resourceId, {",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/audit/post-approval.ts:44",
+              "quote": "if (!latest || latest.status !== \"passed\") return;",
+              "commit": null,
+              "fingerprint": "0fcc27570b24ee1cf944783ed2f70699bbb92011a9299d8f6ab693e4bcd3d9a4",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/audit/post-approval.ts:51",
+              "quote": "if (flow && !flow.editable) {",
+              "commit": null,
+              "fingerprint": "0fcc27570b24ee1cf944783ed2f70699bbb92011a9299d8f6ab693e4bcd3d9a4",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2388,7 +2627,7 @@
           "why": "assertGateCleared(..., \"export\") sits inside quotations.retrieve, which is the query the whole quotation record page runs ($quotationId.tsx:585) and which the decide, send and reference-template dialogs re-fetch. quotations.exportSheet (:2489) and quotations.send (:2598) - the two verbs that actually put the price in front of the customer - call no gate at all. The moment a tenant ticks 'Export quotation' in the Approval Process Setting page, every un-approved quotation 409s on open, so the author cannot finish drafting it and the reviewer cannot read it before deciding (the review becomes undecidable), while the XLSX/PDF download and the customer email that the checkbox names keep working unchanged.",
           "repair": "Move the assertGateCleared(..., \"export\") call out of quotations.retrieve and into quotations.exportSheet and quotations.send, after each handler's scoped load.",
           "src": "packages/api/src/routers/quotation.ts:2491",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/quotation.ts:2742",
@@ -2438,6 +2677,34 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3092",
+              "quote": "exportSheet: orgProcedure",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3117",
+              "quote": "\"export\",",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3284",
+              "quote": "\"export\",",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:2761",
+              "quote": "retrieve: orgProcedure",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2561,7 +2828,7 @@
           "why": "Send mails the customer and then records the stamp. If the stamp fails after the mail is away, the only route forward is pressing Send again, which sends the customer a duplicate quotation.",
           "repair": "Record the send intent before dispatch and reconcile after, so a retry resumes the stamp instead of re-sending the document.",
           "src": "packages/api/src/routers/quotation.ts:2870",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/quotation.ts:2878",
@@ -2597,6 +2864,34 @@
               "commit": null,
               "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3253",
+              "quote": "sendKey: z.string().uuid(),",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3478",
+              "quote": "status: \"pending\",",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3493",
+              "quote": "target: [quotationSend.organizationId, quotationSend.sendKey],",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:3872",
+              "quote": "openSends: orgProcedure",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2702,7 +2997,7 @@
           "why": "Won or Lost freezes the quotation and re-deciding is refused. The code names the gap itself: correcting one today needs a database edit, so a wrong outcome poisons win-rate reporting permanently.",
           "repair": "Add a reviewed correction path that supersedes the decision and keeps both stamps, rather than making the first answer final.",
           "src": "packages/api/src/routers/quotation.ts:3230",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/quotation.ts:3790",
@@ -2738,6 +3033,20 @@
               "commit": null,
               "fingerprint": null,
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/quotation.ts:4243",
+              "quote": "requestDecisionCorrection: orgProcedure",
+              "commit": null,
+              "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/quotation/decision-correction.ts:208",
+              "quote": ".set({ supersededAt: now, supersededById: proposal.id })",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -2949,7 +3258,7 @@
           "why": "A received order can never be rejected, but a rejected order can still be received. Rejection is not terminal, so a refused job can be quietly pulled back into operations with no second decision recorded.",
           "repair": "Make the two verbs symmetrical: either let a received order be rejected with a reason, or refuse receiving a rejected one without an explicit re-open.",
           "src": "packages/api/src/routers/collective-order.ts:3335",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/modules/collective-order/intake-guard.ts:46",
@@ -3006,6 +3315,34 @@
               "commit": null,
               "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/modules/collective-order/intake-guard.ts:46",
+              "quote": "receive: \"unaccepted\",",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/collective-order/intake-guard.ts:48",
+              "quote": "reopen: \"rejected\",",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3399",
+              "quote": "assertIntakeTransition(existing, \"receive\");",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3569",
+              "quote": "reopen: orgProcedure",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3193,7 +3530,7 @@
           "why": "collectiveOrder.update guards `locked` and assertPostApprovalEditable and never calls assertNotUnderReview - the string does not appear anywhere in routers/collective-order.ts. Step 14's operational detail (vessel, ports, cargo, container counts, client) can therefore be rewritten after the trade-ledger row menu's Submit for review and before accounting presses Approved in /approve/order, and the submission carries no content hash or version to notice. The reviewer approves a shipment they never saw, and the approval stamps land on the edited row as if they covered it. saveChildren (:4756) and assignJobNumber (:2800) have the same gap.",
           "repair": "Call assertNotUnderReview(tx, organizationId, \"collective_order\", orderId) in collectiveOrder.update, saveChildren and assignJobNumber, right beside each existing assertPostApprovalEditable call.",
           "src": "packages/api/src/routers/collective-order.ts:3111",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/collective-order.ts:3009",
@@ -3250,6 +3587,27 @@
               "commit": null,
               "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3010",
+              "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", orderId);",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:2824",
+              "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", input.orderId);",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:4093",
+              "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", input.orderId);",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3271,7 +3629,7 @@
           "why": "The seeded 'Order review' flow ships enabled with `gates: []`. Nine gate keys are declared for collective_order (modules/collective-order/gates.ts:36) and not one is ticked, so assertGatesCleared returns early at gates.ts:85 for every verb. Raising the bill of lading - step 16 - is not even in the vocabulary: lading.create (routers/lading.ts:1030) resolves the order via resolveLadingOrder and never reads orderAuditStatus or any submission. So an order that is unsubmitted, under review, or explicitly REJECTED can still be locked, ended, exported, have costs booked against it, and have a B/L raised and released on it. Accounting's rejection in /approve/order is a badge on a row and nothing more: no verb anywhere consults it, so a rejected shipment proceeds to the carrier and onto the customer's invoice unimpeded.",
           "repair": "Tick the gate keys the flow is meant to enforce in SEEDED_FLOWS' collective_order entry (at minimum expense_entry and end_order), and declare plus wire a `create_lading` gate: defineGates it in modules/collective-order/gates.ts and call assertGateCleared(db, organizationId, \"collective_order\", orderId, \"create_lading\") in lading.create once resolveLadingOrder has produced an order id.",
           "src": "packages/api/src/modules/audit/seed.ts:171",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/modules/audit/seed.ts:191",
@@ -3335,6 +3693,27 @@
               "commit": null,
               "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/modules/audit/seed.ts:191",
+              "quote": "gates: [\"lock\", \"end_order\", \"shut_out\", \"create_lading\"],",
+              "commit": null,
+              "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/modules/audit/seed.ts:192",
+              "quote": "gatesOnlyForNewOrg: true,",
+              "commit": null,
+              "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/lading.ts:1121",
+              "quote": "\"create_lading\",",
+              "commit": null,
+              "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+              "date": "2026-10-02"
             }
           ],
           "status": "partly-fixed",
@@ -3355,7 +3734,7 @@
           "why": "collectiveOrder.review writes collective_order.order_audit_status directly through canAuditTransition and files no audit_submission. roles.ts grants ops the whole `collectiveOrder` subtree - collectiveOrder.update AND collectiveOrder.review - so an ops member can move their own order draft to pending to approved on this endpoint without ever appearing in /approve/order, whose listing is driven by awaitingMyReview over submissions. The order ledger's Audit status column and its audit-status filter read the column this writes, so the row displays as reviewed, the submissions table holds nothing, and nobody in accounting ever saw it. order-row-actions.tsx:55 records that the last UI caller was removed on 2026-09-09; the procedure itself was left in place.",
           "repair": "Delete collectiveOrder.review (apps/web/src/architecture.test.ts already forbids a UI caller), or reduce it to a wrapper over submitForReview/decide so audit_submission remains the only writer of order_audit_status.",
           "src": "packages/api/src/routers/collective-order.ts:3380",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/collective-order.ts:3485",
@@ -3386,6 +3765,21 @@
               "commit": null,
               "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3486",
+              "quote": "reject: orgProcedure",
+              "absent": "review: orgProcedure",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3359",
+              "quote": "receive: orgProcedure",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3528,7 +3922,7 @@
           "why": "The workflow verbs are gated: check-out calls assertGateCleared(..., \"release\") and hold calls it with \"detention\" (packages/api/src/routers/lading.ts:633), which is how a tenant makes cargo release require an approval. But `status` is an ordinary writable column on create and update, and both forms offer the gated states directly: STATUS_OPTIONS = [draft, confirmed, released, cancelled, on-hold] (apps/web/src/routes/_next/lading/create.tsx:140, apps/web/src/routes/_next/lading/$id/edit.tsx:165). Picking Released on the edit form writes status='released' straight through (lading.ts:1556-1602) with no gate and no release decision recorded, and checkedOutAt stays NULL, so the list and the record read as released while the detail page still offers Check Out and the configured release approval never ran. Picking On-hold is worse: heldAt stays NULL, so Cancel Hold refuses with 'Not on hold' (lading.ts:585) and the bill is stuck displaying a hold nobody can lift except by another free status edit.",
           "repair": "Make status non-free-set for the workflow-owned states: narrow the create/update zod field to z.enum([\"draft\",\"confirmed\",\"cancelled\"]) and refuse released/on-hold/amended with a message naming the workflow verb, and drop those three from STATUS_OPTIONS in both forms, so the only way into them is checkOut / hold / amend, which carry the gates and the stamps.",
           "src": "apps/web/src/routes/_next/lading/$id/edit.tsx:165",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/lading/-status-echo.ts:17",
@@ -3585,6 +3979,41 @@
               "commit": null,
               "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/modules/lading/status.ts:13",
+              "quote": "export const SETTABLE_LADING_STATUSES = [\"draft\", \"confirmed\", \"cancelled\"] as const;",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/lading.ts:1678",
+              "quote": "assertSettableStatus(statusChange);",
+              "commit": null,
+              "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/lading.ts:1099",
+              "quote": "assertSettableStatus(input.status);",
+              "commit": null,
+              "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/$id/edit.tsx:176",
+              "quote": "const STATUS_OPTIONS = SETTABLE_STATUS_OPTIONS;",
+              "commit": null,
+              "fingerprint": "0bf04e82bc7e3fce2af6ac8e581829860af814f49bdb103bf0903e9856c6aafa",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:168",
+              "quote": "const STATUS_OPTIONS = [\"draft\", \"confirmed\", \"cancelled\"];",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3606,7 +4035,7 @@
           "why": "lading.update runs only assertPostApprovalEditable (packages/api/src/routers/lading.ts:1554), which fires after a submission has PASSED. The window while a submission is open is what assertNotUnderReview covers, and this very file imports it (lading.ts:34) and calls it in delete (lading.ts:1474) and bulkDelete (lading.ts:1513). It is absent from update. So a B/L can be submitted for review and then have its bill number, shipper, consignee, containers, weights and status rewritten while it sits in the reviewer's queue; the reviewer approves whatever is there when they click, and the post-approval freeze then locks in the rewritten version. This is the failure the gates module documents as TC-138 (packages/api/src/modules/audit/gates.ts:103-128): 'If it can change in between, they have approved something they never saw.' You cannot delete a B/L under review, but you can rewrite every field of it.",
           "repair": "Add `await assertNotUnderReview(context.db, organizationId, \"lading\", ladingId);` beside the assertPostApprovalEditable call in lading.update, matching delete/bulkDelete.",
           "src": "packages/api/src/routers/lading.ts:1554",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/lading.ts:1693",
@@ -3635,6 +4064,20 @@
               "commit": null,
               "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/lading.ts:1693",
+              "quote": "await assertNotUnderReview(tx, organizationId, \"lading\", ladingId);",
+              "commit": null,
+              "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/lading.ts:1696",
+              "quote": "await assertPostApprovalEditable(tx, organizationId, \"lading\", ladingId);",
+              "commit": null,
+              "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3656,7 +4099,7 @@
           "why": "uploadOcr returns the extraction engine's ValidationIssue[] alongside the fields (packages/api/src/routers/lading.ts:1965, built in ocrExtractionForForm at lading.ts:2418) - codes container_check_digit, crossfoot_mismatch, missing_required, each with severity 'error' or 'warning' (packages/document-ai/src/registry/types.ts:30-43); the issue COUNT is even written to the audit trail. The client drops them: the ocrResult state type declares only { confidence, rawText, fields, containers } (apps/web/src/routes/_next/lading/create.tsx:293-298) and nothing in the OCR tab renders an issue. Apply to Form (create.tsx:312-349) then writes every extracted value - grossWeight, chargeableWeight, volumeCbm, containerQty and the whole container table - unconditionally, and the button is enabled at any confidence, including 10%. A container number that fails its check digit, or a weight that fails the crossfoot check, lands on a document of title with no signal; the operator sees one aggregate 'Confidence: N%' and a list of values that look verified.",
           "repair": "Add `issues: ValidationIssue[]` to the ocrResult state type, render them against their fields in the extracted-fields grid (error / warning styling), and disable Apply to Form - or require an explicit 'apply anyway' acknowledgement - while any issue has severity 'error'.",
           "src": "apps/web/src/routes/_next/lading/create.tsx:293",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/lading/create.tsx:1676",
@@ -3692,6 +4135,34 @@
               "commit": null,
               "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:354",
+              "quote": "issues: OcrIssue[];",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:369",
+              "quote": "if (!ocrResult || !canApplyOcr(ocrIssues, ocrAcknowledged, ocrUpload.isPending)) return;",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:1676",
+              "quote": "disabled={!canApplyOcr(ocrIssues, ocrAcknowledged, ocrUpload.isPending)}",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:1726",
+              "quote": "<OcrIssueList issues={ocrIssues.byField.get(k)} />",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3713,7 +4184,7 @@
           "why": "Picking the linked order sets orderId and copies picked.jobNumber into orderNo, and nothing else (apps/web/src/routes/_next/lading/create.tsx:1243-1252). The order just linked already holds a matching value for most of the bill: vesselName, voyage, portOfShipment, portOfDestination, transitPort, etd, eta, atd, mbl, hbl, soNo, clientName, entrustUnit, tradeTerms, shipCompany (packages/db/src/schema/collective-order.ts:125-220), and lading has a column for each (vessel, voyage, pol, pod, transhipmentPort, etd, eta, atd, mblNo, hblNo, bookingNo, entrustUnit, tradeTerm, shippingCompany - packages/db/src/schema/lading.ts:44-110). All of it is typed again by hand across a five-tab form, on the screen that already knows the order id. Beyond the keystrokes the two records drift: the B/L and the order it documents can name different vessels, ports or ETDs with nothing reconciling them, and the B/L is the one that prints.",
           "repair": "On order select, fetch collectiveOrder.get for the picked id and prefill the still-empty B/L fields from it (vessel/voyage/pol/pod/etd/eta/mblNo/hblNo/bookingNo/entrustUnit/tradeTerm/shippingCompany), leaving anything already typed alone, and mark which values came from the order so they can be overridden knowingly.",
           "src": "apps/web/src/routes/_next/lading/create.tsx:1371",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/lading/create.tsx:567",
@@ -3742,6 +4213,20 @@
               "commit": null,
               "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:567",
+              "quote": "const { next, filled } = prefillFromOrder({ ...form, orderId }, picked, fromOrder);",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/lading/create.tsx:548",
+              "quote": "const { next, filled } = prefillFromOrder({ ...form, orderId: target }, order, fromOrder);",
+              "commit": null,
+              "fingerprint": "39c31bb72c2ee09ce548a1e4f0070f746d96fd8f689b7247173aaced18b4edf8",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -3948,7 +4433,7 @@
           "why": "The document vocabulary has no K1 or K2, so the Sepangar filing itself is never held in the system. The declaration that clears the cargo lives in someone's email, and nothing links it to the job.",
           "repair": "Add K1/K2 to the document type vocabulary and its extraction rules so the declaration files against the same B/L as the rest.",
           "src": "packages/api/src/modules/document/register-hooks.ts:1",
-          "lastVerified": "2026-10-01",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/document-ai/src/registry/types.ts:5",
@@ -3977,6 +4462,27 @@
               "commit": null,
               "fingerprint": null,
               "date": "2026-10-01"
+            },
+            {
+              "at": "packages/document-ai/src/registry/types.ts:9",
+              "quote": "| \"shipping_order\"",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/document-ai/src/registry/types.ts:10",
+              "quote": "| \"unknown\";",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/document.ts:669",
+              "quote": ".enum([\"mbl_hbl\", \"commercial_invoice\", \"packing_list\", \"shipping_order\"])",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
             }
           ]
         }
@@ -4217,7 +4723,7 @@
           "why": "Save filters out any row whose Name of cost is blank. A half-typed line with an amount on it disappears on save, and nothing tells the operator that it went.",
           "repair": "Refuse the save and name the offending row, the way the quotation grid names a line below tariff.",
           "src": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:629",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:740",
@@ -4274,6 +4780,34 @@
               "commit": null,
               "fingerprint": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/components/order-form.tsx:1912",
+              "quote": "// row keeps today's quiet drop (it has nothing to delete).",
+              "commit": null,
+              "fingerprint": "a4a58d4ff0d0e3e166e9e3a890e1db4d7656f1733200db03534ced159b989fa0",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/components/order-form.tsx:1914",
+              "quote": "(p) => p.kind === \"saved-unnamed\" || p.kind === \"saved-incomplete\",",
+              "commit": null,
+              "fingerprint": "a4a58d4ff0d0e3e166e9e3a890e1db4d7656f1733200db03534ced159b989fa0",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/components/order-form.tsx:1992",
+              "quote": ".filter((r) => r.costName?.trim() && r.amount?.trim() && r.currency?.trim())",
+              "commit": null,
+              "fingerprint": "a4a58d4ff0d0e3e166e9e3a890e1db4d7656f1733200db03534ced159b989fa0",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:740",
+              "quote": "const payProblems = feeRowProblems(payable);",
+              "commit": null,
+              "fingerprint": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
+              "date": "2026-10-02"
             }
           ],
           "status": "partly-fixed",
@@ -4412,7 +4946,7 @@
           "why": "createBill resolves the selection first - ticks, or the whole filter result set when nothing is ticked - into `costLineIds` (packages/api/src/routers/expense/cost-lines.ts:2448). Every guard afterwards uses the resolved rows, except the review gate, which is handed the RAW input array: assertGatesCleared(context.db, organizationId, \"cost_line\", input.costLineIds, \"create_bill\") (cost-lines.ts:2502-2508). On the unticked path input.costLineIds is [] and assertGatesCleared returns immediately on an empty array (packages/api/src/modules/audit/gates.ts:76). So a tenant that turned on the opt-in rule that every fee must have PASSED review before billing has it enforced when rows are ticked and bypassed when they are not - which is the path the UI actively promotes for large selections ('Create Bill (全选)', apps/web/src/routes/_next/expenses/cost-lines.tsx:2214). Never-submitted fees get billed and invoiced, with no error, because the gate returned clean.",
           "repair": "Pass the resolved selection: assertGatesCleared(context.db, organizationId, \"cost_line\", costLineIds, \"create_bill\").",
           "src": "packages/api/src/routers/expense/cost-lines.ts:2506",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/expense/cost-lines.ts:2446",
@@ -4434,6 +4968,13 @@
               "commit": null,
               "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:2455",
+              "quote": "await assertGatesCleared(tx, organizationId, \"cost_line\", costLineIds, \"create_bill\");",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -4455,7 +4996,7 @@
           "why": "costLines.update runs postApprovalGate (packages/api/src/routers/expense/cost-lines.ts:137-142, 333-339), so once a review has passed and the flow says post_approval_editable = false (the schema default, packages/db/src/schema/audit.ts:145) an approved fee refuses every edit with 'This record was approved and its content can no longer be edited'. exchangeRateBatch - the fee grid's bulk FX edit - does not use the governed writer and runs no such gate (cost-lines.ts:2063-2166). Its only filter is isClaimed, which looks at billId, invoicedAmount, writtenOffAmount, lockedAt and recPayLockedAt and nothing about review (packages/api/src/routers/expense/batch.ts:116-124). So an approved, unbilled fee has its FX rate - and with it the local-currency value that the bill and every base-currency total read - changed in bulk by any holder of costLine.update, with no re-review and the approved stamp untouched. The single-row path refuses the same edit.",
           "repair": "Run the post-approval gate over the selection in exchangeRateBatch (assertPostApprovalEditable per row, or route the write through costLineWriter's `update` verb), and put approved-frozen rows into the existing `skipped` report so the operator sees which lines were left behind and why.",
           "src": "packages/api/src/routers/expense/cost-lines.ts:2115",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/expense/cost-lines.ts:1991",
@@ -4477,6 +5018,20 @@
               "commit": null,
               "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:1988",
+              "quote": "const freezes = await costLineReviewFreezes(",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:1993",
+              "quote": "const targets = rows.filter((r) => !isClaimed(r) && !freezes.has(r.id));",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -4498,7 +5053,7 @@
           "why": "The delete verb's gates are deleteRefusalsGate, orderUnlockedGate and splitsReleaseGate (packages/api/src/routers/expense/cost-lines.ts:427-431); the batch delete path repeats the same three refusals by hand (cost-lines.ts:1774-1795). Neither consults the review state - the refusals are billed / locked / rec-pay-locked only. So a fee that has been submitted, reviewed and APPROVED, and is therefore cleared for billing, can be deleted before it reaches a bill by any holder of costLine.delete, with no re-review and no signal to the approver. The asymmetry is the tell: the same fee cannot have its amount edited to 0 (postApprovalGate refuses) but can be removed entirely. On the receivable side that is approved revenue that simply never gets billed.",
           "repair": "Add postApprovalGate to the writer's `delete` verb and an equivalent assertPostApprovalEditable sweep to the batch delete branch, so an approved fee must be taken back out of approval before it can be removed - the contract update already enforces.",
           "src": "packages/api/src/routers/expense/cost-lines.ts:407",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/expense/cost-lines.ts:419",
@@ -4555,6 +5110,48 @@
               "commit": null,
               "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:422",
+              "quote": "postApprovalGate,",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:1655",
+              "quote": "const freezes = await costLineReviewFreezes(tx, organizationId, ids);",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3323",
+              "quote": "const cleared = await clearOrderCostLines(tx, [input.orderId]);",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/collective-order.ts:3853",
+              "quote": "cleared = await clearOrderCostLines(tx, ids);",
+              "commit": null,
+              "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/expense/history.ts:234",
+              "quote": ".delete(costLine)",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/expense/history.ts:235",
+              "quote": ".where(and(inArray(costLine.id, ids), isNull(costLine.billId), isNull(costLine.lockedAt)))",
+              "commit": null,
+              "fingerprint": null,
+              "date": "2026-10-02"
             }
           ],
           "status": "partly-fixed",
@@ -4575,7 +5172,7 @@
           "why": "The costLineWriter update gates are postApprovalGate, singleFeeLockGate, recPayLockGate, billedFieldsGate and orderUnlockedGate (packages/api/src/routers/expense/cost-lines.ts:333-339). postApprovalGate only fires once a submission has PASSED. The open window - submitted, awaiting a decision - is what assertNotUnderReview exists for, and the gates module states why it is not optional: 'a reviewer opens a record, reads it, and approves it. If it can change in between, they have approved something they never saw' (packages/api/src/modules/audit/gates.ts:103-128). Across the API it is called only from company.ts (contract), lading.ts (delete/bulkDelete) and quotation.ts (fee_template); cost_line is covered nowhere. So a fee can be submitted at RM 500, edited to RM 5,000 while it sits in /approve/cost, approved on the reviewer's next click, and then frozen at the new number by the post-approval rule. The trail shows an approval and a separate edit, with nothing saying the approval was of the pre-edit figure.",
           "repair": "Add an assertNotUnderReview gate to the costLineWriter `update` verb (and to exchangeRateBatch and delete once those are gated per the findings above), so a fee under review refuses edits with the existing 'retract the submission first' message.",
           "src": "packages/api/src/routers/expense/cost-lines.ts:340",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "packages/api/src/routers/expense/cost-lines.ts:349",
@@ -4604,6 +5201,20 @@
               "commit": null,
               "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
               "date": "2026-09-30"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:351",
+              "quote": "costLineContentUnderReviewGate,",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:167",
+              "quote": "await assertNotUnderReview(tx, ctx.org.organizationId, \"cost_line\", String(row.id));",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -4735,7 +5346,7 @@
           "why": "Lines from several jobs merge into one bill. The server implements groupByOrder and the Chinese UI had it, but no web screen sends it, so per-shipment billing is done by filtering and repeating the whole dialog.",
           "repair": "Wire the existing groupByOrder flag into the Create Bill dialog as a second tick beside the tax-rate split.",
           "src": "packages/api/src/routers/expense/cost-lines.ts:2314",
-          "lastVerified": "2026-09-30",
+          "lastVerified": "2026-10-02",
           "evidence": [
             {
               "at": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1236",
@@ -4778,6 +5389,27 @@
               "commit": null,
               "fingerprint": "be6f901673ebf7e53d6bfba5407c6783cc9c68abd0c88c88bc3a39520a9668ca",
               "date": "2026-09-30"
+            },
+            {
+              "at": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1236",
+              "quote": "checked={groupByOrder}",
+              "commit": null,
+              "fingerprint": "be6f901673ebf7e53d6bfba5407c6783cc9c68abd0c88c88bc3a39520a9668ca",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "apps/web/src/routes/_next/expenses/cost-lines.tsx:1321",
+              "quote": "groupByOrder,",
+              "commit": null,
+              "fingerprint": "be6f901673ebf7e53d6bfba5407c6783cc9c68abd0c88c88bc3a39520a9668ca",
+              "date": "2026-10-02"
+            },
+            {
+              "at": "packages/api/src/routers/expense/cost-lines.ts:2479",
+              "quote": "input.groupByOrder ? (l.orderId ?? \"\") : \"\",",
+              "commit": null,
+              "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+              "date": "2026-10-02"
             }
           ],
           "status": "fixed",
@@ -5499,7 +6131,7 @@
             "n": 25
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/modules/expense/bridge.ts:240",
@@ -5515,6 +6147,21 @@
             "commit": "23a2220c",
             "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/expense/bridge.ts:240",
+            "quote": "settlementUnit,",
+            "absent": "settlementCompanyId",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2520",
+            "quote": ".where(and(eq(company.organizationId, organizationId), eq(company.name, unit)))",
+            "commit": null,
+            "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -5539,7 +6186,7 @@
             "n": 26
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "apps/web/src/routes/_next/expenses/payments.tsx:336",
@@ -5582,6 +6229,34 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "apps/web/src/routes/_next/expenses/payments.tsx:339",
+            "quote": "exchangeRate: rate || undefined,",
+            "commit": null,
+            "fingerprint": "165e528176e1193b23e9b08526238414c99bb13b3fb86be157631cd4cb0c7dd7",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/write-offs.ts:539",
+            "quote": "toNumber(pay.exchangeRate, 1) === 1",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/write-offs.ts:817",
+            "quote": "let fxUnknown: SettlementFxUnknown | null = null;",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/write-offs.ts:867",
+            "quote": "const fx = settlementFx({",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "fixed",
@@ -5611,7 +6286,7 @@
             "n": 27
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/expense/cost-lines.ts:2511",
@@ -5634,6 +6309,28 @@
             "commit": null,
             "fingerprint": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/expense/bridge.ts:240",
+            "quote": "settlementUnit,",
+            "absent": "settlementCompanyId",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2520",
+            "quote": ".where(and(eq(company.organizationId, organizationId), eq(company.name, unit)))",
+            "commit": null,
+            "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/report.ts:851",
+            "quote": ".where(and(unpaid, isNull(bill.dueDate)))",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -5662,7 +6359,7 @@
             "n": 25
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/modules/expense/bridge.ts:236",
@@ -5677,6 +6374,20 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/expense/bridge.ts:236",
+            "quote": "quantity: breakdownIsHonest ? feeLine.quantity : null,",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/expense/bridge.ts:237",
+            "quote": "unitPrice: breakdownIsHonest ? feeLine.unitPrice : null,",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "fixed",
@@ -5706,7 +6417,7 @@
             "n": 27
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/report.ts:2205",
@@ -5735,6 +6446,27 @@
             "commit": null,
             "fingerprint": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
             "date": "2026-09-30"
+          },
+          {
+            "at": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:848",
+            "quote": "rows.reduce((s, r) => s + feeLocalAmount(r, taxInclusive), 0);",
+            "commit": null,
+            "fingerprint": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/lib/expense.ts:429",
+            "quote": "const gross = feeNumber(fee.amount) * (fee.exchangeRate ? feeNumber(fee.exchangeRate) : 1);",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/report.ts:2215",
+            "quote": "amount: sql<string>`coalesce(sum(${bill.totalAmount}::numeric * coalesce(${bill.exchangeRate}::numeric, 1)), 0)`,",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
           }
         ]
       },
@@ -5753,7 +6485,7 @@
             "n": 26
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/expense/bills.ts:587",
@@ -5810,6 +6542,28 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/expense/bills.ts:587",
+            "quote": "gates: [underReviewGate(\"bill\"), billTotalPostApprovalGate],",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/seed.ts:234",
+            "quote": "gates: [\"input_invoice_no\", \"write_off\"],",
+            "absent": "\"cancel_write_off\"",
+            "commit": null,
+            "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/write-offs.ts:1243",
+            "quote": "await assertGateCleared(tx, organizationId, \"bill\", wo.billId, \"cancel_write_off\");",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -5838,7 +6592,7 @@
             "n": 27
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/db/src/schema/setting.ts:88",
@@ -5902,6 +6656,27 @@
             "commit": null,
             "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/db/src/schema/setting.ts:88",
+            "quote": "baseCurrency: text(\"base_currency\"),",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/setting/fx-settings.ts:223",
+            "quote": "return reportingCurrencyFrom(base, row?.currency);",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/report.ts:1383",
+            "quote": "if (distinct.length > 1) mixedLocalCurrencies = distinct;",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -5929,7 +6704,7 @@
             "n": 12
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/quotation.ts:5152",
@@ -5979,6 +6754,20 @@
             "commit": null,
             "fingerprint": "f68e521136ec664dea2bc86f0a0f44e1fefbde4ff1634cb922d12a6e70c4312e",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5645",
+            "quote": "const order = await insertOrderWithJobNumber(tx, context.org, {",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5695",
+            "quote": "const orderNo = order.jobNumber ?? q.quotationNo;",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
           }
         ],
         "status": "fixed",
@@ -6007,7 +6796,7 @@
             "n": 27
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "apps/web/src/components/order-ledger/order-row-actions.tsx:306",
@@ -6050,6 +6839,20 @@
             "commit": null,
             "fingerprint": "9ec9bdfd1b311a905dec0ac5a7c1a91c868f5750511a924dec4857b59694d7f3",
             "date": "2026-09-30"
+          },
+          {
+            "at": "apps/web/src/components/order-ledger/order-row-actions.tsx:113",
+            "quote": "* comes back, and shut out, archive and delete stay off this menu.",
+            "commit": null,
+            "fingerprint": "9ec9bdfd1b311a905dec0ac5a7c1a91c868f5750511a924dec4857b59694d7f3",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/components/order-ledger/order-row-actions.tsx:306",
+            "quote": "await client.collectiveOrder.batch({ action: move.action, orderIds: [orderId] });",
+            "commit": null,
+            "fingerprint": "9ec9bdfd1b311a905dec0ac5a7c1a91c868f5750511a924dec4857b59694d7f3",
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -6161,7 +6964,7 @@
             "n": 18
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/collective-order.ts:1903",
@@ -6218,6 +7021,28 @@
             "commit": null,
             "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:1993",
+            "quote": "countdownDeadline: row.countdownDeadline,",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/components/order-ledger/order-record-page.tsx:79",
+            "quote": "<RecordPage",
+            "absent": "OrderDocumentsCard",
+            "commit": null,
+            "fingerprint": "b15482b2441def334c111ab1210f97b9f6c602265546ebc20407dccec721b32e",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/components/record-page/record-page.tsx:108",
+            "quote": "const groups = useMemo(() => (row ? (config.detailGroups?.(row) ?? []) : []), [row, config]);",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -6245,7 +7070,7 @@
             "n": 17
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "apps/web/src/routes/_next/order.to-receive.tsx:1863",
@@ -6323,6 +7148,34 @@
             "commit": null,
             "fingerprint": "b5f815b4a9fdd942862496f9d27bc31b5efafdc88b79c7a26a5b8e4ef7f0748d",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/audit/seed.ts:103",
+            "quote": "enabled: false,",
+            "commit": null,
+            "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/seed.ts:150",
+            "quote": "enabled: false,",
+            "commit": null,
+            "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/order.to-receive.tsx:1863",
+            "quote": "<Link to={readingPattern} params={{ orderId: reading.id }}>",
+            "commit": null,
+            "fingerprint": "dceff6d5aff69c5039c2af7a4f9e5528cac966f6f22da27cd9283a4afd5478ba",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/lading/$id/index.tsx:453",
+            "quote": "{canUpdate && data && <ReviewMenu selectedIds={[id]} onReview={reviewLading} />}",
+            "commit": null,
+            "fingerprint": "b5f815b4a9fdd942862496f9d27bc31b5efafdc88b79c7a26a5b8e4ef7f0748d",
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -6350,7 +7203,7 @@
             "n": 1
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/db/src/schema/quotation.ts:257",
@@ -6393,6 +7246,27 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/db/src/schema/quotation.ts:267",
+            "quote": "\"whatsapp\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/db/src/schema/quotation.ts:433",
+            "quote": "enquiryChannel: enquiryChannel(\"enquiry_channel\"),",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/db/src/schema/mailbox.ts:61",
+            "quote": "\"closed\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -6420,7 +7294,7 @@
             "n": 26
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/expense/invoices.ts:616",
@@ -6437,6 +7311,21 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/expense/invoices.ts:616",
+            "quote": "markDownloaded: orgProcedure",
+            "absent": "send: orgProcedure",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/db/src/schema/expense.ts:618",
+            "quote": "billId: text(\"bill_id\").references(() => bill.id, { onDelete: \"set null\" }),",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ]
       },
@@ -6450,7 +7339,7 @@
             "n": 14
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/collective-order.ts:2536",
@@ -6500,6 +7389,34 @@
             "commit": null,
             "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:2536",
+            "quote": "assertOrderStatus(rest.businessType, rest.status, null);",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:2515",
+            "quote": "owningBranchId: z.string().min(1),",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:169",
+            "quote": "orderSource: z.enum([\"client_order\", \"group_dispatch\"]).optional(),",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/db/src/schema/collective-order.ts:290",
+            "quote": "status: text(\"status\"),",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "partly-fixed",
@@ -6527,7 +7444,7 @@
             "n": 2
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/expense/bills.ts:2131",
@@ -6570,6 +7487,20 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/routers/expense/bills.ts:2119",
+            "quote": "const exposure = await companyExposure(tx, organizationId, companyId, first.currency);",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/bills.ts:2131",
+            "quote": "if (overages.length > 0 && !input.creditOverrideReason) {",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "status": "fixed",
@@ -6594,7 +7525,7 @@
             "n": 25
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/modules/export/invoice-document.ts:385",
@@ -6609,6 +7540,13 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/export/invoice-document.ts:385",
+            "quote": "taxId: null,",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ]
       },
@@ -6626,7 +7564,7 @@
             "n": 19
           }
         ],
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/db/src/schema/fleet.ts:25",
@@ -6641,6 +7579,20 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/db/src/schema/fleet.ts:25",
+            "quote": "export const fleetDevices = pgTable(",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/db/src/schema/fleet.ts:32",
+            "quote": "deviceId: text(\"device_id\").notNull(),",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ]
       },
@@ -6653,7 +7605,7 @@
         "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-09-25",
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/modules/audit/resources.ts:690",
@@ -6710,6 +7662,27 @@
             "commit": "23a2220c",
             "fingerprint": null,
             "date": "2026-09-30"
+          },
+          {
+            "at": "packages/api/src/modules/audit/resources.ts:709",
+            "quote": "// stage 1, so without this an accountant could pass their own bill.",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/resources.ts:710",
+            "quote": "separationOfDuties: true,",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/decide.ts:59",
+            "quote": "if (entry.separationOfDuties && submission.submittedBy === org.membership.id) {",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -6739,7 +7712,7 @@
         "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-09-25",
-        "lastVerified": "2026-09-30",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "apps/web/src/routes/_next/expenses/payments.tsx:205",
@@ -6775,6 +7748,27 @@
             "commit": null,
             "fingerprint": "165e528176e1193b23e9b08526238414c99bb13b3fb86be157631cd4cb0c7dd7",
             "date": "2026-09-30"
+          },
+          {
+            "at": "apps/web/src/routes/_next/expenses/payments.tsx:208",
+            "quote": "paymentDate: businessDateInput(new Date()),",
+            "commit": null,
+            "fingerprint": "165e528176e1193b23e9b08526238414c99bb13b3fb86be157631cd4cb0c7dd7",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/components/quotation/decide-quotation-dialog.tsx:65",
+            "quote": "setDecidedOn(businessDateInput(new Date()));",
+            "commit": null,
+            "fingerprint": "29bfffd716cdf3426b7b80689242ff2513c98b53e5442a3d3e35a0f2536b4799",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/lib/quotation.ts:151",
+            "quote": "export function businessDateInput(value: string | Date | null | undefined): string {",
+            "commit": null,
+            "fingerprint": "6d5c9ce7007da430887b445498d82e16cfbff1b19a4d593642ca2e0e5bd9bc7f",
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -6804,7 +7798,7 @@
         "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-09-30",
-        "lastVerified": "2026-10-01",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/document.ts:661",
@@ -6854,6 +7848,27 @@
             "commit": "18dd7506",
             "fingerprint": null,
             "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/document.ts:663",
+            "quote": ".use(requireNode(DOCUMENT.reviewCorrect))",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/document.ts:678",
+            "quote": "if (!permittedNode(context.org, DOCUMENT.reviewApprove)) {",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/document.ts:681",
+            "quote": "\"Saving corrections also approves the document, which needs the Approve extraction permission\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -6883,7 +7898,7 @@
         "status": "partly-fixed",
         "origin": "defect",
         "firstFound": "2026-09-30",
-        "lastVerified": "2026-10-01",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "apps/server/src/document/workflow.ts:216",
@@ -6940,6 +7955,41 @@
             "commit": "18dd7506",
             "fingerprint": null,
             "date": "2026-10-01"
+          },
+          {
+            "at": "apps/server/src/document/workflow.ts:216",
+            "quote": "await runApprovalHooks(db, documentId);",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/server/src/document/workflow.ts:214",
+            "quote": "// bl_job), so a swallowed failure means no tracking job — the reason",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/document/review-queue.ts:438",
+            "quote": "export async function findUntrackedApprovedBls(",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/server/src/document-review-worker.ts:151",
+            "quote": "findUntrackedApprovedBls(db, now, UNTRACKED_AFTER_HOURS, UNTRACKED_WINDOW_HOURS),",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/server/src/document-review-worker.ts:339",
+            "quote": "? \"Approved bill of lading is not being tracked\"",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -6968,7 +8018,7 @@
         "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-10-01",
-        "lastVerified": "2026-10-01",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/quotation.ts:5446",
@@ -7032,6 +8082,27 @@
             "commit": "a9e825fc",
             "fingerprint": "bd18c023934a363ec7f4f6501d5298c90383211107968952fab3007a34227181",
             "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2086",
+            "quote": "await assertGateCleared(context.db, organizationId, \"quotation\", q.id, \"convert_order\");",
+            "commit": null,
+            "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2077",
+            "quote": "message: \"Only a won or converted quotation can be recorded to cost\",",
+            "commit": null,
+            "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:161",
+            "quote": "quote.auditStatus === \"approved\" && (quote.status === \"won\" || quote.status === \"converted\"),",
+            "commit": null,
+            "fingerprint": "39bc2bddc71d420101b6a6205840b49956b8ba46540de6e82a03d43321d2accb",
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -7104,7 +8175,7 @@
         "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-10-01",
-        "lastVerified": "2026-10-01",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/quotation.ts:5304",
@@ -7169,6 +8240,34 @@
             "commit": "a9e825fc",
             "fingerprint": "447ff2932034db5d79d5306352e961df360475ac4d7bf4aec93b2d9759a182f8",
             "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5382",
+            "quote": "const { seeds: applyRateSeeds, rateMissing } = await resolveFeeLineRates(",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5391",
+            "quote": "await assertUnratedFeeAllowed(context.db, organizationId, rateMissing);",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5494",
+            "quote": "return { feeLines, rateMissing };",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/components/reference-template-dialog.tsx:411",
+            "quote": "if (result.rateMissing) {",
+            "commit": null,
+            "fingerprint": "d1ab441a6c64cc9d279c6eedb3373996eef987daa01330f8b4847dfb2a88e0c5",
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -7195,10 +8294,10 @@
         "body": "At step 10 Sales press Decide to record Won or Lost. The header only shows Decide when the quotation has a sentAt stamp, and the server's decide procedure refuses any quotation whose sentAt is null. Only the mailbox Send path (step 9) writes sentAt. Some quotations reach the customer another way: a PDF from Preview PDF or Export sheet sent from the salesperson's own email, WhatsApp, or handed over at the counter. The same applies whenever the mailbox is unavailable. For those quotations, step 10 cannot be done at all. No decision date and no customer PO/reference is ever recorded. Convert to order still works, because the convert guard refuses only 'lost'. The result is orders with no recorded Won and a win-rate report missing those deals. The convert-guard docblock admits the gap ('would strand every quotation handed over by WhatsApp or across a counter') and defers it to a manual 'record as sent' action, which does not exist.",
         "sev": "blocked",
         "pattern": "unreachable-screen",
-        "status": "open",
+        "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-10-01",
-        "lastVerified": "2026-10-01",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/quotation.ts:4043",
@@ -7227,6 +8326,41 @@
             "commit": null,
             "fingerprint": null,
             "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:4027",
+            "quote": "markSent: orgProcedure",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:4032",
+            "quote": "channel: z.enum([\"whatsapp\", \"own_email\", \"by_hand\", \"other\"]),",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:4077",
+            "quote": ".set({ status: \"sent\", sentAt, sentBy: membership.id })",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:154",
+            "quote": "showMarkSent: quote.status === \"draft\" && !quote.sentAt,",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:152",
+            "quote": "showDecide: quote.status === \"sent\" && !!quote.sentAt,",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
           }
         ],
         "history": [
@@ -7236,8 +8370,16 @@
             "to": "open",
             "by": "zyt-audit",
             "note": "found by zyt-audit (unreachable-screen)"
+          },
+          {
+            "date": "2026-10-02",
+            "from": "open",
+            "to": "fixed",
+            "by": "zyt-audit",
+            "note": "A manual 'record as sent' now exists. quotations.markSent (channels whatsapp, own_email, by_hand, other) stamps status sent, sentAt and sentBy on an unsent draft, and the header shows Mark sent on such drafts. A quotation handed over outside the mailbox can now reach Decide, whose sentAt guard is still in place. The convert-guard docblock still describes the old gap, but it is a comment only."
           }
-        ]
+        ],
+        "fixedAt": "2026-10-02"
       },
       {
         "id": "au-converting-a-quotation-with-no-shipping-",
@@ -7245,10 +8387,10 @@
         "body": "At step 11, Convert to order copies the quotation's shippingType into the order's consign type and falls back to 'fcl' when it is empty. Shipping Type is set by the four package cards. For a 'No package' quotation it can only be set under More details, which step 5 tells Sales to open only when needed. So a custom LCL, bulk or air quotation becomes an order marked FCL. At step 14 the order looks complete with an FCL consign type the customer never asked for. Ledger filters and documents keyed on consign type then treat it as a full-container job.",
         "sev": "data",
         "pattern": "fake-default",
-        "status": "open",
+        "status": "fixed",
         "origin": "defect",
         "firstFound": "2026-10-01",
-        "lastVerified": "2026-10-01",
+        "lastVerified": "2026-10-02",
         "evidence": [
           {
             "at": "packages/api/src/routers/quotation.ts:5564",
@@ -7263,11 +8405,493 @@
             "commit": null,
             "fingerprint": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
             "date": "2026-10-01"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5550",
+            "quote": "if (!q.shippingType) {",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/quotation.ts:5655",
+            "quote": "consignType: q.shippingType as ConsignType,",
+            "absent": "consignType: (q.shippingType ?? \"fcl\") as ConsignType,",
+            "commit": null,
+            "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+            "date": "2026-10-02"
           }
         ],
         "history": [
           {
             "date": "2026-10-01",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (fake-default)"
+          },
+          {
+            "date": "2026-10-02",
+            "from": "open",
+            "to": "fixed",
+            "by": "zyt-audit",
+            "note": "The fallback to \"fcl\" is gone. convertToOrder now refuses with BAD_REQUEST when shippingType is blank and copies q.shippingType unchanged. Submitting for review also requires Shipping Type (audit/resources.ts)."
+          }
+        ],
+        "fixedAt": "2026-10-02"
+      },
+      {
+        "id": "au-cancel-end-cancel-shut-out-skips-the-ord",
+        "title": "Cancel end / cancel shut-out skips the order's approval gate when sent through collectiveOrder.transition",
+        "body": "Step 15 (and the step 27 close): the order flow's end_order and shut_out gates are meant to stop anyone rewinding an order's process state until the order's review has passed. The bulk path collectiveOrder.batch enforces this. It gates cancel_end on end_order and cancel_shut_out on shut_out for every id. The single-order collectiveOrder.transition endpoint, which accepts process: \"not_shut_out\", gates only the forward moves (process === \"finished\" and process === \"shut_out\"). It does not gate a move back to not_shut_out. PROCESS_TRANSITIONS allows finished -> not_shut_out and shut_out -> not_shut_out, so any holder of collectiveOrder.lifecycle.process (ops, branch-manager, admin) can reopen a finished or shut-out order on an org with the gates ticked, without the approval the batch path demands. The web UI routes row actions through batch, so this is reachable through the API only. It is still the same state change with a different guard.",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3685",
+            "quote": "if (patch.process === \"finished\")",
+            "absent": "if (patch.process === \"not_shut_out\")",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3687",
+            "quote": "if (patch.process === \"shut_out\")",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3633",
+            "quote": "process: z.enum([\"not_shut_out\", \"shut_out\", \"finished\"]).optional(),",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3814",
+            "quote": "} else if (input.action === \"end\" || input.action === \"cancel_end\") {",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3816",
+            "quote": "} else if (input.action === \"shut_out\" || input.action === \"cancel_shut_out\") {",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:612",
+            "quote": "finished: [\"not_shut_out\", \"shut_out\"],",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (unenforced-approval)"
+          }
+        ]
+      },
+      {
+        "id": "au-an-approved-order-can-be-deleted-outrigh",
+        "title": "An approved order can be deleted outright: the approval freezes its edits but not its existence",
+        "body": "Step 15: once accounting approves an order, collectiveOrder.update (and updateBatch) refuse further edits through assertPostApprovalEditable, so the approved content is frozen. collectiveOrder.delete checks only under-review and locked, and the batch delete action checks only assertNoneUnderReview. So an approved, unlocked order, together with its unbilled cost lines (removed by clearOrderCostLines), can be deleted by any collectiveOrder.delete holder. Nobody re-reviews it and the approver is not told. This is the same asymmetry as the fee item s21-an-approved-fee-can-be-deleted-outright-approval, here on the order record.",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3317",
+            "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", input.orderId);",
+            "absent": "await assertPostApprovalEditable(tx, organizationId, \"collective_order\", input.orderId);",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3318",
+            "quote": "assertUnlocked(existing, \"deleted\");",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3832",
+            "quote": "await assertNoneUnderReview(tx, organizationId, \"collective_order\", ids);",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3013",
+            "quote": "await assertPostApprovalEditable(",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:3196",
+            "quote": "await assertPostApprovalEditableMany(tx, organizationId, \"collective_order\", ids);",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (unenforced-approval)"
+          }
+        ]
+      },
+      {
+        "id": "au-an-approved-bill-of-lading-can-be-delete",
+        "title": "An approved bill of lading can be deleted, though even its attachments are frozen after approval",
+        "body": "Steps 16 and 18: after the director approves a B/L, lading.update and lading.deleteAttachment both call assertPostApprovalEditable, so the approved B/L and even its attached files cannot be changed. lading.delete and lading.bulkDelete call only assertNotUnderReview. Any lading.delete holder can therefore delete an approved B/L outright, one at a time or in bulk, with no re-review. The approval binds the B/L's fields and attachments but not the record itself.",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/lading.ts:1577",
+            "quote": "await assertNotUnderReview(tx, context.org.organizationId, \"lading\", input.ladingId);",
+            "absent": "await assertPostApprovalEditable(tx, context.org.organizationId, \"lading\", input.ladingId);",
+            "commit": null,
+            "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/lading.ts:1578",
+            "quote": "await tx.delete(lading).where(eq(lading.id, input.ladingId));",
+            "commit": null,
+            "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/lading.ts:1616",
+            "quote": "await assertNotUnderReview(tx, context.org.organizationId, \"lading\", row.id);",
+            "commit": null,
+            "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/lading.ts:1696",
+            "quote": "await assertPostApprovalEditable(tx, organizationId, \"lading\", ladingId);",
+            "commit": null,
+            "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/lading.ts:2328",
+            "quote": "await assertPostApprovalEditable(tx, organizationId, \"lading\", input.ladingId);",
+            "commit": null,
+            "fingerprint": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (unenforced-approval)"
+          }
+        ]
+      },
+      {
+        "id": "au-post-to-cost-ledger-is-offered-to-sales-",
+        "title": "Post to cost ledger is offered to Sales, but only roles holding expense.costLine.import can run it",
+        "body": "At step 11 the SOP gives the quotation to Sales, and the editor menu offers 'Post to cost ledger' on any approved quotation that is won or converted. The check looks only at audit and outcome status, never at a permission. The server gates importFromQuote on expense.costLine.import. Sales hold only expense.costLine.read, so every salesperson who presses it gets FORBIDDEN. The node is held by admin, branch-manager, ops (expense.costLine subtree) and accounting.",
+        "sev": "friction",
+        "pattern": "role-mismatch",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:161",
+            "quote": "quote.auditStatus === \"approved\" && (quote.status === \"won\" || quote.status === \"converted\"),",
+            "commit": null,
+            "fingerprint": "39bc2bddc71d420101b6a6205840b49956b8ba46540de6e82a03d43321d2accb",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2062",
+            "quote": ".use(requireNode(EXPENSE.costLineImport))",
+            "commit": null,
+            "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/roles.ts:128",
+            "quote": "\"expense.costLine.read\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (role-mismatch)"
+          }
+        ]
+      },
+      {
+        "id": "au-expense-entry-lets-sales-and-accounting-",
+        "title": "Expense entry lets Sales and Accounting fill fee rows and press Save, then the server refuses the save",
+        "body": "Step 20 says that collectiveOrder:read to open the order and collectiveOrder.update to save are enough. The Expense entry grid and its Save button are disabled only when the order is locked, never on a permission. On the server, saveChildren also needs expense.costLine.create for any new row, expense.costLine.update for any changed row and expense.costLine.delete for removed rows. (1) Sales hold collectiveOrder.update but only expense.costLine.read. A salesperson who goes to Expense entry straight after converting (steps 11-12) can add rows with 'Costs name' and press Save, and gets 'Missing permission: expense.costLine.create'. (2) Accounting is granted collectiveOrder.detail because fees are the half of the order accounting owns, but it does not hold collectiveOrder.update. The grid is fully editable for them, yet every save fails at the procedure guard.",
+        "sev": "blocked",
+        "pattern": "role-mismatch",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:937",
+            "quote": "<Button onClick={save} disabled={locked || !loaded || saveMutation.isPending}>",
+            "commit": null,
+            "fingerprint": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/order.$orderId.expenses.tsx:989",
+            "quote": "disabled={locked}",
+            "commit": null,
+            "fingerprint": "da34338cec28377fbde5ebde19ca7aab218cd5fcc49b066be7589848b182578b",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:4011",
+            "quote": ".use(requireNode(COLLECTIVE_ORDER.update))",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/collective-order.ts:4524",
+            "quote": "if (inserting && !permittedNode(context.org, EXPENSE.costLineCreate)) {",
+            "commit": null,
+            "fingerprint": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/roles.ts:142",
+            "quote": "\"collectiveOrder.update\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/roles.ts:180",
+            "quote": "// Read-only context, plus the detail subtree because that is where the fee",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (role-mismatch)"
+          }
+        ]
+      },
+      {
+        "id": "au-the-quotation-page-shows-approve-reject-",
+        "title": "The quotation page shows Approve / Reject to the salesperson who submitted it",
+        "body": "At step 8 Sales submits and a routed reviewer decides; the seeded stage is branch-manager, and separation of duties applies. On the record page, Approve and Reject show for every viewer whenever auditStatus is pending, with no permission, stage-seat or submitter check. The submitting salesperson sees an Approve button on their own quotation. The server refuses it with 'You submitted this record. Another reviewer must decide it.' or 'This submission is not waiting on you'.",
+        "sev": "friction",
+        "pattern": "role-mismatch",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:137",
+            "quote": "approveReject: quote.auditStatus === \"pending\",",
+            "commit": null,
+            "fingerprint": "39bc2bddc71d420101b6a6205840b49956b8ba46540de6e82a03d43321d2accb",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/decide.ts:59",
+            "quote": "if (entry.separationOfDuties && submission.submittedBy === org.membership.id) {",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/decide.ts:89",
+            "quote": "if (!isStageReviewer(org, targets)) {",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (role-mismatch)"
+          }
+        ]
+      },
+      {
+        "id": "au-bill-review-hides-withdrawal-requests-th",
+        "title": "Bill review hides withdrawal requests that are waiting for the reviewer's consent",
+        "body": "Step 23: the seeded Bill review flow is the only seeded flow with withdrawal mode requires_reviewer_approval. When an accountant retracts a bill after any stage has passed, the submission moves to withdrawal_under_review. Its audit-status cache then reads withdraw_pending, and only the routed accounting or director reviewer can approve the retraction. /approve/bill mounts BillsPage in review mode, and that page seeds its filter to auditStatus = pending. bills.list applies that as an exact match on the cache column, on top of awaitingMyReview. So the row the engine routed to this reviewer is filtered out of the queue they open, including when they arrive from My tasks → Decide, which links to plain /approve/bill. The Quotation, Cost, Shipment and Expense-template queues dropped this same seed under NCTAI-266 because it emptied the withdrawal reviewer's queue. Bill review, the one queue whose seeded flow actually produces withdrawal reviews, still has the seed. The page only hints at this in its empty state, so when other pending bills are listed the withdrawal is hidden with no hint. The presets do not help either: 'My withdrawals' filters on submittedBy = me, which is the submitter's view, not the reviewer's. Until a reviewer clears the filter by hand, the bill stays under review and frozen (no invoice, no write-off, no edit), and the submitter cannot finish the correction.",
+        "sev": "friction",
+        "pattern": "unreachable-screen",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "apps/web/src/routes/_next/expenses/bills.tsx:957",
+            "quote": "isReview ? { auditStatus: REVIEW_QUEUE_DEFAULT_STATUS as BillAuditStatus } : {},",
+            "commit": null,
+            "fingerprint": "c1e37bfd056851d88a25d7fa949a5e34608e089ccf3c5d240ca9572dc0a02be1",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/lib/expense.ts:379",
+            "quote": "export const REVIEW_QUEUE_DEFAULT_STATUS = \"pending\" as const;",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/bills.ts:258",
+            "quote": "if (input?.auditStatus) conditions.push(eq(bill.auditStatus, input.auditStatus));",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/resources.ts:47",
+            "quote": "withdrawal_under_review: \"withdraw_pending\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/modules/audit/seed.ts:222",
+            "quote": "withdrawalMode: \"requires_reviewer_approval\",",
+            "commit": null,
+            "fingerprint": "86036babcdc8d196cdecf2a678ddc36669c645efc534a3071172377f7bd8d81f",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/routes/_next/approve/cost.tsx:37",
+            "quote": "// rows the router had sent. The withdrawal reviewer's queue was always empty.",
+            "commit": null,
+            "fingerprint": "6088d4e5a25ce2293b6f41cf6b0a7b4e05679785267b2430423d0f4ded9abd8f",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "apps/web/src/components/shell-next/task-routes.ts:61",
+            "quote": "bill: \"/approve/bill\",",
+            "commit": null,
+            "fingerprint": null,
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": null,
+            "to": "open",
+            "by": "zyt-audit",
+            "note": "found by zyt-audit (unreachable-screen)"
+          }
+        ]
+      },
+      {
+        "id": "au-the-profit-statement-and-profit-trend-co",
+        "title": "The profit statement and profit trend count a foreign-currency bill that has no exchange rate as if its rate were 1",
+        "body": "costLines.createBill can create a bill in a foreign currency while the rate is missing. It returns a rateMissing banner and leaves bill.exchange_rate NULL. Later, at month-end (step 27), getProfitStatement and getProfitAnalysis convert each bill into local currency with coalesce(bill.exchangeRate, 1). A USD 1,000 bill with no rate therefore lands in the local-currency receivable, payable, gross profit and actual profit as 1,000 local. getFinancialSummary returns a missingRate / billsMissingRate count beside its roll-up so the UI can mark it incomplete. These two endpoints return no such count. Their summary totals look complete when they are wrong, and the accountant or director reading the profit figures has no sign that some bills were never converted. The byCurrency breakdown is the only unconverted view.",
+        "sev": "money",
+        "pattern": "fake-default",
+        "status": "open",
+        "origin": "defect",
+        "firstFound": "2026-10-02",
+        "lastVerified": "2026-10-02",
+        "evidence": [
+          {
+            "at": "packages/api/src/routers/report.ts:2571",
+            "quote": "receivable: sql<string>`coalesce(sum(${bill.totalAmount}::numeric * coalesce(${bill.exchangeRate}::numeric, 1)) filter (where ${bill.attribute} = 'receivable'), 0)`,",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/report.ts:2420",
+            "quote": "getProfitStatement: orgProcedure",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/report.ts:2215",
+            "quote": "amount: sql<string>`coalesce(sum(${bill.totalAmount}::numeric * coalesce(${bill.exchangeRate}::numeric, 1)), 0)`,",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/report.ts:1245",
+            "quote": "missingRate: sql<number>`count(*) filter (where ${bill.exchangeRate} is null)::int`,",
+            "commit": null,
+            "fingerprint": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
+            "date": "2026-10-02"
+          },
+          {
+            "at": "packages/api/src/routers/expense/cost-lines.ts:2669",
+            "quote": "rateMissing: created.some((b) => b.exchangeRate === null),",
+            "commit": null,
+            "fingerprint": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+            "date": "2026-10-02"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-10-02",
             "from": null,
             "to": "open",
             "by": "zyt-audit",

@@ -1,0 +1,2165 @@
+{
+  "page": "ZYT-Task/customer-intake-sop",
+  "createdAt": "2026-10-02T14:49:13.3726843Z",
+  "source": "audit",
+  "ops": [
+    {
+      "id": "op-001",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-cancel-end-cancel-shut-out-skips-the-ord",
+        "title": "Cancel end / cancel shut-out skips the order's approval gate when sent through collectiveOrder.transition",
+        "body": "Step 15 (and the step 27 close): the order flow's end_order and shut_out gates are meant to stop anyone rewinding an order's process state until the order's review has passed. The bulk path collectiveOrder.batch enforces this. It gates cancel_end on end_order and cancel_shut_out on shut_out for every id. The single-order collectiveOrder.transition endpoint, which accepts process: \"not_shut_out\", gates only the forward moves (process === \"finished\" and process === \"shut_out\"). It does not gate a move back to not_shut_out. PROCESS_TRANSITIONS allows finished -> not_shut_out and shut_out -> not_shut_out, so any holder of collectiveOrder.lifecycle.process (ops, branch-manager, admin) can reopen a finished or shut-out order on an org with the gates ticked, without the approval the batch path demands. The web UI routes row actions through batch, so this is reachable through the API only. It is still the same state change with a different guard.",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "note": "found by zyt-audit (unenforced-approval)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3685,
+          "quote": "if (patch.process === \"finished\")",
+          "absent": "if (patch.process === \"not_shut_out\")"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3687,
+          "quote": "if (patch.process === \"shut_out\")"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3633,
+          "quote": "process: z.enum([\"not_shut_out\", \"shut_out\", \"finished\"]).optional(),"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3814,
+          "quote": "} else if (input.action === \"end\" || input.action === \"cancel_end\") {"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3816,
+          "quote": "} else if (input.action === \"shut_out\" || input.action === \"cancel_shut_out\") {"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 612,
+          "quote": "finished: [\"not_shut_out\", \"shut_out\"],"
+        }
+      ],
+      "reason": "unenforced-approval defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-002",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-an-approved-order-can-be-deleted-outrigh",
+        "title": "An approved order can be deleted outright: the approval freezes its edits but not its existence",
+        "body": "Step 15: once accounting approves an order, collectiveOrder.update (and updateBatch) refuse further edits through assertPostApprovalEditable, so the approved content is frozen. collectiveOrder.delete checks only under-review and locked, and the batch delete action checks only assertNoneUnderReview. So an approved, unlocked order, together with its unbilled cost lines (removed by clearOrderCostLines), can be deleted by any collectiveOrder.delete holder. Nobody re-reviews it and the approver is not told. This is the same asymmetry as the fee item s21-an-approved-fee-can-be-deleted-outright-approval, here on the order record.",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "note": "found by zyt-audit (unenforced-approval)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3317,
+          "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", input.orderId);",
+          "absent": "await assertPostApprovalEditable(tx, organizationId, \"collective_order\", input.orderId);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3318,
+          "quote": "assertUnlocked(existing, \"deleted\");"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3832,
+          "quote": "await assertNoneUnderReview(tx, organizationId, \"collective_order\", ids);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3013,
+          "quote": "await assertPostApprovalEditable("
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3196,
+          "quote": "await assertPostApprovalEditableMany(tx, organizationId, \"collective_order\", ids);"
+        }
+      ],
+      "reason": "unenforced-approval defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-003",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-an-approved-bill-of-lading-can-be-delete",
+        "title": "An approved bill of lading can be deleted, though even its attachments are frozen after approval",
+        "body": "Steps 16 and 18: after the director approves a B/L, lading.update and lading.deleteAttachment both call assertPostApprovalEditable, so the approved B/L and even its attached files cannot be changed. lading.delete and lading.bulkDelete call only assertNotUnderReview. Any lading.delete holder can therefore delete an approved B/L outright, one at a time or in bulk, with no re-review. The approval binds the B/L's fields and attachments but not the record itself.",
+        "sev": "data",
+        "pattern": "unenforced-approval",
+        "note": "found by zyt-audit (unenforced-approval)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1577,
+          "quote": "await assertNotUnderReview(tx, context.org.organizationId, \"lading\", input.ladingId);",
+          "absent": "await assertPostApprovalEditable(tx, context.org.organizationId, \"lading\", input.ladingId);"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1578,
+          "quote": "await tx.delete(lading).where(eq(lading.id, input.ladingId));"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1616,
+          "quote": "await assertNotUnderReview(tx, context.org.organizationId, \"lading\", row.id);"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1696,
+          "quote": "await assertPostApprovalEditable(tx, organizationId, \"lading\", ladingId);"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 2328,
+          "quote": "await assertPostApprovalEditable(tx, organizationId, \"lading\", input.ladingId);"
+        }
+      ],
+      "reason": "unenforced-approval defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-004",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-post-to-cost-ledger-is-offered-to-sales-",
+        "title": "Post to cost ledger is offered to Sales, but only roles holding expense.costLine.import can run it",
+        "body": "At step 11 the SOP gives the quotation to Sales, and the editor menu offers 'Post to cost ledger' on any approved quotation that is won or converted. The check looks only at audit and outcome status, never at a permission. The server gates importFromQuote on expense.costLine.import. Sales hold only expense.costLine.read, so every salesperson who presses it gets FORBIDDEN. The node is held by admin, branch-manager, ops (expense.costLine subtree) and accounting.",
+        "sev": "friction",
+        "pattern": "role-mismatch",
+        "note": "found by zyt-audit (role-mismatch)"
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 161,
+          "quote": "quote.auditStatus === \"approved\" && (quote.status === \"won\" || quote.status === \"converted\"),"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2062,
+          "quote": ".use(requireNode(EXPENSE.costLineImport))"
+        },
+        {
+          "file": "packages/api/src/roles.ts",
+          "line": 128,
+          "quote": "\"expense.costLine.read\","
+        }
+      ],
+      "reason": "role-mismatch defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-005",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-expense-entry-lets-sales-and-accounting-",
+        "title": "Expense entry lets Sales and Accounting fill fee rows and press Save, then the server refuses the save",
+        "body": "Step 20 says that collectiveOrder:read to open the order and collectiveOrder.update to save are enough. The Expense entry grid and its Save button are disabled only when the order is locked, never on a permission. On the server, saveChildren also needs expense.costLine.create for any new row, expense.costLine.update for any changed row and expense.costLine.delete for removed rows. (1) Sales hold collectiveOrder.update but only expense.costLine.read. A salesperson who goes to Expense entry straight after converting (steps 11-12) can add rows with 'Costs name' and press Save, and gets 'Missing permission: expense.costLine.create'. (2) Accounting is granted collectiveOrder.detail because fees are the half of the order accounting owns, but it does not hold collectiveOrder.update. The grid is fully editable for them, yet every save fails at the procedure guard.",
+        "sev": "blocked",
+        "pattern": "role-mismatch",
+        "note": "found by zyt-audit (role-mismatch)"
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
+          "line": 937,
+          "quote": "<Button onClick={save} disabled={locked || !loaded || saveMutation.isPending}>"
+        },
+        {
+          "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
+          "line": 989,
+          "quote": "disabled={locked}"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 4011,
+          "quote": ".use(requireNode(COLLECTIVE_ORDER.update))"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 4524,
+          "quote": "if (inserting && !permittedNode(context.org, EXPENSE.costLineCreate)) {"
+        },
+        {
+          "file": "packages/api/src/roles.ts",
+          "line": 142,
+          "quote": "\"collectiveOrder.update\","
+        },
+        {
+          "file": "packages/api/src/roles.ts",
+          "line": 180,
+          "quote": "// Read-only context, plus the detail subtree because that is where the fee"
+        }
+      ],
+      "reason": "role-mismatch defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-006",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-the-quotation-page-shows-approve-reject-",
+        "title": "The quotation page shows Approve / Reject to the salesperson who submitted it",
+        "body": "At step 8 Sales submits and a routed reviewer decides; the seeded stage is branch-manager, and separation of duties applies. On the record page, Approve and Reject show for every viewer whenever auditStatus is pending, with no permission, stage-seat or submitter check. The submitting salesperson sees an Approve button on their own quotation. The server refuses it with 'You submitted this record. Another reviewer must decide it.' or 'This submission is not waiting on you'.",
+        "sev": "friction",
+        "pattern": "role-mismatch",
+        "note": "found by zyt-audit (role-mismatch)"
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 137,
+          "quote": "approveReject: quote.auditStatus === \"pending\","
+        },
+        {
+          "file": "packages/api/src/modules/audit/decide.ts",
+          "line": 59,
+          "quote": "if (entry.separationOfDuties && submission.submittedBy === org.membership.id) {"
+        },
+        {
+          "file": "packages/api/src/modules/audit/decide.ts",
+          "line": 89,
+          "quote": "if (!isStageReviewer(org, targets)) {"
+        }
+      ],
+      "reason": "role-mismatch defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-007",
+      "kind": "ledger-add",
+      "tier": "needs-human",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-an-approval-tells-nobody-my-tasks-carrie",
+        "title": "An approval tells nobody: My tasks carries rejections back but never approvals forward",
+        "body": "Steps 8 to 9 and 15 to 16: when a reviewer approves a quotation or an order, the submission becomes passed and only the audit log and the status cache change. My tasks has four row kinds: decide, resubmit (rejected submissions only), unstick and reply. No kind picks up a passed submission. A salesperson whose quotation was approved gets no 'approved, send it now' task. Documentation gets no queue of approved orders still waiting for a bill of lading. A search of api and web found no 'approved order without a B/L' query; the only lading count is on the order's own record page. Each next person has to poll the ledgers to find out that their step is unblocked.",
+        "sev": "friction",
+        "pattern": "handoff-drop",
+        "note": "found by zyt-audit (handoff-drop)"
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/components/shell-next/use-my-tasks.ts",
+          "line": 60,
+          "quote": "export type TaskKind = \"decide\" | \"resubmit\" | \"unstick\" | \"reply\";"
+        },
+        {
+          "file": "apps/web/src/components/shell-next/use-my-tasks.ts",
+          "line": 224,
+          "quote": "...orpc.auditReview.listMine.queryOptions({ input: { status: \"rejected\" } }),"
+        },
+        {
+          "file": "packages/api/src/modules/audit/decide.ts",
+          "line": 192,
+          "quote": "await logAuditAction(tx, org, \"audit.decide\", submission, {"
+        }
+      ],
+      "reason": "handoff-drop defect [needs-human: refuter PLAUSIBLE: The quotes reproduce. TaskKind has only decide, resubmit, unstick and reply, and the only listMine query in My tasks filters on status 'rejected'. decide.ts only logs the action and runs a per-resource onPassed hook; the only onPassed found is quotation_decision's correction, and none sends a notice. The notification module serves only the document and B/L-tracking alerts. A grep found no 'approved order without a B/L' query; the only lading count is on the order record page. No existing ledger item covers approval hand-forward. The negative claims (no forward signal anywhere, no B/L-pending queue) can only be shown by search, not by quoting a line. The finding is also a product/UX gap rather than a broken code path, so it is likely but not proven.]",
+      "chain": false
+    },
+    {
+      "id": "op-008",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-bill-review-hides-withdrawal-requests-th",
+        "title": "Bill review hides withdrawal requests that are waiting for the reviewer's consent",
+        "body": "Step 23: the seeded Bill review flow is the only seeded flow with withdrawal mode requires_reviewer_approval. When an accountant retracts a bill after any stage has passed, the submission moves to withdrawal_under_review. Its audit-status cache then reads withdraw_pending, and only the routed accounting or director reviewer can approve the retraction. /approve/bill mounts BillsPage in review mode, and that page seeds its filter to auditStatus = pending. bills.list applies that as an exact match on the cache column, on top of awaitingMyReview. So the row the engine routed to this reviewer is filtered out of the queue they open, including when they arrive from My tasks → Decide, which links to plain /approve/bill. The Quotation, Cost, Shipment and Expense-template queues dropped this same seed under NCTAI-266 because it emptied the withdrawal reviewer's queue. Bill review, the one queue whose seeded flow actually produces withdrawal reviews, still has the seed. The page only hints at this in its empty state, so when other pending bills are listed the withdrawal is hidden with no hint. The presets do not help either: 'My withdrawals' filters on submittedBy = me, which is the submitter's view, not the reviewer's. Until a reviewer clears the filter by hand, the bill stays under review and frozen (no invoice, no write-off, no edit), and the submitter cannot finish the correction.",
+        "sev": "friction",
+        "pattern": "unreachable-screen",
+        "note": "found by zyt-audit (unreachable-screen)"
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/expenses/bills.tsx",
+          "line": 957,
+          "quote": "isReview ? { auditStatus: REVIEW_QUEUE_DEFAULT_STATUS as BillAuditStatus } : {},"
+        },
+        {
+          "file": "apps/web/src/lib/expense.ts",
+          "line": 379,
+          "quote": "export const REVIEW_QUEUE_DEFAULT_STATUS = \"pending\" as const;"
+        },
+        {
+          "file": "packages/api/src/routers/expense/bills.ts",
+          "line": 258,
+          "quote": "if (input?.auditStatus) conditions.push(eq(bill.auditStatus, input.auditStatus));"
+        },
+        {
+          "file": "packages/api/src/modules/audit/resources.ts",
+          "line": 47,
+          "quote": "withdrawal_under_review: \"withdraw_pending\","
+        },
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 222,
+          "quote": "withdrawalMode: \"requires_reviewer_approval\","
+        },
+        {
+          "file": "apps/web/src/routes/_next/approve/cost.tsx",
+          "line": 37,
+          "quote": "// rows the router had sent. The withdrawal reviewer's queue was always empty."
+        },
+        {
+          "file": "apps/web/src/components/shell-next/task-routes.ts",
+          "line": 61,
+          "quote": "bill: \"/approve/bill\","
+        }
+      ],
+      "reason": "unreachable-screen defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-009",
+      "kind": "ledger-add",
+      "tier": "confirm",
+      "path": "/ledger/items/-",
+      "new": {
+        "id": "au-the-profit-statement-and-profit-trend-co",
+        "title": "The profit statement and profit trend count a foreign-currency bill that has no exchange rate as if its rate were 1",
+        "body": "costLines.createBill can create a bill in a foreign currency while the rate is missing. It returns a rateMissing banner and leaves bill.exchange_rate NULL. Later, at month-end (step 27), getProfitStatement and getProfitAnalysis convert each bill into local currency with coalesce(bill.exchangeRate, 1). A USD 1,000 bill with no rate therefore lands in the local-currency receivable, payable, gross profit and actual profit as 1,000 local. getFinancialSummary returns a missingRate / billsMissingRate count beside its roll-up so the UI can mark it incomplete. These two endpoints return no such count. Their summary totals look complete when they are wrong, and the accountant or director reading the profit figures has no sign that some bills were never converted. The byCurrency breakdown is the only unconverted view.",
+        "sev": "money",
+        "pattern": "fake-default",
+        "note": "found by zyt-audit (fake-default)"
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 2571,
+          "quote": "receivable: sql<string>`coalesce(sum(${bill.totalAmount}::numeric * coalesce(${bill.exchangeRate}::numeric, 1)) filter (where ${bill.attribute} = 'receivable'), 0)`,"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 2420,
+          "quote": "getProfitStatement: orgProcedure"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 2215,
+          "quote": "amount: sql<string>`coalesce(sum(${bill.totalAmount}::numeric * coalesce(${bill.exchangeRate}::numeric, 1)), 0)`,"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 1245,
+          "quote": "missingRate: sql<number>`count(*) filter (where ${bill.exchangeRate} is null)::int`,"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2669,
+          "quote": "rateMissing: created.some((b) => b.exchangeRate === null),"
+        }
+      ],
+      "reason": "fake-default defect",
+      "chain": false,
+      "refute": "holds"
+    },
+    {
+      "id": "op-010",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/0",
+      "old": "identity",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged since the last audit. createBill still falls back to an exact-name company lookup on the settlement unit, so a happy-path bill whose client was picked from the directory gets its company back. The quote-to-cost-line bridge still carries no settlementCompanyId: bridge.ts has 0 occurrences of it and passes only the settlementUnit text. A renamed company or a free-typed client name therefore still loses the identity at the cost line."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/expense/bridge.ts",
+          "line": 240,
+          "quote": "settlementUnit,",
+          "absent": "settlementCompanyId"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2520,
+          "quote": ".where(and(eq(company.organizationId, organizationId), eq(company.name, unit)))"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-011",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/1",
+      "old": "fx-gain-loss",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The payment form sends an exchange rate. On a cross-currency write-off, a stored payment rate of 1 is treated as unknown and the rate is looked up in the org's write_off rate table. settlementFx books nothing when a rate is unknown and reports which one through fxUnknown."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/expenses/payments.tsx",
+          "line": 339,
+          "quote": "exchangeRate: rate || undefined,"
+        },
+        {
+          "file": "packages/api/src/routers/expense/write-offs.ts",
+          "line": 539,
+          "quote": "toNumber(pay.exchangeRate, 1) === 1"
+        },
+        {
+          "file": "packages/api/src/routers/expense/write-offs.ts",
+          "line": 817,
+          "quote": "let fxUnknown: SettlementFxUnknown | null = null;"
+        },
+        {
+          "file": "packages/api/src/routers/expense/write-offs.ts",
+          "line": 867,
+          "quote": "const fx = settlementFx({"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-012",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/2",
+      "old": "never-overdue",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged. Fixed part: createBill's exact-name company fallback gives happy-path bills a company, so the payment-terms trigger fills their due date. The ageing report also counts undated unpaid bills in a separate bucket. Still broken: bridge cost lines carry no company id, so any bill whose settlement unit does not exactly match a company name still gets no due date and never reads as overdue."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/expense/bridge.ts",
+          "line": 240,
+          "quote": "settlementUnit,",
+          "absent": "settlementCompanyId"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2520,
+          "quote": ".where(and(eq(company.organizationId, organizationId), eq(company.name, unit)))"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 851,
+          "quote": ".where(and(unpaid, isNull(bill.dueDate)))"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-013",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/3",
+      "old": "lump-sums",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The bridge carries quantity and unit price whenever the breakdown is honest, meaning quantity times price equals the amount. Only lines floored to a minimum charge stay as lump sums."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/expense/bridge.ts",
+          "line": 236,
+          "quote": "quantity: breakdownIsHonest ? feeLine.quantity : null,"
+        },
+        {
+          "file": "packages/api/src/modules/expense/bridge.ts",
+          "line": 237,
+          "quote": "unitPrice: breakdownIsHonest ? feeLine.unitPrice : null,"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-014",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/4",
+      "old": "two-profits",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still open. The order expenses grid computes local amounts from each fee row's own exchangeRate (feeLocalAmount). Financial Stat sums bill.totalAmount times bill.exchangeRate. The same job can still show two different margins."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
+          "line": 848,
+          "quote": "rows.reduce((s, r) => s + feeLocalAmount(r, taxInclusive), 0);"
+        },
+        {
+          "file": "apps/web/src/lib/expense.ts",
+          "line": 429,
+          "quote": "const gross = feeNumber(fee.amount) * (fee.exchangeRate ? feeNumber(fee.exchangeRate) : 1);"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 2215,
+          "quote": "amount: sql<string>`coalesce(sum(${bill.totalAmount}::numeric * coalesce(${bill.exchangeRate}::numeric, 1)), 0)`,"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-015",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/5",
+      "old": "bill-rewrite",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged. Fixed part: the retotal writer is gated while the bill is under review and frozen after approval, and header edits are gated under review. Still broken: the seeded bill flow ticks only input_invoice_no and write_off. The cancel_write_off gate is wired into write-offs.reverse but is not seeded, so under the default flow a write-off can be reversed with no approval."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/bills.ts",
+          "line": 587,
+          "quote": "gates: [underReviewGate(\"bill\"), billTotalPostApprovalGate],"
+        },
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 234,
+          "quote": "gates: [\"input_invoice_no\", \"write_off\"],",
+          "absent": "\"cancel_write_off\""
+        },
+        {
+          "file": "packages/api/src/routers/expense/write-offs.ts",
+          "line": 1243,
+          "quote": "await assertGateCleared(tx, organizationId, \"bill\", wo.billId, \"cancel_write_off\");"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-016",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/6",
+      "old": "base-currency",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged since the last audit. An optional org base currency exists (org_setting.base_currency), and the Financial summary flags mixed branch currencies when it is unset. Still broken: the setting is nullable. When it is unset, reportingCurrency falls back to the branch's own currency, so cross-branch roll-ups still add amounts in different currencies. The mixed-currency branch only sets a warning list and does not change the totals."
+      },
+      "evidence": [
+        {
+          "file": "packages/db/src/schema/setting.ts",
+          "line": 88,
+          "quote": "baseCurrency: text(\"base_currency\"),"
+        },
+        {
+          "file": "packages/api/src/modules/setting/fx-settings.ts",
+          "line": 223,
+          "quote": "return reportingCurrencyFrom(base, row?.currency);"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 1383,
+          "quote": "if (distinct.length > 1) mixedLocalCurrencies = distinct;"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-017",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/7",
+      "old": "unnumbered",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. convertToOrder allocates a job number through insertOrderWithJobNumber. The carried cost lines take order.jobNumber and fall back to the quotation number only when no job sequence exists or the caller is denied the field. The code has moved down to lines 5645 and 5695."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5645,
+          "quote": "const order = await insertOrderWithJobNumber(tx, context.org, {"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5695,
+          "quote": "const orderNo = order.jobNumber ?? q.quotationNo;"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-018",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/8",
+      "old": "never-closed",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged. The order row menu calls collectiveOrder.batch for one order (End job, Cancel end, Lock, Unlock), so a shipment can be ended. Still broken: shut out, archive and delete are deliberately left off the menu. Across apps/web, order-row-actions.tsx is the only file that calls collectiveOrder.batch, and no file calls collectiveOrder.delete. The server's delete (collective-order.ts:3290) and batch archive/delete therefore have no web caller."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/components/order-ledger/order-row-actions.tsx",
+          "line": 113,
+          "quote": "* comes back, and shut out, archive and delete stay off this menu."
+        },
+        {
+          "file": "apps/web/src/components/order-ledger/order-row-actions.tsx",
+          "line": 306,
+          "quote": "await client.collectiveOrder.batch({ action: move.action, orderIds: [orderId] });"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-019",
+      "kind": "ledger-status",
+      "tier": "needs-human",
+      "path": "/ledger/items/9",
+      "old": "paperwork",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The link screen and the per-order Documents card remain fixed: link sends target.kind, and OrderDocumentsCard is mounted in the order ledger reading pane. Since the last check, DocTypeId has become a multi-line union and gained \"shipping_order\". Still broken: it has no K1/K2 customs declaration type. K1/K2 appears only in a comment in commercial-invoice.ts as a pre-fill source."
+      },
+      "evidence": [
+        {
+          "file": "packages/document-ai/src/registry/types.ts",
+          "line": 5,
+          "quote": "export type DocTypeId =",
+          "absent": "k1"
+        },
+        {
+          "file": "packages/document-ai/src/registry/types.ts",
+          "line": 9,
+          "quote": "| \"shipping_order\""
+        },
+        {
+          "file": "apps/web/src/routes/_next/documents.$documentId.tsx",
+          "line": 1192,
+          "quote": "client.document.link({ documentId, entityType: target.kind, entityId: target.id }),"
+        },
+        {
+          "file": "apps/web/src/components/order-ledger/order-ledger-page.tsx",
+          "line": 1213,
+          "quote": "lead: <OrderDocumentsCard rollup={readingDocuments} showHeader={false} />,"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed [evidence quote not found]",
+      "chain": false
+    },
+    {
+      "id": "op-020",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/10",
+      "old": "island",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged. The server includes countdownDeadline in the order customs payload. OrderDocumentsCard (with the 72h clock) renders in the ledger reading pane and on the lading page. Still broken: the full order record page (OrderRecordPage, which mounts RecordPage) never mounts OrderDocumentsCard. order-record-page.tsx contains no OrderDocumentsCard (0 matches), and RecordPage renders only config.detailGroups. So opening an order's full page still shows no customs countdown."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 1993,
+          "quote": "countdownDeadline: row.countdownDeadline,"
+        },
+        {
+          "file": "apps/web/src/components/order-ledger/order-record-page.tsx",
+          "line": 79,
+          "quote": "<RecordPage",
+          "absent": "OrderDocumentsCard"
+        },
+        {
+          "file": "apps/web/src/components/record-page/record-page.tsx",
+          "line": 108,
+          "quote": "const groups = useMemo(() => (row ? (config.detailGroups?.(row) ?? []) : []), [row, config]);"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-021",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/11",
+      "old": "dead-queues",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged. To Receive links out to the order record, and the B/L detail page has a ReviewMenu that submits a lading for review. Still broken: the seeded customer, supplier, agent and contract review flows all ship enabled: false (seed.ts lines 103, 127, 139 and 150). The company and contract review queues are therefore empty by construction until an admin enables the flows."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 103,
+          "quote": "enabled: false,"
+        },
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 150,
+          "quote": "enabled: false,"
+        },
+        {
+          "file": "apps/web/src/routes/_next/order.to-receive.tsx",
+          "line": 1863,
+          "quote": "<Link to={readingPattern} params={{ orderId: reading.id }}>"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/$id/index.tsx",
+          "line": 453,
+          "quote": "{canUpdate && data && <ReviewMenu selectedIds={[id]} onReview={reviewLading} />}"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-022",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/12",
+      "old": "channels",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Fixed: the quotation records enquiryChannel through a closed pgEnum (email, whatsapp, walk_in, phone, agent_nomination, repeat_booking) at quotation.ts:433. Still broken: the schema has no enquiry entity for non-email channels (the only enquiry reference is the quotation column). The mail thread status vocabulary still ends at closed, with no won or lost outcome."
+      },
+      "evidence": [
+        {
+          "file": "packages/db/src/schema/quotation.ts",
+          "line": 267,
+          "quote": "\"whatsapp\","
+        },
+        {
+          "file": "packages/db/src/schema/quotation.ts",
+          "line": 433,
+          "quote": "enquiryChannel: enquiryChannel(\"enquiry_channel\"),"
+        },
+        {
+          "file": "packages/db/src/schema/mailbox.ts",
+          "line": 61,
+          "quote": "\"closed\","
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-023",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/13",
+      "old": "money-by-hand",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The invoices router still has list, document, exportDocument, markDownloaded, markPrinted and cancel, and no send procedure. Write-offs still link to a bill (billId), not to an invoice, so whether an invoice is paid is not recorded directly."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/invoices.ts",
+          "line": 616,
+          "quote": "markDownloaded: orgProcedure",
+          "absent": "send: orgProcedure"
+        },
+        {
+          "file": "packages/db/src/schema/expense.ts",
+          "line": 618,
+          "quote": "billId: text(\"bill_id\").references(() => bill.id, { onDelete: \"set null\" }),"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-024",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/14",
+      "old": "job-shape",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Fixed: order status is validated against the trade's milestones (assertOrderStatus on create). Still broken: create input requires only owningBranchId and businessType. Every other orderFields entry is optional or nullish, and the status column is still a bare text column."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 2536,
+          "quote": "assertOrderStatus(rest.businessType, rest.status, null);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 2515,
+          "quote": "owningBranchId: z.string().min(1),"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 169,
+          "quote": "orderSource: z.enum([\"client_order\", \"group_dispatch\"]).optional(),"
+        },
+        {
+          "file": "packages/db/src/schema/collective-order.ts",
+          "line": 290,
+          "quote": "status: text(\"status\"),"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-025",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/15",
+      "old": "credit",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. bills.invoice computes company exposure and refuses an overage unless creditOverrideReason is given."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/bills.ts",
+          "line": 2119,
+          "quote": "const exposure = await companyExposure(tx, organizationId, companyId, first.currency);"
+        },
+        {
+          "file": "packages/api/src/routers/expense/bills.ts",
+          "line": 2131,
+          "quote": "if (overages.length > 0 && !input.creditOverrideReason) {"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-026",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/16",
+      "old": "tax-invoice",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The seller taxId on the invoice document is still hard-coded null. A grep finds no SST or GST in the expense schema."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/export/invoice-document.ts",
+          "line": 385,
+          "quote": "taxId: null,"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-027",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/17",
+      "old": "haulage",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The fleet schema has only three tables: fleetDevices, fleetPositionsLatest and fleetPositionsHistory. They are keyed by organization, account and device, and none references an order or job. A grep of the schema finds no driver, dispatch-leg or proof-of-delivery entity."
+      },
+      "evidence": [
+        {
+          "file": "packages/db/src/schema/fleet.ts",
+          "line": 25,
+          "quote": "export const fleetDevices = pgTable("
+        },
+        {
+          "file": "packages/db/src/schema/fleet.ts",
+          "line": 32,
+          "quote": "deviceId: text(\"device_id\").notNull(),"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-028",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/18",
+      "old": "au-the-accountant-who-submits-a-bill-can-si",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The bill resource entry now sets separationOfDuties: true, with a comment naming the accountant self-approval case. decide() refuses a decision by the submitter on any resource with that flag."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/audit/resources.ts",
+          "line": 709,
+          "quote": "// stage 1, so without this an accountant could pass their own bill."
+        },
+        {
+          "file": "packages/api/src/modules/audit/resources.ts",
+          "line": 710,
+          "quote": "separationOfDuties: true,"
+        },
+        {
+          "file": "packages/api/src/modules/audit/decide.ts",
+          "line": 59,
+          "quote": "if (entry.separationOfDuties && submission.submittedBy === org.membership.id) {"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-029",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/19",
+      "old": "au-before-8-am-the-payment-date-and-decisio",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Both dialogs still pre-fill with businessDateInput(new Date()), which gives the MYT business day rather than the UTC slice. Neither dialog still contains the toISOString().slice(0, 10) default."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/expenses/payments.tsx",
+          "line": 208,
+          "quote": "paymentDate: businessDateInput(new Date()),"
+        },
+        {
+          "file": "apps/web/src/components/quotation/decide-quotation-dialog.tsx",
+          "line": 65,
+          "quote": "setDecidedOn(businessDateInput(new Date()));"
+        },
+        {
+          "file": "apps/web/src/lib/quotation.ts",
+          "line": 151,
+          "quote": "export function businessDateInput(value: string | Date | null | undefined): string {"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-030",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/20",
+      "old": "au-holding-only-correct-extraction-is-enoug",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "review.correct is still admitted on document.review.correct. Its handler now refuses with FORBIDDEN when the caller lacks document.review.approve, and it does this before loadReviewable, persistFinal and the approval hooks."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/document.ts",
+          "line": 663,
+          "quote": ".use(requireNode(DOCUMENT.reviewCorrect))"
+        },
+        {
+          "file": "packages/api/src/routers/document.ts",
+          "line": 678,
+          "quote": "if (!permittedNode(context.org, DOCUMENT.reviewApprove)) {"
+        },
+        {
+          "file": "packages/api/src/routers/document.ts",
+          "line": 681,
+          "quote": "\"Saving corrections also approves the document, which needs the Approve extraction permission\","
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-031",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/21",
+      "old": "au-an-auto-approved-b-l-whose-tracking-job-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "What is fixed: the review worker's sweep still finds approved B/Ls that have no bl_job and emails the branch 'Approved bill of lading is not being tracked'. What remains: the auto_approve path in the extraction workflow still calls runApprovalHooks and throws away the returned notices. At the moment of failure nothing is recorded, and nobody is told until the sweep runs."
+      },
+      "evidence": [
+        {
+          "file": "apps/server/src/document/workflow.ts",
+          "line": 216,
+          "quote": "await runApprovalHooks(db, documentId);"
+        },
+        {
+          "file": "apps/server/src/document/workflow.ts",
+          "line": 214,
+          "quote": "// bl_job), so a swallowed failure means no tracking job — the reason"
+        },
+        {
+          "file": "packages/api/src/modules/document/review-queue.ts",
+          "line": 438,
+          "quote": "export async function findUntrackedApprovedBls("
+        },
+        {
+          "file": "apps/server/src/document-review-worker.ts",
+          "line": 151,
+          "quote": "findUntrackedApprovedBls(db, now, UNTRACKED_AFTER_HOURS, UNTRACKED_WINDOW_HOURS),"
+        },
+        {
+          "file": "apps/server/src/document-review-worker.ts",
+          "line": 339,
+          "quote": "? \"Approved bill of lading is not being tracked\""
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-032",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/22",
+      "old": "au-post-to-cost-ledger-books-an-unapproved-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Right after the won/converted status check, importFromQuote calls the quotation convert_order gate, the same gate convertToOrder uses. The editor shows Post to ledger only when auditStatus is approved and the quotation is won or converted."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2086,
+          "quote": "await assertGateCleared(context.db, organizationId, \"quotation\", q.id, \"convert_order\");"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2077,
+          "quote": "message: \"Only a won or converted quotation can be recorded to cost\","
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 161,
+          "quote": "quote.auditStatus === \"approved\" && (quote.status === \"won\" || quote.status === \"converted\"),"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-033",
+      "kind": "ledger-status",
+      "tier": "needs-human",
+      "path": "/ledger/items/23",
+      "old": "au-an-unvetted-customer-can-be-quoted-by-ty",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "customer_reference is still enforced only by the company.search picker filter, and the comment there still says quotation.create does not enforce it. quotation.ts contains no customer_reference check (grep finds nothing). The picker still clears companyId when the user types free text."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/company.ts",
+          "line": 888,
+          "quote": "* apart. UX only: `quotation.create` does not enforce this gate.",
+          "absent": "customer_reference"
+        },
+        {
+          "file": "packages/api/src/routers/company.ts",
+          "line": 185,
+          "quote": "await assertGateCleared(db, org.organizationId, \"customer\", row.id, \"customer_reference\");"
+        },
+        {
+          "file": "apps/web/src/components/company-picker.tsx",
+          "line": 199,
+          "quote": "onChange({ name: e.target.value, companyId: null });"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 499,
+          "quote": "clientCompanyId: z.string().nullish(),",
+          "absent": "\"customer_reference\""
+        }
+      ],
+      "reason": "re-verified: still open [evidence quote not found]",
+      "chain": false
+    },
+    {
+      "id": "op-034",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/ledger/items/24",
+      "old": "au-applying-a-foreign-currency-tariff-with-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. quotations.applyTemplate keeps rateMissing from resolveFeeLineRates, passes it to assertUnratedFeeAllowed (same as create and update) and returns it to the client. reference-template-dialog.tsx warns when rateMissing is true. money.ts still falls back to \"1\" when the org allows unrated fees, which matches create and update."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5382,
+          "quote": "const { seeds: applyRateSeeds, rateMissing } = await resolveFeeLineRates("
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5391,
+          "quote": "await assertUnratedFeeAllowed(context.db, organizationId, rateMissing);"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5494,
+          "quote": "return { feeLines, rateMissing };"
+        },
+        {
+          "file": "apps/web/src/components/reference-template-dialog.tsx",
+          "line": 411,
+          "quote": "if (result.rateMissing) {"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-035",
+      "kind": "ledger-status",
+      "tier": "decision",
+      "path": "/ledger/items/25",
+      "old": "au-decide-won-lost-cannot-be-recorded-on-a-",
+      "new": {
+        "status": "fixed",
+        "note": "A manual 'record as sent' now exists. quotations.markSent (channels whatsapp, own_email, by_hand, other) stamps status sent, sentAt and sentBy on an unsent draft, and the header shows Mark sent on such drafts. A quotation handed over outside the mailbox can now reach Decide, whose sentAt guard is still in place. The convert-guard docblock still describes the old gap, but it is a comment only."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4027,
+          "quote": "markSent: orgProcedure"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4032,
+          "quote": "channel: z.enum([\"whatsapp\", \"own_email\", \"by_hand\", \"other\"]),"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4077,
+          "quote": ".set({ status: \"sent\", sentAt, sentBy: membership.id })"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 154,
+          "quote": "showMarkSent: quote.status === \"draft\" && !quote.sentAt,"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+          "line": 152,
+          "quote": "showDecide: quote.status === \"sent\" && !!quote.sentAt,"
+        }
+      ],
+      "reason": "transition open -> fixed",
+      "chain": false,
+      "refute": "holds",
+      "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c"
+    },
+    {
+      "id": "op-036",
+      "kind": "ledger-status",
+      "tier": "decision",
+      "path": "/ledger/items/26",
+      "old": "au-converting-a-quotation-with-no-shipping-",
+      "new": {
+        "status": "fixed",
+        "note": "The fallback to \"fcl\" is gone. convertToOrder now refuses with BAD_REQUEST when shippingType is blank and copies q.shippingType unchanged. Submitting for review also requires Shipping Type (audit/resources.ts)."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5550,
+          "quote": "if (!q.shippingType) {"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5655,
+          "quote": "consignType: q.shippingType as ConsignType,",
+          "absent": "consignType: (q.shippingType ?? \"fcl\") as ConsignType,"
+        }
+      ],
+      "reason": "transition open -> fixed",
+      "chain": false,
+      "refute": "holds",
+      "fingerprint": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c"
+    },
+    {
+      "id": "op-037",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/1/fixes/0",
+      "old": "s02-duplicate-companies-enter-through-case",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still open. The unique index is still on the raw name, and the comment says case-sensitive is on purpose. The company router only turns a 23505 on an exact-name clash into a CONFLICT. No lower(name) refusal was found, so different casings of one name still save as separate companies."
+      },
+      "evidence": [
+        {
+          "file": "packages/db/src/schema/company.ts",
+          "line": 135,
+          "quote": "// One name per org. Case-sensitive on purpose for v1 — the typeahead"
+        },
+        {
+          "file": "packages/db/src/schema/company.ts",
+          "line": 138,
+          "quote": "uniqueIndex(\"company_org_name_uidx\").on(table.organizationId, table.name),"
+        },
+        {
+          "file": "packages/api/src/routers/company.ts",
+          "line": 90,
+          "quote": "if (pgErrorCode(error) === \"23505\") {"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-038",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/2/fixes/0",
+      "old": "s03-a-contact-nobody-ticked-as-primary-never-reaches",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Unchanged since the last check. Fixed: company create inserts its main contact with isPrimary: true. Still broken: companyContacts.create only demotes an existing primary when the new one is ticked, and promotes nothing when the company has no primary. The ageing report still joins companyContact strictly on isPrimary = true with no fallback."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/company.ts",
+          "line": 847,
+          "quote": "isPrimary: true,"
+        },
+        {
+          "file": "packages/api/src/routers/company-contact.ts",
+          "line": 181,
+          "quote": "if (input.isPrimary) {"
+        },
+        {
+          "file": "packages/api/src/routers/report.ts",
+          "line": 1117,
+          "quote": "eq(companyContact.isPrimary, true),"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-039",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/3/fixes/0",
+      "old": "s04-the-tariff-gate-is-declared-but-never-enforced",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The fee_template flow seeds the reference_fee_template gate. applyTemplate calls assertTemplatesReferenceable, which refuses any template whose auditStatus is not approved once the gate is armed."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 170,
+          "quote": "gates: [\"reference_fee_template\"],"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5228,
+          "quote": "await assertTemplatesReferenceable(context.db, context.org.organizationId, [template.id]);"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 1968,
+          "quote": "ne(feeTemplate.auditStatus, \"approved\"),"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-040",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/4/fixes/0",
+      "old": "s05-quotation-date-is-the-row-s-save-timestamp-and-n",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The More details panel renders a Quotation Date field. form.ts seeds it from the loaded row (today for a new quotation) and sends it in the payload. Create uses header.quotationDate and only falls back to the current business day when none is given."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+          "line": 113,
+          "quote": "<form.Field name=\"quotationDate\">"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+          "line": 159,
+          "quote": "quotationDate: businessDateInput(loaded?.quotationDate ?? (isNew ? new Date() : undefined)),"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+          "line": 282,
+          "quote": "quotationDate: emptyToUndefined(value.quotationDate),"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4545,
+          "quote": "const quotationDate = header.quotationDate ?? businessDayStart(now);"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-041",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/4/fixes/1",
+      "old": "s05-quotation-staff-is-auto-stamped-copied-by-duplic",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The More details panel renders a Quotation Staff field, which form.ts seeds and submits. Create honours the submitted staff name and only falls back to the session user when it is blank. Duplicate re-points quotationStaff to the person duplicating instead of inheriting the source's value through the spread."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
+          "line": 127,
+          "quote": "<form.Field name=\"quotationStaff\">"
+        },
+        {
+          "file": "apps/web/src/routes/_next/quotations/-quotation-editor/form.ts",
+          "line": 283,
+          "quote": "quotationStaff: emptyToUndefined(value.quotationStaff),"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4609,
+          "quote": "quotationStaff: header.quotationStaff?.trim() || defaultQuotationStaff(context),"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5098,
+          "quote": "quotationStaff: defaultQuotationStaff(context),"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-042",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/5/fixes/0",
+      "old": "s06-applied-tariff-lines-ignore-the-container-mix",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The quantity of an applied template line is seeded from the container rows by seededQuantity. This holds in the reference-template dialog and in the server applyTemplate."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/components/reference-template-dialog.tsx",
+          "line": 217,
+          "quote": "quantity: seededQuantity(chargeUnit, containers),"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5408,
+          "quote": "quantity: seededQuantity(chargeUnit, containerRows),"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-043",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/6/fixes/0",
+      "old": "s07-an-ambiguous-tariff-silently-drops-the-floor",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Fixed part: when same-dated sheets disagree, the strictest cell now wins and the line is marked contested, so the floor holds and 'ambiguous' is never emitted. Still broken: when a charge unit is spelt differently, no candidate matches, so the line resolves to status 'none' with no floor and only a tariffUnits hint. belowTariffRefusal still refuses only below_tariff lines, so the quotation saves with no floor applied."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/quotation/tariff-check.ts",
+          "line": 37,
+          "quote": "* Now the STRICTEST cell wins: among the tied latest cells, the highest"
+        },
+        {
+          "file": "packages/api/src/quotation/tariff-check.ts",
+          "line": 482,
+          "quote": "status: \"none\","
+        },
+        {
+          "file": "packages/api/src/quotation/tariff-check.ts",
+          "line": 489,
+          "quote": "tariffUnits: units ? [...units].sort().slice(0, 3) : null,"
+        },
+        {
+          "file": "packages/api/src/quotation/tariff-check.ts",
+          "line": 626,
+          "quote": "const offending = result.lines.filter((line) => line.status === \"below_tariff\");"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-044",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/7/fixes/0",
+      "old": "s08-a-quotation-stays-fully-editable-while-it-is-sit",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. quotations.update, remove and applyTemplate all call assertNotUnderReview on the quotation, so a quotation in the reviewer's queue cannot be edited."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4751,
+          "quote": "await assertNotUnderReview(tx, context.org.organizationId, \"quotation\", id);"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4963,
+          "quote": "await assertNotUnderReview(tx, organizationId, \"quotation\", input.id);"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5188,
+          "quote": "await assertNotUnderReview(context.db, organizationId, \"quotation\", input.quotationId);"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-045",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/7/fixes/1",
+      "old": "s08-the-seeded-quotation-flow-lets-the-branch-manage",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Still fixed. The seeded stage still targets branch-manager, but decide() refuses a decision from the submitter when the resource has separationOfDuties, and the quotation resource sets separationOfDuties: true. A branch manager therefore cannot approve their own quotation."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/audit/decide.ts",
+          "line": 59,
+          "quote": "if (entry.separationOfDuties && submission.submittedBy === org.membership.id) {"
+        },
+        {
+          "file": "packages/api/src/modules/audit/resources.ts",
+          "line": 262,
+          "quote": "separationOfDuties: true,"
+        },
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 90,
+          "quote": "stages: [{ roles: [\"branch-manager\"], quorum: \"any_pass_all_reject\" }],"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-046",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/7/fixes/2",
+      "old": "s08-the-legacy-quotations-review-verb-stamps-approve",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "No `review: orgProcedure` verb exists in the quotation router. The quotation procedures run ... applyTemplate, convertToOrder, listPendingDecisionCorrections. canAuditTransition is still defined in values.ts, but no non-test router calls it; the only other hit is a comment in collective-order.ts:615."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5948,
+          "quote": "listPendingDecisionCorrections: orgProcedure",
+          "absent": "review: orgProcedure"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 5501,
+          "quote": "convertToOrder: orgProcedure"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-047",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/7/fixes/3",
+      "old": "s08-submit-then-retract-permanently-unlocks-an-appro",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "submitForReview calls assertPostApprovalEditable before it opens a submission. An approved record under a non-editable flow therefore cannot be re-submitted, so the submit-then-retract unlock is blocked. assertPostApprovalEditable still keys on the latest submission being passed, and throws when the flow is not editable."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/audit/submit.ts",
+          "line": 59,
+          "quote": "await assertPostApprovalEditable(tx, org.organizationId, input.resourceType, input.resourceId, {"
+        },
+        {
+          "file": "packages/api/src/modules/audit/post-approval.ts",
+          "line": 44,
+          "quote": "if (!latest || latest.status !== \"passed\") return;"
+        },
+        {
+          "file": "packages/api/src/modules/audit/post-approval.ts",
+          "line": 51,
+          "quote": "if (flow && !flow.editable) {"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-048",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/7/fixes/4",
+      "old": "s08-the-export-quotation-gate-is-wired-to-reading-a-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The export gate is called in exportSheet (line 3112, key at 3117), in send (line 3279, key at 3284) and in markSent (4048). quotations.retrieve (lines 2761 to 2893) has no assertGateCleared call; the only gate call sites in the file are at 3112, 3279, 4048, 4994 and 5528."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3092,
+          "quote": "exportSheet: orgProcedure"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3117,
+          "quote": "\"export\","
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3284,
+          "quote": "\"export\","
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 2761,
+          "quote": "retrieve: orgProcedure"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-049",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/8/fixes/0",
+      "old": "s09-there-is-no-outbox-so-a-failed-stamp-costs-a-sec",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "send takes a client sendKey and inserts a quotation_send intent with status pending before dispatch. The intent is keyed on organizationId and sendKey, so a retry resumes the stamp instead of mailing the customer again. openSends lists the open intents and abandonSend closes one."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3253,
+          "quote": "sendKey: z.string().uuid(),"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3478,
+          "quote": "status: \"pending\","
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3493,
+          "quote": "target: [quotationSend.organizationId, quotationSend.sendKey],"
+        },
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 3872,
+          "quote": "openSends: orgProcedure"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-050",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/9/fixes/0",
+      "old": "s10-a-mis-keyed-decision-cannot-be-corrected",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The requestDecisionCorrection procedure exists. When the review passes, applyDecisionCorrection marks the previous decision as superseded instead of overwriting it, so both stamps are kept."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/quotation.ts",
+          "line": 4243,
+          "quote": "requestDecisionCorrection: orgProcedure"
+        },
+        {
+          "file": "packages/api/src/modules/quotation/decision-correction.ts",
+          "line": 208,
+          "quote": ".set({ supersededAt: now, supersededById: proposal.id })"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-051",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/12/fixes/0",
+      "old": "s13-intake-decisions-are-asymmetrical",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The intake guard allows receive and reject only from unaccepted, and reopen only from rejected. A rejected order therefore cannot be received directly. It needs the separate reopen verb, which requires a reason. The receive handler enforces this through assertIntakeTransition."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/collective-order/intake-guard.ts",
+          "line": 46,
+          "quote": "receive: \"unaccepted\","
+        },
+        {
+          "file": "packages/api/src/modules/collective-order/intake-guard.ts",
+          "line": 48,
+          "quote": "reopen: \"rejected\","
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3399,
+          "quote": "assertIntakeTransition(existing, \"receive\");"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3569,
+          "quote": "reopen: orgProcedure"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-052",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/14/fixes/0",
+      "old": "s15-a-collective-order-stays-fully-editable-while-it",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The under-review freeze now covers every order-content writer. assignNumber (2824), update (3010), saveChildren (4093, called when content is written) and setAbnormalTags (5190) each call assertNotUnderReview before the post-approval check. updateBatch calls assertNoneUnderReview."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3010,
+          "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", orderId);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 2824,
+          "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", input.orderId);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 4093,
+          "quote": "await assertNotUnderReview(tx, organizationId, \"collective_order\", input.orderId);"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-053",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/14/fixes/1",
+      "old": "s15-order-approval-freezes-nothing-downstream-so-app",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Fixed: the Order review flow seeds the lock, end_order, shut_out and create_lading gates, and lading.create enforces create_lading on the linked order. Still broken: (1) the gates are seeded only for new orgs because gatesOnlyForNewOrg is true, so an existing org keeps an ungated flow. (2) expense_entry, container_info and cargo_info are deliberately not seeded (D15-C). saveChildren checks expense_entry, but the check is inert because the gate is unticked, so costs can still be booked against an unapproved or rejected order."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 191,
+          "quote": "gates: [\"lock\", \"end_order\", \"shut_out\", \"create_lading\"],"
+        },
+        {
+          "file": "packages/api/src/modules/audit/seed.ts",
+          "line": 192,
+          "quote": "gatesOnlyForNewOrg: true,"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1121,
+          "quote": "\"create_lading\","
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-054",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/14/fixes/2",
+      "old": "s15-the-legacy-collectiveorder-review-verb-lets-ops-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The collectiveOrder router has no review procedure. Its procedures run receive, unacceptedCount, acceptStatusCounts, reject, reopen, transition, batch and so on, with no review verb. In the router, the only write of orderAuditStatus is the 'draft' default on create/duplicate. canAuditTransition is referenced only in a comment."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3486,
+          "quote": "reject: orgProcedure",
+          "absent": "review: orgProcedure"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3359,
+          "quote": "receive: orgProcedure"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-055",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/15/fixes/0",
+      "old": "s16-a-bill-of-lading-can-be-set-to-released-or-on-ho",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "On the server, create (1099) and update (1678) call assertSettableStatus, which allows only draft, confirmed and cancelled and rejects the workflow-owned states with a message. Both forms now offer only those three states: create.tsx STATUS_OPTIONS, and edit.tsx STATUS_OPTIONS, which is SETTABLE_STATUS_OPTIONS."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/modules/lading/status.ts",
+          "line": 13,
+          "quote": "export const SETTABLE_LADING_STATUSES = [\"draft\", \"confirmed\", \"cancelled\"] as const;"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1678,
+          "quote": "assertSettableStatus(statusChange);"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1099,
+          "quote": "assertSettableStatus(input.status);"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/$id/edit.tsx",
+          "line": 176,
+          "quote": "const STATUS_OPTIONS = SETTABLE_STATUS_OPTIONS;"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 168,
+          "quote": "const STATUS_OPTIONS = [\"draft\", \"confirmed\", \"cancelled\"];"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-056",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/15/fixes/1",
+      "old": "s16-a-bill-of-lading-under-review-stays-fully-editab",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "lading.update calls assertNotUnderReview before assertPostApprovalEditable. A second writer (around line 2327) has the same pair."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1693,
+          "quote": "await assertNotUnderReview(tx, organizationId, \"lading\", ladingId);"
+        },
+        {
+          "file": "packages/api/src/routers/lading.ts",
+          "line": 1696,
+          "quote": "await assertPostApprovalEditable(tx, organizationId, \"lading\", ladingId);"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-057",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/15/fixes/2",
+      "old": "s16-ocr-validation-issues-are-computed-returned-and-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The ocrResult state now carries issues: OcrIssue[], and ocrIssueState derives errors, warnings and a per-field map from them. The OCR tab renders error and warning counts and a per-field OcrIssueList. Apply to Form is disabled, and its handler returns early, unless canApplyOcr passes (blocking errors need an acknowledgement)."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 354,
+          "quote": "issues: OcrIssue[];"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 369,
+          "quote": "if (!ocrResult || !canApplyOcr(ocrIssues, ocrAcknowledged, ocrUpload.isPending)) return;"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 1676,
+          "quote": "disabled={!canApplyOcr(ocrIssues, ocrAcknowledged, ocrUpload.isPending)}"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 1726,
+          "quote": "<OcrIssueList issues={ocrIssues.byField.get(k)} />"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-058",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/15/fixes/3",
+      "old": "s16-linking-the-approved-order-carries-only-its-job-",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Picking an order (and the order-id route path) still runs prefillFromOrder, which fills the empty B/L fields from the linked order and marks them as coming from the order."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 567,
+          "quote": "const { next, filled } = prefillFromOrder({ ...form, orderId }, picked, fromOrder);"
+        },
+        {
+          "file": "apps/web/src/routes/_next/lading/create.tsx",
+          "line": 548,
+          "quote": "const { next, filled } = prefillFromOrder({ ...form, orderId: target }, order, fromOrder);"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-059",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/17/fixes/0",
+      "old": "s18-there-is-no-customs-declaration-type",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The document type union now also includes shipping_order, but there is still no K1/K2 customs declaration type. K1/K2 appears only in a comment in the commercial-invoice registry file. The docTypeOverride enum also has no customs declaration value."
+      },
+      "evidence": [
+        {
+          "file": "packages/document-ai/src/registry/types.ts",
+          "line": 9,
+          "quote": "| \"shipping_order\""
+        },
+        {
+          "file": "packages/document-ai/src/registry/types.ts",
+          "line": 10,
+          "quote": "| \"unknown\";"
+        },
+        {
+          "file": "packages/api/src/routers/document.ts",
+          "line": 669,
+          "quote": ".enum([\"mbl_hbl\", \"commercial_invoice\", \"packing_list\", \"shipping_order\"])"
+        }
+      ],
+      "reason": "re-verified: still open",
+      "chain": false
+    },
+    {
+      "id": "op-060",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/19/fixes/0",
+      "old": "s20-unnamed-fee-rows-are-dropped-without-a-word",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The Expense Entry page still refuses unnamed rows that have content (it runs feeRowProblems on both sides). In the order form's fee section, only saved-unnamed and saved-incomplete problems are refused. The payload then keeps only rows that have a name, amount and currency, so a new row with an amount but no name is still dropped on save without a message."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/components/order-form.tsx",
+          "line": 1912,
+          "quote": "// row keeps today's quiet drop (it has nothing to delete)."
+        },
+        {
+          "file": "apps/web/src/components/order-form.tsx",
+          "line": 1914,
+          "quote": "(p) => p.kind === \"saved-unnamed\" || p.kind === \"saved-incomplete\","
+        },
+        {
+          "file": "apps/web/src/components/order-form.tsx",
+          "line": 1992,
+          "quote": ".filter((r) => r.costName?.trim() && r.amount?.trim() && r.currency?.trim())"
+        },
+        {
+          "file": "apps/web/src/routes/_next/order.$orderId.expenses.tsx",
+          "line": 740,
+          "quote": "const payProblems = feeRowProblems(payable);"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-061",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/20/fixes/0",
+      "old": "s21-the-fees-must-pass-review-before-billing-gate-is",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "createBill passes the resolved costLineIds to the create_bill gate, not input.costLineIds. The select-all path is now gated as well."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2455,
+          "quote": "await assertGatesCleared(tx, organizationId, \"cost_line\", costLineIds, \"create_bill\");"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-062",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/20/fixes/1",
+      "old": "s21-an-approved-fee-s-exchange-rate-can-still-be-rew",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "exchangeRateBatch loads costLineReviewFreezes. It excludes frozen rows (under review or approved-frozen) from its targets and skips and reports them."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 1988,
+          "quote": "const freezes = await costLineReviewFreezes("
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 1993,
+          "quote": "const targets = rows.filter((r) => !isClaimed(r) && !freezes.has(r.id));"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-063",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/20/fixes/2",
+      "old": "s21-an-approved-fee-can-be-deleted-outright-approval",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "Fixed: the writer's delete verb now carries underReviewGate and postApprovalGate, and the batch delete refuses under-review and approved fees through costLineReviewFreezes. Still broken: collectiveOrder.delete and the order batch delete call clearOrderCostLines. That function refuses only settled or locked lines, then hard-deletes every fee on the order, approved fees included. history.ts has no review-state check."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 422,
+          "quote": "postApprovalGate,"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 1655,
+          "quote": "const freezes = await costLineReviewFreezes(tx, organizationId, ids);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3323,
+          "quote": "const cleared = await clearOrderCostLines(tx, [input.orderId]);"
+        },
+        {
+          "file": "packages/api/src/routers/collective-order.ts",
+          "line": 3853,
+          "quote": "cleared = await clearOrderCostLines(tx, ids);"
+        },
+        {
+          "file": "packages/api/src/routers/expense/history.ts",
+          "line": 234,
+          "quote": ".delete(costLine)"
+        },
+        {
+          "file": "packages/api/src/routers/expense/history.ts",
+          "line": 235,
+          "quote": ".where(and(inArray(costLine.id, ids), isNull(costLine.billId), isNull(costLine.lockedAt)))"
+        }
+      ],
+      "reason": "re-verified: still partly-fixed",
+      "chain": false
+    },
+    {
+      "id": "op-064",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/20/fixes/3",
+      "old": "s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The costLineWriter update verb's gate list begins with costLineContentUnderReviewGate. That gate calls assertNotUnderReview for any patch that touches frozen content keys, ignoring tags-only edits. A fee under review now refuses content edits."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 351,
+          "quote": "costLineContentUnderReviewGate,"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 167,
+          "quote": "await assertNotUnderReview(tx, ctx.org.organizationId, \"cost_line\", String(row.id));"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-065",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/20/fixes/3",
+      "old": "s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "(Duplicate entry for the same ref.) The update verb still runs costLineContentUnderReviewGate first, and that gate calls assertNotUnderReview on cost_line content edits."
+      },
+      "evidence": [
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 351,
+          "quote": "costLineContentUnderReviewGate,"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 163,
+          "quote": "const costLineContentUnderReviewGate: MutateGate = async (tx, ctx, rows, patches) => {"
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-066",
+      "kind": "ledger-status",
+      "tier": "auto",
+      "path": "/guide/21/fixes/0",
+      "old": "s22-bills-cannot-be-split-per-order-though-the-serve",
+      "new": {
+        "lastVerified": "2026-10-02",
+        "note": "The Create Bill dialog has an 'Also split by order' checkbox bound to groupByOrder, and it sends groupByOrder to createBill. The server accepts groupByOrder and keys the bill grouping on orderId when it is set."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
+          "line": 1236,
+          "quote": "checked={groupByOrder}"
+        },
+        {
+          "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
+          "line": 1321,
+          "quote": "groupByOrder,"
+        },
+        {
+          "file": "packages/api/src/routers/expense/cost-lines.ts",
+          "line": 2479,
+          "quote": "input.groupByOrder ? (l.orderId ?? \"\") : \"\","
+        }
+      ],
+      "reason": "re-verified: still fixed",
+      "chain": false
+    },
+    {
+      "id": "op-067",
+      "kind": "ledger-status",
+      "tier": "needs-human",
+      "path": "/guide/26/fixes/0",
+      "old": "s27-the-month-end-documents-have-no-menu-entry",
+      "new": {
+        "status": "partly-fixed",
+        "note": "Fixed part: the Financial Stat report page now has a 'Statements & debit notes for <month>' link button (Step 27 D9-A). It navigates to /expenses/cost-lines with the Fee Time from/to filter pre-filled for the picked month. Still broken: the Reports menu has only Business Stat and Financial Stat, with no entry for the three documents. The link opens the Cost lines list, not the export, so staff must still know to press the ExportTableDialog button there; no search param opens that dialog. The documents still exist only inside the ExportTableDialog on Cost lines (and the order expenses and invoices pages)."
+      },
+      "evidence": [
+        {
+          "file": "apps/web/src/components/shell-next/nav.ts",
+          "line": 257,
+          "quote": "{ to: \"/report/financial\", label: \"Financial Stat\", p: \"report:read\" },"
+        },
+        {
+          "file": "apps/web/src/routes/_next/report/financial/index.tsx",
+          "line": 970,
+          "quote": "to: \"/expenses/cost-lines\","
+        },
+        {
+          "file": "apps/web/src/routes/_next/report/financial/index.tsx",
+          "line": 975,
+          "quote": "Statements &amp; debit notes for {monthEndMonth}"
+        },
+        {
+          "file": "apps/web/src/routes/_next/expenses/cost-lines.tsx",
+          "line": 2274,
+          "quote": "<ExportTableDialog"
+        }
+      ],
+      "reason": "transition open -> partly-fixed [needs-human: refuter PLAUSIBLE: The partly-fixed status holds. The Reports menu still lists only Business Stat and Financial Stat. The Financial Stat page has a link button that navigates to /expenses/cost-lines with from/to set to the picked month. costLinesSearchSchema has no param that opens the export dialog, so the documents are still reached only through ExportTableDialog. One part of the note is wrong: ExportTableDialog is mounted only on cost-lines.tsx and order.$orderId.expenses.tsx. The invoices page mentions it in a comment only (invoices.tsx:321). The note should drop 'and invoices'.]",
+      "chain": false
+    }
+  ]
+}
