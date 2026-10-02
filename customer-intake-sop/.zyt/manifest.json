@@ -1,7 +1,7 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-10-01T11:21:17.276Z",
-  "sopSha": "f2bf5a7c9a0aebbd68824d5844f1e54c6aba6dd2a367147239e1d1b9ebedeccd",
+  "at": "2026-10-02T04:31:13.969Z",
+  "sopSha": "37bd77d3d5341b139ea71bfc00f2779d0c5100c28760cd51b17aadb93e3081d3",
   "codeRoot": "C:\\Project\\NCT\\wt-release-r1",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
@@ -120,9 +120,9 @@
       "size": 21356
     },
     "apps/web/src/components/reference-template-dialog.tsx": {
-      "sha": "447ff2932034db5d79d5306352e961df360475ac4d7bf4aec93b2d9759a182f8",
-      "mtimeMs": 1790163144784,
-      "size": 34859
+      "sha": "d1ab441a6c64cc9d279c6eedb3373996eef987daa01330f8b4847dfb2a88e0c5",
+      "mtimeMs": 1790857076300,
+      "size": 35099
     },
     "apps/web/src/components/reject-dialog.tsx": {
       "sha": "a8f22bbf3402b7ddb33479d87ef464efc68f5cd340527dbb9511526c7731bdf5",
@@ -365,9 +365,9 @@
       "size": 15780
     },
     "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx": {
-      "sha": "bd18c023934a363ec7f4f6501d5298c90383211107968952fab3007a34227181",
-      "mtimeMs": 1790773847982,
-      "size": 29510
+      "sha": "39bc2bddc71d420101b6a6205840b49956b8ba46540de6e82a03d43321d2accb",
+      "mtimeMs": 1790857076304,
+      "size": 29756
     },
     "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx": {
       "sha": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
@@ -465,9 +465,9 @@
       "size": 66664
     },
     "packages/api/src/routers/expense/cost-lines.ts": {
-      "sha": "269bdbf8215d1cc926a51821a58699ff22eeb3f6010f191d50d23384e7ff8d58",
-      "mtimeMs": 1790250671600,
-      "size": 131945
+      "sha": "47aa037e34001fb1101416be7c216a3aa5c30b5882fed8742e1867bb11e49aea",
+      "mtimeMs": 1790857076308,
+      "size": 132514
     },
     "packages/api/src/routers/lading.ts": {
       "sha": "7b4b65f47520021ce9d09ad43a8199c06e30f82a942f063f56558ce921b09e2c",
@@ -475,9 +475,9 @@
       "size": 115071
     },
     "packages/api/src/routers/quotation.ts": {
-      "sha": "bdeef705f8d90d9cb50699b1e31a43a2b76bc7f09aa432b642f330beb902ab7e",
-      "mtimeMs": 1790773848043,
-      "size": 270391
+      "sha": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
+      "mtimeMs": 1790857076313,
+      "size": 270767
     },
     "packages/api/src/routers/report.ts": {
       "sha": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
@@ -1380,11 +1380,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 691,
       "anchor": [
-        "            onClick={() => form.handleSubmit()}",
-        "          >",
-        "            {isPending ? \"Saving…\" : \"Save Quote\"}",
-        "          </Button>",
-        "        )}"
+        "        {({ canSubmit }) => (",
+        "          <Button",
+        "            disabled={!canSubmit || isPending || underReview}",
+        "            title={underReview ? underReviewReason : undefined}",
+        "            onClick={() => form.handleSubmit()}"
       ],
       "jsonPath": "/guide/4/golden/10/src",
       "step": 5,
@@ -1604,11 +1604,11 @@
       "file": "apps/web/src/components/reference-template-dialog.tsx",
       "line": 620,
       "anchor": [
-        "      <DialogContent className={step === 2 ? \"sm:max-w-4xl\" : undefined}>",
-        "        <DialogHeader>",
-        "          <DialogTitle>Apply a Fee Template</DialogTitle>",
-        "          <DialogDescription>",
-        "            {step === 1"
+        "        Step 2 draws a fee × 计费单位 matrix and needs the width; step 1 is a",
+        "        list and keeps the app's default dialog. The grid scrolls INSIDE this",
+        "        box (`overflow-auto` in the picker), so a wide tariff never widens the",
+        "        page — plan §10 checks that at 375px.",
+        "      */}"
       ],
       "jsonPath": "/guide/5/golden/6/src",
       "step": 6,
@@ -1668,11 +1668,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 691,
       "anchor": [
-        "            onClick={() => form.handleSubmit()}",
-        "          >",
-        "            {isPending ? \"Saving…\" : \"Save Quote\"}",
-        "          </Button>",
-        "        )}"
+        "        {({ canSubmit }) => (",
+        "          <Button",
+        "            disabled={!canSubmit || isPending || underReview}",
+        "            title={underReview ? underReviewReason : undefined}",
+        "            onClick={() => form.handleSubmit()}"
       ],
       "jsonPath": "/guide/6/golden/0/src",
       "step": 7,
@@ -1764,11 +1764,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 298,
       "anchor": [
-        "              onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}",
-        "            >",
-        "              Submit for Review",
-        "            </Button>",
-        "          )}"
+        "            <Button",
+        "              variant=\"outline\"",
+        "              size=\"sm\"",
+        "              disabled={reviewMutation.isPending}",
+        "              onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}"
       ],
       "jsonPath": "/guide/7/golden/0/src",
       "step": 8,
@@ -1796,11 +1796,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 331,
       "anchor": [
-        "                }}",
-        "              >",
-        "                Reject",
-        "              </Button>",
-        "            </>"
+        "                    id: loaded.id,",
+        "                    to: \"rejected\",",
+        "                    reason: entered.trim() || undefined,",
+        "                  });",
+        "                }}"
       ],
       "jsonPath": "/guide/7/golden/4/src",
       "step": 8,
@@ -1892,11 +1892,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 576,
       "anchor": [
-        "                >",
-        "                  <FileText data-icon=\"inline-start\" />",
-        "                  Preview PDF",
-        "                </Button>",
-        "                {primarySpec && ("
+        "                  variant=\"outline\"",
+        "                  size=\"sm\"",
+        "                  data-testid=\"preview-pdf\"",
+        "                  onClick={() => downloadSheet(\"en\", \"pdf\")}",
+        "                >"
       ],
       "jsonPath": "/guide/8/golden/0/src",
       "step": 9,
@@ -1908,11 +1908,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 219,
       "anchor": [
-        "  let primary: HeaderActionId | null = null;",
-        "  if (m.showDecide) primary = \"decide\";",
-        "  else if (m.showSend && quote.auditStatus === \"approved\") primary = \"send\";",
-        "  else if (quote.status === \"won\" && m.showConvert) primary = \"convert\";",
-        ""
+        "  if (m.showPostToLedger) shown.push(\"post-to-ledger\");",
+        "  if (m.showDuplicate) shown.push(\"duplicate\");",
+        "  if (m.showDiscard) shown.push(\"discard\");",
+        "",
+        "  let primary: HeaderActionId | null = null;"
       ],
       "jsonPath": "/guide/8/golden/1/src",
       "step": 9,
@@ -2036,11 +2036,11 @@
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
       "line": 441,
       "anchor": [
-        "              convert: {",
-        "                testid: \"convert-to-order\",",
-        "                label: convertMutation.isPending ? \"Converting…\" : \"Convert to order\",",
-        "                disabled: convertMutation.isPending || live.convertBlocked,",
-        "                title: correctionReason,"
+        "              // `!convertedOrderId` is the procedure's second guard;",
+        "              // `auditStatus === \"approved\"` and `isConvertibleOutcome` are UI",
+        "              // pre-filters — the server's gates have the final say and their",
+        "              // refusal arrives as the mutation's error toast.",
+        "              convert: {"
       ],
       "jsonPath": "/guide/10/golden/1/src",
       "step": 11,
@@ -3492,11 +3492,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2506,
       "anchor": [
-        "              continue;",
-        "            }",
-        "            const unit = head.settlementUnit?.trim();",
-        "            const [match] = unit",
-        "              ? await tx"
+        "                // The unit is the server's own read, but a caller denied it",
+        "                // must not learn it from an error either (D3 sub-question).",
+        "                message: unitDenied",
+        "                  ? \"Two different companies share one settlement unit on the selected lines. Correct the lines' Settlement Unit, then bill again.\"",
+        "                  : `Settlement unit \"${head.settlementUnit ?? \"\"}\" points at two different companies on the selected lines. Correct the lines' Settlement Unit, then bill again.`,"
       ],
       "jsonPath": "/guide/20/fixes/0/src",
       "step": 21,
@@ -3508,11 +3508,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2115,
       "anchor": [
-        "      //  2. Any fee line ADDED to the quotation after conversion is in the same",
-        "      //     position — new id, no cost line, no conflict.",
+        "      // a no-op. It does NOT enforce D2, for two reasons, and this was verified",
+        "      // against `quotation.convertToOrder` rather than assumed:",
         "      //",
-        "      // ── WHY NOT `q.status === \"converted\"` ─────────────────────────────────",
-        "      //"
+        "      //  1. Conversion carries the SELLING side ONLY (\"自动录入报价应收费用\" —",
+        "      //     eyun's manual; see the comment on that handler). Every cost-side fee"
       ],
       "jsonPath": "/guide/20/fixes/1/src",
       "step": 21,
@@ -3524,11 +3524,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 407,
       "anchor": [
+        "      }),",
+        "      // billId just went null, so this derives bill_not_established.",
         "      derive: (merged) => ({ status: deriveStatus(merged as never) }),",
         "      audit: {",
-        "        before: (row, meta) => ({ billId: row.billId, billTotalAmount: meta.billTotalBefore }),",
-        "        after: (row, meta) => ({ billId: row.billId, billTotalAmount: meta.billTotalAfter }),",
-        "      },"
+        "        before: (row, meta) => ({ billId: row.billId, billTotalAmount: meta.billTotalBefore }),"
       ],
       "jsonPath": "/guide/20/fixes/2/src",
       "step": 21,
@@ -3540,11 +3540,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 340,
       "anchor": [
+        "      }),",
+        "      audit: (row) => ({",
         "        costName: row.costName,",
         "        attribute: row.attribute,",
-        "        currency: row.currency,",
-        "        amount: row.amount,",
-        "        owningBranchId: row.owningBranchId,"
+        "        currency: row.currency,"
       ],
       "jsonPath": "/guide/20/fixes/3/src",
       "step": 21,
@@ -3700,11 +3700,11 @@
       "file": "packages/api/src/routers/expense/cost-lines.ts",
       "line": 2314,
       "anchor": [
-        "        // line, so no grouping key could have been exercised either way.",
-        "        //",
-        "        // Two wrong provenance claims have stood here already: first that the",
-        "        // boxes \"were observed unticked\", then that the dialog \"was opened, not",
-        "        // submitted\". Neither is in any capture, and the second is contradicted"
+        "         *",
+        "         * D8 is DISCHARGED — see the note on `costLines.filterScopeCount`.",
+        "         */",
+        "        filterScope: filterScopeSchema.optional(),",
+        "        // eyun's `Tax rate` checkbox."
       ],
       "jsonPath": "/guide/21/fixes/0/src",
       "step": 22,
