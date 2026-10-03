@@ -62,7 +62,12 @@
       "nct-s21-a-fee-sitting-in-the-review-queue-is-fully-edita",
       "nct-au-the-accountant-who-submits-a-bill-can-si",
       "nct-au-post-to-cost-ledger-books-an-unapproved-",
-      "nct-au-an-unvetted-customer-can-be-quoted-by-ty"
+      "nct-au-an-unvetted-customer-can-be-quoted-by-ty",
+      "nct-au-cancel-end-cancel-shut-out-skips-the-ord",
+      "nct-au-an-approved-order-can-be-deleted-outrigh",
+      "nct-au-post-to-cost-ledger-is-offered-to-sales-",
+      "nct-au-the-quotation-page-shows-approve-reject-",
+      "nct-au-bill-review-hides-withdrawal-requests-th"
     ]
   },
   {
@@ -76,7 +81,8 @@
       "nct-s16-a-bill-of-lading-under-review-stays-fully-editab",
       "nct-s16-ocr-validation-issues-are-computed-returned-and-",
       "nct-s16-linking-the-approved-order-carries-only-its-job-",
-      "nct-au-holding-only-correct-extraction-is-enoug"
+      "nct-au-holding-only-correct-extraction-is-enoug",
+      "nct-au-an-approved-bill-of-lading-can-be-delete"
     ]
   },
   {
@@ -118,7 +124,8 @@
       "nct-job-shape",
       "nct-dead-queues",
       "nct-s13-intake-decisions-are-asymmetrical",
-      "nct-au-converting-a-quotation-with-no-shipping-"
+      "nct-au-converting-a-quotation-with-no-shipping-",
+      "nct-au-expense-entry-lets-sales-and-accounting-"
     ]
   },
   {
@@ -143,7 +150,8 @@
     "visible": false,
     "covers": [
       "nct-two-profits",
-      "nct-s27-the-month-end-documents-have-no-menu-entry"
+      "nct-s27-the-month-end-documents-have-no-menu-entry",
+      "nct-au-the-profit-statement-and-profit-trend-co"
     ]
   }
 ]

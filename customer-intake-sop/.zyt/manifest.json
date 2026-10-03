@@ -1,7 +1,7 @@
 {
   "id": "ZYT-Task/customer-intake-sop",
-  "at": "2026-10-02T04:51:47.454Z",
-  "sopSha": "b000ac1f173ea7bf7ba95243d3c9bf998fd0f3dad205e9b21ba857764de068f1",
+  "at": "2026-10-03T06:16:53.825Z",
+  "sopSha": "ed3c0c02afe63a4fc43c471c01681d4cfe58dd7da930800c39f49e663c72f598",
   "codeRoot": "C:\\Project\\NCT\\wt-release-r1",
   "files": {
     "apps/server/src/bl-tracking-worker.ts": {
@@ -30,9 +30,9 @@
       "size": 36411
     },
     "apps/web/src/components/document-upload.tsx": {
-      "sha": "ad531cfd2432b5672d55da39415a2c59d0e9f6036dfe171b052c3354093e946d",
-      "mtimeMs": 1790163135827,
-      "size": 5649
+      "sha": "1aec89cba2c7c4e1ec177ce13ab81be0bac45ce390d7d46dcc448cad1aea8468",
+      "mtimeMs": 1790923318061,
+      "size": 6855
     },
     "apps/web/src/components/expense/cost-line-batch-menu.tsx": {
       "sha": "0befc64ba22e9b368dc72ead7af804c90729ae1b38e3324d49d2eba31a87cffb",
@@ -90,9 +90,9 @@
       "size": 19568
     },
     "apps/web/src/components/order-form.tsx": {
-      "sha": "a4a58d4ff0d0e3e166e9e3a890e1db4d7656f1733200db03534ced159b989fa0",
-      "mtimeMs": 1790247408212,
-      "size": 138783
+      "sha": "a1f0b96658a52e45cd74565e8a7dc56ed61fec1a367bd48c684200299f66eb25",
+      "mtimeMs": 1790923318073,
+      "size": 144978
     },
     "apps/web/src/components/order-ledger/assign-job-number-button.tsx": {
       "sha": "b1e6a6407dcbd8a1497f80c203c13a895eafcea75d8fed17f122ba0b78eb5699",
@@ -113,6 +113,11 @@
       "sha": "29bfffd716cdf3426b7b80689242ff2513c98b53e5442a3d3e35a0f2536b4799",
       "mtimeMs": 1790671640010,
       "size": 6695
+    },
+    "apps/web/src/components/quotation/mark-sent-dialog.tsx": {
+      "sha": "10ccfd0c6b94db14ac46e9d627bc0854d4c06d343865758fc45d889fd97171d0",
+      "mtimeMs": 1790943718763,
+      "size": 5002
     },
     "apps/web/src/components/quotation/send-quotation-dialog.tsx": {
       "sha": "b9c6af11d4c384ea877cc30a9778d1adc8e07832b7e7cf8d96242d177c321a0d",
@@ -345,9 +350,9 @@
       "size": 4219
     },
     "apps/web/src/routes/_next/quotations/$quotationId.tsx": {
-      "sha": "ab04555148e90b6fbf253050eb17ba552df36c674ee81e468545954e6fb758a4",
-      "mtimeMs": 1790773847971,
-      "size": 26282
+      "sha": "345b4304c56fb4080d5ea442a0f0950ebf8282f5f1ea109cfb11be46e7ccba24",
+      "mtimeMs": 1790943718765,
+      "size": 26694
     },
     "apps/web/src/routes/_next/quotations/-quotation-editor/charges-table.tsx": {
       "sha": "5f0f750ff4a63b8375f5510d0c338cce4b90fe6be2ad7563e6e27ba1dca4df3b",
@@ -365,9 +370,9 @@
       "size": 15780
     },
     "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx": {
-      "sha": "39bc2bddc71d420101b6a6205840b49956b8ba46540de6e82a03d43321d2accb",
-      "mtimeMs": 1790857076304,
-      "size": 29756
+      "sha": "523f07d2595b9ddc37ea976cca6aaa38719ca3203171d8e80888996eecd15bb1",
+      "mtimeMs": 1790943718770,
+      "size": 31272
     },
     "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx": {
       "sha": "a17d1c603c6e83e8928dde06f2e22fb3f1b4c995e2759cdb2f7d864b7af98f46",
@@ -450,9 +455,9 @@
       "size": 21736
     },
     "packages/api/src/routers/collective-order.ts": {
-      "sha": "fccaaaa7fc89dd01a29eaa822c11275ddfb6e0458a49a47b5042a6788eb00927",
-      "mtimeMs": 1790250671589,
-      "size": 259536
+      "sha": "fe3a8edcd143e53726e01af971d84ebbe49e09caf6e3a456c7fd32fa46af962b",
+      "mtimeMs": 1790923318551,
+      "size": 259624
     },
     "packages/api/src/routers/company-contact.ts": {
       "sha": "541b2c69e7f01d6f5a21bcb83c97c9e7631409787ec266632c773e44bc30e381",
@@ -475,9 +480,9 @@
       "size": 115071
     },
     "packages/api/src/routers/quotation.ts": {
-      "sha": "4c3908c01396796fe33bdfe4d2a9e20751bb69c221698a570515dd02222b693c",
-      "mtimeMs": 1790857076313,
-      "size": 270767
+      "sha": "3cf2c7caa690a5b126355ad48dd81d6ca4eb10bea9bc3814020b26239a15469d",
+      "mtimeMs": 1790943718790,
+      "size": 274746
     },
     "packages/api/src/routers/report.ts": {
       "sha": "b8e3792a079e4c3c1099f5028cd11a6e1e571a543bec0f49aedefb59dfaa3d6e",
@@ -1362,7 +1367,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
-      "line": 502,
+      "line": 505,
       "anchor": [
         "                {(field) => (",
         "                  <div className=\"space-y-1.5\">",
@@ -1378,7 +1383,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 695,
+      "line": 724,
       "anchor": [
         "            onClick={() => form.handleSubmit()}",
         "          >",
@@ -1666,7 +1671,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 695,
+      "line": 724,
       "anchor": [
         "            onClick={() => form.handleSubmit()}",
         "          >",
@@ -1762,7 +1767,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 302,
+      "line": 317,
       "anchor": [
         "              onClick={() => reviewMutation.mutate({ id: loaded.id, to: \"pending\" })}",
         "            >",
@@ -1794,7 +1799,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 331,
+      "line": 346,
       "anchor": [
         "                    id: loaded.id,",
         "                    to: \"rejected\",",
@@ -1842,7 +1847,7 @@
     },
     {
       "file": "packages/api/src/routers/quotation.ts",
-      "line": 4220,
+      "line": 4298,
       "anchor": [
         "              eq(quotationDecision.quotationId, existing.id),",
         "              eq(quotationDecision.organizationId, organizationId),",
@@ -1890,7 +1895,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 576,
+      "line": 605,
       "anchor": [
         "                  variant=\"outline\"",
         "                  size=\"sm\"",
@@ -1906,7 +1911,7 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 409,
+      "line": 424,
       "anchor": [
         "              send: {",
         "                testid: \"send-quote\",",
@@ -1969,16 +1974,32 @@
       "lineIdx": 0
     },
     {
+      "file": "apps/web/src/components/quotation/mark-sent-dialog.tsx",
+      "line": 66,
+      "anchor": [
+        "    orpc.quotations.markSent.mutationOptions({",
+        "      onSuccess: () => {",
+        "        toast.success(`Quotation ${quotationNo} marked as sent`);",
+        "        queryClient.invalidateQueries({",
+        "          queryKey: orpc.quotations.retrieve.queryKey({ input: { id: quotationId } }),"
+      ],
+      "jsonPath": "/guide/9/golden/0/src",
+      "step": 10,
+      "kind": "golden",
+      "seg": 0,
+      "lineIdx": 0
+    },
+    {
       "file": "apps/web/src/routes/_next/quotations/$quotationId.tsx",
       "line": 87,
       "anchor": [
+        "  return (",
         "    <Card className=\"print:hidden\" data-testid=\"linked-threads\">",
         "      <CardHeader>",
         "        <CardTitle>Threads</CardTitle>",
-        "      </CardHeader>",
-        "      <CardContent>"
+        "      </CardHeader>"
       ],
-      "jsonPath": "/guide/9/golden/0/src",
+      "jsonPath": "/guide/9/golden/1/src",
       "step": 10,
       "kind": "golden",
       "seg": 0,
@@ -1994,7 +2015,7 @@
         "            <DialogDescription>",
         "              Records the customer's answer. Once decided, this quotation becomes read-only."
       ],
-      "jsonPath": "/guide/9/golden/1/src",
+      "jsonPath": "/guide/9/golden/2/src",
       "step": 10,
       "kind": "golden",
       "seg": 0,
@@ -2010,7 +2031,7 @@
         "              </Button>",
         "            </DialogFooter>"
       ],
-      "jsonPath": "/guide/9/golden/5/src",
+      "jsonPath": "/guide/9/golden/6/src",
       "step": 10,
       "kind": "golden",
       "seg": 0,
@@ -2034,13 +2055,13 @@
     },
     {
       "file": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
-      "line": 445,
+      "line": 469,
       "anchor": [
         "              convert: {",
         "                testid: \"convert-to-order\",",
         "                label: convertMutation.isPending ? \"Converting…\" : \"Convert to order\",",
-        "                disabled: convertMutation.isPending || live.convertBlocked,",
-        "                title: correctionReason,"
+        "                disabled:",
+        "                  convertMutation.isPending || live.convertBlocked || live.convertNeedsShippingType,"
       ],
       "jsonPath": "/guide/10/golden/1/src",
       "step": 11,
@@ -2082,7 +2103,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 347,
+      "line": 360,
       "anchor": [
         "const TEXT_FIELDS = {",
         "  business: [",
@@ -2098,7 +2119,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2673,
+      "line": 2789,
       "anchor": [
         "                    />",
         "                    {isEdit && orderId && needsJobNumber(savedJobNumber) ? (",
@@ -2242,7 +2263,7 @@
     },
     {
       "file": "packages/api/src/routers/collective-order.ts",
-      "line": 3335,
+      "line": 3336,
       "anchor": [
         "          targetType: \"collectiveOrder\",",
         "          targetId: input.orderId,",
@@ -2258,7 +2279,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 1553,
+      "line": 1605,
       "anchor": [
         "   * restated. A hand-written second list is what let 46 router keys drift out of",
         "   * this form once already (see the note on `PAYLOAD_KEYS`). */",
@@ -2274,7 +2295,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 347,
+      "line": 360,
       "anchor": [
         "const TEXT_FIELDS = {",
         "  business: [",
@@ -2290,7 +2311,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 236,
+      "line": 249,
       "anchor": [
         "  ],",
         "  shipping: [",
@@ -2306,7 +2327,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 317,
+      "line": 330,
       "anchor": [
         "  shipping: [[\"vehicleVolume\", \"Vehicle volume\"]],",
         "  lading: [",
@@ -2322,7 +2343,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2859,
+      "line": 3004,
       "anchor": [
         "              which covers only the Query Set/gear rollout (Part A) and the",
         "              vessel/MBL/port field exclusion just above (Part B). */}",
@@ -2338,7 +2359,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2969,
+      "line": 3112,
       "anchor": [
         "          </Button>",
         "          <Button",
@@ -2354,7 +2375,7 @@
     },
     {
       "file": "apps/web/src/components/order-form.tsx",
-      "line": 2404,
+      "line": 2486,
       "anchor": [
         "            <Button",
         "              variant=\"outline\"",
@@ -2450,7 +2471,7 @@
     },
     {
       "file": "packages/api/src/routers/collective-order.ts",
-      "line": 3111,
+      "line": 3112,
       "anchor": [
         "   * two auditable acts rather than one silent one.",
         "   *",
@@ -2482,7 +2503,7 @@
     },
     {
       "file": "packages/api/src/routers/collective-order.ts",
-      "line": 3380,
+      "line": 3381,
       "anchor": [
         "        assertUnlocked(existing, \"received\");",
         "        // An intake decision is FINAL at intake (D1-A).",
@@ -5044,9 +5065,9 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.new.tsx",
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx"
       ]
     },
     {
@@ -5581,9 +5602,9 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.new.tsx",
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx"
       ]
     },
     {
@@ -5592,9 +5613,9 @@
       "foundIn": [
         "apps/web/src/components/company/company-form.tsx",
         "apps/web/src/routes/_next/companies_.new.tsx",
+        "packages/api/src/routers/quotation.ts",
         "apps/web/src/routes/_next/quotations/-quotation-editor/who-where-step.tsx",
-        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx",
-        "apps/web/src/routes/_next/quotations/$quotationId.tsx"
+        "apps/web/src/routes/_next/quotations/-quotation-editor/more-details.tsx"
       ]
     },
     {
@@ -5937,6 +5958,53 @@
       "text": "More ▾ → Resend",
       "step": 9,
       "foundIn": []
+    },
+    {
+      "text": "More ▾ → Mark as sent…",
+      "step": 10,
+      "foundIn": []
+    },
+    {
+      "text": "WhatsApp",
+      "step": 10,
+      "foundIn": [
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/components/quotation/mark-sent-dialog.tsx"
+      ]
+    },
+    {
+      "text": "My own email",
+      "step": 10,
+      "foundIn": [
+        "apps/web/src/components/quotation/mark-sent-dialog.tsx"
+      ]
+    },
+    {
+      "text": "Handed over in person",
+      "step": 10,
+      "foundIn": [
+        "apps/web/src/components/quotation/mark-sent-dialog.tsx"
+      ]
+    },
+    {
+      "text": "Other",
+      "step": 10,
+      "foundIn": [
+        "apps/web/src/routes/_next/fee-templates/$templateId.tsx",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/components/review-queue.tsx",
+        "apps/web/src/components/reference-template-dialog.tsx",
+        "apps/web/src/components/quotation/mark-sent-dialog.tsx"
+      ]
+    },
+    {
+      "text": "Mark as sent",
+      "step": 10,
+      "foundIn": [
+        "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx",
+        "apps/web/src/components/quotation/mark-sent-dialog.tsx"
+      ]
     },
     {
       "text": "Threads",
@@ -6371,10 +6439,14 @@
       ]
     },
     {
-      "text": "Appendages (attachments)",
+      "text": "Attachments",
       "step": 14,
       "foundIn": [
-        "apps/web/src/components/order-form.tsx"
+        "apps/web/src/components/inbox/reading-pane.tsx",
+        "packages/api/src/routers/quotation.ts",
+        "apps/web/src/components/order-form.tsx",
+        "packages/api/src/routers/lading.ts",
+        "apps/web/src/routes/_next/lading/$id/index.tsx"
       ]
     },
     {
@@ -8518,296 +8590,296 @@
   "shots": [
     {
       "file": "customer-intake-sop/shots/step-01.jpg",
-      "sha": "ca68b97749a647aa051377175017a9f7d1b0c8f117e58c356189a7e2aa1944f2",
-      "mtimeMs": 1789291830681,
+      "sha": "ee59b0a99bac22ed3f555c72ba2eaaf76fbe53d4248eb943c2a445a6c52a03e7",
+      "mtimeMs": 1791007326177,
       "step": 1,
       "path": "/inbox",
       "routeFile": "apps/web/src/routes/_next/inbox.index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02.jpg",
-      "sha": "e9f15cd50db6a1466a6c29cdddbec2e696b5c16109245a9aafa650dd925d2b23",
-      "mtimeMs": 1790782166923,
+      "sha": "4ded4de2b6a797db91b8505f903e2ffc5b91e69ab5f2981e265f14495f94cff2",
+      "mtimeMs": 1791007330178,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02-add.jpg",
-      "sha": "ee66bbf636bcba7e57625d1ae9f1462667581018c5c3ff26e4b743515be078df",
-      "mtimeMs": 1790782166916,
+      "sha": "529a55840db3b44f85d8fc83cd75c15313ca27b18d456a454cbf41e6bea675d6",
+      "mtimeMs": 1791007334372,
       "step": 2,
       "path": "/companies/new",
       "routeFile": "apps/web/src/routes/_next/companies_.new.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-02-edit.jpg",
-      "sha": "cff3b89f82fcae34e188b167c41381416f101f0a575b8b2aee9dce3d4b41d297",
-      "mtimeMs": 1790782166920,
+      "sha": "1c768bce4de3de1fd6e7feca8277ee628ee13319d866baaa8cf75efcd1b14b16",
+      "mtimeMs": 1791007340471,
       "step": 2,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-03.jpg",
-      "sha": "39bbaa05b93a50da8d73e090c22183ef58ffece4d243c5ccdd67ae93deebdf97",
-      "mtimeMs": 1790782166927,
+      "sha": "90e9fe90043085ab54c90bdcbee8671ad0c18c41cdb8f63ea0ac7dcb8bff2826",
+      "mtimeMs": 1791007346368,
       "step": 3,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-03-add.jpg",
-      "sha": "add1ef4ecdc1ff1d064e45b02532b6d61b0947f1dc4000eb8bcffbc9d51c88c7",
-      "mtimeMs": 1790782166924,
+      "sha": "1195647d9ebc795f40569968a8df75d774ccd23fb12616cefaf2fcc0ea90f8c8",
+      "mtimeMs": 1791007352187,
       "step": 3,
       "path": "/companies",
       "routeFile": "apps/web/src/routes/_next/companies.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-04.jpg",
-      "sha": "0ed836d7d82a5d7004dc0fcf8f5c65f5ce5524f2097fee5facc630fe7cb54e56",
-      "mtimeMs": 1790771909298,
+      "sha": "94d294bf20d22d36081ebb0b9295ff712d79a88c99f6243965f66b63fd6f0f45",
+      "mtimeMs": 1791007357285,
       "step": 4,
       "path": "/fee-templates",
       "routeFile": "apps/web/src/routes/_next/fee-templates/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-04-new.jpg",
-      "sha": "d96dee851f6b007cc60477a5664a62c3c66b02d9276f7c56e98b6b479c5aa290",
-      "mtimeMs": 1790771909297,
+      "sha": "41e8054ab66cea81b6c4211a62023fdc7f0367ca252c2958402c12829b83c357",
+      "mtimeMs": 1791007362654,
       "step": 4,
       "path": "/fee-templates",
       "routeFile": "apps/web/src/routes/_next/fee-templates/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-04-review.jpg",
-      "sha": "f5afd44471c3323184690b34c7f1606f3dfd1facc3e35936b7abc7ae4f4a6f8e",
-      "mtimeMs": 1789291858577,
+      "sha": "d13810e19454988d31e5a256ea4dd96b0e68fee62f51f2de5fe3efbe6daa5680",
+      "mtimeMs": 1791007367242,
       "step": 4,
       "path": "/approve/template",
       "routeFile": "apps/web/src/routes/_next/approve/template.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05.jpg",
-      "sha": "507a2a4c30f32ff4c364f0ce91f9281da62ab38f567fc7213b6b64c32864814f",
-      "mtimeMs": 1789291865045,
+      "sha": "bee256e2b8d7303e8856351923f0ad4edfc8c6773000da97ee3a17c81b43c85a",
+      "mtimeMs": 1791007371695,
       "step": 5,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
-      "mtimeMs": 1790771909300,
+      "sha": "1fcc00873224bfed3132ebd820bdadc03494e6752dc9fd474c1e8ae2f73192a7",
+      "mtimeMs": 1791007377683,
       "step": 5,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-06.jpg",
-      "sha": "2433250b466babfec3cb52f3524dad18e74de67db895ff500ed7082aa541059f",
-      "mtimeMs": 1790771909303,
+      "sha": "a30f1649d7b70972fcdf33c1c1a8d991ee7535a8f4400e307574a6a66be0014c",
+      "mtimeMs": 1791007384257,
       "step": 6,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-06.jpg",
-      "sha": "2433250b466babfec3cb52f3524dad18e74de67db895ff500ed7082aa541059f",
-      "mtimeMs": 1790771909303,
+      "sha": "a30f1649d7b70972fcdf33c1c1a8d991ee7535a8f4400e307574a6a66be0014c",
+      "mtimeMs": 1791007384257,
       "step": 7,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-08.jpg",
-      "sha": "3bbbfc12ac8ff848144e15b39471c7671d0445f54bfe023092a441f13aed458b",
-      "mtimeMs": 1789291870818,
+      "sha": "336858623d8f02befa745d74a6ae3f8aa3a5d99583af2120258ab0255eb0b1c5",
+      "mtimeMs": 1791007388572,
       "step": 8,
       "path": "/approve/quotation",
       "routeFile": "apps/web/src/routes/_next/approve/quotation.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
-      "mtimeMs": 1790771909300,
+      "sha": "1fcc00873224bfed3132ebd820bdadc03494e6752dc9fd474c1e8ae2f73192a7",
+      "mtimeMs": 1791007377683,
       "step": 9,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
-      "mtimeMs": 1790771909300,
+      "sha": "1fcc00873224bfed3132ebd820bdadc03494e6752dc9fd474c1e8ae2f73192a7",
+      "mtimeMs": 1791007377683,
       "step": 10,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-05-new.jpg",
-      "sha": "bf5f9822c4425b9f230a6e1dc2c4864b003cd500b04a10028ddd80e5f6c24acb",
-      "mtimeMs": 1790771909300,
+      "sha": "1fcc00873224bfed3132ebd820bdadc03494e6752dc9fd474c1e8ae2f73192a7",
+      "mtimeMs": 1791007377683,
       "step": 11,
       "path": "/quotations",
       "routeFile": "apps/web/src/routes/_next/quotations/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-14.jpg",
-      "sha": "a56b4375814b323dca47fa1841d7b6569935c44d6bc9903deb95357b4f9a2e68",
-      "mtimeMs": 1790330683952,
+      "sha": "5e531680648b5b326066c8107ca64c8e78b17b3226a6812e597b1c34a75da7cd",
+      "mtimeMs": 1791007402591,
       "step": 12,
       "path": "/order/new",
       "routeFile": "apps/web/src/routes/_next/order.new.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-13.jpg",
-      "sha": "7353c52745e903d60adbaa713897f72fe6a08a7b94d583808670b39a2762799f",
-      "mtimeMs": 1790330683852,
+      "sha": "f758e49266aaa438ca6b673e31dd29fcd7d53201b1d85e81a5c686cd7e39307b",
+      "mtimeMs": 1791007396735,
       "step": 13,
       "path": "/order/to-receive",
       "routeFile": "apps/web/src/routes/_next/order.to-receive.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-14.jpg",
-      "sha": "a56b4375814b323dca47fa1841d7b6569935c44d6bc9903deb95357b4f9a2e68",
-      "mtimeMs": 1790330683952,
+      "sha": "5e531680648b5b326066c8107ca64c8e78b17b3226a6812e597b1c34a75da7cd",
+      "mtimeMs": 1791007402591,
       "step": 14,
       "path": "/order/new",
       "routeFile": "apps/web/src/routes/_next/order.new.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-12.jpg",
-      "sha": "2f701cd9cbdf94141ea13f949e4dcf8865876fe1c3b3981f076e44f7794bbc18",
-      "mtimeMs": 1790330683768,
+      "sha": "584486d3d17bd5dd6ab6867cd9ee8e070c8ff4000f2b0ac84b674120443096f8",
+      "mtimeMs": 1791007392657,
       "step": 14,
       "path": "/order/sea-export",
       "routeFile": "apps/web/src/routes/_next/order.sea-export.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-15.jpg",
-      "sha": "2f4561c9cfb541550c748910bae49229593e8b2b67bf319f136b7fd40b09a57e",
-      "mtimeMs": 1789291895327,
+      "sha": "d68c9a61e64096cb8586065af06dff768ace41a79f1da79785451236c8346e16",
+      "mtimeMs": 1791007406967,
       "step": 15,
       "path": "/approve/order",
       "routeFile": "apps/web/src/routes/_next/approve/order.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-16.jpg",
-      "sha": "743be2bce8fac694c1bfef40d2cb5a53932aa05002baa883e3882941c68537a4",
-      "mtimeMs": 1790330684042,
+      "sha": "17cfe30a866a5f68b38e845ff4f047a182cfe7c8e45d0b6bf059c8f11a1a9d2c",
+      "mtimeMs": 1791007411199,
       "step": 16,
       "path": "/lading/create",
       "routeFile": "apps/web/src/routes/_next/lading/create.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-17.jpg",
-      "sha": "7ed76df3dccb84577ebd33a8e98d4fccc13723652b87550410b7938d84e7f8ae",
-      "mtimeMs": 1790330684133,
+      "sha": "1da92bf8ef340d00a1799a279cf5eab82ed86756f5542ca520b2f33b95a63ac5",
+      "mtimeMs": 1791007415101,
       "step": 17,
       "path": "/lading",
       "routeFile": "apps/web/src/routes/_next/lading/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-18.jpg",
-      "sha": "e44a0bc981da9c05cc1d3b905405945e59ee246df1c09da36d546a10c3e42207",
-      "mtimeMs": 1789291913998,
+      "sha": "fe937300a8a1df1f7732a80d205899c7b52c4494ea825eead1b4202786f12e1b",
+      "mtimeMs": 1791007419081,
       "step": 18,
       "path": "/documents",
       "routeFile": "apps/web/src/routes/_next/documents.index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-19.jpg",
-      "sha": "db89b778ec2a4874f2c910d95f02c308b2b0ae7504600573e36eb3eaf0705c1e",
-      "mtimeMs": 1790330684222,
+      "sha": "ba4859fcc3b68517aaf1e34a2b4ed84d670fb12cea3c3913bc39cf7057cf27a7",
+      "mtimeMs": 1791007423969,
       "step": 19,
       "path": "/customs-tracking",
       "routeFile": "apps/web/src/routes/_next/customs-tracking.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-19-overview-today.jpg",
-      "sha": "e58f231c8ea420b912a73e3c084e3eb00c4308729a98e06da6745326e56e9ea5",
-      "mtimeMs": 1790673111205,
+      "sha": "5eb1d66ab92b97bac9e18c5abde13e93e8efd2184ea72ded7807a2af966739be",
+      "mtimeMs": 1791007428659,
       "step": 19,
       "path": "/overview",
       "routeFile": "apps/web/src/routes/_next/overview.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-20.jpg",
-      "sha": "e17da6790f672135e860ed5a894ab4f1df99779afeae518eb5551ea6a69917a7",
-      "mtimeMs": 1789292388582,
+      "sha": "5bac5d0eb6b6444ba0dc677de4619f39aa2f977eec5e790e02874dc8ee3b1853",
+      "mtimeMs": 1791007433749,
       "step": 20,
       "path": "/order/sea-export",
       "routeFile": "apps/web/src/routes/_next/order.sea-export.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-21.jpg",
-      "sha": "d60f98d578ac5da16a97264a963585fd3104600d686ff106bd41f504884b5783",
-      "mtimeMs": 1790330684317,
+      "sha": "8f88ea73413886584ef829cab4a8079cbed0bb0da43a26d3fe9d39bb081fdb43",
+      "mtimeMs": 1791007438283,
       "step": 21,
       "path": "/approve/cost",
       "routeFile": "apps/web/src/routes/_next/approve/cost.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-22.jpg",
-      "sha": "8e21c3e7bf04ece0003bf89d5988baa91e2aba45630642c4ba7a77e95381a7b7",
-      "mtimeMs": 1790673111206,
+      "sha": "8e075ebb216bc73b826f74735d3ef47edf5e5f7920e928364971eaa6bab83908",
+      "mtimeMs": 1791007443005,
       "step": 22,
       "path": "/expenses/cost-lines",
       "routeFile": "apps/web/src/routes/_next/expenses/cost-lines.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-23.jpg",
-      "sha": "05cacb19ad3005aec618207f67793c3017f957a1cf50195c0ade63a2b349dc6f",
-      "mtimeMs": 1790330684504,
+      "sha": "ac7c5da41adbeb112a55e9defa69ca1dc4db72e4d55d42c2a4988d24c6b25034",
+      "mtimeMs": 1791007447804,
       "step": 23,
       "path": "/approve/bill",
       "routeFile": "apps/web/src/routes/_next/approve/bill.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-24.jpg",
-      "sha": "8abb843e7fb68d901da6fc30a585a577583ac9ebce2ca585a80e2ed0aac6755b",
-      "mtimeMs": 1790330684593,
+      "sha": "2c66a89982d8a689b69e498ebd817987614ddfb7180a57697aca74123a5d83d0",
+      "mtimeMs": 1791007451934,
       "step": 24,
       "path": "/expenses/bills",
       "routeFile": "apps/web/src/routes/_next/expenses/bills.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-25.jpg",
-      "sha": "523210aa5d2c2cd8b0f4a2e99f2397ccc54a2e33e04fde0f99373589aa478ac2",
-      "mtimeMs": 1790330684685,
+      "sha": "83adf322050d91a6294dd86e05ebeefd339841ac107b64a1abd60548d334c9ed",
+      "mtimeMs": 1791007456197,
       "step": 25,
       "path": "/expenses/invoices",
       "routeFile": "apps/web/src/routes/_next/expenses/invoices.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-26.jpg",
-      "sha": "d40152e2dd3f625878fb12a1cf4ad3de34408aa2581a02be8b89cdbeec79cf7d",
-      "mtimeMs": 1790673111209,
+      "sha": "d6d6c6109b6715105c1a4c4cdee581dda4c84a26d319cbccd62bc0f122c6d183",
+      "mtimeMs": 1791007460283,
       "step": 26,
       "path": "/expenses/payments",
       "routeFile": "apps/web/src/routes/_next/expenses/payments.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-26-writeoffs.jpg",
-      "sha": "54f0db35c6d109456834986a0fa20e57b787eb3cb474241a66329840e17e598d",
-      "mtimeMs": 1790673111207,
+      "sha": "943a4b266579d91b6fe9a5023dfd97e7484c99253ec2de23f34c41db2efa5197",
+      "mtimeMs": 1791007464416,
       "step": 26,
       "path": "/expenses/write-offs",
       "routeFile": "apps/web/src/routes/_next/expenses/write-offs.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-27.jpg",
-      "sha": "2490fc24464c75f613b70aa1f14b61ac154f289430a70e6255af7ed45b1f9e61",
-      "mtimeMs": 1790673111210,
+      "sha": "c72258f107ddfc83252642edc89ea8adcdace275c5371d052d4df5427f41e471",
+      "mtimeMs": 1791007469101,
       "step": 27,
       "path": "/report/financial",
       "routeFile": "apps/web/src/routes/_next/report/financial/index.tsx"
     },
     {
       "file": "customer-intake-sop/shots/step-27-business.jpg",
-      "sha": "8b1414841d8a2d19ac4bb5f38f9c80520c02cebee74f5579b5c64ef4667848f0",
-      "mtimeMs": 1790330684954,
+      "sha": "ca8d925eceabbef2bc54e32326ccc00488f5619262ec91d70aff0ffeddc9631e",
+      "mtimeMs": 1791007475046,
       "step": 27,
       "path": "/report/business",
       "routeFile": "apps/web/src/routes/_next/report/business/index.tsx"

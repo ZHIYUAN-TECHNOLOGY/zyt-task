@@ -832,7 +832,7 @@
       "shots": [
         {
           "file": "customer-intake-sop/shots/step-01.jpg",
-          "caption": "Inbox: folders, thread list, reading pane",
+          "caption": "Inbox while email automation is paused, as production shows it today",
           "path": "/inbox"
         }
       ]
@@ -1600,12 +1600,12 @@
         {
           "action": "Write customer-facing wording in **More details → Notes → Note to customer (printed)**",
           "detail": "The staff-only note is **Internal remark (never printed)**, below More details.",
-          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:502"
+          "src": "apps/web/src/routes/_next/quotations/$quotationId.tsx:505"
         },
         {
           "action": "Press **Save Quote** (top-right)",
           "detail": "The first save allocates `NCT-Q-YYYYMM-####`, status **Draft**, audit status draft, toasts **Quote NCT-Q-… created** and moves the URL to the new id. Leaving the page with unsaved edits asks **Leave without saving?** first.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:695"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:724"
         }
       ],
       "fields": [
@@ -2092,7 +2092,7 @@
         {
           "action": "Press **Save Quote** (top-right)",
           "detail": "The toast reads **Quote saved** and the tariff check re-runs against the stored quotation. Under the **Charges** title a count badge sums the drift, e.g. **2 above tariff · 1 on a deal**.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:695"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:724"
         },
         {
           "action": "If refused, read the error toast",
@@ -2260,7 +2260,7 @@
         {
           "action": "In the quotation header, press **Submit for Review**",
           "detail": "It sits beside the audit badge, at the start of the header's buttons, while the audit status is draft — never inside **More ▾**. A toast reads **Review updated** and the badge turns pending. Save Quote is then disabled: **Under review. Retract the submission to edit.** (**Retract** takes it back.)",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:302"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:317"
         },
         {
           "action": "Reviewer: open **Approvals → Quotation review**",
@@ -2278,7 +2278,7 @@
         {
           "action": "To send it back, press **Rejected** / **Reject** and type a reason",
           "detail": "The reason is optional (up to 2000 characters) but should be given. A rejected quotation stays editable, and the submitter fixes it and presses **Resubmit** in the header.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:331"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:346"
         }
       ],
       "writes": [
@@ -2488,7 +2488,7 @@
           "title": "The legacy quotations.review verb stamps 'approved' with no submission behind it",
           "why": "quotations.review still writes quotation.auditStatus straight through canAuditTransition, filing no audit_submission row. No page in apps/web calls it any more, but it is a live oRPC procedure held by branch-manager and director. Because the gates read audit_submission (gates.ts:90) while the ledger badge and the /approve/quotation audit-status filter read the cache column, the two can be made to disagree permanently: a quotation reads 'Approved' with 'Approve staff' blank in every list, while convertToOrder refuses with '\"Convert order\" requires review approval first' and nothing in the UI explains why or offers a way out.",
           "repair": "Delete quotations.review now that engineReview routes every UI path through auditReview.*; if a legacy caller must survive, re-implement it as a thin wrapper over submitForReview/decide so audit_submission stays the only writer of the review cache.",
-          "src": "packages/api/src/routers/quotation.ts:4220",
+          "src": "packages/api/src/routers/quotation.ts:4298",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -2739,12 +2739,12 @@
         {
           "action": "Optionally preview with **Preview PDF** in the header, or **More ▾ → Export sheet** → **Quotation sheet (English)**, **Quotation sheet PDF (English)** or **报价单（中文）**",
           "detail": "This is exactly what the customer receives, including the **Attention / 收件人** row. Cost lines, margin and the internal remark are stripped.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:576"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:605"
         },
         {
           "action": "Press **Send**",
           "detail": "On an approved, unsent quote it is the next-step button in the header; otherwise it is in **More ▾**. The **Send quotation NCT-Q-…** dialog opens.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:409"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:424"
         },
         {
           "action": "Choose **From** (your mailbox)",
@@ -3089,7 +3089,7 @@
         {
           "action": "Press **Convert to order**",
           "detail": "On a won quote it is the header's next-step button; on an approved quote not yet won it is in **More ▾**. It reads **Converting…** while running.",
-          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:445"
+          "src": "apps/web/src/routes/_next/quotations/-quotation-editor/header-actions.tsx:469"
         },
         {
           "action": "Read the toast: **Order <job number> created with N receivable fee line(s)**",
@@ -3143,12 +3143,12 @@
         {
           "action": "On the order edit form, find **Job Number** in the **Business information** section",
           "detail": "It is the first TEXT box of that section — the business-type selects and the client pickers render above it.",
-          "src": "apps/web/src/components/order-form.tsx:347"
+          "src": "apps/web/src/components/order-form.tsx:360"
         },
         {
           "action": "Press **Assign number**, directly under the Job Number box",
           "detail": "The button only renders in edit mode while the saved number is blank. The same button sits on the order's record page.",
-          "src": "apps/web/src/components/order-form.tsx:2673"
+          "src": "apps/web/src/components/order-form.tsx:2789"
         },
         {
           "action": "Read the toast **Job number <serial> assigned**",
@@ -3257,7 +3257,7 @@
           "title": "Intake decisions are asymmetrical",
           "why": "A received order can never be rejected, but a rejected order can still be received. Rejection is not terminal, so a refused job can be quietly pulled back into operations with no second decision recorded.",
           "repair": "Make the two verbs symmetrical: either let a received order be rejected with a reason, or refuse receiving a rejected one without an explicit re-open.",
-          "src": "packages/api/src/routers/collective-order.ts:3335",
+          "src": "packages/api/src/routers/collective-order.ts:3336",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -3384,37 +3384,37 @@
         {
           "action": "Work down the section rail: **Business information**, **Shipping space**, **Lading bills**, **Internal**, **Cargo & fees**",
           "detail": "The rail marks which sections hold unsaved edits. **Cargo information** is an extra section on air-import orders.",
-          "src": "apps/web/src/components/order-form.tsx:1553"
+          "src": "apps/web/src/components/order-form.tsx:1605"
         },
         {
           "action": "In **Business information**, check **Job Number**, **Quotation No.**, **Entrusting person**, **Customer Business No.**, **Enterprise Internal no.**, **Trade terms**, **Booking Agent**, **Deadline for declaration** and **Tag**",
-          "src": "apps/web/src/components/order-form.tsx:347"
+          "src": "apps/web/src/components/order-form.tsx:360"
         },
         {
           "action": "In **Shipping space**, fill the schedule: **ETD**, **ETA**, **ATD**, **ATA**, **Cut-off time**, **Closing time**",
           "detail": "Trade-specific fields appear as needed — **ETB** on sea export, sea import and road, **Barge ETD / vessel / voyage** on sea and LCL, **Port open time** on sea export, **Change Order Agent** on sea import, **Opt Origin / Opt Destination** on road.",
-          "src": "apps/web/src/components/order-form.tsx:236"
+          "src": "apps/web/src/components/order-form.tsx:249"
         },
         {
           "action": "Record volumes: **Total number entrusted**, **Total gross weight entrusted (KGS)**, **Total volume entrusted (CBM)** and the **Actual** trio",
-          "src": "apps/web/src/components/order-form.tsx:317"
+          "src": "apps/web/src/components/order-form.tsx:330"
         },
         {
           "action": "In **Lading bills**, fill the shipper, consignee, notify party, marks and weights"
         },
         {
-          "action": "In **Cargo & fees**, use the line editors: **Containers (case type & TEU)**, **Cargo information**, **Expense entry (fees)** and **Appendages (attachments)**",
-          "src": "apps/web/src/components/order-form.tsx:2859"
+          "action": "In **Cargo & fees**, use the line editors: **Containers (case type & TEU)**, **Cargo information**, **Expense entry (fees)** and the **Attachments** card, which uploads real files straight onto the job",
+          "src": "apps/web/src/components/order-form.tsx:3004"
         },
         {
           "action": "Press **Save** at the foot of the form",
           "detail": "Only changed fields are sent. A toast reads **Order updated** and you land back on the trade's ledger. **Cancel** asks **Discard your unsaved changes to …?** with **Keep editing**. While the order is under review **Save** is disabled and reads **Under review. Withdraw it from the trade ledger's review menu to make changes.**",
-          "src": "apps/web/src/components/order-form.tsx:2969"
+          "src": "apps/web/src/components/order-form.tsx:3112"
         },
         {
           "action": "On a saved order, use **Expense entry** in the header to jump to the money page",
           "detail": "That is step 20, /order/<id>/expenses.",
-          "src": "apps/web/src/components/order-form.tsx:2404"
+          "src": "apps/web/src/components/order-form.tsx:2486"
         }
       ],
       "fields": [
@@ -3529,7 +3529,7 @@
           "title": "A collective order stays fully editable while it is awaiting the reviewer's decision",
           "why": "collectiveOrder.update guards `locked` and assertPostApprovalEditable and never calls assertNotUnderReview - the string does not appear anywhere in routers/collective-order.ts. Step 14's operational detail (vessel, ports, cargo, container counts, client) can therefore be rewritten after the trade-ledger row menu's Submit for review and before accounting presses Approved in /approve/order, and the submission carries no content hash or version to notice. The reviewer approves a shipment they never saw, and the approval stamps land on the edited row as if they covered it. saveChildren (:4756) and assignJobNumber (:2800) have the same gap.",
           "repair": "Call assertNotUnderReview(tx, organizationId, \"collective_order\", orderId) in collectiveOrder.update, saveChildren and assignJobNumber, right beside each existing assertPostApprovalEditable call.",
-          "src": "packages/api/src/routers/collective-order.ts:3111",
+          "src": "packages/api/src/routers/collective-order.ts:3112",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -3733,7 +3733,7 @@
           "title": "The legacy collectiveOrder.review verb lets ops stamp their own order approved outside the queue",
           "why": "collectiveOrder.review writes collective_order.order_audit_status directly through canAuditTransition and files no audit_submission. roles.ts grants ops the whole `collectiveOrder` subtree - collectiveOrder.update AND collectiveOrder.review - so an ops member can move their own order draft to pending to approved on this endpoint without ever appearing in /approve/order, whose listing is driven by awaitingMyReview over submissions. The order ledger's Audit status column and its audit-status filter read the column this writes, so the row displays as reviewed, the submissions table holds nothing, and nobody in accounting ever saw it. order-row-actions.tsx:55 records that the last UI caller was removed on 2026-09-09; the procedure itself was left in place.",
           "repair": "Delete collectiveOrder.review (apps/web/src/architecture.test.ts already forbids a UI caller), or reduce it to a wrapper over submitForReview/decide so audit_submission remains the only writer of order_audit_status.",
-          "src": "packages/api/src/routers/collective-order.ts:3380",
+          "src": "packages/api/src/routers/collective-order.ts:3381",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
