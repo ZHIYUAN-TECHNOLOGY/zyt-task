@@ -347,11 +347,16 @@
           append(node, h('p', { class: 'gp-blurb', text: 'Fetching the recording…' }));
         }
       }
+      // Client testers see this page too (NCT, Wave 0). The local runner is
+      // the ZYT team's tool, so its instructions sit behind a closed
+      // disclosure; a visitor with a published recording sees only that.
       if (S.reach === 'down' || S.reach === 'nojob') {
-        append(node, h('div', { class: 'gp-off' },
+        if (!S.end) append(node, h('p', { class: 'gp-blurb', text: 'No recording has been published for this journey yet.' }));
+        append(node, h('details', { class: 'gp-off' },
+          h('summary', { text: 'For the ZYT team: run it live' }),
           h('p', { text: S.reach === 'nojob'
             ? 'The runner on this computer doesn’t know this journey. Restart it:'
-            : (S.end ? 'To play it again live or regenerate it, start the runner in C:\\Project\\ZYT-Task:' : 'The runner isn’t running on this computer. Start it in C:\\Project\\ZYT-Task:') }),
+            : 'Start the runner in C:\\Project\\ZYT-Task:' }),
           h('code', { class: 'gp-cmd', text: 'node hosting/runner/server.mjs' }),
           h('p', { class: 'gp-blurb', text: 'Already started it? Chrome asks once before a website may reach this computer — press Check again and allow it.' }),
           h('button', { type: 'button', class: 'gp-retry', disabled: S.busy, onclick: function () { check(true); } }, 'Check again')));
