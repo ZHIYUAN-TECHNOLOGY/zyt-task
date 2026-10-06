@@ -267,7 +267,7 @@
       "phase": "C",
       "title": "Fill in the operational detail",
       "where": "/order/$orderId/edit",
-      "what": "One scrolling form with a section rail: business info, shipping space (vessel, voyage, ETD, ETA, ETB, cut-off), lading bills (shipper, consignee, notify, marks, weights), the desk roles, then containers, cargo lines, expense rows and appendages. Save sends only what changed and returns you to the trade ledger.",
+      "what": "One scrolling form with a section rail: business info, shipping space (ETD, ETA, cut-off; on sea import, sea export and LCL a <strong>Vessel</strong> group with vessel, voyage, Customs vessel ID, SCN, ETB, ATB, ETA, ATA and Discharged), lading bills (shipper, consignee, notify, marks, weights), the desk roles, then containers, cargo lines, expense rows and an <strong>Attachments</strong> card. Files uploaded there go straight into Documents (classified and read like any other document) the moment you upload them, not on Save. Save sends only what changed and returns you to the trade ledger.",
       "watch": {
         "tag": "Watch",
         "html": "<strong>No field on any trade is mandatory.</strong> A sea-import order saves with no client, no vessel, no ports and no cargo. The desk roles are free-typed names, not linked members — so the only way to ask “which orders are mine” is a substring search on a typed name — no member link, no my-orders view, and a namesake changes the answer."
@@ -344,10 +344,10 @@
       "phase": "D",
       "title": "Watch the demurrage clock",
       "where": "/customs-tracking → /overview",
-      "what": "Two schedulers poll MYCIEDS and SBCP — customs three times a day, the port hourly — issuing three kinds of check. Customs clearance, vessel berthing and container gate-out arrive on their own, and <strong>the 72-hour countdown starts itself at berth.</strong> The board sorts by urgency and emails the owning branch on threshold and structural failures. A job the automation can never finish is voided with a written reason.",
+      "what": "Two schedulers poll MYCIEDS and SBCP — customs three times a day, the port hourly — issuing three kinds of check. Customs clearance, vessel berthing and container gate-out arrive on their own, and <strong>the provisional 72-hour gate-out clock (berth + 72h) starts itself at berth.</strong> The board sorts by urgency and emails the owning branch on threshold and structural failures. A job the automation can never finish is voided with a written reason.",
       "watch": {
         "tag": "Watch",
-        "html": "Tracking jobs still store no order: a job finds its order, and an order its job, by B/L number. When two open jobs share one B/L number the order's card shows <strong>Match not certain</strong> and no clock, and where no portal login is saved the board says checks are off — nothing is being checked."
+        "html": "Approving the B/L now links its tracking job to its order when exactly one order matches; otherwise the job reads <strong>Not linked to an order</strong> and falls back to the B/L-number match until someone presses <strong>Link order</strong> on the job. When two open jobs share one B/L number an unlinked order's card shows <strong>Match not certain</strong> and no clock, and where no portal login is saved the board says checks are off — nothing is being checked."
       },
       "actors": [
         {
@@ -3143,12 +3143,12 @@
         {
           "action": "On the order edit form, find **Job Number** in the **Business information** section",
           "detail": "It is the first TEXT box of that section — the business-type selects and the client pickers render above it.",
-          "src": "apps/web/src/components/order-form.tsx:360"
+          "src": "apps/web/src/components/order-form.tsx:386"
         },
         {
           "action": "Press **Assign number**, directly under the Job Number box",
           "detail": "The button only renders in edit mode while the saved number is blank. The same button sits on the order's record page.",
-          "src": "apps/web/src/components/order-form.tsx:2789"
+          "src": "apps/web/src/components/order-form.tsx:2835"
         },
         {
           "action": "Read the toast **Job number <serial> assigned**",
@@ -3257,7 +3257,7 @@
           "title": "Intake decisions are asymmetrical",
           "why": "A received order can never be rejected, but a rejected order can still be received. Rejection is not terminal, so a refused job can be quietly pulled back into operations with no second decision recorded.",
           "repair": "Make the two verbs symmetrical: either let a received order be rejected with a reason, or refuse receiving a rejected one without an explicit re-open.",
-          "src": "packages/api/src/routers/collective-order.ts:3336",
+          "src": "packages/api/src/routers/collective-order.ts:3555",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -3384,37 +3384,37 @@
         {
           "action": "Work down the section rail: **Business information**, **Shipping space**, **Lading bills**, **Internal**, **Cargo & fees**",
           "detail": "The rail marks which sections hold unsaved edits. **Cargo information** is an extra section on air-import orders.",
-          "src": "apps/web/src/components/order-form.tsx:1605"
+          "src": "apps/web/src/components/order-form.tsx:1651"
         },
         {
           "action": "In **Business information**, check **Job Number**, **Quotation No.**, **Entrusting person**, **Customer Business No.**, **Enterprise Internal no.**, **Trade terms**, **Booking Agent**, **Deadline for declaration** and **Tag**",
-          "src": "apps/web/src/components/order-form.tsx:360"
+          "src": "apps/web/src/components/order-form.tsx:386"
         },
         {
-          "action": "In **Shipping space**, fill the schedule: **ETD**, **ETA**, **ATD**, **ATA**, **Cut-off time**, **Closing time**",
-          "detail": "Trade-specific fields appear as needed — **ETB** on sea export, sea import and road, **Barge ETD / vessel / voyage** on sea and LCL, **Port open time** on sea export, **Change Order Agent** on sea import, **Opt Origin / Opt Destination** on road.",
+          "action": "In **Shipping space**, fill the schedule: **ETD**, **ETA**, **ATD**, **ATA**, **Cut-off time**, **Closing time**; on sea export, sea import and LCL the vessel has its own **Vessel** group",
+          "detail": "The **Vessel** group holds **Vessel name / voyage**, **Voyage**, **Customs vessel ID**, **SCN**, **ETB** (not on LCL), **ATB**, **ETA**, **ATA** and **Discharged**. ATB, ATA and Discharged are actuals: a future one is refused with **An actual can't be in the future — use ETA/ETB for a planned time**. Only a recorded ATB completes the order's **ETB / ATB** milestone; a past ETB alone reads **Expected <date> · not confirmed**. Other trade-specific fields appear as needed — **ETB** on road, **Barge ETD / vessel / voyage** on sea and LCL, **Port open time** on sea export, **Change Order Agent** on sea import, **Opt Origin / Opt Destination** on road.",
           "src": "apps/web/src/components/order-form.tsx:249"
         },
         {
           "action": "Record volumes: **Total number entrusted**, **Total gross weight entrusted (KGS)**, **Total volume entrusted (CBM)** and the **Actual** trio",
-          "src": "apps/web/src/components/order-form.tsx:330"
+          "src": "apps/web/src/components/order-form.tsx:356"
         },
         {
           "action": "In **Lading bills**, fill the shipper, consignee, notify party, marks and weights"
         },
         {
           "action": "In **Cargo & fees**, use the line editors: **Containers (case type & TEU)**, **Cargo information**, **Expense entry (fees)** and the **Attachments** card, which uploads real files straight onto the job",
-          "src": "apps/web/src/components/order-form.tsx:3004"
+          "src": "apps/web/src/components/order-form.tsx:3059"
         },
         {
           "action": "Press **Save** at the foot of the form",
           "detail": "Only changed fields are sent. A toast reads **Order updated** and you land back on the trade's ledger. **Cancel** asks **Discard your unsaved changes to …?** with **Keep editing**. While the order is under review **Save** is disabled and reads **Under review. Withdraw it from the trade ledger's review menu to make changes.**",
-          "src": "apps/web/src/components/order-form.tsx:3112"
+          "src": "apps/web/src/components/order-form.tsx:3167"
         },
         {
           "action": "On a saved order, use **Expense entry** in the header to jump to the money page",
           "detail": "That is step 20, /order/<id>/expenses.",
-          "src": "apps/web/src/components/order-form.tsx:2486"
+          "src": "apps/web/src/components/order-form.tsx:2532"
         }
       ],
       "fields": [
@@ -3429,9 +3429,9 @@
           "note": "Dates"
         },
         {
-          "label": "ETD / ETA / ATD / ATA / Cut-off time / Closing time",
+          "label": "ETD / ETA / ATD / ATA / ATB / Discharged / Cut-off time / Closing time",
           "required": false,
-          "note": "Dates"
+          "note": "Dates. ATB, ATA and Discharged are actuals and cannot be in the future"
         },
         {
           "label": "Desk roles",
@@ -3450,7 +3450,8 @@
       "result": "You land on the trade ledger. Submit the order for review — **step 15**.",
       "pitfalls": [
         "No field is mandatory on the edit form: a sea-import order saves with no client, no vessel, no ports and no cargo. Only creation at /order/new insists on owning branch and business type.",
-        "The desk roles are typed names rather than member links, so \"which orders are mine\" is only a substring search, and a namesake changes the answer."
+        "The desk roles are typed names rather than member links, so \"which orders are mine\" is only a substring search, and a namesake changes the answer.",
+        "**Duplicate** on an order keeps the estimates (ETD, ETA, ETB) and vessel/voyage as a starting plan but clears the actuals (ATD, ATA, ATB, Discharged), the Customs vessel ID, the SCN and the HBL."
       ],
       "shots": [
         {
@@ -3529,7 +3530,7 @@
           "title": "A collective order stays fully editable while it is awaiting the reviewer's decision",
           "why": "collectiveOrder.update guards `locked` and assertPostApprovalEditable and never calls assertNotUnderReview - the string does not appear anywhere in routers/collective-order.ts. Step 14's operational detail (vessel, ports, cargo, container counts, client) can therefore be rewritten after the trade-ledger row menu's Submit for review and before accounting presses Approved in /approve/order, and the submission carries no content hash or version to notice. The reviewer approves a shipment they never saw, and the approval stamps land on the edited row as if they covered it. saveChildren (:4756) and assignJobNumber (:2800) have the same gap.",
           "repair": "Call assertNotUnderReview(tx, organizationId, \"collective_order\", orderId) in collectiveOrder.update, saveChildren and assignJobNumber, right beside each existing assertPostApprovalEditable call.",
-          "src": "packages/api/src/routers/collective-order.ts:3112",
+          "src": "packages/api/src/routers/collective-order.ts:3311",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -3733,7 +3734,7 @@
           "title": "The legacy collectiveOrder.review verb lets ops stamp their own order approved outside the queue",
           "why": "collectiveOrder.review writes collective_order.order_audit_status directly through canAuditTransition and files no audit_submission. roles.ts grants ops the whole `collectiveOrder` subtree - collectiveOrder.update AND collectiveOrder.review - so an ops member can move their own order draft to pending to approved on this endpoint without ever appearing in /approve/order, whose listing is driven by awaitingMyReview over submissions. The order ledger's Audit status column and its audit-status filter read the column this writes, so the row displays as reviewed, the submissions table holds nothing, and nobody in accounting ever saw it. order-row-actions.tsx:55 records that the last UI caller was removed on 2026-09-09; the procedure itself was left in place.",
           "repair": "Delete collectiveOrder.review (apps/web/src/architecture.test.ts already forbids a UI caller), or reduce it to a wrapper over submitForReview/decide so audit_submission remains the only writer of order_audit_status.",
-          "src": "packages/api/src/routers/collective-order.ts:3381",
+          "src": "packages/api/src/routers/collective-order.ts:3601",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -4034,7 +4035,7 @@
           "title": "A bill of lading under review stays fully editable, so the reviewer approves content that changed after they read it",
           "why": "lading.update runs only assertPostApprovalEditable (packages/api/src/routers/lading.ts:1554), which fires after a submission has PASSED. The window while a submission is open is what assertNotUnderReview covers, and this very file imports it (lading.ts:34) and calls it in delete (lading.ts:1474) and bulkDelete (lading.ts:1513). It is absent from update. So a B/L can be submitted for review and then have its bill number, shipper, consignee, containers, weights and status rewritten while it sits in the reviewer's queue; the reviewer approves whatever is there when they click, and the post-approval freeze then locks in the rewritten version. This is the failure the gates module documents as TC-138 (packages/api/src/modules/audit/gates.ts:103-128): 'If it can change in between, they have approved something they never saw.' You cannot delete a B/L under review, but you can rewrite every field of it.",
           "repair": "Add `await assertNotUnderReview(context.db, organizationId, \"lading\", ladingId);` beside the assertPostApprovalEditable call in lading.update, matching delete/bulkDelete.",
-          "src": "packages/api/src/routers/lading.ts:1554",
+          "src": "packages/api/src/routers/lading.ts:1556",
           "lastVerified": "2026-10-02",
           "evidence": [
             {
@@ -4375,7 +4376,7 @@
         {
           "action": "Read any notice on the toast",
           "detail": "If that B/L is already tracked from an earlier document, it says so: no second tracking job is created and the existing one continues.",
-          "src": "packages/api/src/modules/document/register-hooks.ts:66"
+          "src": "packages/api/src/modules/document/register-hooks.ts:92"
         },
         {
           "action": "Wrong type? Pick the right one in the type select beside the filename and press **Save & approve**",
@@ -4411,7 +4412,7 @@
         }
       ],
       "writes": [
-        "Document status (approved / needs review / rejected), the field corrections, any order or bill of lading links, and — on approval — a BL tracking job"
+        "Document status (approved / needs review / rejected), the field corrections, any order or bill of lading links, and — on approval — a BL tracking job, linked to its order when exactly one order matches"
       ],
       "result": "Approval starts the tracking clock. Watch it at **step 19**.",
       "pitfalls": [
@@ -4490,7 +4491,7 @@
     },
     {
       "n": 19,
-      "role": "Operations · needs bl-job:read to watch the board, and bl-job:void to void a job",
+      "role": "Operations · needs bl-job:read to watch the board, bl-job:void to void a job, and **Keep container records and link jobs to orders** (Owner, Admin, Branch manager and Ops by default) to edit containers, returns and the order link",
       "routes": [
         {
           "path": "/customs-tracking",
@@ -4512,7 +4513,7 @@
       "golden": [
         {
           "action": "Open **Operations → Customs Tracking**",
-          "detail": "Columns: **Stage · BL Number · Vessel · Containers · Received (MYT) · Customs · 72h Countdown**. The board sorts by urgency.",
+          "detail": "Columns: **Stage · BL Number · Vessel · Containers · Received (MYT) · Customs · Provisional · berth + 72h**. The board sorts by urgency.",
           "src": "apps/web/src/routes/_next/customs-tracking.tsx:241"
         },
         {
@@ -4521,8 +4522,8 @@
           "src": "apps/server/src/bl-tracking-worker.ts:59"
         },
         {
-          "action": "Read the **72h Countdown**",
-          "detail": "It starts itself when the vessel berths; nobody types it.",
+          "action": "Read the **Provisional · berth + 72h** clock",
+          "detail": "It starts itself when the vessel berths; nobody types it. It is provisional: each container's own **Last free day** — typed from the line's notice, or calculated from a confirmed free-time rule, else **Pending confirmation** — is on the job's **Containers** card.",
           "src": "packages/port-tracking/src/transitions.ts:171"
         },
         {
@@ -4532,8 +4533,8 @@
         },
         {
           "action": "Click a **BL Number** to open its job",
-          "detail": "The job page shows its stages and containers, its **Order** (found by B/L number), and **Fees** → **Open the order's fees** when exactly one order carries the B/L.",
-          "src": "apps/web/src/components/customs-tracking/bl-job-record.tsx:342"
+          "detail": "The job page shows its stages, a **Containers** card (type, seal, port status, gate-out, last free day, return; click a row for its sheet), its **Order** in the header — linked by id, or **Not linked to an order** with **Link order** and the **Orders with this B/L number** as a hint — and **Fees** → **Open the order's fees** for the linked order, or when exactly one order carries the B/L.",
+          "src": "apps/web/src/components/customs-tracking/bl-job-record.tsx:392"
         },
         {
           "action": "If a job can never finish, press **Void** and write the reason",
@@ -4542,8 +4543,12 @@
         },
         {
           "action": "Or work the clocks from **Overview → My tasks → Book haulier**",
-          "detail": "Every job with a running gate-out clock, soonest first; the whole row opens the job. This queue shows for anyone whose role can book hauliers (Owner, Admin, Branch manager and Ops by default; an admin can grant it to any role under **Permissions → BL tracking → Book hauliers for gate-out clocks**). Today's **Gate-out** card and the Overview's **Gate-out** tab show the same clocks; on that tab, the left panel's **Under 24 hours** filter keeps only the urgent ones.",
+          "detail": "Every job with a running gate-out clock, soonest first; the whole row opens the job. This queue shows for anyone whose role can book hauliers (Owner, Admin, Branch manager and Ops by default; an admin can grant it to any role under **Permissions → BL tracking → Book hauliers for gate-out clocks**). Today's **Gate-out** card and the Overview's **Gate-out** tab show the same clocks; on that tab, the left panel's **Due today or overdue** filter keeps only the urgent ones. Every clock uses one scale, counted in Malaysian calendar days: more than 5 days **Normal**, 3–5 days **Monitor**, 1–2 days **Warning**, due today **Critical**, past the deadline **Overdue**, always shown as a word as well as a colour. Beside it, Today's **Empty return due** card and **Overview → Empty return** list containers waiting to go back to the depot, most urgent first with a reason, and **Do these first** adds any empty return that is overdue or due today.",
           "src": "apps/web/src/components/shell-next/task-queues.ts:232"
+        },
+        {
+          "action": "When a container goes back, open it from the job's **Containers** card (or **Overview → Empty return**) and move its **Return** status",
+          "detail": "NCT's ten statuses: **Pending delivery**, **Pending unstuffing**, **Pending return instruction**, **Ready for return**, **Return arranged**, **Returned**, **Rejected**, **Depot full / change depot**, **Damaged / on hold**, **N/A**. **Returned** needs the actual return date and stops the clock; Rejected, depot full, damaged/on hold, N/A and any reopen need a reason. **Attach EIR** stores the depot's receipt on the container as an attachment — it is never read or sent to Needs review."
         }
       ],
       "fields": [
@@ -4554,12 +4559,14 @@
         }
       ],
       "writes": [
-        "Check results per stage, the berth time and the countdown, alert sends, and the void with its reason"
+        "Check results per stage, the berth time and the provisional clock, alert sends, the job's order link, container records with their last free day and return status, and the void with its reason"
       ],
       "result": "Demurrage is under watch. The money side starts at **step 20**.",
       "pitfalls": [
-        "Where no MYCIEDS or SBCP login is saved, the board, the job page and the Overview card say checks are off: nothing is checked and no 72-hour clock can start. An admin adds the login in **Settings → Tracking portal credentials**.",
-        "The order's reading pane and the B/L page show a **Documents & customs** card with the job's stage and 72h countdown; its B/L number opens the job. If two open jobs share the B/L number it shows **Match not certain** and no countdown."
+        "Where no MYCIEDS or SBCP login is saved, the board, the job page and the Overview card say checks are off: nothing is checked and no provisional 72-hour clock can start. An admin adds the login in **Settings → Tracking portal credentials**.",
+        "The order's reading pane, its full record page and the B/L page show a **Documents & customs** card with the job's stage and its provisional 72-hour gate-out clock; its B/L number opens the job. When port tracking has seen the berth and the order has no ATB, the card says **Port tracking says berthed …** with **Use this time**. If two open jobs share the B/L number and none is linked, it shows **Match not certain** and no countdown.",
+        "A container's last free day comes from a typed date (from the line's notice, which wins) or a confirmed rule in **Settings → Free-time rules** (draft → **Confirm rule**; editing a confirmed rule makes version n+1; **Retire** needs a reason). With neither it reads **Pending confirmation** — not zero days. Rules need **Set free-time rules** (Owner, Admin, Branch manager).",
+        "In **My tracking**, a customer's shipment is now a card: job, customer, consignee, PIC, billing party (TBA until set), the next step (e.g. **Return 2 empties**), milestones with **MYCIEDS complete**, the containers, and **Empty return progress n / m**."
       ],
       "shots": [
         {
@@ -4595,7 +4602,7 @@
         {
           "action": "Open the order and press **Expenses** (record page) or **Expense entry** (edit form).",
           "detail": "Navigates to /order/$orderId/expenses; page title **Expense Entry** with a **Basic info** panel (Job Number, Client, Business type, MB/L No., Vessel / Voyage, ports, Carrier, ETD...).",
-          "src": "apps/web/src/components/order-ledger/order-record-page.tsx:156"
+          "src": "apps/web/src/components/order-ledger/order-record-page.tsx:158"
         },
         {
           "action": "Wait until the **Save** button stops reading **Loading…**.",
