@@ -24,7 +24,8 @@
       "nct-money-by-hand",
       "nct-fx-gain-loss",
       "nct-base-currency",
-      "nct-au-before-8-am-the-payment-date-and-decisio"
+      "nct-au-before-8-am-the-payment-date-and-decisio",
+      "nct-au-a-foreign-currency-receipt-saved-without"
     ]
   },
   {
@@ -67,7 +68,8 @@
       "nct-au-an-approved-order-can-be-deleted-outrigh",
       "nct-au-post-to-cost-ledger-is-offered-to-sales-",
       "nct-au-the-quotation-page-shows-approve-reject-",
-      "nct-au-bill-review-hides-withdrawal-requests-th"
+      "nct-au-bill-review-hides-withdrawal-requests-th",
+      "nct-au-directors-and-viewers-see-cancel-invoice"
     ]
   },
   {

@@ -277,9 +277,10 @@
     "owner": null,
     "repair": null,
     "src": [],
-    "status": "partly-fixed",
-    "statusAt": "2026-09-25",
-    "statusNote": "countdownDeadline is now in the customs payload, and OrderDocumentsCard shows the 72h clock in the ledger reading pane and on the lading page. The order's own full record page renders only config.detailGroups through RecordPage and never mounts the card. So opening the order via Open full page still shows no countdown."
+    "status": "fixed",
+    "fixedAt": "2026-10-07",
+    "statusAt": "2026-10-07",
+    "statusNote": "The remaining gap is now closed. order-record-page.tsx imports OrderDocumentsCard and renders it as a child of RecordPage, which renders {children}, so the full order page now shows the documents and customs card with the 72h clock. countdownDeadline is still in the server payload."
   },
   {
     "id": "nct-dead-queues",
@@ -743,6 +744,38 @@
     "origin": "defect"
   },
   {
+    "id": "nct-au-directors-and-viewers-see-cancel-invoice",
+    "kind": "chain",
+    "rank": 36,
+    "title": "Directors and viewers see Cancel invoice, Mark printed, Edit, Verify and Delete payment buttons that the server refuses",
+    "isNew": true,
+    "detail": "At steps 25 and 26 the Invoices and Payments pages check only the sidebar permission expense:read. Every row action is then shown to anyone who can open the page. The server guards each action with its own leaf: expense.invoice.cancel, expense.invoice.update, expense.payment.update, expense.writeOff.verify and expense.payment.delete. The seeded director and viewer roles hold only the read leaves (expense.invoice.read, expense.payment.read). A director signing off money, or a viewer, therefore sees live Cancel invoice, Mark printed, Edit, Verify and Delete buttons on every row. Pressing one opens a confirm or edit dialog, and the request comes back FORBIDDEN. The SOP gives these actions to Accounting and the Cashier only.",
+    "severity": "friction",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "open",
+    "origin": "defect"
+  },
+  {
+    "id": "nct-au-a-foreign-currency-receipt-saved-without",
+    "kind": "chain",
+    "rank": 37,
+    "title": "A foreign-currency receipt saved without an exchange rate is counted 1:1 in the Payments footer totals",
+    "isNew": true,
+    "detail": "At step 26, when the currency differs from the reporting currency, the payment form tells the cashier they may leave the exchange rate blank ('Leave blank if the bank's rate is not known'). The server then stores the literal 1. Settlement treats a stored 1 as 'no rate captured', but the Payments list footer does not. paymentTotals multiplies every amount by the stored rate with a fallback of 1, and the endpoint comment says the figures are converted to the org base currency. A USD 10,000 receipt with no rate therefore adds 10,000 to Receipts, Collected, Balance and Receivable in base currency, with no marker that the figure is unconverted. Accounting reads a cash position that looks complete and is wrong by the exchange rate. This is a different screen and code path from the open profit-statement item, which covers bills, not payments.",
+    "severity": "money",
+    "steps": [],
+    "state": "open",
+    "owner": null,
+    "repair": null,
+    "src": [],
+    "status": "open",
+    "origin": "defect"
+  },
+  {
     "id": "nct-s02-duplicate-companies-enter-through-case",
     "kind": "step",
     "rank": null,
@@ -1104,7 +1137,7 @@
     "owner": null,
     "repair": "Make the two verbs symmetrical: either let a received order be rejected with a reason, or refuse receiving a rejected one without an explicit re-open.",
     "src": [
-      "packages/api/src/routers/collective-order.ts:3336"
+      "packages/api/src/routers/collective-order.ts:3555"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25",
@@ -1129,7 +1162,7 @@
     "owner": null,
     "repair": "Call assertNotUnderReview(tx, organizationId, \"collective_order\", orderId) in collectiveOrder.update, saveChildren and assignJobNumber, right beside each existing assertPostApprovalEditable call.",
     "src": [
-      "packages/api/src/routers/collective-order.ts:3112"
+      "packages/api/src/routers/collective-order.ts:3311"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25",
@@ -1178,7 +1211,7 @@
     "owner": null,
     "repair": "Delete collectiveOrder.review (apps/web/src/architecture.test.ts already forbids a UI caller), or reduce it to a wrapper over submitForReview/decide so audit_submission remains the only writer of order_audit_status.",
     "src": [
-      "packages/api/src/routers/collective-order.ts:3381"
+      "packages/api/src/routers/collective-order.ts:3601"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25",
@@ -1228,7 +1261,7 @@
     "owner": null,
     "repair": "Add `await assertNotUnderReview(context.db, organizationId, \"lading\", ladingId);` beside the assertPostApprovalEditable call in lading.update, matching delete/bulkDelete.",
     "src": [
-      "packages/api/src/routers/lading.ts:1554"
+      "packages/api/src/routers/lading.ts:1556"
     ],
     "status": "fixed",
     "fixedAt": "2026-09-25",

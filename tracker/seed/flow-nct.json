@@ -244,7 +244,7 @@
       "key": "step-19",
       "title": "Watch the demurrage clock",
       "phase": "D",
-      "role": "Operations · needs bl-job:read to watch the board, and bl-job:void to void a job",
+      "role": "Operations · needs bl-job:read to watch the board, bl-job:void to void a job, and **Keep container records and link jobs to orders** (Owner, Admin, Branch manager and Ops by default) to edit containers, returns and the order link",
       "routes": [
         "/customs-tracking",
         "/overview",
